@@ -133,7 +133,7 @@ return [
     'goods_shop_price'                => '本店价',
     'goods_subtotal'                  => '小计',
     'goods_operation'                 => '操作',
-    'goods_integral'                  => '积分',
+    'goods_wangwangbi'                => '旺旺币',
     'goods_delete'                    => '删除',
     'goods_continue_shopping'         => '继续购物',
     'goods_empty_cart'                => '清空购物车',
