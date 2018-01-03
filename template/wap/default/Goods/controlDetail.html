@@ -80,7 +80,7 @@ input{appearance:none;-moz-appearance:none;-webkit-appearance:none;outline: none
 	<input type="hidden" id="end_time" value="{$goods_detail['promotion_detail']['end_time'] | getTimeStampTurnTime}"/>
 	<div class="goods-price">
 		<div class="current-price activity-price">
-			<span>￥</span><i class="js-goods-price price">{$goods_detail.promotion_price}</i>
+			<span><img src="__TEMP__/{$style}/public/images/pi.png" alt=""></span><i class="js-goods-price price">{$goods_detail.point_exchange}</i>
 			<span class="price-title js-price-title">{:lang('goods_discount')}</span>
 		</div>
 		{if condition="$goods_detail.market_price>0"}
@@ -120,10 +120,10 @@ input{appearance:none;-moz-appearance:none;-webkit-appearance:none;outline: none
 	<div class="price_wrap">
 		<span class="tit" id="priceTitle"></span> 
 		<span class="price" price="{$goods_detail.promotion_price}">
-			<span style="font-size:14px;display: inline-block;vertical-align: middle;">￥</span>
+			<span style="font-size:14px;display: inline-block;vertical-align: middle;">¥</span>
 			{if condition="$goods_detail.promotion_price < $goods_detail.member_price"}{$goods_detail.promotion_price}{else/}{$goods_detail.member_price}{/if}
 			{if condition="$goods_detail.point_exchange_type==1 && $goods_detail.point_exchange>0"}
-			<span style="font-size:16px;display: inline-block;vertical-align: middle;">+{$goods_detail.point_exchange}{:lang('goods_integral')}</span>
+			<span style="font-size:16px;display: inline-block;vertical-align: middle;">+{$goods_detail.point_exchange} {:lang('goods_wangwangbi')}</span>
 			{/if}
 		</span>
 		<span class="flag" id="priceDis" style="display: none"></span>
