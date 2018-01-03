@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:40:"template/wap\default\Login\register.html";i:1510201748;s:34:"template/wap\default\urlModel.html";i:1510824803;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:40:"template/wap\default\Login\register.html";i:1514963714;s:34:"template/wap\default\urlModel.html";i:1514959765;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -609,6 +609,9 @@ function __IMG(img_path){
 			<div class="back-home"><?php echo lang('home_page'); ?></div>
 		</a>
 	</div>
+
+
+
 	<!-- <a href="APP_MAIN/login"><div class="banner_login">
 		<span >登录</span>
 	</div></a>

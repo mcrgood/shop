@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:46:"template/adminblue\System\dialogAlbumList.html";i:1510282822;s:45:"template/adminblue\controlCommonVariable.html";i:1506689787;s:34:"template/adminblue\pageCommon.html";i:1505550036;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:46:"template/adminblue\System\dialogAlbumList.html";i:1514959763;s:45:"template/adminblue\controlCommonVariable.html";i:1514959763;s:34:"template/adminblue\pageCommon.html";i:1514959763;}*/ ?>
 <html>
 	<head>
 		<script src="__STATIC__/js/jquery-1.8.1.min.js" type="text/javascript"></script>

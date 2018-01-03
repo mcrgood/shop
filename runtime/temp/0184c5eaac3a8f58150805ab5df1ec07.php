@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:42:"template/adminblue\System\shopAdvList.html";i:1508414555;s:28:"template/adminblue\base.html";i:1510201748;s:45:"template/adminblue\controlCommonVariable.html";i:1506689787;s:32:"template/adminblue\urlModel.html";i:1510819828;s:34:"template/adminblue\pageCommon.html";i:1505550036;s:34:"template/adminblue\openDialog.html";i:1509523953;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:6:{s:42:"template/adminblue\System\shopAdvList.html";i:1514959763;s:28:"template/adminblue\base.html";i:1514959763;s:45:"template/adminblue\controlCommonVariable.html";i:1514959763;s:32:"template/adminblue\urlModel.html";i:1514959763;s:34:"template/adminblue\pageCommon.html";i:1514959763;s:34:"template/adminblue\openDialog.html";i:1514959763;}*/ ?>
 <!DOCTYPE html>
 <html>
 	<head>
