@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:40:"template/wap\default\Login\register.html";i:1510201748;s:34:"template/wap\default\urlModel.html";i:1510824803;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:40:"template/wap\default\Login\register.html";i:1515116512;s:34:"template/wap\default\urlModel.html";i:1515044333;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -609,6 +609,9 @@ function __IMG(img_path){
 			<div class="back-home"><?php echo lang('home_page'); ?></div>
 		</a>
 	</div>
+
+
+
 	<!-- <a href="APP_MAIN/login"><div class="banner_login">
 		<span >登录</span>
 	</div></a>
@@ -822,14 +825,14 @@ function __IMG(img_path){
 		</div>		
 		<!-- <div class="nk_loginlogin" style="margin-top:70px;"><a href="APP_MAIN/login/index">已有账号？立即登录</a></div>  -->
 	</div>
-	<div class="footer" style="min-height: 86px;" id="bottom_copyright" >
+	<!-- <div class="footer" style="min-height: 86px;" id="bottom_copyright" >
 		<div class="copyright">
 			<div class="ft-copyright">
 				<img src="__TEMP__/<?php echo $style; ?>/public/images/logo_copy.png" style="width:110px;" id="copyright_logo_wap"><br>
 				<a href="javascript:;" target="_blank" id="copyright_companyname"></a>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<input type="hidden" id="mobile_is_has" value="1">
 </div>
 </body>

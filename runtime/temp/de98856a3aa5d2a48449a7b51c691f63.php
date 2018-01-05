@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:37:"template/wap\default\Login\login.html";i:1510824854;s:34:"template/wap\default\urlModel.html";i:1510824803;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:37:"template/wap\default\Login\login.html";i:1515116408;s:34:"template/wap\default\urlModel.html";i:1515044333;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -481,15 +481,15 @@ function __IMG(img_path){
 		<?php endif; ?>
 		</div>
 	</div>
-	
-	<div class="footer" style="min-height: 86px;" id="bottom_copyright" >
+	<!-- 底部版权信息 -->
+	<!-- <div class="footer" style="min-height: 86px;" id="bottom_copyright" >
 		<div class="copyright">
 			<div class="ft-copyright">
 				<img src="__TEMP__/<?php echo $style; ?>/public/images/logo_copy.png" style="width:110px;" id="copyright_logo_wap"><br>
 				<a href="javascript:;" target="_blank" id="copyright_companyname"></a>
 			</div>
 		</div>
-	</div>
+	</div> -->
 </div>
 </body>
 </html>
