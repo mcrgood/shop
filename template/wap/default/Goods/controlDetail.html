@@ -123,7 +123,7 @@ input{appearance:none;-moz-appearance:none;-webkit-appearance:none;outline: none
 			<span style="font-size:14px;display: inline-block;vertical-align: middle;">¥</span>
 			{if condition="$goods_detail.promotion_price < $goods_detail.member_price"}{$goods_detail.promotion_price}{else/}{$goods_detail.member_price}{/if}
 			{if condition="$goods_detail.point_exchange_type==1 && $goods_detail.point_exchange>0"}
-			<span style="font-size:16px;display: inline-block;vertical-align: middle;">+{$goods_detail.point_exchange} {:lang('goods_wangwangbi')}</span>
+			<span style="font-size:16px;display: inline-block;vertical-align: middle;">+{$goods_detail.point_exchange} {:lang('goods_integral')}</span>
 			{/if}
 		</span>
 		<span class="flag" id="priceDis" style="display: none"></span>
@@ -224,8 +224,8 @@ input{appearance:none;-moz-appearance:none;-webkit-appearance:none;outline: none
 		<div class="comment-con"></div>
 	</div>
 </div>
-
-{include file="wap/default/controlCopyRight"}
+<!-- 底部弹出层的所属版权问题 -->
+<!-- {include file="wap/default/controlCopyRight"} -->
 
 <!-- 弹出框 -->
 <div class="success-tip-line" id="success_tip_line" style="display: none;">{:lang('successfully_joined_shopping_cart')}！</div>

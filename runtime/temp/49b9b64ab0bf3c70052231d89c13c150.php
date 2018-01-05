@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:12:{s:37:"template/wap\default\Index\index.html";i:1510138722;s:30:"template/wap\default\base.html";i:1510561074;s:34:"template/wap\default\urlModel.html";i:1510824803;s:31:"template/wap\default\share.html";i:1499844399;s:45:"template/wap\default\Index\controlSearch.html";i:1502935840;s:44:"template/wap\default\Index\controlSlide.html";i:1503743332;s:45:"template/wap\default\Index\controlNotice.html";i:1507547214;s:42:"template/wap\default\Index\controlNav.html";i:1502935840;s:45:"template/wap\default\Index\controlCoupon.html";i:1502935840;s:47:"template/wap\default\Index\controlDiscount.html";i:1506572866;s:32:"template/wap\default\footer.html";i:1510195126;s:39:"template/wap\default\shareContents.html";i:1501656003;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:12:{s:37:"template/wap\default\Index\index.html";i:1515117330;s:30:"template/wap\default\base.html";i:1515044333;s:34:"template/wap\default\urlModel.html";i:1515044333;s:31:"template/wap\default\share.html";i:1515044333;s:45:"template/wap\default\Index\controlSearch.html";i:1515044333;s:44:"template/wap\default\Index\controlSlide.html";i:1515044333;s:45:"template/wap\default\Index\controlNotice.html";i:1515044333;s:42:"template/wap\default\Index\controlNav.html";i:1515044333;s:45:"template/wap\default\Index\controlCoupon.html";i:1515044333;s:47:"template/wap\default\Index\controlDiscount.html";i:1515044333;s:32:"template/wap\default\footer.html";i:1515044333;s:39:"template/wap\default\shareContents.html";i:1515044333;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -884,18 +884,19 @@ function countDown(){
 		<section class="members_goodspic">
 			<ul>
 				<?php if(is_array($class['goods_list']) || $class['goods_list'] instanceof \think\Collection || $class['goods_list'] instanceof \think\Paginator): if( count($class['goods_list'])==0 ) : echo "" ;else: foreach($class['goods_list'] as $k=>$list): ?>
-				<li class="gooditem">
-					<div class="imgs">
-						<a href="<?php echo __URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id']); ?>">
-							<img class="lazy" src="<?php echo __IMG($list['pic_cover_mid']); ?>" style="max-width:100%;max-height: 100%;" onerror="this.src='__TEMP__/<?php echo $style; ?>/public/images/goods_img_empty.png'">
-						</a>
-					</div>
-					<div class="info">
-						<p class="goods-title"><a href="<?php echo __URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id']); ?>"><?php echo $list['goods_name']; ?></a></p>
-						<p class="goods-price"><em>￥<?php echo $list['promotion_price']; ?></em></p>
-						<a href="<?php echo __URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id']); ?>"></a>
-					</div>
-				</li>
+					<li class="gooditem">
+						<div class="imgs">
+							<a href="<?php echo __URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id']); ?>">
+								<img class="lazy" src="<?php echo __IMG($list['pic_cover_mid']); ?>" style="max-width:100%;max-height: 100%;" onerror="this.src='__TEMP__/<?php echo $style; ?>/public/images/goods_img_empty.png'">
+							</a>
+						</div>
+						
+						<div class="info">
+							<p class="goods-title"><a href="<?php echo __URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id']); ?>"><?php echo $list['goods_name']; ?></a></p>
+							<p class="goods-price"><em>￥<?php echo $list['promotion_price']; ?>+<?php echo $list['point_exchange']; ?> <?php echo lang('goods_integral'); ?></em></p>
+							<a href="<?php echo __URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id']); ?>"></a>
+						</div>
+					</li>
 				<?php endforeach; endif; else: echo "" ;endif; ?>
 			</ul>
 		</section>
@@ -1004,7 +1005,6 @@ function countDown(){
 		<a href="javascript:;" onclick="locationShop();"><?php echo lang("pc_version"); ?></a>
 		<a href="<?php echo __URL('APP_MAIN/member/index'); ?>"><?php echo lang("member_member_center"); ?></a>
 	</div>
-	<img src="__TEMP__/<?php echo $style; ?>/public/images/logo_copy.png" alt="版权logo" style="width:110px;" id="copyright_logo_wap">
 </div>
 
 	

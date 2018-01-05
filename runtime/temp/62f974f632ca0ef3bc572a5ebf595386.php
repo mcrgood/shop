@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:46:"template/wap\default\Goods\integralCenter.html";i:1503882825;s:30:"template/wap\default\base.html";i:1510561074;s:34:"template/wap\default\urlModel.html";i:1510824803;s:37:"template/wap\default\controGroup.html";i:1502935840;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:46:"template/wap\default\Goods\integralCenter.html";i:1515055842;s:30:"template/wap\default\base.html";i:1515044333;s:34:"template/wap\default\urlModel.html";i:1515044333;s:37:"template/wap\default\controGroup.html";i:1515053690;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
