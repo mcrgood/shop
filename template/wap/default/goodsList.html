@@ -97,7 +97,7 @@ function GetgoodsList(sear_type,page){
 						html+='<img class="lazy" src="'+__IMG(data['data'][i]['pic_cover_small'])+'" >';
 						html+='</a></div><div class="info">';
 						html+='<p class="goods-title"><a href="'+__URL('APP_MAIN/goods/goodsdetail?id='+data['data'][i]['goods_id'])+'" >'+data['data'][i]['goods_name']+'</a></p>';
-						html+='<p class="goods-price"><em>￥'+data['data'][i]['promotion_price']+'</em></p>';
+						html+='<p class="goods-price"><em>￥'+data['data'][i]['promotion_price']+'</em><em>+'+data['data'][i]['point_exchange']+'{:lang("goods_integral")}</em></p>';
 						html+='<p style="font-size:12px;width:50%;float:left;"><em style="color: #999;">销量:'+data['data'][i]['sales']+'</em><a href="'+__URL('APP_MAIN/goods/goodsdetail?id='+data['data'][i]['goods_id'])+'"></a></p>';
 						html+='<div class="cart-box" id="number_575"><a class="add-cart increase" data-goods_id="575" href="javascript:CartGoodsInfo('+data['data'][i]['goods_id']+','+data['data'][i]['state']+')"></a><a class="decrease hide" data-goods_id="575" style="right: 60px;"></a></div>';
 						html+='</div></li>';

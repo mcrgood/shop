@@ -191,7 +191,8 @@ function getgoodlist(page){
 							list_html += '<p class="goods_name" onclick="location.href=\''+__URL('APP_MAIN/goods/goodsdetail?id='+item.goods_id)+'\'">'+item['goods_name']+'</p>';
 							list_html += '<div class="price_share">';
 							list_html += '<span class="price">￥'+item['promotion_price']+'</span>';
-							list_html += '<span class="price">'  +item['point_exchange']+'</span>';
+							list_html += '<span class="price">+'  +item['point_exchange']+'</span>';
+							list_html += '<span class="price">{:lang("goods_integral")}'+'</span>';
 							list_html += '</div>';
 							list_html += '<div class="data-goods-sales-info"><span class="data-sales">销售量：<i>'+item.sales+'</i></span><span class="add_cart" onclick="CartGoodsInfo('+item.goods_id+','+item.state+')"></span></div>';
 							list_html += '</div>';
