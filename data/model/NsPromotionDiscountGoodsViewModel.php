@@ -58,7 +58,7 @@ class NsPromotionDiscountGoodsViewModel extends BaseModel {
         //设置查询视图
         $viewObj = $this->alias('npdg')
         ->join('ns_goods ng','ng.goods_id = npdg.goods_id','inner')
-        ->field('npdg.discount_goods_id,npdg.discount_id,npdg.start_time,npdg.end_time,npdg.goods_id,npdg.status,npdg.discount,npdg.goods_name,npdg.goods_picture,ng.category_id_1,ng.price,ng.promotion_price,ng.market_price');
+        ->field('npdg.discount_goods_id,npdg.discount_id,npdg.start_time,npdg.end_time,npdg.goods_id,npdg.status,npdg.discount,npdg.goods_name,npdg.goods_picture,ng.category_id_1,ng.price,ng.promotion_price,ng.market_price,ng.point_exchange');
         $list = $this->viewPageQuery($viewObj, $page_index, $page_size, $condition, $order);
         return $list;
     }
