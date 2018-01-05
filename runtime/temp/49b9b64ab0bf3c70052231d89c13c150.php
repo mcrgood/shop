@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:12:{s:37:"template/wap\default\Index\index.html";i:1515056220;s:30:"template/wap\default\base.html";i:1515044333;s:34:"template/wap\default\urlModel.html";i:1515044333;s:31:"template/wap\default\share.html";i:1515044333;s:45:"template/wap\default\Index\controlSearch.html";i:1515044333;s:44:"template/wap\default\Index\controlSlide.html";i:1515044333;s:45:"template/wap\default\Index\controlNotice.html";i:1515044333;s:42:"template/wap\default\Index\controlNav.html";i:1515044333;s:45:"template/wap\default\Index\controlCoupon.html";i:1515044333;s:47:"template/wap\default\Index\controlDiscount.html";i:1515044333;s:32:"template/wap\default\footer.html";i:1515044333;s:39:"template/wap\default\shareContents.html";i:1515044333;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:12:{s:37:"template/wap\default\Index\index.html";i:1515117330;s:30:"template/wap\default\base.html";i:1515044333;s:34:"template/wap\default\urlModel.html";i:1515044333;s:31:"template/wap\default\share.html";i:1515044333;s:45:"template/wap\default\Index\controlSearch.html";i:1515044333;s:44:"template/wap\default\Index\controlSlide.html";i:1515044333;s:45:"template/wap\default\Index\controlNotice.html";i:1515044333;s:42:"template/wap\default\Index\controlNav.html";i:1515044333;s:45:"template/wap\default\Index\controlCoupon.html";i:1515044333;s:47:"template/wap\default\Index\controlDiscount.html";i:1515044333;s:32:"template/wap\default\footer.html";i:1515044333;s:39:"template/wap\default\shareContents.html";i:1515044333;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -1005,7 +1005,6 @@ function countDown(){
 		<a href="javascript:;" onclick="locationShop();"><?php echo lang("pc_version"); ?></a>
 		<a href="<?php echo __URL('APP_MAIN/member/index'); ?>"><?php echo lang("member_member_center"); ?></a>
 	</div>
-	<img src="__TEMP__/<?php echo $style; ?>/public/images/logo_copy.png" alt="版权logo" style="width:110px;" id="copyright_logo_wap">
 </div>
 
 	

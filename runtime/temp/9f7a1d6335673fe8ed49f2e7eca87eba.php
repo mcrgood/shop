@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:35:"template/adminblue\Login\login.html";i:1508897749;s:28:"template/admin\urlModel.html";i:1510819828;s:45:"template/adminblue\controlCommonVariable.html";i:1506689787;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:35:"template/adminblue\Login\login.html";i:1515044332;s:28:"template/admin\urlModel.html";i:1515044332;s:45:"template/adminblue\controlCommonVariable.html";i:1515044332;}*/ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
