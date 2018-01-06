@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:12:{s:37:"template/wap\default\Index\index.html";i:1515117330;s:30:"template/wap\default\base.html";i:1515044333;s:34:"template/wap\default\urlModel.html";i:1515044333;s:31:"template/wap\default\share.html";i:1515044333;s:45:"template/wap\default\Index\controlSearch.html";i:1515044333;s:44:"template/wap\default\Index\controlSlide.html";i:1515044333;s:45:"template/wap\default\Index\controlNotice.html";i:1515044333;s:42:"template/wap\default\Index\controlNav.html";i:1515044333;s:45:"template/wap\default\Index\controlCoupon.html";i:1515044333;s:47:"template/wap\default\Index\controlDiscount.html";i:1515044333;s:32:"template/wap\default\footer.html";i:1515044333;s:39:"template/wap\default\shareContents.html";i:1515044333;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:12:{s:37:"template/wap\default\Index\index.html";i:1515208784;s:30:"template/wap\default\base.html";i:1515208784;s:34:"template/wap\default\urlModel.html";i:1515208785;s:31:"template/wap\default\share.html";i:1515208785;s:45:"template/wap\default\Index\controlSearch.html";i:1515208784;s:44:"template/wap\default\Index\controlSlide.html";i:1515208784;s:45:"template/wap\default\Index\controlNotice.html";i:1515208784;s:42:"template/wap\default\Index\controlNav.html";i:1515208784;s:45:"template/wap\default\Index\controlCoupon.html";i:1515208784;s:47:"template/wap\default\Index\controlDiscount.html";i:1515227855;s:32:"template/wap\default\footer.html";i:1515208784;s:39:"template/wap\default\shareContents.html";i:1515208785;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -744,7 +744,7 @@ function coupon_receive(event,coupon_type_id){
 						<span class="settime" starttime="<?php echo getTimeStampTurnTime($vo['start_time'] ); ?>" endtime="<?php echo getTimeStampTurnTime($vo['end_time'] ); ?>" ></span>
 					</div>
 				</a>
-				 <!-- <div class="p_discount"><?php echo $vo['discount']; ?>折</div> -->
+				<div class="p_discount"><?php echo $vo['discount']; ?>折</div>
 			</div>
 			
 			<div class="brand-name">
@@ -754,7 +754,7 @@ function coupon_receive(event,coupon_type_id){
 			<div class="brand-info" style="height:initial;">
 				<div class="brand-info-left" style="float:none;">
 					<span class="b-price" style="float:left;margin:5px 8px;">
-						<p>￥<?php echo $vo['promotion_price']; ?></p>
+						<p>￥ <?php echo $vo['promotion_price']; ?>+<?php echo $vo['point_exchange']; ?><?php echo lang(goods_integral); ?></p>
 					</span>
 					<em></em>
 					<span class="buyer" style="float:right;line-height:31px;">

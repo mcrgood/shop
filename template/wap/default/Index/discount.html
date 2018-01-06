@@ -110,7 +110,7 @@ function showCategorySecond(obj,category_id,page){
 							+'<p class="b-price" style="float:left;margin:5px 0;">'
 
 
-							+item.promotion_price+'<em>{:lang("goods_integral")}</em></p>';
+							+'￥'+item.promotion_price+'+'+item.point_exchange+'{:lang(goods_integral)}</p>';
 							if(item.market_price > 0){
 								list_html+= '<p class="buyer" style="float:right;line-height:31px;"><s>￥'+item.market_price+'{:lang("element")}</s></p>'
 							}

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:46:"template/wap\default\Goods\integralCenter.html";i:1515055842;s:30:"template/wap\default\base.html";i:1515044333;s:34:"template/wap\default\urlModel.html";i:1515044333;s:37:"template/wap\default\controGroup.html";i:1515053690;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:46:"template/wap\default\Goods\integralCenter.html";i:1515208784;s:30:"template/wap\default\base.html";i:1515208784;s:34:"template/wap\default\urlModel.html";i:1515208785;s:37:"template/wap\default\controGroup.html";i:1515208784;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -420,7 +420,8 @@ function __IMG(img_path){
 					<a href="<?php echo __URL('APP_MAIN/goods/goodsdetail?id='.$good['goods_id']); ?>"><?php echo $good['goods_name']; ?></a>
 				</p>
 				<p class="goods-price">
-					<em><?php echo lang("goods_integral"); ?>:<?php echo $good['point_exchange']; ?></em>
+					<em>￥:<?php echo $good['promotion_price']; ?> +</em>
+					<em><?php echo $good['point_exchange']; ?><?php echo lang("goods_integral"); ?></em>
 				</p>
 				<a href="<?php echo __URL('APP_MAIN/goods/goodsdetail?id='.$good['goods_id']); ?>"></a>
 			</div>

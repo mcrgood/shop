@@ -278,6 +278,7 @@ return [
     'view_replace_str' => array(
         '__PUBLIC__' => __ROOT__ . '/public/',
         '__STATIC__' => __ROOT__ . '/public/static',
+        '__STATIC1__' => __ROOT__ . '/public/static/admin',
         'ADMIN_IMG' => __ROOT__ . '/public/admin/images',
         'ADMIN_CSS' => __ROOT__ . '/public/admin/css',
         'ADMIN_JS' => __ROOT__ . '/public/admin/js',
