@@ -178,6 +178,7 @@ class Myhome extends BaseController{
 
 	public function shenqing(){
 
+          return view($this->style . 'Myhome/shenqing');
 
 
         if (request()->isPost()) {
@@ -350,7 +351,7 @@ class Myhome extends BaseController{
 
 	public function ruzhu(){
 
-
+         return view($this->style . 'Myhome/ruzhu');
 
         //TODO 进行业务处理
 
