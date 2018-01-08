@@ -1,0 +1,310 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="body-bg">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>公告</title>
+
+<link href="__INDEX__/css/main.css" rel="stylesheet" />
+
+<link href="__INDEX__/css/reset.css" rel="stylesheet" />
+
+<link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
+
+<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+
+<script src="__INDEX__/js/swiper.min.js"></script>
+
+</head>
+
+
+
+<body class="body-bg">
+
+<div class="top-kong"></div>
+
+<div class="top">
+
+<a href="{:url('myhome/index')}" class="top-a1"></a>
+
+公告
+
+</div>
+
+
+
+<div class="notice-wu"></div>
+
+
+
+<ul class="notice-ul">
+
+	{volist name="gonggaores" id="vo"}
+
+	<li><a 
+
+        {//if condition="$cus.state neq 3"}
+
+         onclick="ling('{$vo.num}','{$vo.time_start}','{$vo.time_end}','{$vo.condition}','{$vo.jine}','{$vo.time}','{$vo.category}')"
+
+        {///if}
+
+         ><span>
+
+
+
+	{switch name="vo.category"}
+
+        {case value="0"}餐饮{/case}   
+
+        {case value="1"}酒店{/case}   
+
+        {case value="2"}养生{/case}   
+
+        {case value="3"}KTV{/case}   
+
+        {case value="4"}汽车{/case}   
+
+        {case value="5"}其他{/case}   
+
+    {/switch}行业通用券
+
+	</span>满{$vo.condition}减{$vo.jine}<span class="notice-ul-span">{$vo.time_end|date='Y-m-d',###}</span></a></li>
+
+	{/volist}
+
+
+
+</ul>
+
+
+
+<div class="foot">
+
+  <a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Index') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
+
+  <a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
+
+  <a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
+
+</div>
+
+<script type="text/javascript">
+
+    SCOPE={
+
+        'url' : '{:url("myhome/lingquan")}',
+
+        'go' : '{:url("myhome/gonggao")}',
+
+    }
+
+</script>
+
+<!--领取优惠券弹窗-->
+
+<div class="log-bg"></div>
+
+<div class="Coupon-pop">
+
+<span class="Coupon-close"></span>
+
+<div class="Coupon-title">领取通用券，请先验证手机号！</div>
+
+<table class="Coupon-tab">
+
+<tr><td colspan="2">
+
+    <input type="text" placeholder="验证手机" class="Coupon-input" id="tel" /></td></tr>
+
+<tr><td>
+
+    <input type="text" placeholder="短信验证码" class="Coupon-input1" id="yanzhengma" /></td><td><input type="button" value="获取验证码" class="Coupon-input2" onclick="fasong(this)" /></td></tr>
+
+<tr><td colspan="2"><input type="button" value="提交" class="Coupon-input3" onclick="tijiao()" /></td></tr>
+
+</table>
+
+</div>
+
+
+
+<!--验证码--> 
+
+<script type="text/javascript"> 
+
+var countdown=60; 
+
+var yzm = '';
+
+var pp = '';
+
+function fasong(obj){
+
+
+
+    var phone = $('#tel').val();
+
+    var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
+
+    if(phone == ''){
+
+         alert('手机号码不能为空！');
+
+         $("#tel").focus();
+
+         return false;
+
+     }else if(phone.length !=11){
+
+         
+
+         alert('请输入有效的手机号码！');
+
+         $("#tel").focus();
+
+         return false;
+
+     }else if(!myreg.test(phone)){
+
+
+
+         alert('请输入有效的手机号码！');
+
+         $("#tel").focus();
+
+         return false;
+
+     }
+
+
+
+    $.post('{:url("myhome/fasong")}', {haoma: phone}, function(result) {
+
+        if (result.state==1) {
+
+            yzm = result.code;
+
+            pp = phone;
+
+            settime(obj);
+
+
+
+        } else {
+
+            alert(result.message);
+
+        }
+
+
+
+    });
+
+}
+
+
+
+
+
+function settime(obj) { 
+
+
+
+    if (countdown == 0) { 
+
+        obj.removeAttribute("disabled");    
+
+        obj.value="获取短信验证码"; 
+
+        countdown = 60; 
+
+        return;
+
+    } else { 
+
+        obj.setAttribute("disabled", true); 
+
+        obj.value="重新发送(" + countdown + ")"; 
+
+        obj.style.background="#E1E1E1"; 
+
+        countdown--; 
+
+    } 
+
+setTimeout(function() { 
+
+    settime(obj) }
+
+    ,1000) 
+
+}
+
+function tijiao(){
+
+
+
+    yanzhengma = $("#yanzhengma").val();
+
+
+
+    if (yanzhengma=='') {
+
+        alert('请输入验证码！');
+
+        $("#yanzhengma").focus();
+
+        return false;
+
+    } else {
+
+        if (yanzhengma != yzm) {
+
+            alert('验证码输入有误，请重新输入！');
+
+            $("#yanzhengma").focus();
+
+            return false;
+
+        } 
+
+    }
+
+
+
+    $.post('{:url("myhome/bangding")}', {code: pp}, function(result) {
+
+        if (result.state==1) {
+
+            alert(result.message);
+
+            location.href="{:url('myhome/gonggao')}";
+
+
+
+        } else {
+
+            alert(result.message);
+
+            location.href="{:url('myhome/gonggao')}";
+
+        }
+
+
+
+
+
+    },'json');
+
+}
+
+</script>
+
+</body>
+
+</html>
+

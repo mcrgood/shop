@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>优惠券设置</title>
+<link href="__INDEX__/css/main.css" rel="stylesheet" />
+<link href="__INDEX__/css/reset.css" rel="stylesheet" />
+<link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
+<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+<script src="__INDEX__/js/swiper.min.js"></script>
+</head>
+
+<body>
+<div class="top-kong"></div>
+<div class="top">
+<a href="{:url('myhome/index')}" class="top-a1"></a>
+优惠券设置
+</div>
+<div class="notice-wu">请选择一种优惠规则</div>
+
+<form action="" method="post" id="form1">
+<div class="set">
+<input type="radio" id="chk1" class="chk_1" name="quan" value="yuanjia" {empty name="coupon"}checked{/empty}>
+<label for="chk1" style="margin-left:17px"><div class="reg-hw">原价</div></label>
+</div>
+
+<div class="set">
+<input type="radio" id="chk2" class="chk_1" name="quan" value="youhui" {notempty name="coupon"}checked{/notempty}>
+<label for="chk2" style="margin-left:17px">
+	<div class="reg-hw">每满
+		<input type="text" placeholder="请输入" name="condition" {notempty name="coupon"}value="{$coupon.condition}"{/notempty}/>元，立减
+		<input type="text" placeholder="请输入" name="jine" {notempty name="coupon"}value="{$coupon.jine}"{/notempty}/>元
+	</div>
+</label>
+</div>
+
+<a onclick="check();" class="set-a">保存</a>
+</form>
+{include file="public/footer"/}
+<script type="text/javascript">
+
+	$("input[name='condition'],input[name='jine']").focus(function(){
+		$(this).parent().parent().prev().attr('checked', 'checked');
+	});
+
+	function check(){
+
+		if ($("input[name='quan']:checked").val() == 'youhui') {
+			
+			if ($("input[name='condition']").val() == '') {
+				alert('请输入满减条件');
+				$("input[name='condition']").focus();
+				return false;
+			}else if($("input[name='jine']").val() == ''){
+				alert('请输入优惠金额');
+				$("input[name='jine']").focus();
+				return false;
+			}
+
+
+		}
+
+		$("#form1").submit();
+
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>检验优惠券</title>
+<link href="__INDEX__/css/main.css" rel="stylesheet" />
+<link href="__INDEX__/css/reset.css" rel="stylesheet" />
+<link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
+<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+<script src="__INDEX__/js/swiper.min.js"></script>
+</head>
+
+<body>
+<div class="top-kong"></div>
+<div class="top">
+<a href="{:url('myhome/index')}" class="top-a1"></a>
+检验优惠券
+</div>
+
+<div class="notice-wu">请在输入券码进行检验...</div>
+<form action="" method="post" onsubmit="return check();">
+<table class="examine-tab">
+<tr><td width="22%">检验券码：</td><td><input type="tel" placeholder="请输入优惠券号码" class="examine-tab-input1" name="quanma" /></td></tr>
+<tr><td>金额：</td><td><input type="tel" placeholder="请输入优惠券金额" class="examine-tab-input1"  name="jine" /></td></tr>
+<tr><td colspan="2" style="border:none"><input type="submit" value="提交" class="examine-tab-input" /></td></tr>
+</table>
+</form>
+{include file="public/footer"/}
+<script type="text/javascript">
+	function check(){
+
+		if ($("input[name='quanma']").val()=='') {
+			alert('请输入优惠券号码！');
+			$("input[name='quanma']").focus();
+			return false;
+		} else if ($("input[name='jine']").val()=='') {
+			alert('请输入金额！');
+			$("input[name='jine']").focus();
+			return false;
+		}
+
+		return true;
+	}
+</script>
+</body>
+</html>

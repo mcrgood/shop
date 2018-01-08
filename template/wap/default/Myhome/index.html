@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>我的中心-{$confres.sitename}</title>
+
+<link href="__INDEX__/css/main.css" rel="stylesheet" />
+
+<link href="__INDEX__/css/reset.css" rel="stylesheet" />
+
+<link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
+
+<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+
+<script src="__INDEX__/js/swiper.min.js"></script>
+
+</head>
+
+
+
+<body>
+
+<div class="top-kong"></div>
+
+<div class="top">
+
+<a href="{:url('index/index')}" class="top-a1"></a>
+
+我的中心
+
+</div>
+
+
+
+
+
+<div class="shops-center"><img src="{$userInfo.thumb}" />{$userInfo.nickname}</div>
+
+<div class="kong"></div>
+
+
+
+{if condition="$cus.state eq 3"}
+
+<ul class="shops-center_ul">
+
+<li><a href="{:url('myhome/jianyan')}"><img src="__INDEX__/images/center1.png" />检验优惠券</a></li>
+
+<li><a href="{:url('myhome/shezhi')}"><img src="__INDEX__/images/center2.png" />优惠券设置</a></li>
+
+<li><a href="{:url('myhome/mycoupon',array('type'=>1))}"><img src="__INDEX__/images/center4.png" />我的优惠券</a></li>
+
+<li><a href="tel:<?php echo $confres['tel'];?>"><img src="__INDEX__/images/center3.png" />联系我们</a></li>
+
+</ul>
+
+
+
+
+
+{else/}
+
+
+
+<ul class="shops-center_ul">
+
+<li><a href="{:url('myhome/mycoupon',array('type'=>1))}"><img src="__INDEX__/images/center4.png" />我的优惠券</a></li>
+
+{empty name="$shopinfo"}
+
+<li><a href="{:url('myhome/shenqing')}"><img src="__INDEX__/images/center5.png" />商家入驻</a></li>
+
+{else/}
+
+{if condition="$shopinfo.state eq 3"}
+
+<li><a href="{:url('myhome/shengqingedit')}"><img src="__INDEX__/images/center5.png" />商家入驻</a></li>
+
+{else/}
+
+<li><a href="{:url('myhome/shenqing')}"><img src="__INDEX__/images/center5.png" />商家入驻</a></li>
+
+{/if}
+
+{/empty}
+
+
+
+<li><a href="tel:<?php echo $confres['tel'];?>"><img src="__INDEX__/images/center3.png" />联系我们</a></li>
+
+</ul>
+
+
+
+{/if}
+
+
+
+<a href="{:url('myhome/out')}" class="shops-center_a">退出登录</a>
+
+<div class="foot">
+
+<a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Index') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
+
+<a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
+
+<a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
+
+</div>
+
+<div class="foot_kong"></div>
+
+<script src="__INDEX__/js/js.js"></script>
+</body>
+
+</html>
+

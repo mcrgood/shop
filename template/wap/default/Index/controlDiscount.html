@@ -25,7 +25,7 @@
 						<span class="settime" starttime="{$vo.start_time | getTimeStampTurnTime}" endtime="{$vo.end_time | getTimeStampTurnTime}" ></span>
 					</div>
 				</a>
-				 <!-- <div class="p_discount">{$vo.discount}折</div> -->
+				<div class="p_discount">{$vo.discount}折</div>
 			</div>
 			
 			<div class="brand-name">
@@ -35,7 +35,7 @@
 			<div class="brand-info" style="height:initial;">
 				<div class="brand-info-left" style="float:none;">
 					<span class="b-price" style="float:left;margin:5px 8px;">
-						<p>￥{$vo.promotion_price}</p>
+						<p>￥ {$vo.promotion_price}+{$vo.point_exchange}{:lang(goods_integral)}</p>
 					</span>
 					<em></em>
 					<span class="buyer" style="float:right;line-height:31px;">
