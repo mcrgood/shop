@@ -18,33 +18,9 @@ use data\service\WebSite;
 
 class Myhome extends BaseController{
 
-
-
     private $myinfo;
 
-
-
-
-
-    /**
-
-     * [_initialize 初始话方法]
-
-     * @return [type] [初始话方法]
-
-     */
-
- 
-
-
-
-    /**
-
-     * [index 个人中心首页]
-
-     * @return [array] [个人信息]
-
-     */
+    //个人中心首页
 
 	public function index(){		
 
@@ -53,8 +29,6 @@ class Myhome extends BaseController{
         $cus = db('customer')->where('openid',$this->myinfo['openid'])->find();
 
         $shop = db('shop')->where('customer_id',$cus['id'])->find();
-
-
 
 		return $this->fetch('',[
 
@@ -70,189 +44,76 @@ class Myhome extends BaseController{
 
 	}
 
-
-
-    /**
-
-     * [getUserInfo 获取用户信息，并做cookie及入库处理]
-
-     * @return [type] [获取用户信息]
-
-     */
-
-    public function getUserInfo(){
-
-        // 获取cookie
-
-
-
-        
-
-        $myinfo = cookie('myinfo');
-
-
-
-        if (empty($myinfo)) {
-
-
-
-           
-
-
-
-
-
-            $data['openid'] = $myinfo->openid;
-
-            $data['nickname'] = $myinfo->nickname;
-
-            $data['thumb'] = $myinfo->headimgurl;
-
-            $myinfo = $data;
-
-            if (!isset($info->openid)) {
-
-
-
-                $data['state'] = 1;
-
-                
-
-               
-
-            }
-
-
-
-            // 设置cookie
-
-            cookie('myinfo', $myinfo, 3600);
-
-
-
-                
-
-
-
-        }
-
-
-
-        $this->myinfo = $myinfo;
-
-    }
-
-
-
-	/**
-
-	 * [out 退出登录]
-
-	 * @return [type] [退出登录]
-
-	 */
+    //退出登录
 
 	public function out(){
-
-
-
 		//删除cookie
-
         cookie('myinfo',null);
-
 		cookie('myposition',null);
-
 		return $this->redirect('index/index');
-
 	}
 
-
-
-    /**
-
-     * 商家申请
-
-     * @return [type] [description]
-
-     */
+    //商家申请
 
 	public function shenqing(){
-
-          return view($this->style . 'Myhome/shenqing');
-
-
-        if (request()->isPost()) {
-
+        if(request()->isPost()){
             $data = input('post.');
-
-            $customer = db('customer')->where('openid',$this->myinfo['openid'])->find();
-
-            $data['customer_id'] = $customer['id'];
-
-            $data['state'] = 1;
-
-
-
-
-
-            db('customer')->where('id',$data['customer_id'])->update(['tel'=>$data['tel'],'state'=>2]);
-
             
-
-            // halt($data);
-
-            $result = db('shop')->insertGetId($data);
-
-            if ($result) {
-
-                // $this->success('申请成功，请支付费用！','ruzhu');
-
-                db('pay')->insert(['shop_id'=>$result,'state'=>0]);
-
-                // $this->redirect('myhome/ruzhu');
-
-                $this->redirect(url('ruzhu'));
-
-            } else {
-
-                $this->error('申请失败！');
-
-            }
-
-            
-
         }
+        return view($this->style . 'Myhome/shenqing');
 
+  //           if (request()->isPost()) {
 
+  //           $data = input('post.');
 
-		$info = db('customer')->where('openid',$this->myinfo['openid'])->find();
+  //           $customer = db('customer')->where('openid',$this->myinfo['openid'])->find();
 
-		$shop = db('shop')->where('customer_id',$info['id'])->find();
+  //           $data['customer_id'] = $customer['id'];
 
+  //           $data['state'] = 1;
 
+  //           db('customer')->where('id',$data['customer_id'])->update(['tel'=>$data['tel'],'state'=>2]);
 
-		if ($shop && $shop['state']==1 ) {
+  //           // halt($data);
 
-			return $this->fetch('wait');
+  //           $result = db('shop')->insertGetId($data);
 
-		}
+  //           if ($result) {
 
+  //               // $this->success('申请成功，请支付费用！','ruzhu');
 
+  //               db('pay')->insert(['shop_id'=>$result,'state'=>0]);
 
-        $jssdk = new Jssdk(config('wechat.appID'),config('wechat.appsecret'));
+  //               // $this->redirect('myhome/ruzhu');
 
-        $package = $jssdk->getSignPackage();
+  //               $this->redirect(url('ruzhu'));
 
-       
+  //           } else {
 
+  //               $this->error('申请失败！');
 
+  //           }
 
-		return $this->fetch('',['signPackage'=>$package]);
+  //       }
+
+		// $info = db('customer')->where('openid',$this->myinfo['openid'])->find();
+
+		// $shop = db('shop')->where('customer_id',$info['id'])->find();
+
+		// if ($shop && $shop['state']==1 ) {
+
+		// 	return $this->fetch('wait');
+
+		// }
+
+  //       $jssdk = new Jssdk(config('wechat.appID'),config('wechat.appsecret'));
+
+  //       $package = $jssdk->getSignPackage();
+
+		// return $this->fetch('',['signPackage'=>$package]);
+
 
 	}
-
-
-
 
 
     public function shengqingedit(){
@@ -263,10 +124,6 @@ class Myhome extends BaseController{
 
             $data = input('post.');
 
-
-
-
-
             // halt($data);
 
             $customer = db('customer')->where('openid',$this->myinfo['openid'])->find();
@@ -275,27 +132,7 @@ class Myhome extends BaseController{
 
             $data['state'] = 1;
 
-
-
             db('customer')->where('id',$data['customer_id'])->update(['tel'=>$data['tel'],'state'=>2]);
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             $result = db('shop')->update($data);
 
@@ -310,31 +147,15 @@ class Myhome extends BaseController{
                 // $this->redirect(url('ruzhu'));
 
             } else {
-
                 $this->error('修改信息失败！');
 
             }
 
-            
-
         }
-
-
-
         $info = db('customer')->where('openid',$this->myinfo['openid'])->find();
-
         $shop = db('shop')->where('customer_id',$info['id'])->find();
-
-
-
         $jssdk = new Jssdk(config('wechat.appID'),config('wechat.appsecret'));
-
         $package = $jssdk->getSignPackage();
-
-       
-
-
-
         return $this->fetch('',['signPackage'=>$package,'shopinfo'=>$shop]);
 
     }
