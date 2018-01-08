@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="body-bg">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的优惠券</title>
+<link href="__INDEX__/css/main.css" rel="stylesheet" />
+<link href="__INDEX__/css/reset.css" rel="stylesheet" />
+<link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
+<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+<script src="__INDEX__/js/swiper.min.js"></script>
+</head>
+
+<body class="body-bg">
+<div class="top-kong"></div>
+<div class="top">
+<a href="{:url('myhome/index')}" class="top-a1"></a>
+我的优惠券
+</div>
+
+
+<div class="My_coupons-h1">
+  <a href="{:url('myhome/mycoupon',array('type'=>1))}" {if condition="$Request.param.type eq 1"}class="on"{/if}>平台券（{$type1}）</a>
+  <a href="{:url('myhome/mycoupon',array('type'=>2))}" {if condition="$Request.param.type eq 2"}class="on"{/if}>店铺券（{$type2}）</a>
+</div>
+<!-- <a href="javascript:void(0);" class="My_coupons-title">优惠券使用说明</a> -->
+
+
+<ul class="cou-ul1">
+
+  {volist name="mycouponres" id="vo"}
+
+    <li 
+    <?php
+    $now_time = time();
+    $now_time = date('Y-m-d',$now_time);
+    $now_time = strtotime($now_time);
+
+    if($vo['time_end'] < $now_time){
+    echo 'class="on"';
+    }
+    ?>
+    ><a >
+    <div class="cou-con">
+      <h1>
+
+      {if condition="$vo.type eq 1"}
+        {switch name="$vo.category"}
+          {case value="0"}餐饮{/case}   
+          {case value="1"}酒店{/case}   
+          {case value="2"}养生{/case}   
+          {case value="3"}KTV{/case}   
+          {case value="4"}汽车{/case}   
+          {case value="5"}其他{/case}   
+        {/switch}行业通用券
+      {else}
+      {$vo.name}
+      {/if}
+      </h1>
+      <p>使用条件 : 满{$vo.condition}时使用</p>
+      <p>有效时间 : {$vo.time_start|date='Y.m.d',###} 至 {$vo.time_end|date='Y.m.d',###}</p>
+      <p>券码 : {$vo.code}</p>
+    </div>
+    <div class="cou-price1"> ¥<span>{$vo.jine|intval}</span> </div>
+    </a> </li>
+
+  {/volist}
+  
+</ul>
+
+{include file="public/footer" /}
+</body>
+</html>

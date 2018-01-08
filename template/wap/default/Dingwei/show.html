@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>商家描述</title>
+
+<link href="__INDEX__/css/main.css" rel="stylesheet" />
+
+<link href="__INDEX__/css/reset.css" rel="stylesheet" />
+
+<link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
+
+<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+
+<script src="__INDEX__/js/swiper.min.js"></script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script> -->
+
+<style type="text/css">
+
+/*地图*/
+
+#containermap2{width: 100%;height: 6.3rem;background-color: #eee;margin: .5rem 0;}
+
+#containermap2 .iwTitle{color: #ff0000;}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+<div class="top-kong"></div>
+
+<div class="top">
+
+<a href="{:url('dingwei/index')}" class="top-a1"></a>
+
+<div class="search"><input type="button" value="" class="search-input" /><input type="text" placeholder="输入商家名、品类" class="search-input1" /></div>
+
+</div>
+
+
+
+<div class="describe-img"><img src="{$shopres.thumb}" />{$shopres.name}</div>
+
+
+
+<div class="describe-title">店铺介绍：</div>
+
+<div class="describe-p">{$shopres.description}</div>
+
+
+
+<div class="describe-tu">地址：{$shopres.address}<br />
+
+<div class="describe-title" style="background:none; padding:0;">
+
+	<a href="javascript:daohang();" target="_blank" style="background:url(__INDEX__/images/ditu.png) no-repeat left center; background-size:.45rem auto; padding-left:.6rem;">导航至商家</a>
+
+</div>
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4488f2ed12351ff11de3fa5a44fda7ce"></script>
+
+<div id="containermap2"></div>
+
+<script type="text/javascript">
+
+
+
+
+
+ //    wx.config({
+
+
+
+ //        debug: false,
+
+
+
+ //        appId: '<?php echo $signPackage["appId"];?>',
+
+
+
+ //        timestamp: <?php echo $signPackage["timestamp"];?>,
+
+
+
+ //        nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+
+
+
+ //        signature: '<?php echo $signPackage["signature"];?>',
+
+
+
+ //        jsApiList: [
+
+
+
+ //            'openLocation',            
+
+
+
+ //          ]
+
+
+
+ //    });
+
+	// wx.error(function(res) {
+
+ //        alert(res);
+
+ //    });
+
+ //    function OpenAddress(lat, lng,name,address) {
+
+
+
+ //        wx.openLocation({
+
+ //            latitude: lat, // 纬度，浮点数，范围为90 ~ -90   28.68167
+
+ //            longitude: lng, // 经度，浮点数，范围为180 ~ -180。 115.940155
+
+ //            name: name, // 位置名
+
+ //            address: address, // 地址详情说明
+
+ //            scale: 28, // 地图缩放级别,整形值,范围从1~28。默认为最大
+
+ //            infoUrl: '/' // 在查看位置界面底部显示的超链接,可点击跳转
+
+ //        });
+
+ //    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var map = new BMap.Map("containermap2");
+
+var point = new BMap.Point({$shopres.jingdu},{$shopres.weidu});
+
+map.centerAndZoom(point, 15);
+
+map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
+
+map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
+
+map.addControl(new BMap.OverviewMapControl());              //添加缩略地图控件
+
+var marker = new BMap.Marker(point);  // 创建标注
+
+map.addOverlay(marker);              // 将标注添加到地图中
+
+marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
+var sContent =
+
+"<h4 class='iwTitle'>{$shopres.name}</h4>" + 
+
+"<p class='add'><em>地址：</em>{$shopres.address}<br><em>电话：</em>{$shopres.tel}<br><em>坐标：</em>{$shopres.jingdu},{$shopres.weidu}</p>" + 
+
+"</div>";
+
+var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+
+marker.openInfoWindow(infoWindow);
+
+marker.addEventListener("click", function(){          
+
+   this.openInfoWindow(infoWindow);
+
+   //图片加载完毕重绘infowindow
+
+   document.getElementById('imgDemo2').onload = function (){
+
+       infoWindow.redraw();
+
+   }
+
+});
+
+
+
+
+
+
+
+
+
+function daohang(){
+
+	    var geolocation = new BMap.Geolocation();
+
+    geolocation.getCurrentPosition(function(r){
+
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+
+            var mk = new BMap.Marker(r.point);
+
+            map.addOverlay(mk);
+
+            //map.panTo(r.point);//地图中心点移到当前位置
+
+            var latCurrent = r.point.lat;
+
+            var lngCurrent = r.point.lng;
+
+            //alert('我的位置：'+ latCurrent + ',' + lngCurrent);
+
+
+
+            location.href="http://api.map.baidu.com/direction?origin="+latCurrent+","+lngCurrent+"&destination={$shopres.weidu},{$shopres.jingdu}&mode=driving&region=北京&output=html";
+
+
+
+
+
+
+
+
+
+
+
+
+
+                map.addOverlay(marker);  
+
+    var licontent="<b>{$shopres.name}</b><br>";  
+
+        licontent+="<span><strong>地址：</strong>{$shopres.address}</span><br>";  
+
+        licontent+="<span><strong>电话：</strong>{$shopres.tel}</span><br>";          
+
+    var opts = { 
+
+        width : 200,
+
+        height: 80,
+
+    };         
+
+    var  infoWindow = new BMap.InfoWindow(licontent, opts);  
+
+    marker.openInfoWindow(infoWindow);  
+
+    marker.addEventListener('click',function(){
+
+        marker.openInfoWindow(infoWindow);
+
+    });  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+        else {
+
+            // alert('failed'+this.getStatus());
+
+            window.history.go(-1);
+
+        }        
+
+    },{enableHighAccuracy: true})
+
+}
+
+</script>
+
+	电话：{$shopres.tel} <br /><!-- 营业时间： 08:00-23:59 --></div>
+<!-- //预定 -->
+{include file="yuding"}
+{include file="public/footer" /}
+
+</body>
+
+</html>
+
