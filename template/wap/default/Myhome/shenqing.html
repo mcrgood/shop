@@ -220,9 +220,23 @@
 
 </form>	
 
+<!--底部-->
+
+<div class="foot">
+
+<a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Index') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
+
+<a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
+
+<a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
+
+</div>
+
+<div class="foot_kong"></div>
+
+<script src="__INDEX__/js/js.js"></script>
 
 
-{include file="public/footer" /}
 
 
 
