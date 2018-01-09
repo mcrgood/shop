@@ -1,7 +1,6 @@
 <?php
 
 namespace app\wap\controller;
-
 use data\service\Config as WebConfig;
 use data\service\Goods as GoodsService;
 use data\service\GoodsBrand as GoodsBrand;
@@ -13,54 +12,131 @@ use data\service\Platform;
 use data\service\promotion\GoodsExpress;
 use data\service\Address;
 use data\service\WebSite;
-
-
-
+use think\Controller;
+use think\Db;
 class Myhome extends BaseController{
 
     private $myinfo;
-
     //个人中心首页
+   
 
 	public function index(){		
-
         return view($this->style . 'Myhome/index');
-
         $cus = db('customer')->where('openid',$this->myinfo['openid'])->find();
-
         $shop = db('shop')->where('customer_id',$cus['id'])->find();
-
 		return $this->fetch('',[
-
 			'userInfo' => $this->myinfo,
-
             'cus' => $cus,
-
             'shopinfo' => $shop,
-
 		]);
-
-		
-
 	}
+    public function login(){
+        if(request()->isPost()){
+            $iphone = input('post.iphone');
+            $password = input('post.password');
+            $repassword = input('post.repassword');
+
+                $dh ="/^1[3|4|5|7|8][0-9]{9}$/";
+                $iph = preg_match($dh, $iphone);
+                if(!$iph){
+                    $this->error('输入正确手机号码');
+                }
+                if($password!==$repassword){
+                    $this->error('密码不一致');
+                }
+                $xx = db("ns_goods_login")->where("iphone='$iphone'")->find();
+                if(!$xx){
+                    $this->error('用户不存在，请注册');
+                }
+            //查询是否存在
+                $data['iphone'] = $iphone; 
+                $data['password'] = $password; 
+                $data['repassword'] = $repassword;
+                $id = db('ns_goods_login')->insert($data);
+                if ($id) {
+                    $this->success('登录成功！','shenqing');
+                } else {
+                    $this->error('登录失败');
+                }  
+            }
+            return view($this->style . 'Myhome/login');
+        }
+
+    public function register(){
+        if(request()->isPost()){
+            $iphone = input('post.iphone');
+            $password = input('post.password');
+            $repassword = input('post.repassword');
+
+                $dh ="/^1[3|4|5|7|8][0-9]{9}$/";
+                $iph = preg_match($dh, $iphone);
+                if(!$iph){
+                    $this->error('输入正确手机号码');
+                }
+                if($password!==$repassword){
+                    $this->error('密码不一致');
+                }
+            //查询是否存在
+                 $xx = db("ns_goods_login")->where("iphone='$iphone'")->find();
+                if($xx){
+                    $this->error('用户已存在，请登录','Myhome/login');
+                }
+                $data['iphone'] = $iphone; 
+                $data['password'] = $password; 
+                $data['repassword'] = $repassword;
+                $id = db('ns_goods_login')->insert($data);
+                if ($id) {
+                    $this->success('注册成功！','ruzhu');
+                } else {
+                    $this->error('注册失败');
+                }  
+            }
+        return view($this->style . 'Myhome/register');
+    }   
 
     //退出登录
-
 	public function out(){
 		//删除cookie
         cookie('myinfo',null);
 		cookie('myposition',null);
-		return $this->redirect('index/index');
+		return $this->redirect('indexx/indexx');
 	}
 
     //商家申请
-
 	public function shenqing(){
         if(request()->isPost()){
-            $data = input('post.');
-            
+            $leixing = input('post.leixing');
+            $names = input('post.names');
+            $address = input('post.address');
+            $tel = input('post.tel');
+            $thumb = input('post.thumb');
+            $thumb_zhizhao = input('post.thumb_zhizhao');
+            $thumb_zhengmian = input('post.thumb_zhengmian');
+            $thumb_fanmian = input('post.thumb_fanmian');
+            //查询用户是否已存在
+            $where['names'] = array('eq',$names);
+            $name = db("ns_goods_customer")->where($where)->find();
+            if($name){
+                $this->error('用户已存在');
+            }
+            $data['leixing'] = $leixing;
+            $data['names'] = $names;
+            $data['address'] = $address;
+            $data['tel'] = $tel;
+            $data['thumb'] = $thumb;
+            $data['thumb_zhizhao'] = $thumb_zhizhao;
+            $data['thumb_zhengmian'] = $thumb_zhengmian;
+            $data['thumb_fanmian'] = $thumb_fanmian;
+            $data['description'] = $description;
+            $id = db('ns_goods_customer')->insert($data);
+            if($id){
+                $this->success('申请成功，请支付费用！','ruzhu');
+            }else{
+                $this->error('申请失败！');
+            }
         }
         return view($this->style . 'Myhome/shenqing');
+    }
 
   //           if (request()->isPost()) {
 
@@ -113,7 +189,7 @@ class Myhome extends BaseController{
 		// return $this->fetch('',['signPackage'=>$package]);
 
 
-	}
+	
 
 
     public function shengqingedit(){

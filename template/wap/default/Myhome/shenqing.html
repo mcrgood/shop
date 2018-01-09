@@ -20,39 +20,35 @@
 
 	<table class="intake-tab">
 		<tr>
-			<td width="18%">选择分类</td><td width="80%">
-				<select name='category'>
-					<option value="0">餐饮</option>
-					<option value="1">酒店</option>
-					<option value="2">养生</option>
-					<option value="3">KTV</option>
-					<option value="4">汽车</option>
-					<option value="5">其他</option>
+			<td width="18%"><span>*</span>选择分类</td><td width="80%">
+				<select name='leixing' id="category">
+					<option value="0"></option>
+					<option value="1">餐饮</option>
+					<option value="2">酒店</option>
+					<option value="3">养生</option>
+					<option value="4">KTV </option>
+					<option value="5">汽车</option>
+					<option value="6">其他</option>
 				</select>
 			</td>
 		</tr>
 		<tr>
-			<td><span>*</span>商家名称</td><td><input type="text" placeholder="2-17个字，请输入" name="name" id="name" />
-			</td>
+			<td><span>*</span>商家名称</td><td><input type="text" placeholder="2-17个字，请输入" name="names" id="name" /></td>
 		</tr>
 		<tr>
-			<td><span>*</span>商家地址</td><td><input type="text" placeholder="请输入详细店铺地址" name="address" id="address"/>
-			</td>
+			<td><span>*</span>商家地址</td><td><input type="text" placeholder="请输入详细店铺地址" name="address" id="address"/></td>
 		</tr>
     	<tr>
     		<td colspan="2"><div style=" width:100%; height:6rem;" id="allmap"></div></td>
     	</tr>
-
 		<tr>
-			<td><span>*</span>商家电话</td><td><input type="text" placeholder="请输入手机号或固定电话" name="tel" id="tel" />
-			</td>
+			<td><span>*</span>商家电话</td><td><input type="text" placeholder="请输入手机号或固定电话" name="tel" id="tel" /></td>
 		</tr>
 	</table>
 
 	<div class="kong"></div>
 	<div class="intake-img">
 		<div class="intake-title">门店照片</div>
-
 		<div class="up-file f-fl" >
 			<label>
 				<img src="__INDEX__/images/upload.png" id="thumb_img">
@@ -145,6 +141,7 @@
 		<a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
 		<a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
 	</div>
+	<!-- <include file="Public/footer"/> -->
 <div class="foot_kong"></div>
 <script src="__INDEX__/js/js.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -152,6 +149,11 @@
 
 <script>
 	function check(){
+		if ($("#category").val()=='0') {
+			alert('请选择分类');
+			$("#category").focus();
+			return false;
+		}
 		if ($("#name").val()=='') {
 			alert('请输入商家名称');
 			$("#name").focus();
@@ -167,26 +169,26 @@
 			$("#tel").focus();
 			return false;
 		}
-		if ($("#thumb").val()=='') {
-			alert('请上传门店照片');
-			$("#thumb").focus();
-			return false;
-		}
-		if ($("#thumb_zhizhao").val()=='') {
-			alert('请上营业执照');
-			$("#thumb_zhizhao").focus();
-			return false;
-		}
-		if ($("#thumb_zhengmian").val()=='') {
-			alert('请上传法人正面照片');
-			$("#thumb_zhengmian").focus();
-			return false;
-		}
-		if ($("#thumb_fanmian").val()=='') {
-			alert('请上法人反面照片');
-			$("#thumb_fanmian").focus();
-			return false;
-		}
+		// if ($("#thumb").val()=='') {
+		// 	alert('请上传门店照片');
+		// 	$("#thumb").focus();
+		// 	return false;
+		// }
+		// if ($("#thumb_zhizhao").val()=='') {
+		// 	alert('请上营业执照');
+		// 	$("#thumb_zhizhao").focus();
+		// 	return false;
+		// }
+		// if ($("#thumb_zhengmian").val()=='') {
+		// 	alert('请上传法人正面照片');
+		// 	$("#thumb_zhengmian").focus();
+		// 	return false;
+		// }
+		// if ($("#thumb_fanmian").val()=='') {
+		// 	alert('请上法人反面照片');
+		// 	$("#thumb_fanmian").focus();
+		// 	return false;
+		// }
 		if($("input[type='checkbox']").is(':checked')) {
 		}else{
 			alert('请同意商家协议！');
@@ -194,56 +196,41 @@
 		}
 		return true;
 	}
-//     wx.config({
-//         debug: false,
-//         appId: '<?php echo $signPackage["appId"];?>',
-//         timestamp: <?php echo $signPackage["timestamp"];?>,
-//         nonceStr: '<?php echo $signPackage["nonceStr"];?>',
-//         signature: '<?php echo $signPackage["signature"];?>',
-//         jsApiList: [
-//             // 所有要调用的 API 都要加到这个列表中
-//             'checkJsApi',
-//             'chooseImage',
-//             'uploadImage',
-//             'openLocation',
-//        		'getLocation'
-//           ]
-//     });
 
-//     function wximg(name){
-// 		wx.chooseImage({
-//         count: 1, // 默认9
-//         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-//         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-//         success: function(res) {
-//         	var localIds = res.localIds;
-//             syncUpload(localIds,name);
-//         }
-//       });	
-//     }
+    function wximg(name){
+		wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function(res) {
+        	var localIds = res.localIds;
+            syncUpload(localIds,name);
+        }
+      });	
+    }
 
-// 	var syncUpload = function(localIds,name){
-//     var localId = localIds.pop();
-//     wx.uploadImage({
-//         localId: localId,
-//         isShowProgressTips: 0,
-//         success: function (res) {
-//             var serverId = res.serverId; // 返回图片的服务器端ID
-//             //获取真实upload地址开始
-//             $.ajax({
-// 		         url:'{:url('upimg')}',
-// 		         type:'POST',
-// 		         data:{serverId:serverId},
-// 		         dataType:'json',
-// 		         success:function(data){
-// 					$("#"+name+"_img").attr('src', '/public/static/index/uploads/cateimg/'+data);
-// 					$("#"+name).val('/public/static/index/uploads/cateimg/'+data);
-// 		         }
-//      		});
-//           	//获取真实upload地址结束
-//         }
-//     });
-// };
+	var syncUpload = function(localIds,name){
+    var localId = localIds.pop();
+    wx.uploadImage({
+        localId: localId,
+        isShowProgressTips: 0,
+        success: function (res) {
+            var serverId = res.serverId; // 返回图片的服务器端ID
+            //获取真实upload地址开始
+            $.ajax({
+		         url:'{:url('upimg')}',
+		         type:'POST',
+		         data:{serverId:serverId},
+		         dataType:'json',
+		         success:function(data){
+					$("#"+name+"_img").attr('src', '/public/static/index/uploads/cateimg/'+data);
+					$("#"+name).val('/public/static/index/uploads/cateimg/'+data);
+		         }
+     		});
+          	//获取真实upload地址结束
+        }
+    });
+};
 // //验证之后进入该函数，所有需要加载页面时调用的接口都必须写在该里面
 // wx.ready(function () {
 // 	//基础接口判断当前客户端版本是否支持指定JS接口
@@ -261,52 +248,52 @@
 // 	   }
 // 	});
 // 	//微信获取地理位置并拉取用户列表（用户允许获取用户的经纬度）
-// 	wx.getLocation({
-// 	   success: function (res) {
-// 	       var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-// 	       var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-// 	       jingdu = longitude;
-// 	       weidu = latitude;
-// 		    var map = new BMap.Map("allmap");
-// 		    // map.enableScrollWheelZoom(true);
-// 		    // map.disableDragging(); 
-// 		    var point = new BMap.Point(jingdu,weidu);
-// 		    map.centerAndZoom(point,18);
-// 		    var geoc = new BMap.Geocoder();
-// 		    map.addEventListener("touchstart", function(e){ 
-// 		    	var pt = e.point;
-// 		    	geoc.getLocation(pt, function(rs){
-// 		    		var addComp = rs.addressComponents;
-// 		    		// alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
-// 		    		$("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
-// 		    		$("#sheng").val(addComp.province);
-// 		    		$("#shi").val(addComp.city);
-// 		    		$("#jingdu").val(pt.lng);
-// 		    		$("#weidu").val(pt.lat);
-// 		    		}); 
-// 		    	}); 
-//            //去数据库查询获取附近的门店
+	wx.getLocation({
+	   success: function (res) {
+	       var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+	       var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+	       jingdu = longitude;
+	       weidu = latitude;
+		    var map = new BMap.Map("allmap");
+		    // map.enableScrollWheelZoom(true);
+		    // map.disableDragging(); 
+		    var point = new BMap.Point(jingdu,weidu);
+		    map.centerAndZoom(point,18);
+		    var geoc = new BMap.Geocoder();
+		    map.addEventListener("touchstart", function(e){ 
+		    	var pt = e.point;
+		    	geoc.getLocation(pt, function(rs){
+		    		var addComp = rs.addressComponents;
+		    		// alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+		    		$("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
+		    		$("#sheng").val(addComp.province);
+		    		$("#shi").val(addComp.city);
+		    		$("#jingdu").val(pt.lng);
+		    		$("#weidu").val(pt.lat);
+		    		}); 
+		    	}); 
+           //去数据库查询获取附近的门店
 
-// 	   },
-// 	   cancel: function (res) {
-// 	    var map = new BMap.Map("allmap");
-// 		    // map.enableScrollWheelZoom(true);
-// 		    // map.disableDragging(); 
-// 		    var point = new BMap.Point(116.331398,39.897445);
-// 		    map.centerAndZoom(point,18);
-// 		    var geoc = new BMap.Geocoder();
-// 		    map.addEventListener("touchstart", function(e){ 
-// 		    	var pt = e.point;
-// 		    	geoc.getLocation(pt, function(rs){
-// 		    		var addComp = rs.addressComponents;
-// 		    		// alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
-// 		    		$("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
-// 		    		$("#sheng").val(addComp.province);
-// 		    		$("#shi").val(addComp.city);
-// 		    	}); 
-// 		    }); 
-// 	   }
-// });
+	   },
+	   cancel: function (res) {
+	    var map = new BMap.Map("allmap");
+		    // map.enableScrollWheelZoom(true);
+		    // map.disableDragging(); 
+		    var point = new BMap.Point(116.331398,39.897445);
+		    map.centerAndZoom(point,18);
+		    var geoc = new BMap.Geocoder();
+		    map.addEventListener("touchstart", function(e){ 
+		    	var pt = e.point;
+		    	geoc.getLocation(pt, function(rs){
+		    		var addComp = rs.addressComponents;
+		    		// alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+		    		$("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
+		    		$("#sheng").val(addComp.province);
+		    		$("#shi").val(addComp.city);
+		    	}); 
+		    }); 
+	   }
+});
 </script> 
 
 </body>
