@@ -2,68 +2,17 @@
 
 namespace app\wap\controller;
 
-use data\service\Config as WebConfig;
-use data\service\Goods as GoodsService;
-use data\service\GoodsBrand as GoodsBrand;
-use data\service\GoodsCategory;
-use data\service\GoodsGroup;
-use data\service\Member;
-use data\service\Order as OrderService;
-use data\service\Platform;
-use data\service\promotion\GoodsExpress;
-use data\service\Address;
-use data\service\WebSite;
-
-
 class Indexx extends BaseController{
 
-
-
 	public function indexx(){
-		
-	return view($this->style . 'Index/indexx');
 
 		//获取广告位信息
-
-		$adList = db("ad")->where(['shi'=>'南昌市'])->order(['weizhi'=>'asc'])->select();
-
+		$adList = db("ns_goods_ad")->where(['shi'=>'南昌市'])->order(['weizhi'=>'asc'])->select();
+		$this->assign('adList', $adList);
 		//获取banner信息
-
-		$bannerList = model("banner")->getList();
-
-		$js = new Jssdk(config('wechat.appID'),config('wechat.appsecret'));
-
-		$package = $js->getSignPackage();
-
-
-		return $this->fetch('',[
-
-			'adres' => $adList,
-
-			'bannerres' => $bannerList,
-
-			'signPackage'=>$package,
-
-			
-
-		]);
-
-	}
-
-
-
-	public function setCookieByLocation(){
-
-
-
-		$myposition = input('myposition');
-
-		cookie('myposition',$myposition,3600);
-
-		return ['state'=>1];
-
-
-
+		$banner = db("ns_goods_ad")->select();
+		$this->assign('banner', $banner);
+		return view($this->style . 'Index/indexx');
 	}
 
 
@@ -267,10 +216,6 @@ class Indexx extends BaseController{
 
 			}
 
-
-
-
-
 		}else{
 
 			return ['state'=>0];
@@ -281,17 +226,6 @@ class Indexx extends BaseController{
 
 	}
 
-
-
-	/**
-
-	 * @param $count 长度
-
-	 * @param $myposition所在城市
-
-	 * @return array 二维数组
-
-	 */
 
 	public function getMessage($count, $myposition){
 
@@ -323,20 +257,7 @@ class Indexx extends BaseController{
 
 		}
 
-
-
-
-
 		return $message;
 
-
-
-
-
 	}
-
-
-
-	
-
 }

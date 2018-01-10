@@ -1,5 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<style>
+	#up-file1{margin-left:20px; }
+	#up-file1 input{border:1px #4d4d4d solid;}
+	#up-file1 p{line-height: 20px;}
+	#up-file1 span{color: #323232;font-size: 0.45rem;}
+	#up-file1 input::-webkit-input-placeholder { font-size:20px;} 
+</style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>商家入驻-{$confres.sitename}</title>
@@ -77,12 +84,26 @@
 			</label>
 		</div>
 	</div>
-
+	<div class="intake-title" id="up-file1">银行卡信息</div>
+	<div class="up-file f-fl" id="up-file1">
+		<p><span>户&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名：</span><input type="text"/placeholder="银行卡户主名"/ name="yhk_name"></p><br />
+		<p><span>卡&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：</span><input type="text"/placeholder="银行卡号"/ name="yhk_num"></p><br />
+		<p><span>开户地区：</span><input type="text" placeholder="省-市-区-县-政(乡)"/ name="yhk_address"></p><br />
+		<p><span>所属支行：</span><input type="text" placeholder="银行卡办理点"/ name="bank"></p><br />
+		<label>
+			<img src="__INDEX__/images/upload1.png" id="thumb_zhengmian_img">
+			<input class="up-fileh error" name="thumb_yhk1" onchange="" type="text" id="thumb_zhengmian" onclick="wximg('thumb_zhengmian')">
+		</label>
+		<label>
+			<img src="__INDEX__/images/upload2.png" id="thumb_fanmian_img">
+			<input class="up-fileh error" name="thumb_yhk2" onchange="" type="text" id="thumb_fanmian" onclick="wximg('thumb_fanmian')">
+		</label>	
+	</div>
 	<div class="kong"></div>
 	<div class="intake-img">
 		<div class="intake-title1">商家介绍</div>
-		<textarea class="intake-text" placeholder="请简单的介绍您家店铺" name="description"></textarea>
-		<div class="intake-p">附：商家入驻需交<span>200元</span>入驻费用。</div>
+		<textarea class="intake-text" placeholder="请简单的介绍您家店铺" name="content"></textarea>
+		<!-- <div class="intake-p">附：商家入驻需交<span>200元</span>入驻费用。</div> -->
 		<!-- <a class="shops-center_a" style="margin-top:.2rem" >提交申请</a> -->
    		<div style="height:.6rem; margin:.3rem 0;">
     	<input class="chk_1" type="checkbox" id="c1" >
