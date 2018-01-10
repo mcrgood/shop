@@ -72,17 +72,17 @@
 
 {empty name="$shopinfo"}
 
-<li><a href="{:url('myhome/shenqing')}"><img src="__INDEX__/images/center5.png" />商家入驻</a></li>
+<li><a href="{:url('myhome/login')}"><img src="__INDEX__/images/center5.png" />商家登录</a></li>
 
 {else/}
 
 {if condition="$shopinfo.state eq 3"}
 
-<li><a href="{:url('myhome/shengqingedit')}"><img src="__INDEX__/images/center5.png" />商家入驻</a></li>
+<li><a href="{:url('myhome/login')}"><img src="__INDEX__/images/center5.png" />商家登录</a></li>
 
 {else/}
 
-<li><a href="{:url('myhome/shenqing')}"><img src="__INDEX__/images/center5.png" />商家入驻</a></li>
+<li><a href="{:url('myhome/login')}"><img src="__INDEX__/images/center5.png" />商家登录</a></li>
 
 {/if}
 

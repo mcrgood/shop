@@ -1,431 +1,287 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
-
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <title>商家入驻-{$confres.sitename}</title>
-
 <link href="__INDEX__/css/main.css" rel="stylesheet" />
-
 <link href="__INDEX__/css/reset.css" rel="stylesheet" />
-
 <link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
-
 <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
-
 <script src="__INDEX__/js/swiper.min.js"></script>
-
-
-
 </head>
-
-
-
 <body>
-
 <div class="top-kong"></div>
 
-<div class="top">
-
-<a href="{:url('myhome/index')}" class="top-a1"></a>
-
-商家入驻
-
-</div>
+<div class="top"><a href="{:url('myhome/index')}" class="top-a1"></a>商家入驻</div>
 
 <div class="notice-wu">申请信息填写中...</div>
-
-
 
 <form action="" method="post" enctype="multipart/form-data" onsubmit="return check();">
 
 	<table class="intake-tab">
-
-	<tr>
-
-		<td width="18%">选择分类</td><td width="80%">
-
-			<select name='category'>
-
-				<option value="0">餐饮</option>
-
-				<option value="1">酒店</option>
-
-				<option value="2">养生</option>
-
-				<option value="3">KTV</option>
-
-				<option value="4">汽车</option>
-
-				<option value="5">其他</option>
-
-			</select>
-
-		</td>
-
-	</tr>
-
-	<tr><td><span>*</span>商家名称</td><td><input type="text" placeholder="2-17个字，请输入" name="name" id="name" /></td></tr>
-
-	<tr><td><span>*</span>商家地址</td><td><input type="text" placeholder="请输入详细店铺地址" name="address" id="address"/></td></tr>
-    
-    <tr><td colspan="2"><div style=" width:100%; height:6rem;" id="allmap"></div></td></tr>
-
-	<tr><td><span>*</span>商家电话</td><td><input type="text" placeholder="请输入手机号或固定电话" name="tel" id="tel" /></td></tr>
-
+		<tr>
+			<td width="18%"><span>*</span>选择分类</td><td width="80%">
+				<select name='leixing' id="category">
+					<option value="0"></option>
+					<option value="1">餐饮</option>
+					<option value="2">酒店</option>
+					<option value="3">养生</option>
+					<option value="4">KTV </option>
+					<option value="5">汽车</option>
+					<option value="6">其他</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><span>*</span>商家名称</td><td><input type="text" placeholder="2-17个字，请输入" name="names" id="name" /></td>
+		</tr>
+		<tr>
+			<td><span>*</span>商家地址</td><td><input type="text" placeholder="请输入详细店铺地址" name="address" id="address"/></td>
+		</tr>
+    	<tr>
+    		<td colspan="2"><div style=" width:100%; height:6rem;" id="allmap"></div></td>
+    	</tr>
+		<tr>
+			<td><span>*</span>商家电话</td><td><input type="text" placeholder="请输入手机号或固定电话" name="tel" id="tel" /></td>
+		</tr>
 	</table>
 
-
-
 	<div class="kong"></div>
-
-
-
 	<div class="intake-img">
+		<div class="intake-title">门店照片</div>
+		<div class="up-file f-fl" >
+			<label>
+				<img src="__INDEX__/images/upload.png" id="thumb_img">
+				<input class="up-fileh error" name="thumb"  type="text" id="thumb" onclick="wximg('thumb')">
+			</label>
+		</div>
 
-
-
-	<div class="intake-title">门店照片</div>
-
-	<div class="up-file f-fl" >
-
-
-
-		<label>
-
-			<img src="__INDEX__/images/upload.png" id="thumb_img">
-
-			<input class="up-fileh error" name="thumb"  type="text" id="thumb" onclick="wximg('thumb')">
-
-		</label>
-
-	</div>
-
-
-
-	<div class="intake-title">营业执照</div>
-
-	<div class="up-file f-fl" >
-
-		<label>
-
-			<img src="__INDEX__/images/upload.png" id="thumb_zhizhao_img">
-
+		<div class="intake-title">营业执照</div>
+		<div class="up-file f-fl" >
+			<label>
+				<img src="__INDEX__/images/upload.png" id="thumb_zhizhao_img">
 				<input class="up-fileh error" name="thumb_zhizhao" onchange="" type="text" id="thumb_zhizhao" onclick="wximg('thumb_zhizhao')">
+			</label>
+		</div>
 
+		<div class="intake-title">法人身份证照</div>
+		<div class="up-file f-fl">
+			<label>
+				<img src="__INDEX__/images/upload1.png" id="thumb_zhengmian_img">
+				<input class="up-fileh error" name="thumb_zhengmian" onchange="" type="text" id="thumb_zhengmian" onclick="wximg('thumb_zhengmian')">
 			</label>
 
+			<label>
+				<img src="__INDEX__/images/upload2.png" id="thumb_fanmian_img">
+				<input class="up-fileh error" name="thumb_fanmian" onchange="" type="text" id="thumb_fanmian" onclick="wximg('thumb_fanmian')">
+			</label>
+		</div>
 	</div>
-
-
-
-	<div class="intake-title">法人身份证照</div>
-
-	<div class="up-file f-fl">
-
-		<label>
-
-			<img src="__INDEX__/images/upload1.png" id="thumb_zhengmian_img">
-
-			<input class="up-fileh error" name="thumb_zhengmian" onchange="" type="text" id="thumb_zhengmian" onclick="wximg('thumb_zhengmian')">
-
-		</label>
-
-		<label>
-
-			<img src="__INDEX__/images/upload2.png" id="thumb_fanmian_img">
-
-			<input class="up-fileh error" name="thumb_fanmian" onchange="" type="text" id="thumb_fanmian" onclick="wximg('thumb_fanmian')">
-
-		</label>
-
-	</div>
-
-
-
-	</div>
-
-
 
 	<div class="kong"></div>
-
-
-
-
-
 	<div class="intake-img">
-
-	<div class="intake-title1">商家介绍</div>
-
-	<textarea class="intake-text" placeholder="请简单的介绍您家店铺" name="description"></textarea>
-
-	<div class="intake-p">附：商家入驻需交<span>200元</span>入驻费用。</div>
-
-	<!-- <a class="shops-center_a" style="margin-top:.2rem" >提交申请</a> -->
-    <div style="height:.6rem; margin:.3rem 0;">
-    <input class="chk_1" type="checkbox" id="c1" >
-<label for="c1" style="margin-top:0"><div class="chk_txt">我已阅读并同意<a  class="shangjia-a">《客旺旺商家注册协议》</a></div></label></div>
-	<input type="hidden" name="sheng" id="sheng">
-	<input type="hidden" name="shi" id="shi">
-	<input type="hidden" name="jingdu" id="jingdu">
-	<input type="hidden" name="weidu" id="weidu">
-	<input type="submit" value="提交申请" class="shops-center_a" style="margin-top:.2rem" />
-
+		<div class="intake-title1">商家介绍</div>
+		<textarea class="intake-text" placeholder="请简单的介绍您家店铺" name="description"></textarea>
+		<div class="intake-p">附：商家入驻需交<span>200元</span>入驻费用。</div>
+		<!-- <a class="shops-center_a" style="margin-top:.2rem" >提交申请</a> -->
+   		<div style="height:.6rem; margin:.3rem 0;">
+    	<input class="chk_1" type="checkbox" id="c1" >
+		<label for="c1" style="margin-top:0"><div class="chk_txt">我已阅读并同意<a  class="shangjia-a">《客旺旺商家注册协议》</a></div></label></div>
+		<input type="hidden" name="sheng" id="sheng">
+		<input type="hidden" name="shi" id="shi">
+		<input type="hidden" name="jingdu" id="jingdu">
+		<input type="hidden" name="weidu" id="weidu">
+		<input type="submit" value="提交申请" class="shops-center_a" style="margin-top:.2rem" />
 	</div>
-<div class="shangjia">
-<span class="shangjia-close">x</span>
-<h1>《客旺旺营销服务用户协议》</h1>
-
-客旺旺营销服务（以下简称“客旺旺”）是由江西花儿盛开科技有限公司（以下简称 “花儿盛开”）开发及运营的。下列协议适用于“客旺旺”用户，若您使用花儿盛开提供的服务，说明您已知晓并同意接受本协议。
-	<h2>协议接受</h2>
-当您使用花儿盛开提供的服务时，您知晓并且同意此协议中的条款。
-此协议在必要时将进行更新，每次改动都会即刻发布，并立即生效。
-如果您拒绝接受新的协议，您必须放弃使用花儿盛开提供的服务；若您继续使用花儿盛开提供的服务，则表明您接受新的协议。
-	除非特别声明，任何增强服务的新功能都将适用此协议。<p></p>
-<h2>用户</h2>
-用户是指使用客旺旺营销服务，并能够独立承担相应法律责任的单位或个人。若您不具备此资格，请不要使用客旺旺提供的服务。
-要求用户在使用客旺旺服务时必须遵守国家的相关法律、法规，但对用户使用客旺旺所产生的纠纷不负法律责任。
-花儿盛开有权依据自己的判断随时中断对某一用户的服务。<p></p>
-<h2>注册条款</h2>
-若您注册成为客旺旺的用户，您同意并承诺：
-申请帐号时，提供真实、准确、即时、完整的注册信息。若您提供的信息不真实、不准确、不即时、不完整，花儿盛开有权暂停或终止您的服务。
-如您代表其他自然人、法人及其他组织在客旺旺上注册会员，则您声明并保证，您已获得授权并有权使前述法律主体受本协议的约束。<p></p>
-<h2>使用条款</h2>
-用户正确谨慎使用客旺旺服务，因用户个人操作错误、失误等造成任何后果，花儿盛开不承担责任。
-用户应合法使用客旺旺从事营销活动，并对自己的营销比例设置、营销活动金额设置和营销宣传活动等行为负全部责任。
-当用户出现违法违纪违约的情形时，花儿盛开有权暂停或终止其服务，并不对因此造成的任何影响或损失负责。
-因互联网的特殊性，黑客攻击、互联网连通中断或者系统故障等不可抗力，由此给用户造成的损失，花儿盛开不承担责任。
-用户不得以任何形式擅自转让自己的客旺旺账号。<p></p>
-<h2>费用</h2>
-花儿盛开有权制定费用条款，并保留修改费用条款的权利，一旦费用条款被修改，将立即发送消息通知进行说明。<p></p>
-<h2>终止</h2>
-无论因何种原因，客旺旺服务终止后，花儿盛开均没有义务为用户保留原账号中或与之相关的任何信息，或转发任何未曾阅读或发送的信息给用户。
-无论花儿盛开与用户之间的服务因何种原因以何种方式终止，花儿盛开仍有权保存或不保存该用户的注册数据及以前的行为记录。对于用户在服务终止前实施的违法或违约行为，花儿盛开有追索权。<p></p>
-<h2>责任声明</h2>
-花儿盛开对下列事项不作任何陈述与保证：
-使用客旺旺时，因用户个人的硬件、软件、系统或数据结合导致的问题，不发生错误；
-花儿盛开有权对其系统功能进行更新，在未经通知的情况下随时改变或不继续提供某些或全部服务（暂时性的或永久的）；
-您使用客旺旺服务后所产生的任何行为，如购买或获得的任何产品、服务、信息或其它事物等，将符合您的要求或经验。<p></p>
-<h2>安全策略</h2>
-花儿盛开采取严格安全策略，对由于用户在使用客旺旺的过程中，违反本协议或通过提及而纳入本协议的条款和规则、或用户违反任何法律或第三方的权利而产生或引起的每一种类和性质的任何索赔、要求、诉讼、损失和损害而言，无论是已知或未知的，包括合理的律师费，用户同意就此对花儿盛开、员工、所有者及代理进行补偿并使其免受损害。<p></p>
-<h2>管辖</h2>
-本协议条款的解释及适用，以及与本协议条款有关的争议，均应依照中华人民共和国法律予以处理，并以花儿盛开所在地法院为管辖法院。
-版权声明<p></p>
-客旺旺的所有内容版权属花儿盛开所有，严禁未经花儿盛开书面许可进行任何形式的部分或全部拷贝、反编译、传播。
-</div>
-<div class="log-bg"></div>
-
+	<div class="shangjia">
+		<span class="shangjia-close">x</span>
+		<h1>《客旺旺营销服务用户协议》</h1>
+			客旺旺营销服务（以下简称“客旺旺”）是由江西花儿盛开科技有限公司（以下简称 “花儿盛开”）开发及运营的。下列协议适用于“客旺旺”用户，若您使用花儿盛开提供的服务，说明您已知晓并同意接受本协议。
+		<h2>协议接受</h2>
+			当您使用花儿盛开提供的服务时，您知晓并且同意此协议中的条款。
+			此协议在必要时将进行更新，每次改动都会即刻发布，并立即生效。
+			如果您拒绝接受新的协议，您必须放弃使用花儿盛开提供的服务；若您继续使用花儿盛开提供的服务，则表明您接受新的协议。
+			除非特别声明，任何增强服务的新功能都将适用此协议。<p></p>
+		<h2>用户</h2>
+			用户是指使用客旺旺营销服务，并能够独立承担相应法律责任的单位或个人。若您不具备此资格，请不要使用客旺旺提供的服务。
+			要求用户在使用客旺旺服务时必须遵守国家的相关法律、法规，但对用户使用客旺旺所产生的纠纷不负法律责任。
+			花儿盛开有权依据自己的判断随时中断对某一用户的服务。<p></p>
+		<h2>注册条款</h2>
+			若您注册成为客旺旺的用户，您同意并承诺：
+			申请帐号时，提供真实、准确、即时、完整的注册信息。若您提供的信息不真实、不准确、不即时、不完整，花儿盛开有权暂停或终止您的服务。
+			如您代表其他自然人、法人及其他组织在客旺旺上注册会员，则您声明并保证，您已获得授权并有权使前述法律主体受本协议的约束。<p></p>
+		<h2>使用条款</h2>
+			用户正确谨慎使用客旺旺服务，因用户个人操作错误、失误等造成任何后果，花儿盛开不承担责任。
+			用户应合法使用客旺旺从事营销活动，并对自己的营销比例设置、营销活动金额设置和营销宣传活动等行为负全部责任。
+			当用户出现违法违纪违约的情形时，花儿盛开有权暂停或终止其服务，并不对因此造成的任何影响或损失负责。
+			因互联网的特殊性，黑客攻击、互联网连通中断或者系统故障等不可抗力，由此给用户造成的损失，花儿盛开不承担责任。
+			用户不得以任何形式擅自转让自己的客旺旺账号。<p></p>
+		<h2>费用</h2>
+			花儿盛开有权制定费用条款，并保留修改费用条款的权利，一旦费用条款被修改，将立即发送消息通知进行说明。<p></p>
+		<h2>终止</h2>
+			无论因何种原因，客旺旺服务终止后，花儿盛开均没有义务为用户保留原账号中或与之相关的任何信息，或转发任何未曾阅读或发送的信息给用户。
+			无论花儿盛开与用户之间的服务因何种原因以何种方式终止，花儿盛开仍有权保存或不保存该用户的注册数据及以前的行为记录。对于用户在服务终止前实施的违法或违约行为，花儿盛开有追索权。<p></p>
+		<h2>责任声明</h2>
+			花儿盛开对下列事项不作任何陈述与保证：
+			使用客旺旺时，因用户个人的硬件、软件、系统或数据结合导致的问题，不发生错误；
+			花儿盛开有权对其系统功能进行更新，在未经通知的情况下随时改变或不继续提供某些或全部服务（暂时性的或永久的）；
+			您使用客旺旺服务后所产生的任何行为，如购买或获得的任何产品、服务、信息或其它事物等，将符合您的要求或经验。<p></p>
+		<h2>安全策略</h2>
+			花儿盛开采取严格安全策略，对由于用户在使用客旺旺的过程中，违反本协议或通过提及而纳入本协议的条款和规则、或用户违反任何法律或第三方的权利而产生或引起的每一种类和性质的任何索赔、要求、诉讼、损失和损害而言，无论是已知或未知的，包括合理的律师费，用户同意就此对花儿盛开、员工、所有者及代理进行补偿并使其免受损害。<p></p>
+		<h2>管辖</h2>
+			本协议条款的解释及适用，以及与本协议条款有关的争议，均应依照中华人民共和国法律予以处理，并以花儿盛开所在地法院为管辖法院。
+			版权声明<p></p>
+			客旺旺的所有内容版权属花儿盛开所有，严禁未经花儿盛开书面许可进行任何形式的部分或全部拷贝、反编译、传播。
+	</div>
+	<div class="log-bg"></div>
 </form>	
-
 <!--底部-->
-
-<div class="foot">
-
-<a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Index') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
-
-<a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
-
-<a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
-
-</div>
-
+	<div class="foot">
+		<a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Index') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
+		<a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
+		<a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
+	</div>
+	<!-- <include file="Public/footer"/> -->
 <div class="foot_kong"></div>
-
 <script src="__INDEX__/js/js.js"></script>
-
-
-
-
-
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EWOFpIVomII8KSivhpMAqjxVeaALPYIL"></script>
 
-
-
 <script>
-
-
-
-    wx.config({
-
-        debug: false,
-
-        appId: '<?php echo $signPackage["appId"];?>',
-
-        timestamp: <?php echo $signPackage["timestamp"];?>,
-
-        nonceStr: '<?php echo $signPackage["nonceStr"];?>',
-
-        signature: '<?php echo $signPackage["signature"];?>',
-
-        jsApiList: [
-
-            // 所有要调用的 API 都要加到这个列表中
-
-            'checkJsApi',
-
-            'chooseImage',
-
-            'uploadImage',
-
-            'openLocation',
-
-       		'getLocation'
-
-            
-
-          ]
-
-    });
-
-
+	function check(){
+		if ($("#category").val()=='0') {
+			alert('请选择分类');
+			$("#category").focus();
+			return false;
+		}
+		if ($("#name").val()=='') {
+			alert('请输入商家名称');
+			$("#name").focus();
+			return false;
+		}
+		if ($("#address").val()=='') {
+			alert('请输入商家地址');
+			$("#address").focus();
+			return false;
+		}
+		if ($("#tel").val()=='') {
+			alert('请输入商家电话');
+			$("#tel").focus();
+			return false;
+		}
+		// if ($("#thumb").val()=='') {
+		// 	alert('请上传门店照片');
+		// 	$("#thumb").focus();
+		// 	return false;
+		// }
+		// if ($("#thumb_zhizhao").val()=='') {
+		// 	alert('请上营业执照');
+		// 	$("#thumb_zhizhao").focus();
+		// 	return false;
+		// }
+		// if ($("#thumb_zhengmian").val()=='') {
+		// 	alert('请上传法人正面照片');
+		// 	$("#thumb_zhengmian").focus();
+		// 	return false;
+		// }
+		// if ($("#thumb_fanmian").val()=='') {
+		// 	alert('请上法人反面照片');
+		// 	$("#thumb_fanmian").focus();
+		// 	return false;
+		// }
+		if($("input[type='checkbox']").is(':checked')) {
+		}else{
+			alert('请同意商家协议！');
+			return false;
+		}
+		return true;
+	}
 
     function wximg(name){
-
 		wx.chooseImage({
-
         count: 1, // 默认9
-
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-
         success: function(res) {
-
         	var localIds = res.localIds;
-
             syncUpload(localIds,name);
-
-
-
         }
-
       });	
-
     }
 
-
-
-  	
-
-
-
-
-
 	var syncUpload = function(localIds,name){
-
     var localId = localIds.pop();
-
     wx.uploadImage({
-
         localId: localId,
-
         isShowProgressTips: 0,
-
         success: function (res) {
-
             var serverId = res.serverId; // 返回图片的服务器端ID
-
-            
-
             //获取真实upload地址开始
-
             $.ajax({
-
 		         url:'{:url('upimg')}',
-
 		         type:'POST',
-
 		         data:{serverId:serverId},
-
 		         dataType:'json',
-
 		         success:function(data){
-
 					$("#"+name+"_img").attr('src', '/public/static/index/uploads/cateimg/'+data);
-
 					$("#"+name).val('/public/static/index/uploads/cateimg/'+data);
-
-
-
 		         }
-
      		});
-
           	//获取真实upload地址结束
-
         }
-
     });
-
 };
-
-//验证之后进入该函数，所有需要加载页面时调用的接口都必须写在该里面
-wx.ready(function () {
-	//基础接口判断当前客户端版本是否支持指定JS接口
-	wx.checkJsApi({
-	   jsApiList: [
-	       'getLocation'
-	   ],
-	   success: function (res) {
-	       // alert(JSON.stringify(res));
-	       // alert(JSON.stringify(res.checkResult.getLocation));
-	       if (res.checkResult.getLocation == false) {
-	           alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
-	           return;
-	       }
-	   }
-	});
-
-	//微信获取地理位置并拉取用户列表（用户允许获取用户的经纬度）
+// //验证之后进入该函数，所有需要加载页面时调用的接口都必须写在该里面
+// wx.ready(function () {
+// 	//基础接口判断当前客户端版本是否支持指定JS接口
+// 	wx.checkJsApi({
+// 	   jsApiList: [
+// 	       'getLocation'
+// 	   ],
+// 	   success: function (res) {
+// 	       // alert(JSON.stringify(res));
+// 	       // alert(JSON.stringify(res.checkResult.getLocation));
+// 	       if (res.checkResult.getLocation == false) {
+// 	           alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+// 	           return;
+// 	       }
+// 	   }
+// 	});
+// 	//微信获取地理位置并拉取用户列表（用户允许获取用户的经纬度）
 	wx.getLocation({
 	   success: function (res) {
-
 	       var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
 	       var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-
 	       jingdu = longitude;
 	       weidu = latitude;
-
 		    var map = new BMap.Map("allmap");
 		    // map.enableScrollWheelZoom(true);
 		    // map.disableDragging(); 
 		    var point = new BMap.Point(jingdu,weidu);
 		    map.centerAndZoom(point,18);
 		    var geoc = new BMap.Geocoder();
-
 		    map.addEventListener("touchstart", function(e){ 
 		    	var pt = e.point;
 		    	geoc.getLocation(pt, function(rs){
 		    		var addComp = rs.addressComponents;
 		    		// alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
-
 		    		$("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
 		    		$("#sheng").val(addComp.province);
 		    		$("#shi").val(addComp.city);
 		    		$("#jingdu").val(pt.lng);
 		    		$("#weidu").val(pt.lat);
 		    		}); 
-
 		    	}); 
-
-
-	       
            //去数据库查询获取附近的门店
 
 	   },
 	   cancel: function (res) {
-	   	
 	    var map = new BMap.Map("allmap");
 		    // map.enableScrollWheelZoom(true);
 		    // map.disableDragging(); 
 		    var point = new BMap.Point(116.331398,39.897445);
 		    map.centerAndZoom(point,18);
 		    var geoc = new BMap.Geocoder();
-
 		    map.addEventListener("touchstart", function(e){ 
 		    	var pt = e.point;
 		    	geoc.getLocation(pt, function(rs){
@@ -434,105 +290,12 @@ wx.ready(function () {
 		    		$("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
 		    		$("#sheng").val(addComp.province);
 		    		$("#shi").val(addComp.city);
-		    		}); 
-
 		    	}); 
+		    }); 
 	   }
-	                });
 });
-
-
-function check(){
-
-
-
-	if ($("#name").val()=='') {
-
-		alert('请输入商家名称');
-
-		$("#name").focus();
-
-		return false;
-
-	}
-
-	if ($("#address").val()=='') {
-
-		alert('请输入商家地址');
-
-		$("#address").focus();
-
-		return false;
-
-	}
-
-	if ($("#tel").val()=='') {
-
-		alert('请输入商家电话');
-
-		$("#tel").focus();
-
-		return false;
-
-	}
-
-	if ($("#thumb").val()=='') {
-
-		alert('请上传门店照片');
-
-		$("#thumb").focus();
-
-		return false;
-
-	}
-
-	if ($("#thumb_zhizhao").val()=='') {
-
-		alert('请上营业执照');
-
-		$("#thumb_zhizhao").focus();
-
-		return false;
-
-	}
-
-	if ($("#thumb_zhengmian").val()=='') {
-
-		alert('请上传法人正面照片');
-
-		$("#thumb_zhengmian").focus();
-
-		return false;
-
-	}
-
-	if ($("#thumb_fanmian").val()=='') {
-
-		alert('请上法人反面照片');
-
-		$("#thumb_fanmian").focus();
-
-		return false;
-
-	}
-
-	if($("input[type='checkbox']").is(':checked')) {
-    
-	}else{
-		alert('请同意商家协议！');
-		return false;
-	}
-
-
-	return true;
-
-}
-
 </script> 
 
-
-
 </body>
-
 </html>
 

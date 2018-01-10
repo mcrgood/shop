@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+	.top{
+		width: 100%;
+	}
+	.top div{
+		text-align: center;
+	}
+	.top .img{
+	   margin-top: 156px;
+	}
+	.top div input{
+		width: 535px;
+		margin-top: 81px; 
+		border:none;
+		outline:medium;
+		font-family:"微软雅黑";
+		font-size: 30px;
+		padding-bottom:5px; border-bottom:1px solid #000;
+	}
+	.top .tp_1{
+		margin-top: 45px;
+		font-family:"微软雅黑";
+		font-size: 40px;
+		background: #ffe169;
+		width: 320px;height: 58px;
+		letter-spacing:30px;
+		border-radius: 10px;
+	}
+	.top .login p{
+		font-family:"微软雅黑";
+		font-size: 26px;
+		
+	}
+	.top .login span{
+		margin-left: 405px;
+	}
+	.top .kjdl{
+		margin-top: 50px;
+		font-family:"微软雅黑";
+		font-size: 30px;
+		text-align: center;
+	}
+	.top .con{position:relative;height:30px;line-height: 30px;width:450px;margin:50px auto;text-align: center;}
+	.top .con i{display:block;height:1px;background:#000;position:absolute;top:15px;width:100%;}
+	.top .con p{display:inline-block;background:#fff;padding:0 15px;text-align: center;margin:0 auto;position:relative;z-index:2;font-family:"微软雅黑";font-size: 30px; }
+	.img1{
+		margin-left: 30px;
+	}
+	.login a{color: black;font-size: 30px;}
+</style>
+<head>
+	<meta charset="UTF-8">
+	<title>登录页</title>
+</head>
+<body>
+	<form action="" method="post" enctype="multipart/form-data" onsubmit="return check();">
+		<div class="top">
+			<div class="img">
+				<img src="__INDEX__/images/1.png" alt="" width="170" height="235">
+			</div>
+		
+			<div>
+				<input type="text" placeholder="输入手机号" name="iphone" id="iphone">
+				<!-- <input type="text" placeholder="输入验证码"> -->
+				<input type="password" placeholder="输入密码" name="password" id="password">
+				<input type="password" placeholder="确认密码" name="repassword" id="repassword">
+			</div>
+			<div>
+				<input type="submit" value="登录" class="tp_1">
+			</div>
+			<div class="login">
+				<p><a href="">忘记密码</a><span><a href="{:url('myhome/register')}">注册</a></span></p>
+			</div>
+		</div>
+	</form>
+
+</body>
+</html>
