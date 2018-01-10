@@ -14,6 +14,7 @@ use data\service\Address;
 use data\service\WebSite;
 use think\Controller;
 use think\Db;
+use data\extend\org\wechat\Jssdk;
 class Myhome extends BaseController{
 
     private $myinfo;
@@ -135,61 +136,58 @@ class Myhome extends BaseController{
                 $this->error('申请失败！');
             }
         }
+        $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
+        $package = $jssdk->getSignPackage();
+        $this->assign('signPackage', $package);
+
         return view($this->style . 'Myhome/shenqing');
     }
 
-  //           if (request()->isPost()) {
-
-  //           $data = input('post.');
-
-  //           $customer = db('customer')->where('openid',$this->myinfo['openid'])->find();
-
-  //           $data['customer_id'] = $customer['id'];
-
-  //           $data['state'] = 1;
-
-  //           db('customer')->where('id',$data['customer_id'])->update(['tel'=>$data['tel'],'state'=>2]);
-
-  //           // halt($data);
-
-  //           $result = db('shop')->insertGetId($data);
-
-  //           if ($result) {
-
-  //               // $this->success('申请成功，请支付费用！','ruzhu');
-
-  //               db('pay')->insert(['shop_id'=>$result,'state'=>0]);
-
-  //               // $this->redirect('myhome/ruzhu');
-
-  //               $this->redirect(url('ruzhu'));
-
-  //           } else {
-
-  //               $this->error('申请失败！');
-
-  //           }
-
-  //       }
-
-		// $info = db('customer')->where('openid',$this->myinfo['openid'])->find();
-
-		// $shop = db('shop')->where('customer_id',$info['id'])->find();
-
-		// if ($shop && $shop['state']==1 ) {
-
-		// 	return $this->fetch('wait');
-
-		// }
-
-  //       $jssdk = new Jssdk(config('wechat.appID'),config('wechat.appsecret'));
-
-  //       $package = $jssdk->getSignPackage();
-
-		// return $this->fetch('',['signPackage'=>$package]);
 
 
-	
+    /**
+     * [upimg 异步上传图片]
+     * @return [type] [description]
+     */
+    public function upimg(){
+
+        $mediaid = input('post.serverId');
+
+
+        $path = ROOT_PATH . 'public/static/index/uploads/cateimg';
+
+        $tardir = $path.'/'.date('Y_m_d');
+
+        if (!file_exists($tardir)) {
+
+            mkdir($tardir);
+        }
+
+        $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
+        $accesstoken = $jssdk->getAccessToken();
+
+        $url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=$accesstoken&media_id=$mediaid";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+        $ranfilename = time().rand().'.jpg';
+        $filename = date('Y_m_d').'/'.$ranfilename;
+        $tarfilename = $tardir.'/'.$ranfilename;
+
+        $fp = fopen($tarfilename, 'wb');
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
+        $filename = preg_replace("/\w+\\\/", '', $filename);;
+
+        return $filename;
+
+    }
 
 
     public function shengqingedit(){
@@ -238,201 +236,18 @@ class Myhome extends BaseController{
 
 
 
-	/**
 
-	 * [ruzhu 商家入驻]
 
-	 * @return [type] [商家入驻]
 
-	 */
 
-	public function ruzhu(){
 
-         return view($this->style . 'Myhome/ruzhu');
 
-        //TODO 进行业务处理
 
-        //TODO 生成二维码
 
-        $product_id = time()+1;
 
 
 
-        $input = new WxPayUnifiedOrder();
 
-        $jsApiPay = new JsApiPay();
-
-        // $openid = $jsApiPay->getOpenid();
-
-        $openid = $this->myinfo['openid'];
-
-
-
-        //统一下单
-
-
-
-        $input->setBody("入驻商户费用");
-
-        $input->setAttach("入驻缴费");
-
-        //$input->setOutTradeNo(WxPayConfig::MCHID.date("YmdHis"));
-
-        $input->setOutTradeNo($product_id);
-
-        $input->setTotalFee("1");//以分为单位
-
-        $input->setTimeStart(date("YmdHis"));
-
-        $input->setTimeExpire(date("YmdHis", time() + 600));
-
-        $input->setGoodsTag("缴费");
-
-
-
-        $input->setNotifyUrl(wxPayConfig::NOTIFY_URL);
-
-        $input->setTradeType("JSAPI");
-
-        $input->setOpenid($openid);
-
-
-
-        $order = WxPayApi::unifiedOrder($input);
-
-
-
-        //$product_id 为商品自定义id 可用作订单ID
-
-        // $input->setProductId($product_id);
-
-
-
-
-
-        $result = $jsApiPay->getJsApiParameters($order);
-
-        // halt($result);
-
-
-
-        return $this->fetch('',['jsApiParameters'=>$result]);
-
-
-
-	}
-
-
-
-
-
-
-
-    /**
-
-     * [upimg 异步上传图片]
-
-     * @return [type] [description]
-
-     */
-
-    public function upimg(){
-
-
-
-        $mediaid = input('post.serverId');
-
-
-
-
-
-        $path = ROOT_PATH . 'public/static/index/uploads/cateimg';
-
-       
-
-        $tardir = $path.'/'.date('Y_m_d');
-
-
-
-        if (!file_exists($tardir)) {         
-
-        
-
-            mkdir($tardir);
-
-        }
-
-
-
-        $jssdk = new Jssdk(config('wechat.appID'),config('wechat.appsecret'));
-
-        $accesstoken = $jssdk->getAccessToken();
-
-
-
-        $url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=$accesstoken&media_id=$mediaid";
-
-
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-
-
-
-        $ranfilename = time().rand().'.jpg';
-
-        $filename = date('Y_m_d').'/'.$ranfilename;
-
-        $tarfilename = $tardir.'/'.$ranfilename;
-
-
-
-        $fp = fopen($tarfilename, 'wb');
-
-        curl_setopt($ch,CURLOPT_URL,$url);  
-
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-
-        
-
-        curl_exec($ch);
-
-        curl_close($ch);
-
-        fclose($fp);
-
-        $filename = preg_replace("/\w+\\\/", '', $filename);;
-
-
-
-        return $filename;
-
-
-
-    }
-
-
-
-
-
-    /**
-
-     * [wait 申请商家支付成功，等待审核]
-
-     * @return [type] [description]
-
-     */
-
-    public function wait(){
-
-
-
-        return $this->fetch('');
-
-    }
 
 
 

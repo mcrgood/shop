@@ -148,153 +148,289 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EWOFpIVomII8KSivhpMAqjxVeaALPYIL"></script>
 
 <script>
-	function check(){
-		if ($("#category").val()=='0') {
-			alert('请选择分类');
-			$("#category").focus();
-			return false;
-		}
-		if ($("#name").val()=='') {
-			alert('请输入商家名称');
-			$("#name").focus();
-			return false;
-		}
-		if ($("#address").val()=='') {
-			alert('请输入商家地址');
-			$("#address").focus();
-			return false;
-		}
-		if ($("#tel").val()=='') {
-			alert('请输入商家电话');
-			$("#tel").focus();
-			return false;
-		}
-		// if ($("#thumb").val()=='') {
-		// 	alert('请上传门店照片');
-		// 	$("#thumb").focus();
-		// 	return false;
-		// }
-		// if ($("#thumb_zhizhao").val()=='') {
-		// 	alert('请上营业执照');
-		// 	$("#thumb_zhizhao").focus();
-		// 	return false;
-		// }
-		// if ($("#thumb_zhengmian").val()=='') {
-		// 	alert('请上传法人正面照片');
-		// 	$("#thumb_zhengmian").focus();
-		// 	return false;
-		// }
-		// if ($("#thumb_fanmian").val()=='') {
-		// 	alert('请上法人反面照片');
-		// 	$("#thumb_fanmian").focus();
-		// 	return false;
-		// }
-		if($("input[type='checkbox']").is(':checked')) {
-		}else{
-			alert('请同意商家协议！');
-			return false;
-		}
-		return true;
-	}
+
+
+
+    wx.config({
+
+        debug: false,
+
+        appId: '{$signPackage.appId}',
+
+        timestamp:'{$signPackage.timestamp}',
+
+    	nonceStr: '{$signPackage.nonceStr}',
+
+        signature: '{$signPackage.signature}',
+
+        jsApiList: [
+
+        // 所有要调用的 API 都要加到这个列表中
+
+        'checkJsApi',
+
+        'chooseImage',
+
+        'uploadImage',
+
+        'openLocation',
+
+        'getLocation'
+
+
+
+    ]
+
+    });
+
+
 
     function wximg(name){
-		wx.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-        success: function(res) {
-        	var localIds = res.localIds;
-            syncUpload(localIds,name);
-        }
-      });	
+
+        wx.chooseImage({
+
+            count: 1, // 默认9
+
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+
+            success: function(res) {
+
+                var localIds = res.localIds;
+
+                syncUpload(localIds,name);
+
+
+
+            }
+
+        });
+
     }
 
-	var syncUpload = function(localIds,name){
-    var localId = localIds.pop();
-    wx.uploadImage({
-        localId: localId,
-        isShowProgressTips: 0,
-        success: function (res) {
-            var serverId = res.serverId; // 返回图片的服务器端ID
-            //获取真实upload地址开始
-            $.ajax({
-		         url:'{:url('upimg')}',
-		         type:'POST',
-		         data:{serverId:serverId},
-		         dataType:'json',
-		         success:function(data){
-					$("#"+name+"_img").attr('src', '/public/static/index/uploads/cateimg/'+data);
-					$("#"+name).val('/public/static/index/uploads/cateimg/'+data);
-		         }
-     		});
-          	//获取真实upload地址结束
-        }
-    });
-};
-// //验证之后进入该函数，所有需要加载页面时调用的接口都必须写在该里面
-// wx.ready(function () {
-// 	//基础接口判断当前客户端版本是否支持指定JS接口
-// 	wx.checkJsApi({
-// 	   jsApiList: [
-// 	       'getLocation'
-// 	   ],
-// 	   success: function (res) {
-// 	       // alert(JSON.stringify(res));
-// 	       // alert(JSON.stringify(res.checkResult.getLocation));
-// 	       if (res.checkResult.getLocation == false) {
-// 	           alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
-// 	           return;
-// 	       }
-// 	   }
-// 	});
-// 	//微信获取地理位置并拉取用户列表（用户允许获取用户的经纬度）
-	wx.getLocation({
-	   success: function (res) {
-	       var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-	       var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-	       jingdu = longitude;
-	       weidu = latitude;
-		    var map = new BMap.Map("allmap");
-		    // map.enableScrollWheelZoom(true);
-		    // map.disableDragging(); 
-		    var point = new BMap.Point(jingdu,weidu);
-		    map.centerAndZoom(point,18);
-		    var geoc = new BMap.Geocoder();
-		    map.addEventListener("touchstart", function(e){ 
-		    	var pt = e.point;
-		    	geoc.getLocation(pt, function(rs){
-		    		var addComp = rs.addressComponents;
-		    		// alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
-		    		$("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
-		    		$("#sheng").val(addComp.province);
-		    		$("#shi").val(addComp.city);
-		    		$("#jingdu").val(pt.lng);
-		    		$("#weidu").val(pt.lat);
-		    		}); 
-		    	}); 
-           //去数据库查询获取附近的门店
 
-	   },
-	   cancel: function (res) {
-	    var map = new BMap.Map("allmap");
-		    // map.enableScrollWheelZoom(true);
-		    // map.disableDragging(); 
-		    var point = new BMap.Point(116.331398,39.897445);
-		    map.centerAndZoom(point,18);
-		    var geoc = new BMap.Geocoder();
-		    map.addEventListener("touchstart", function(e){ 
-		    	var pt = e.point;
-		    	geoc.getLocation(pt, function(rs){
-		    		var addComp = rs.addressComponents;
-		    		// alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
-		    		$("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
-		    		$("#sheng").val(addComp.province);
-		    		$("#shi").val(addComp.city);
-		    	}); 
-		    }); 
-	   }
-});
-</script> 
+
+
+
+
+
+
+
+    var syncUpload = function(localIds,name){
+
+        var localId = localIds.pop();
+
+        wx.uploadImage({
+
+            localId: localId,
+
+            isShowProgressTips: 0,
+
+            success: function (res) {
+
+                var serverId = res.serverId; // 返回图片的服务器端ID
+
+
+
+                //获取真实upload地址开始
+
+                $.ajax({
+
+                    url:'{:url('upimg')}',
+
+                    type:'POST',
+
+                    data:{serverId:serverId},
+
+                    dataType:'json',
+
+                    success:function(data){
+
+                        $("#"+name+"_img").attr('src', '/public/static/index/uploads/cateimg/'+data);
+
+                        $("#"+name).val('/public/static/index/uploads/cateimg/'+data);
+
+
+
+                    }
+
+                });
+
+                //获取真实upload地址结束
+
+            }
+
+        });
+
+    };
+
+    //验证之后进入该函数，所有需要加载页面时调用的接口都必须写在该里面
+    wx.ready(function () {
+        //基础接口判断当前客户端版本是否支持指定JS接口
+        wx.checkJsApi({
+            jsApiList: [
+                'getLocation'
+            ],
+            success: function (res) {
+                // alert(JSON.stringify(res));
+                // alert(JSON.stringify(res.checkResult.getLocation));
+                if (res.checkResult.getLocation == false) {
+                    alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+                    return;
+                }
+            }
+        });
+
+        //微信获取地理位置并拉取用户列表（用户允许获取用户的经纬度）
+        wx.getLocation({
+            success: function (res) {
+
+                var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+
+                jingdu = longitude;
+                weidu = latitude;
+
+                var map = new BMap.Map("allmap");
+                // map.enableScrollWheelZoom(true);
+                // map.disableDragging();
+                var point = new BMap.Point(jingdu,weidu);
+                map.centerAndZoom(point,18);
+                var geoc = new BMap.Geocoder();
+
+                map.addEventListener("touchstart", function(e){
+                    var pt = e.point;
+                    geoc.getLocation(pt, function(rs){
+                        var addComp = rs.addressComponents;
+                        // alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+
+                        $("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
+                        $("#sheng").val(addComp.province);
+                        $("#shi").val(addComp.city);
+                        $("#jingdu").val(pt.lng);
+                        $("#weidu").val(pt.lat);
+                    });
+
+                });
+
+
+
+                //去数据库查询获取附近的门店
+
+            },
+            cancel: function (res) {
+
+                var map = new BMap.Map("allmap");
+                // map.enableScrollWheelZoom(true);
+                // map.disableDragging();
+                var point = new BMap.Point(116.331398,39.897445);
+                map.centerAndZoom(point,18);
+                var geoc = new BMap.Geocoder();
+
+                map.addEventListener("touchstart", function(e){
+                    var pt = e.point;
+                    geoc.getLocation(pt, function(rs){
+                        var addComp = rs.addressComponents;
+                        // alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                        $("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
+                        $("#sheng").val(addComp.province);
+                        $("#shi").val(addComp.city);
+                    });
+
+                });
+            }
+        });
+    });
+
+
+    function check(){
+
+
+
+        if ($("#name").val()=='') {
+
+            alert('请输入商家名称');
+
+            $("#name").focus();
+
+            return false;
+
+        }
+
+        if ($("#address").val()=='') {
+
+            alert('请输入商家地址');
+
+            $("#address").focus();
+
+            return false;
+
+        }
+
+        if ($("#tel").val()=='') {
+
+            alert('请输入商家电话');
+
+            $("#tel").focus();
+
+            return false;
+
+        }
+
+        if ($("#thumb").val()=='') {
+
+            alert('请上传门店照片');
+
+            $("#thumb").focus();
+
+            return false;
+
+        }
+
+        if ($("#thumb_zhizhao").val()=='') {
+
+            alert('请上营业执照');
+
+            $("#thumb_zhizhao").focus();
+
+            return false;
+
+        }
+
+        if ($("#thumb_zhengmian").val()=='') {
+
+            alert('请上传法人正面照片');
+
+            $("#thumb_zhengmian").focus();
+
+            return false;
+
+        }
+
+        if ($("#thumb_fanmian").val()=='') {
+
+            alert('请上法人反面照片');
+
+            $("#thumb_fanmian").focus();
+
+            return false;
+
+        }
+
+        if($("input[type='checkbox']").is(':checked')) {
+
+        }else{
+            alert('请同意商家协议！');
+            return false;
+        }
+
+
+        return true;
+
+    }
+
+</script>
 
 </body>
 </html>
