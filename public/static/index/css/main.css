@@ -6,7 +6,7 @@
 
 .top{ width:100%; height:1.66rem;overflow:hidden; position:fixed; left:0;top:0; background:#fff; z-index:999; font-size:.57rem; line-height:1.66rem; text-align:center}
 
-.top-a{ width:1.77rem; position:absolute; left:0; top:0; height:100%; font-size:.38rem; line-height:.72rem; text-align:center; color:#656565; display:block; padding-top:.81rem; background:url(../images/ditu.png) no-repeat center .26rem; background-size:.51rem auto;}
+.top-a{ width:1.77rem; position:absolute; left:0; top:0; height:100%; font-size:.38rem; line-height:.72rem; text-align:center; color:#656565; display:block; padding-top:.81rem; background:url(../images/ditu.png) no-repeat center .26rem; background-size:.51rem auto;font-weight: normal;}
 
 .top-a1{width:1.21rem; position:absolute; left:0; top:0; height:100%; background:url(../images/slide.png) no-repeat center; background-size:.3rem auto;}
 

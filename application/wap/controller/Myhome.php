@@ -39,21 +39,17 @@ class Myhome extends BaseController{
                 $dh ="/^1[3|4|5|7|8][0-9]{9}$/";
                 $iph = preg_match($dh, $iphone);
                 if(!$iph){
-                    $this->error('输入正确手机号码');
-                }
-                if($password!==$repassword){
-                    $this->error('密码不一致');
+                    $this->error('账号只能是手机号！');
                 }
                 $xx = db("ns_goods_login")->where("iphone='$iphone'")->find();
                 if(!$xx){
                     $this->error('用户不存在，请注册');
                 }
-            //查询是否存在
-                $data['iphone'] = $iphone; 
-                $data['password'] = $password; 
-                $data['repassword'] = $repassword;
-                $id = db('ns_goods_login')->insert($data);
-                if ($id) {
+                $pwd = MD5('MD5_PRE'.$password);
+                if($xx['password']!=$pwd){
+                    $this->error('密码错误');
+                }
+                if ($xx&&$iph) {
                     $this->success('登录成功！','shenqing');
                 } else {
                     $this->error('登录失败');
@@ -82,11 +78,10 @@ class Myhome extends BaseController{
                     $this->error('用户已存在，请登录','Myhome/login');
                 }
                 $data['iphone'] = $iphone; 
-                $data['password'] = $password; 
-                $data['repassword'] = $repassword;
+                $data['password'] = MD5('MD5_PRE'.$password);
                 $id = db('ns_goods_login')->insert($data);
                 if ($id) {
-                    $this->success('注册成功！','ruzhu');
+                    $this->success('注册成功！','shenqing');
                 } else {
                     $this->error('注册失败');
                 }  
@@ -113,9 +108,17 @@ class Myhome extends BaseController{
             $thumb_zhizhao = input('post.thumb_zhizhao');
             $thumb_zhengmian = input('post.thumb_zhengmian');
             $thumb_fanmian = input('post.thumb_fanmian');
+            $yhk_name = input('post.yhk_name');
+            $yhk_num = input('post.yhk_num');
+            $yhk_address = input('post.yhk_address');
+            $bank = input('post.bank');
+            $thumb_yhk1 = input('post.thumb_yhk1');
+            $thumb_yhk2 = input('post.thumb_yhk2');
+            $content = input('post.content');
+
             //查询用户是否已存在
             $where['names'] = array('eq',$names);
-            $name = db("ns_goods_customer")->where($where)->find();
+            $name = db("ns_shop_message")->where($where)->find();
             if($name){
                 $this->error('用户已存在');
             }
@@ -127,10 +130,16 @@ class Myhome extends BaseController{
             $data['thumb_zhizhao'] = $thumb_zhizhao;
             $data['thumb_zhengmian'] = $thumb_zhengmian;
             $data['thumb_fanmian'] = $thumb_fanmian;
-            $data['description'] = $description;
-            $id = db('ns_goods_customer')->insert($data);
+            $data['yhk_name'] = $yhk_name;
+            $data['yhk_num'] = $yhk_num;
+            $data['yhk_address'] = $yhk_address;
+            $data['bank'] = $bank;
+            $data['thumb_yhk1'] = $thumb_yhk1;
+            $data['thumb_yhk2'] = $thumb_yhk2;
+            $data['content'] = $content;
+            $id = db('ns_shop_message')->insert($data);
             if($id){
-                $this->success('申请成功，请支付费用！','ruzhu');
+                $this->success('申请成功，请等待审核！');
             }else{
                 $this->error('申请失败！');
             }

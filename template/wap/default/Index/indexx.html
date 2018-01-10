@@ -1,146 +1,77 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<title>{$confres.sitename}</title>
-
-<link href="__INDEX__/css/main.css" rel="stylesheet" />
-
-<link href="__INDEX__/css/reset.css" rel="stylesheet" />
-
-<link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
-
-<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
-
-<script src="__INDEX__/js/swiper.min.js"></script>
-
-
-
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{$confres.sitename}</title>
+    <link href="__INDEX__/css/main.css" rel="stylesheet" />
+    <link href="__INDEX__/css/reset.css" rel="stylesheet" />
+    <link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
+    <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+    <script src="__INDEX__/js/swiper.min.js"></script>
 </head>
 
-
-
 <body>
-
-    <style type="text/css">
-
-        iframe{display: block}
-
-    </style>
-
+    <style type="text/css">iframe{display: block}</style>
 <div class="top-kong"></div>
-
-
 <div class="top">
-
-<a  class="top-a" id="myposition">{$Think.cookie.myposition}</a>
-
-<form action="{:url('dingwei/index')}" method="get" onsubmit="return checkdw();">
-
-<div class="search">
-
-    <input type="button" value="" class="search-input" />
-
-    <input type="text" placeholder="输入商家名、品类" class="search-input1" name='keywords'/>
-
-</div>
-
-
-
-
-
-</form>
-
+  {volist name="adList" id="vo"}
+    <a class="top-a" id="myposition">{$vo.shi}</a>
+  {/volist}
+    <form action="{:url('dingwei/index')}" method="get" onsubmit="return checkdw();">
+        <div class="search">
+          <input type="button" value="" class="search-input" />
+          <input type="text" placeholder="输入商家名、品类" class="search-input1" name='keywords'/>
+        </div>
+    </form>
 <script type="text/javascript">
-
     function checkdw(){
-
-        
-
         if ($("input[name='keywords']").val()=='') {
-
             alert('请输入搜索词！');
-
             $("input[name='keywords']").focus();
-
             return false;
-
         }
-
         return true;
-
     }
-
 </script>
 </div>
 <!--轮播-->
-
 <div class="swiper-container sy-slider">
-
   <div class="swiper-wrapper banner_index">
-
-    
-      {volist name="bannerres" id="vo"}
-      <div class="swiper-slide swiper-slide-index" >
-        {if condition="$vo.url neq ''"}
-        <a href="{$vo.url}">
-        {else /}
-          <a href="javascript:void(0);">
-        {/if}
-          <img src="{$vo.thumb}" width="100%" height="100%" /></a>
-      </div>
+      {volist name="banner" id="vo"}
+            <div class="swiper-slide swiper-slide-index" >
+                {if condition="$vo.url neq ''"}
+                    <a href="{$vo.url}">
+                {else /}
+                    <a href="javascript:void(0);">
+                {/if}
+                <img src="{$vo.thumb}" width="100%" height="100%" /></a>
+            </div>
       {/volist}
-        
-
   </div>
-
   <div class="swiper-pagination swiper-pagination-index"></div>
-
 </div>
-
-
 
 <div class="index-menu">
-
-<ul class="index-menu-box">
-
-<li><a href="{:url('dingwei/index',['cat'=>0])}"><img src="__INDEX__/images/menu1.png" />餐饮</a></li>
-
-<li><a href="{:url('dingwei/index',['cat'=>1])}"><img src="__INDEX__/images/menu2.png" />酒店</a></li>
-
-<li><a href="{:url('dingwei/index',['cat'=>2])}"><img src="__INDEX__/images/menu3.png" />养生</a></li>
-
-<li><a href="{:url('dingwei/index',['cat'=>3])}"><img src="__INDEX__/images/menu4.png" />KTV</a></li>
-
-<li><a href="{:url('dingwei/index',['cat'=>4])}"><img src="__INDEX__/images/menu5.png" />汽车</a></li>
-
-<li><a href="{:url('dingwei/index',['cat'=>5])}"><img src="__INDEX__/images/menu6.png" />其他</a></li>
-
-</ul>
-
+  <ul class="index-menu-box">
+      <li><a href="{:url('dingwei/index',['cat'=>0])}"><img src="__INDEX__/images/menu1.png" />餐饮</a></li>
+      <li><a href="{:url('dingwei/index',['cat'=>1])}"><img src="__INDEX__/images/menu2.png" />酒店</a></li>
+      <li><a href="{:url('dingwei/index',['cat'=>2])}"><img src="__INDEX__/images/menu3.png" />养生</a></li>
+      <li><a href="{:url('dingwei/index',['cat'=>3])}"><img src="__INDEX__/images/menu4.png" />KTV </a></li>
+      <li><a href="{:url('dingwei/index',['cat'=>4])}"><img src="__INDEX__/images/menu5.png" />汽车</a></li>
+      <li><a href="{:url('dingwei/index',['cat'=>5])}"><img src="__INDEX__/images/menu6.png" />其他</a></li>
+  </ul>
 </div>
-
 <div class="kong"></div>
-
 <style type="text/css">
     .demo1 img { width:100%; height:6.563rem; display:block;}
     .swiper-button-next, .swiper-button-prev{width: 1rem;height: 1.2rem;background-size: 100% 100% !important;top: 50%;margin-top: -.6rem;}
 </style>
-
 <div class="index-title"><span>餐饮通用券</span></div>
-
     <a href="{:url('myhome/gonggao')}"><img src="__INDEX__/images/img.png" class="index-img"  /></a>
-
     <!--<a href="javascript:void(0);" id="ad1"><img src="__INDEX__/images/adzhaoshang.jpg" class="index-img1" /></a>-->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad1">
             <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
-
-
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -148,19 +79,12 @@
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
-    
-
-
 <div class="index-title"><span>酒店通用券</span></div>
-
 <a href="{:url('myhome/gonggao')}"><img src="__INDEX__/images/img.png" class="index-img"  /></a>
-
 <!--<a href="javascript:void(0);" id="ad2"><img src="__INDEX__/images/adzhaoshang.jpg" class="index-img1" /></a>-->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad2">
             <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
-
-
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -168,21 +92,14 @@
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
-
-
 <div class="index-title"><span>养生通用券</span></div>
-
 <a href="{:url('myhome/gonggao')}"><img src="__INDEX__/images/img.png" class="index-img"  /></a>
-
 <!--<a href="javascript:void(0);" id="ad3"><img src="__INDEX__/images/adzhaoshang.jpg" class="index-img1" /></a>-->
     <!-- 轮播测试开始 -->
-
     <!-- 轮播图 -->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad3">
             <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
-
-
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -190,20 +107,13 @@
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
-
     <!-- 轮播测试结束 -->
-
-
 <div class="index-title"><span>KTV通用券</span></div>
-
 <a href="{:url('myhome/gonggao')}"><img src="__INDEX__/images/img.png" class="index-img"  /></a>
-
 <!--<a href="javascript:void(0);" id="ad4"><img src="__INDEX__/images/adzhaoshang.jpg" class="index-img1" /></a>-->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad4">
             <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
-
-
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -211,18 +121,12 @@
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
-
-
 <div class="index-title"><span>汽车通用券</span></div>
-
 <a href="{:url('myhome/gonggao')}"><img src="__INDEX__/images/img.png" class="index-img"  /></a>
-
 <!--<a href="javascript:void(0);" id="ad5"><img src="__INDEX__/images/adzhaoshang.jpg" class="index-img1" /></a>-->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad5">
             <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
-
-
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -230,30 +134,17 @@
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
-
-
 <div class="index-title"><span>其他通用券</span></div>
-
 <a href="{:url('myhome/gonggao')}"><img src="__INDEX__/images/img.png" class="index-img"  /></a>
-
 <div class="foot">
-
-  <a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Index') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
-
+  <a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Indexx') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
   <a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
-
   <a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
-
 </div>
-
-
-
-
 
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EWOFpIVomII8KSivhpMAqjxVeaALPYIL"></script>
-
 <script type="text/javascript">
   //配置信息验证接口
   wx.config({
@@ -269,7 +160,6 @@
       'getLocation'
     ]
   });
-
   //验证之后进入该函数，所有需要加载页面时调用的接口都必须写在该里面
   wx.ready(function () {
     //基础接口判断当前客户端版本是否支持指定JS接口
@@ -284,7 +174,6 @@
         }
       }
   });
-
       //微信获取地理位置并拉取用户列表（用户允许获取用户的经纬度）
       wx.getLocation({
          success: function (res) {
@@ -304,8 +193,6 @@
                     $('#myposition').html(myposition);
 
                     showUnreadNews(myposition);
-
-
                 }
             });
 
