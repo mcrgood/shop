@@ -19,8 +19,6 @@ class Myhome extends BaseController{
 
     private $myinfo;
     //个人中心首页
-   
-
 	public function index(){		
         return view($this->style . 'Myhome/index');
         $cus = db('customer')->where('openid',$this->myinfo['openid'])->find();

@@ -43,7 +43,7 @@
 						<a target="_blank" title="{$vo.goods_name}" href="{:__URL('SHOP_MAIN/goods/goodsinfo','goodsid='.$vo['goods_id'])}">{$vo.goods_name}</a>
 					</div>
 					<div class="p-comm">
-						<span class="p-price second-color">￥{$vo.price}</span>
+						<span class="p-price second-color">￥{$vo.price}+{$vo.point_exchange}{:lang('goods_integral')}</span>
 						<!-- <a class="p-comm-num" href="" target="_blank">评论：0</a> -->
 					</div>
 				</li> 
@@ -66,7 +66,7 @@
 							<a target="_blank" title="{$vo.goods_name}" href="{:__URL('SHOP_MAIN/goods/goodsinfo','goodsid='.$vo['goods_id'])}">{$vo.goods_name}</a>
 						</div>
 						<div class="p-comm">
-							<span class="p-price money-color">￥{$vo.price}</span>
+							<span class="p-price money-color">￥{$vo.price}+{$vo.point_exchange}{:lang('goods_integral')}</span>
 							
 						</div>
 					</li>
