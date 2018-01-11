@@ -12,9 +12,9 @@ $(function(){
 			var copyright_meta = "";
 			if($is_load>0){
 				$("#copyright_logo").attr("src", STATIC + data["default_logo"]);
-				$("#copyright_companyname").attr("href", "http://www.niushop.com.cn");
-				$("#copyright_companyname").html("山西牛酷信息科技有限公司&nbsp;提供技术支持");
-				$("#copyright_desc").html("Copyright © 2015-2025 NIUSHOP开源商城&nbsp;版权所有 保留一切权利");
+				$("#copyright_companyname").attr("href", "http://mall.jxqkw8.com");
+				$("#copyright_companyname").html("江西花儿盛开贸易有限公司&nbsp;提供技术支持");
+				$("#copyright_desc").html("Copyright © 2017-2027 江西花儿盛开贸易有限公司&nbsp;版权所有 保留一切权利");
 			}else{
 				$("#copyright_logo").attr("src", __IMG($bottom_info["copyright_logo"]));
 				$("#copyright_logo_wap").attr("src", __IMG($bottom_info["copyright_logo"]));
