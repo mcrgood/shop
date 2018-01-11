@@ -24,7 +24,7 @@
 						</div>
 						<div class="price">
 							<a href="{:__URL('SHOP_MAIN/goods/goodsinfo','goodsid='.$goods['goods_id'])}" title="{$goods.goods_name}">{$goods.goods_name}</a>
-							<span class="money-color">￥{$goods.promotion_price}</span>
+							<span class="money-color">￥{$goods.promotion_price}+{$goods.point_exchange}{:lang('goods_integral')}</span>
 						</div>
 					</li>
 					{/if}
