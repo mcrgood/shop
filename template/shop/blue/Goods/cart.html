@@ -74,7 +74,7 @@
 											{/if}
 											</font>
 										</td>
-										<td align="center" width="15%"><font class="cart_jmprice" id="subtotal_{$cart_info.cart_id}" data-total="{$cart_info.price*$cart_info.num}" data-integral="{if condition='$cart_info.point_exchange_type==1'}{$cart_info.point_exchange*$cart_info.num}{else/}0{/if}"  data-price="{$cart_info.price}">￥{$cart_info.price*$cart_info.num}</font></td>
+										<td align="center" width="15%"><font class="cart_jmprice" id="subtotal_{$cart_info.cart_id}" data-total="{$cart_info.price*$cart_info.num}" data-integral="{if condition='$cart_info.point_exchange_type==1'}{$cart_info.point_exchange*$cart_info.num}{else/}0{/if}"  data-price="{$cart_info.price}">￥{$cart_info.price*$cart_info.num}+{$cart_info.point_exchange*$cart_info.num}{:lang('goods_integral')}</font></td>
 										<td align="center" width="10%">
 											<a href="javascript:deleteShoppingCartById({$cart_info.cart_id},true)" class="f6">{:lang('goods_delete')}</a>
 										</td>
@@ -107,7 +107,7 @@
 					<td align="right" width="80">
 						<a href="javascript:;" class="jmclear js-clear-cart">{:lang('goods_empty_cart')}</a>
 					</td>
-					<td align="right" id="cart_money_info"> {:lang('goods_total_payable')}： <span>￥0.00</span></td>
+					<td align="right" id="cart_money_info"> {:lang('goods_total_payable')}： <span>￥0.00+</span></td>
 					<td align="right" width="150">
 						<a href="javascript:selcart_submit();" class="jmcheckout js-settlement">{:lang('goods_settle_accounts')}</a>
 					</td>

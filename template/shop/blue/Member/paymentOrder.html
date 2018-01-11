@@ -97,9 +97,9 @@
 <!-- 								<p></p> -->
 							</div>
 						</div>
-						<div class="col col3 goods-price">￥{$cart_info.price}</div>
+						<div class="col col3 goods-price">￥{$cart_info.price}+{$cart_info.point_exchange}{:lang('goods_integral')}</div>
 						<div class="col col4 good-num">{$cart_info.num}</div>
-						<div class="col col5 orange-bold xiaoji" data-subtotal="{$cart_info.subtotal}" style="border-bottom-style: none;">￥{$cart_info.subtotal}</div>
+						<div class="col col5 orange-bold xiaoji" data-subtotal="{$cart_info.subtotal}" style="border-bottom-style: none;">￥{$cart_info.subtotal}+{$cart_info.point_exchange*$cart_info.num}{:lang('goods_integral')}</div>
 					</div>
 					{/foreach}
 				</div>
@@ -333,7 +333,10 @@
 						<div class="calu-box">
 							<p class="slivergrey">
 								<span>{:lang('goods_total')}<b class="orange-bold js-goods-num">0</b>{:lang('member_kinds_of_goods')} {:lang('member_total')}：</span>
-								<span class="txtmoney">￥<b class="js-total-money">0.00</b></span>
+								<span class="txtmoney">￥<b class="js-total-money">0.00</b>+{$count_point_exchange}{:lang('goods_integral')}</span>
+								<style>
+									.slivergrey{font-size: 12px;}
+								</style>
 							</p>
 							<p class="slivergrey">
 								<span>{:lang('goods_freight')}：</span>
