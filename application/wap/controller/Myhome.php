@@ -14,10 +14,63 @@ use data\service\Address;
 use data\service\WebSite;
 use think\Controller;
 use think\Db;
+use think\Session;
 use data\extend\org\wechat\Jssdk;
-class Myhome extends BaseController{
+use data\extend\chuanglan\ChuanglanSmsApi;
+
+class Myhome extends Controller{
 
     private $myinfo;
+
+    public $user;
+
+    public $web_site;
+
+    public $style;
+
+    public $logo;
+
+    protected $instance_id;
+
+    protected $shop_name;
+
+    // 验证码配置
+    public $login_verify_code;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->init();
+    }
+
+    public function init()
+    {
+
+        $this->web_site = new WebSite();
+        $web_info = $this->web_site->getWebSiteInfo();
+        $this->user = new Member();
+        $this->assign("platform_shopname", $this->user->getInstanceName()); // 平台店铺名称
+        $this->assign("title", $web_info['title']);
+        $this->logo = $web_info['logo'];
+        $this->shop_name = $this->user->getInstanceName();
+        $this->instance_id = 0;
+
+        // 是否开启验证码
+        $web_config = new WebConfig();
+        $this->login_verify_code = $web_config->getLoginVerifyCodeConfig($this->instance_id);
+        $this->assign("login_verify_code", $this->login_verify_code["value"]);
+
+        // 使用那个手机模板
+        $use_wap_template = $web_config->getUseWapTemplate($this->instance_id);
+        if (empty($use_wap_template)) {
+            $use_wap_template['value'] = 'default';
+        }
+        if (! checkTemplateIsExists("wap", $use_wap_template['value'])) {
+            $this->error("模板配置有误，请联系商城管理员");
+        }
+        $this->style = "wap/" . $use_wap_template['value']."/";
+        $this->assign("style", "wap/" . $use_wap_template['value']);
+    }
     //个人中心首页
 	public function index(){		
         return view($this->style . 'Myhome/index');
@@ -30,35 +83,62 @@ class Myhome extends BaseController{
 		]);
 	}
     public function login(){
-        if(request()->isPost()){
-            $iphone = input('post.iphone');
-            $password = input('post.password');
-            $repassword = input('post.repassword');
-
-                $dh ="/^1[3|4|5|7|8][0-9]{9}$/";
-                $iph = preg_match($dh, $iphone);
-                if(!$iph){
-                    $this->error('账号只能是手机号！');
-                }
-                $xx = db("ns_goods_login")->where("iphone='$iphone'")->find();
-                if(!$xx){
-                    $this->error('用户不存在，请注册');
-                }
-                $pwd = MD5('MD5_PRE'.$password);
-                if($xx['password']!=$pwd){
-                    $this->error('密码错误');
-                }
-                if ($xx&&$iph) {
-                    $this->success('登录成功！','shenqing');
+        if (request()->isAjax()) {
+            $password = request()->post('password', '');
+            $mobile = request()->post('mobile', '');
+            $info = Db::table("ns_goods_login")->where("iphone='" . $mobile . "' and password='" . md5($password) . "'")
+                ->field("id")
+                ->find();
+            if ($info) {
+                Session::set('business_id', $info['id']);
+                if (!empty($_SESSION['login_pre_url'])) {
+                    $retval = [
+                        'code' => 1,
+                        'url' => $_SESSION['login_pre_url']
+                    ];
                 } else {
-                    $this->error('登录失败');
-                }  
+                    $retval = [
+                        'code' => 2,
+                        'url' => 'Myhome/index'
+                    ];
+                }
+
+            }else
+            {
+                $retval = AjaxReturn(-2001);
             }
+            return $retval;
+        }
+        $pre_url = '';
+        $_SESSION['bund_pre_url'] = '';
+        if (! empty($_SERVER['HTTP_REFERER'])) {
+            $pre_url = $_SERVER['HTTP_REFERER'];
+            if (strpos($pre_url, 'register')) {
+                $pre_url = '';
+            }
+            $_SESSION['login_pre_url'] = $pre_url;
+        }
             return view($this->style . 'Myhome/login');
         }
 
+    public function mobile_login()
+    {
+        if (request()->isAjax()) {
+            $password = request()->post('password', '');
+            $mobile = request()->post('mobile', '');
+            $info = Db::table("ns_goods_login")->where("iphone='".$mobile."' and password='".md5($password)."'")
+                ->field("id")
+                ->find();
+            if ($info)
+                Session::set('business_id', $info['id']);
+            $retval = AjaxReturn(1);
+
+            return $retval;
+        }
+
+    }
     public function register(){
-        if(request()->isPost()){
+       /* if(request()->isPost()){
             $iphone = input('post.iphone');
             $password = input('post.password');
             $repassword = input('post.repassword');
@@ -84,7 +164,16 @@ class Myhome extends BaseController{
                 } else {
                     $this->error('注册失败');
                 }  
-            }
+            }*/
+        if (request()->isAjax()) {
+            $password = request()->post('password', '');
+            $mobile = request()->post('mobile', '');
+           // $sendMobile = Session::get('sendMobile');
+            $data['iphone'] = $mobile;
+            $data['password'] = MD5($password);
+            $retval = db('ns_goods_login')->insert($data);
+            return AjaxReturn($retval);
+        }
         return view($this->style . 'Myhome/register');
     }   
 
@@ -150,8 +239,101 @@ class Myhome extends BaseController{
         return view($this->style . 'Myhome/shenqing');
     }
 
+    /**
+     * 发送注册短信验证码
+     *
+     * @return boolean
+     */
+    public function sendSmsRegisterCode()
+    {
+        $params['mobile'] = request()->post('mobile', '');
+        $vertification = request()->post('vertification', '');
+
+        $web_config = new WebConfig();
+        $code_config = $web_config->getLoginVerifyCodeConfig($this->instance_id);
+
+        if ($code_config["value"]['pc'] == 1 && ! captcha_check($vertification)) {
+            $result = [
+                'code' => - 1,
+                'message' => "验证码错误"
+            ];
+        } else {
+//            $params['shop_id'] = 0;
+//            $result = runhook('Notify', 'registBefor', $params);
+            $clapi  = new ChuanglanSmsApi();
+            $code = mt_rand(100000,999999);
+            $result = $clapi->sendSMS($params['mobile'], '【花儿盛开】您好，您的验证码是:'. $code);
+            if(!is_null(json_decode($result))){
+                $output=json_decode($result,true);
+                if(isset($output['code'])  && $output['code']=='0'){
+                    Session::set('mobileVerificationCode', $code);
+                    Session::set('sendMobile', $params['mobile']);
+                    return $result = [
+                        'code' => 0,
+                        'message' => "发送成功"
+                    ];
+                }else{
+                    return $result = [
+                        'code' => $output['code'],
+                        'message' => $result["errorMsg"]
+                    ];
+                }
+            }else{
+                return $result = [
+                    'code' => - 1,
+                    'message' => "发送失败"
+                ];
+            }
 
 
+        }
+
+    }
+    /**
+     * 注册手机号验证码验证
+     * 任鹏强
+     * 2017年6月17日16:26:46
+     *
+     * @return multitype:number string
+     */
+    public function register_check_code()
+    {
+        $send_param = request()->post('send_param', '');
+        // $mobile = request()->post('mobile', '');
+        $param = session::get('mobileVerificationCode');
+
+        if ($send_param == $param && $send_param != '') {
+            $retval = [
+                'code' => 0,
+                'message' => "验证码一致"
+            ];
+        } else {
+            $retval = [
+                'code' => 1,
+                'message' => "验证码不一致"
+            ];
+        }
+        return $retval;
+    }
+    // 判断手机号存在不
+    public function mobile()
+    {
+        if (request()->isAjax()) {
+            // 获取数据库中的用户列表
+            $user_mobile = request()->post('mobile', '');
+            $exist = db("ns_goods_login")->where("iphone='$user_mobile'")->find();
+            return $exist;
+        }
+    }
+    public function randString($len = 6)
+    {
+        $chars = str_repeat('0123456789', 3);
+        // 位数过长重复字符串一定次数
+        $chars = str_repeat($chars, $len);
+        $chars = str_shuffle($chars);
+        $str = substr($chars, 0, $len);
+        return $str;
+    }
     /**
      * [upimg 异步上传图片]
      * @return [type] [description]
