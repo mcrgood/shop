@@ -275,7 +275,7 @@ class Myhome extends Controller{
                 }else{
                     return $result = [
                         'code' => $output['code'],
-                        'message' => $result["errorMsg"]
+                        'message' => $output["errorMsg"]
                     ];
                 }
             }else{
