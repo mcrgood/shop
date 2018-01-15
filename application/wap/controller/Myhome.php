@@ -203,6 +203,7 @@ class Myhome extends Controller{
     //商家申请
 	public function shenqing(){
         if(request()->isPost()){
+            $business_id = Session::get('business_id');
             $leixing = input('post.leixing');
             $names = input('post.names');
             $address = input('post.address');
@@ -217,14 +218,12 @@ class Myhome extends Controller{
             $bank = input('post.bank');
             $thumb_yhk1 = input('post.thumb_yhk1');
             $thumb_yhk2 = input('post.thumb_yhk2');
+            $sheng = input('sheng');
+            $shi = input('shi');
+            $jingdu = input('jingdu');
+            $weidu = input('weidu');
             $content = input('post.content');
-
-            //查询用户是否已存在
-            $where['names'] = array('eq',$names);
-            $name = db("ns_shop_message")->where($where)->find();
-            if($name){
-                $this->error('用户已存在');
-            }
+            $data['customer_id'] = $business_id;
             $data['leixing'] = $leixing;
             $data['names'] = $names;
             $data['address'] = $address;
@@ -240,6 +239,10 @@ class Myhome extends Controller{
             $data['thumb_yhk1'] = $thumb_yhk1;
             $data['thumb_yhk2'] = $thumb_yhk2;
             $data['content'] = $content;
+            $data['sheng'] = $sheng;
+            $data['shi'] = $shi;
+            $data['jingdu'] = $jingdu;
+            $data['weidu'] = $weidu;
             $id = db('ns_shop_message')->insert($data);
             if($id){
                 $this->success('申请成功，请等待审核！');
