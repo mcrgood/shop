@@ -80,7 +80,7 @@ class Upgrade extends BaseService implements IUpgrade
      * @see \data\api\IUpgrade::isLoadCopyRight()
      */
     public function isLoadCopyRight(){
-        $is_load=1;
+        $is_load=0;
         $product_devolution = new VersionDevolutionModel();
         $product_info=$product_devolution->getInfo(" 1=1 ", "*");
         if(!empty($product_info)){
