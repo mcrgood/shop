@@ -113,7 +113,7 @@ class Myhome extends Controller{
         $_SESSION['bund_pre_url'] = '';
         if (! empty($_SERVER['HTTP_REFERER'])) {
             $pre_url = $_SERVER['HTTP_REFERER'];
-            if (strpos($pre_url, 'register')) {
+            if (strpos($pre_url, 'register') || strpos($pre_url, 'findpasswd')) {
                 $pre_url = '';
             }
             $_SESSION['login_pre_url'] = $pre_url;
@@ -175,7 +175,22 @@ class Myhome extends Controller{
             return AjaxReturn($retval);
         }
         return view($this->style . 'Myhome/register');
-    }   
+    }
+    /*
+     * 找回密码
+     */
+    public function findpasswd(){
+
+        if (request()->isAjax()) {
+            $password = request()->post('password', '');
+            $mobile = request()->post('mobile', '');
+            $data['iphone'] = $mobile;
+            $data['password'] = MD5($password);
+            $retval = db('ns_goods_login')->where('iphone',$data['iphone'])->update(['password' => $data['password']]);
+            return AjaxReturn($retval);
+        }
+        return view($this->style . 'Myhome/findpasswd');
+    }
 
     //退出登录
 	public function out(){
@@ -325,6 +340,7 @@ class Myhome extends Controller{
             return $exist;
         }
     }
+
     public function randString($len = 6)
     {
         $chars = str_repeat('0123456789', 3);
