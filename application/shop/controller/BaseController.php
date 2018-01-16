@@ -71,7 +71,7 @@ class BaseController extends Controller
         
         // 弹出框标题
         if (empty($web_info['web_popup_title'])) {
-            $this->assign("web_popup_title", "Niushop开源商城");
+            $this->assign("web_popup_title", "客旺旺商城");
         } else {
             $this->assign("web_popup_title", $web_info['web_popup_title']);
         }
