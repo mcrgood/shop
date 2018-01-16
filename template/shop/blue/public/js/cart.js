@@ -139,7 +139,7 @@ function getCopeSum() {
 		$(".js-settlement").addClass("disabled");
 
 	} else {
-		var integral_text = "<span>+" + integral + "积分</span>";
+		var integral_text = "<span>+" + integral + "旺旺币</span>";
 		$("#cart_money_info").html("应付总额：<span>¥" + sum + "</span>" + (integral > 0 ? integral_text : ""));// 总额
 		$(".js-settlement").removeClass("disabled");
 	}
