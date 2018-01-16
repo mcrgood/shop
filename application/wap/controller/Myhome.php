@@ -99,7 +99,7 @@ class Myhome extends Controller{
                 } else {
                     $retval = [
                         'code' => 2,
-                        'url' => 'Myhome/index'
+                        'url' => 'Myhome/yingshou'
                     ];
                 }
 
@@ -190,6 +190,9 @@ class Myhome extends Controller{
             return AjaxReturn($retval);
         }
         return view($this->style . 'Myhome/findpasswd');
+    }
+    public function yingshou(){
+        return view($this->style . 'Myhome/yingshou');
     }
 
     //退出登录
