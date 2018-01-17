@@ -11,6 +11,7 @@ use data\service\GoodsBrand as GoodsBrand;
 use data\service\GoodsCategory as GoodsCategory;
 use data\service\GoodsGroup as GoodsGroup;
 use data\service\Supplier;
+use think\Request;
 
 class Myhome extends BaseController
 {
@@ -33,6 +34,19 @@ class Myhome extends BaseController
 	}
 
 	public function registerdetail(){
+			$id = input('param.id');
+			if ($id == 0) {
+                $this->error("没有获取到用户信息");
+            }
+            $row = db("ns_shop_message")
+            ->alias('a')
+            ->join('ns_goods_login m','a.userid=m.id','LEFT')
+            ->find($id);
+
+            $this->assign("row", $row); 
+			//$row = db("ns_shop_message")->find($id);
+			//$this->assign('row',$row);
+
 		return view($this->style . "Myhome/registerdetail");
 	}
 
