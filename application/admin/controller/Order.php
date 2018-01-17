@@ -1198,7 +1198,7 @@ class Order extends BaseController
         $this->assign("list",$list);
         $webSiteInfo = $this->website->getWebSiteInfo();
         if(empty($webSiteInfo["title"])){
-            $ShopName = "Niushop开源商城";
+            $ShopName = "客旺旺商城";
         }else{
             $ShopName = $webSiteInfo["title"];
         }
