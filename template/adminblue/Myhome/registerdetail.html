@@ -1,0 +1,113 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+{/block}
+{block name="main"}
+<style>
+	.clas{margin-bottom: }
+</style>
+<form action="" >
+<div class="set-style" style="margin-bottom: 150px;">
+	<dl>
+		<dt><span class="required"></span>账号：</dt>
+		<dd>
+			<p><input class="input-common" id="admin_name" type="text" name="iphone" value="{$row.iphone}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>店铺类型：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="leixing" value="{$row.leixing}"  disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>店铺名称：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="names" value="{$row.names}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>店铺地址：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="address" value="{$row.address}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>店铺电话：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="tel" value="{$row.tel}"disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>店铺照片：</dt>
+		<dd>
+			<img src="" alt="" style="width:120px;height:100px;border: 1px solid #d6d6d6;display: inline-block;" name="thumb" value="{$row.thumb}">
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>店铺执照：</dt>
+		<dd>
+			<img src="" alt="" style="width:120px;height:100px;border: 1px solid #d6d6d6;display: inline-block;" name="thumb_zhizhao" value="{$row.thumb_zhizhao}">
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>店铺执照正面：</dt>
+		<dd>
+			<img src="" alt="" style="width:120px;height:100px;border: 1px solid #d6d6d6;display: inline-block;" name="thumb_zhengmian" value="{$row.thumb_zhengmian}">
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>店铺执照反面：</dt>
+		<dd>
+			<img src="" alt="" style="width:120px;height:100px;border: 1px solid #d6d6d6;display: inline-block;" name="thumb_zhengmian" value="{$row.thumb_zhengmian}">
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>银行卡姓名：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="yhk_name" value="{$row.yhk_name}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>银行卡账号：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="yhk_num" value="{$row.yhk_num}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>银行卡分行：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="yhk_address" value="{$row.yhk_address}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>所属银行：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="bank" value="{$row.bank}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>银行卡正面：</dt>
+		<dd>
+			<img src="" alt="" style="width:120px;height:100px;border: 1px solid #d6d6d6;display: inline-block;">
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>银行卡反面：</dt>
+		<dd>
+			<img src="" alt="" style="width:120px;height:100px;border: 1px solid #d6d6d6;display: inline-block;">
+		</dd>
+	</dl>
+	<dl>
+		<dt><i class="required"></i>商品介绍：</dt>
+		<dd>
+		<div class="controls" id="discripContainer">
+			<textarea style="outline:none;resize:none;height:200px;" name="content" disabled="disabled">{$row.content}</textarea>
+		</div>
+		</dd>
+	</dl>
+</div>
+</form>
+<script>
+	
+</script>
+{/block}
