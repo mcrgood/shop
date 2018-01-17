@@ -45,7 +45,8 @@
 			<th>{$v.names}</th>
 			<th>{$v.address}</th>
 			<th>{$v.tel}</th>
-			<th><a href="{:url('registerdetail',array('id'=>$vo['id']))}">详细查看</a></th>
+			 <!-- <th><a href="_'ADMIN_MAIN/myhome/registerdetail?id='')">详细查看</a></th> -->
+			<th><a href="{:url('registerdetail',array('id'=>$v['id']))}">详细查看</a></th>
 		</tr>
 	{/foreach}
 	</thead>
