@@ -226,7 +226,7 @@ class Myhome extends Controller{
             $jingdu = input('jingdu');
             $weidu = input('weidu');
             $content = input('post.content');
-            $data['customer_id'] = $business_id;
+            $data['userid'] = $business_id;
             $data['leixing'] = $leixing;
             $data['names'] = $names;
             $data['address'] = $address;
