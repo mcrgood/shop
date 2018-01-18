@@ -213,6 +213,12 @@ class Myhome extends Controller{
 	public function shenqing(){
         if(request()->isPost()){
             $business_id = Session::get('business_id');
+            //检测商户
+            $where['userid'] = array('eq',$business_id);
+            $result = db("ns_shop_message")->where($where)->find();
+            if($result){
+                $this->error('用户已存在');
+            }
             $leixing = input('post.leixing');
             $names = input('post.names');
             $address = input('post.address');
