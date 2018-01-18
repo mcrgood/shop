@@ -44,7 +44,7 @@ class Myhome extends BaseController
             	->join('ns_goods_login m','a.userid=m.id','LEFT')
             	->find($id);
             $this->assign("row", $row); 
-
+            //dump($row);die;
 		return view($this->style . "Myhome/registerdetail");
 	}
 
@@ -74,6 +74,10 @@ class Myhome extends BaseController
 
 	public function yudingdel(){
 		
+	}
+
+	public function yingshou(){
+		return view($this->style . "Myhome/yingshou");
 	}
 
 }
