@@ -16,7 +16,7 @@
 	<dl>
 		<dt><span class="required"></span>店铺类型：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="leixing" value="{$row.leixing}"  disabled="disabled"></p>
+			<p><input class="input-common" id="user_password" type="text" name="leixing" value="{if $row.leixing eq 1}餐饮{elseif $row.leixing eq 2}酒店{elseif $row.leixing eq 3}养生{elseif $row.leixing eq 4}KTV{elseif $row.leixing eq 5}汽车{else/}其他{/if}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
@@ -62,6 +62,18 @@
 		</dd>
 	</dl>
 	<dl>
+		<dt><span class="required"></span>所在省：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="sheng" value="{$row.sheng}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>所在市：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="shi" value="{$row.shi}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
 		<dt><span class="required"></span>银行卡姓名：</dt>
 		<dd>
 			<p><input class="input-common" id="user_password" type="text" name="yhk_name" value="{$row.yhk_name}" disabled="disabled"></p>
@@ -74,15 +86,15 @@
 		</dd>
 	</dl>
 	<dl>
-		<dt><span class="required"></span>银行卡分行：</dt>
-		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="yhk_address" value="{$row.yhk_address}" disabled="disabled"></p>
-		</dd>
-	</dl>
-	<dl>
 		<dt><span class="required"></span>所属银行：</dt>
 		<dd>
 			<p><input class="input-common" id="user_password" type="text" name="bank" value="{$row.bank}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>银行卡支行：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="yhk_address" value="{$row.yhk_address}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
@@ -102,6 +114,27 @@
 		<dd>
 		<div class="controls" id="discripContainer">
 			<textarea style="outline:none;resize:none;height:200px;" name="content" disabled="disabled">{$row.content}</textarea>
+		</div>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>经度：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="jingdu" value="{$row.jingdu}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>纬度：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="weidu" value="{$row.weidu}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><i class="required"></i>审核：</dt>
+		<dd>
+		<div class="controls" id="discripContainer">
+			<button>审核通过</button>
+			<button>返回重审</button>
 		</div>
 		</dd>
 	</dl>

@@ -16,13 +16,9 @@
 {block name="main"}
 <table class="mytable">
 	<tr>
-		<!-- <th width="30%" style="text-align: left;"> -->
-			<!-- <button class="btn-common-delete btn-small" onclick="batchDelete()" style="margin:0 5px 0 0 !important;">批量删除</button> -->
-			<!-- <button class="btn-common btn-small" onclick="addBrand()" style="margin:0 5px 0 0 !important;">添加品牌</button> -->
-		<!-- </th> -->
 		<th width="20%">
-			<input type="text" id = 'search_text' placeholder="输入手机号码" class="input-common"/>
-			<input type="button" onclick="LoadingInfo(1)" value="查找" class="btn-common"/>
+			<input type="text" id = 'search_text' placeholder="账号 / 店铺名称" class="input-common"/>
+			<input type="button" onclick="LoadingInfo(1)" value="搜索" class="btn-common"/>
 		</th>
 	</tr>
 </table>
@@ -34,6 +30,7 @@
 			<th>店铺名称</th>
 			<th>店铺地址</th>
 			<th>店铺电话</th>
+			<th>审核状态</th>
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -41,11 +38,16 @@
 	{foreach name="list" id="v"}
 		<tr>
 			<th>{$v.iphone}</th>
-			<th>{$v.leixing}</th>
+			<th>{if $v.leixing eq 1}餐饮
+				{elseif $v.leixing eq 2}酒店
+				{elseif $v.leixing eq 3}养生
+				{elseif $v.leixing eq 4}KTV
+				{elseif $v.leixing eq 5}汽车
+				{else/}其他{/if}</th>
 			<th>{$v.names}</th>
 			<th>{$v.address}</th>
 			<th>{$v.tel}</th>
-			 <!-- <th><a href="_'ADMIN_MAIN/myhome/registerdetail?id='')">详细查看</a></th> -->
+			<th>{if $v.state eq 0}未审核{else/}已审核{/if}</th>
 			<th><a href="{:url('registerdetail',array('id'=>$v['id']))}">详细查看</a></th>
 		</tr>
 	{/foreach}
@@ -92,40 +94,7 @@ function LoadingInfo(page_index) {
 	});
 }
 
-/* 删除品牌 */
-function delBrand(brand_id) {
-	$( "#dialog" ).dialog({
-		buttons: {
-			"确定": function() {
-				$(this).dialog('close');
-				$.ajax({
-					type : "post",
-					url : "{:__URL('ADMIN_MAIN/goods/deletegoodsbrand')}",
-					data : { 'brand_id' : brand_id.toString() },
-					dataType : "json",
-					success : function(data) {
-						if (data['code'] > 0) {
-							LoadingInfo(getCurrentIndex(brand_id,'.table-class tbody'));
-							showMessage('success', data["message"]);
-						}else{
-							showMessage('error', data["message"]);
-						}
-					}
-				});
-			},"取消,#e57373" : function(){
-				$(this).dialog('close');
-			}
-		},
-		contentText:"你确定删除吗？",
-		title:"消息提醒"
-	});
-}
 
-//全选
-function CheckAll(event){
-	var checked = event.checked;
-	$(".table-class tbody input[type = 'checkbox']").prop("checked",checked);
-}
 </script>
 {/block}
 

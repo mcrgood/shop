@@ -12,6 +12,7 @@ use data\service\GoodsCategory as GoodsCategory;
 use data\service\GoodsGroup as GoodsGroup;
 use data\service\Supplier;
 use think\Request;
+header("Content-Type: text/html; charset=UTF-8"); //编码
 
 class Myhome extends BaseController
 {
@@ -39,13 +40,10 @@ class Myhome extends BaseController
                 $this->error("没有获取到用户信息");
             }
             $row = db("ns_shop_message")
-            ->alias('a')
-            ->join('ns_goods_login m','a.userid=m.id','LEFT')
-            ->find($id);
-
+            	->alias('a')
+            	->join('ns_goods_login m','a.userid=m.id','LEFT')
+            	->find($id);
             $this->assign("row", $row); 
-			//$row = db("ns_shop_message")->find($id);
-			//$this->assign('row',$row);
 
 		return view($this->style . "Myhome/registerdetail");
 	}
@@ -53,7 +51,29 @@ class Myhome extends BaseController
 	public function yuding(){
 		$list = db("ns_goods_reserve")->select();
 		$this->assign('list',$list);
+		if($list){
+			foreach ($list as $k => $v) {
+				$list[$k]['time'] = $v['time'];
+			}
+		}
+		$pass = $list[$k]['time'];
+		//dump($pass);die;
+		$now = time();
+		$tf = $now-$pass>0;
+		if($tf){
+			$tf = "过期";
+		}else{
+			$tf = "正常";
+		}
+		//print_r($tf) ;die;
+		//$pass = strtotime();
+		//dump($pass);
+		//dump($now);die;
 		return view($this->style . "Myhome/yuding");
+	}
+
+	public function yudingdel(){
+		
 	}
 
 }
