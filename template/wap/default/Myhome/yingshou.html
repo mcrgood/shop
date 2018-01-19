@@ -5,14 +5,13 @@
 <title>今日营收</title>
 </head>
 <style>
-*{padding: 0px;margin:0px;}
 .big{margin: 0 auto;height: 100%;}
 .top_1{margin: 0 auto;width:100%;height: 500px;}
 .top_2{width:100%;height: 150px;background:#fd5454;}
 .dian{
 	color:white;
 	line-height:40px;
-	width: 155px;
+	width: 15%;
     height: 150px;
     line-height: 120px;
     font-size: 50px;
@@ -21,10 +20,11 @@
 	float: left;
 	background: url('__INDEX__/images/10_03.png') no-repeat;
 	background-position: 25px;
+	cursor: pointer;
 }
 .name1{
 	float: left;
-    width: 650px;
+    width: 70%;
     text-align: center;
     height: 150px;
     font-size: 55px;
@@ -34,13 +34,14 @@
 }
 .back1{
 	float: left;
-    width: 155px;
+    width: 15%;
     text-align: center;
     height: 150px;
     font-size: 55px;
     font-weight: bold;
     color: white;
     line-height: 140px;
+	cursor: pointer;
 }
 .middle{
 	width: 100%;
@@ -117,9 +118,9 @@
 <div class="big">
 	<div class="top_1">
 		<div class="top_2">
-			<div class="dian"></div>
+			<div class="dian" onclick="javascrtpt:window.location.href=''"></div>
 			<div class="name1">客旺旺</div>
-			<div class="back1">退出</div>
+			<div class="back1" onclick="javascrtpt:window.location.href=''">退出</div>
 		</div>
 		<div class="middle">
 			<div class="middle_left">
@@ -137,19 +138,19 @@
 			<ul>
 				<li class="weima">
 					<img src="__INDEX__/images/12_03.png" />
-					<span class="wenzi">二维码&nbsp></span>
+					<a href=""><span class="wenzi">二维码&nbsp></span></a>
 				</li>
 				<li class="bill">
 					<img src="__INDEX__/images/1_03.png" />
-					<span class="wenzi">账单&nbsp></span>
+					<a href="{:url('jinge',array('id'=>$v['id']))}"><span class="wenzi">账单&nbsp></span></a>
 				</li>
 				<li class="member">
 					<img src="__INDEX__/images/2_03.png" />
-					<span class="wenzi">会员&nbsp></span>
+					<a href=""><span class="wenzi">会员&nbsp></span></a>
 				</li>
 				<li class="info">
 					<img src="__INDEX__/images/3_03.png" />
-					<span class="wenzi">消息&nbsp></span>
+					<a href=""><span class="wenzi">消息&nbsp></span></a>
 				</li>
 			</ul>
 		</div>

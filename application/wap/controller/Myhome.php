@@ -191,8 +191,17 @@ class Myhome extends Controller{
         }
         return view($this->style . 'Myhome/findpasswd');
     }
+
     public function yingshou(){
         return view($this->style . 'Myhome/yingshou');
+    }
+
+    public function jinge(){
+        return view($this->style . 'Myhome/jinge');
+    }
+    
+    public function sous(){
+        return view($this->style . 'Myhome/sous');
     }
 
     //退出登录
@@ -450,6 +459,7 @@ class Myhome extends Controller{
         return $this->fetch('',['signPackage'=>$package,'shopinfo'=>$shop]);
 
     }
+
 
 
 

@@ -79,7 +79,9 @@ class Myhome extends BaseController
 	public function yingshou(){
 		return view($this->style . "Myhome/yingshou");
 	}
-
+	public function jinge(){
+		return view($this->style . "Myhome/jinge");
+	}
 }
 
  ?>
