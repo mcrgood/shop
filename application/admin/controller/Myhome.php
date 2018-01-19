@@ -73,21 +73,6 @@ class Myhome extends BaseController
 				}
 			}
 		}
-		// if($list){
-		// 	foreach($list as $k => $v){
-		// 		$list[$k]['time'] = $v['time'];
-		// 		$pass = strtotime($list[$k]['time']);
-		// 		dump($pass);die;
-		// 		//$tf = $now-$pass>0;
-		// 		if($pass-$now){
-		// 			$tf = "过期";
-		// 		}else{
-		// 			$tf = "正常";
-		// 		}
-		// 	}
-		// }
-		// dump($list);die;
-		
 		$this->assign('list',$list);
 		return view($this->style . "Myhome/yuding");
 	}

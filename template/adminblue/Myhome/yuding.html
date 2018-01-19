@@ -1,5 +1,6 @@
 {extend name="adminblue/base" /}
 {block name="resources"/}
+<script src="http://code.jquery.com/jquery-1.4.1.min.js" type="text/javascript"></script> 
 <style>
 .brand_img{
 	width: 168px;
@@ -17,7 +18,7 @@
 <table class="mytable">
 	<tr>
 		<th width="30%" style="text-align: left;">
-			<button class="btn-common-delete btn-small" onclick="batchDelete()" style="margin:0 5px 0 0 !important;">批量删除</button>
+			<button class="btn-common-delete btn-small"  style="margin:0 5px 0 50 !important;">批量删除</button>
 		</th>
 		<form action="{:url('myhome/yuding')}" method="get">
 		<th width="20%">
@@ -33,7 +34,9 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th></th>
+			<th style="text-align: left;width:10%;padding-left:20px;">
+				<button class="btn-common-delete btn-small" id="btn1" style="margin:0 5px 0 0 !important;">全选</button>
+			</th>
 			<th>类型</th>
 			<th>姓名</th>
 			<th>时间段</th>
@@ -45,7 +48,7 @@
 	<thead>
 		{foreach name="list" id="v"}
 		<tr>
-			<th><input type="checkbox" onclick="CheckAll(this)" /></th>
+			<th style="padding-right:50px"><input type="checkbox" name="checkbox" /></th>
 			<th>{$v.type}</th>
 			<th>{$v.name}</th>
 			<th>{$v.time}</th>
@@ -60,28 +63,71 @@
 {block name="script"}
 <script type="text/javascript">
 
-//批量删除
-function batchDelete(){
-	var brand_ids = new Array();
-	$(".table-class tbody input[type='checkbox']:checked").each(function() {
-		if (!isNaN($(this).val())) {
-			brand_ids.push($(this).val());
-		}
-	});
-	if(brand_ids.length==0){
-		$( "#dialog" ).dialog({
-			buttons: {
-				"确定,#e57373": function() {
-					$(this).dialog('close');
-				}
-			},
-			contentText:"请选择需要操作的记录",
-			title:"消息提醒",
-		});
-		return false;
-	}
-	delBrand(brand_ids);
+jQuery(function($){ 
+	//全选 
+	$("#btn1").click(function(){ 
+		$("input[name='checkbox']").attr("checked","true"); 
+	}) 
 }
 
+//批量删除
+
+
+// function batchDelete(){
+// 	var brand_ids = new Array();
+// 	$(".table-class tbody input[type='checkbox']:checked").each(function() {
+// 		if (!isNaN($(this).val())) {
+// 			brand_ids.push($(this).val());
+// 		}
+// 	});
+// 	if(brand_ids.length==0){
+// 		$( "#dialog" ).dialog({
+// 			buttons: {
+// 				"确定,#e57373": function() {
+// 					$(this).dialog('close');
+// 				}
+// 			},
+// 			contentText:"请选择需要操作的记录",
+// 			title:"消息提醒",
+// 		});
+// 		return false;
+// 	}
+// 	delBrand(brand_ids);
+// }
+// function LoadingInfo(page_index) {
+// 	$.ajax({
+// 		type : "post",
+// 		url : "{:__URL('ADMIN_MAIN/myhome/registerlist')}",
+// 		data : {
+// 			"page_index" : page_index,
+// 			"page_size" : $("#showNumber").val(),
+// 			"search_text" : $("#search_text").val()
+// 		},
+// 		success : function(data) {
+// 			var html = '';
+// 			if (data["data"].length > 0) {
+// 				for (var i = 0; i < data["data"].length; i++) {
+// 					html += '<tr align="center">';
+// 					html += '<td><input name="sub" type="checkbox" value="'+ data["data"][i]["brand_id"] +'" ></td>';
+// 					if(data["data"][i]["brand_pic"]==''){
+// 						html += '<td></td>';
+// 					}else{
+// 						html += '<td><div class="brand_img"><img src="'+ __IMG(data["data"][i]["brand_pic"]) +'"></div></td>';
+// 					}
+// 					html += '<td>' + data["data"][i]["brand_name"] + '</td>';
+// 					html += '<td>' + data["data"][i]["brand_initial"] + '</td>';
+// 					html += '<td>'+data["data"][i]['category_id_1_name']+'&nbsp;'+data["data"][i]['category_id_2_name']+'&nbsp;'+data["data"][i]['category_id_3_name']+'</td>';
+// 					html += '<td><a href="'+__URL('ADMIN_MAIN/goods/updategoodsbrand?brand_id=' + data["data"][i]["brand_id"] )+ '">修改</a>  <a href="javascript:delBrand(' + data["data"][i]["brand_id"] + ')">删除</a></td> ';
+// 					html += '</tr>';
+// 				}
+// 			} else {
+// 				html += '<tr align="center"><td colspan="9">暂无符合条件的数据记录</td></tr>';
+// 			}
+// 			$(".table-class tbody").html(html);
+// 			initPageData(data["page_count"],data['data'].length,data['total_count']);
+// 			$("#pageNumber").html(pagenumShow(jumpNumber,$("#page_count").val(),{$pageshow}));
+// 		}
+// 	});
+// }
 </script>
 {/block}
