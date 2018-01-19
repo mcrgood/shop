@@ -27,6 +27,7 @@ use data\service\Weixin;
 use think\Controller;
 use think\Session;
 use think\Cookie;
+use data\extend\chuanglan\ChuanglanSmsApi;
 \think\Loader::addNamespace('data', 'data/');
 
 /**
@@ -521,6 +522,22 @@ class Login extends Controller
         return AjaxReturn($result);
     }
 
+    public function mobile_login()
+    {
+        if (request()->isAjax()) {
+            $password = request()->post('password', '');
+            $mobile = request()->post('mobile', '');
+            $info = Db::table("ns_goods_login")->where("iphone='".$mobile."' and password='".md5($password)."'")
+                ->field("id")
+                ->find();
+            if ($info)
+                Session::set('business_id', $info['id']);
+            $retval = AjaxReturn(1);
+
+            return $retval;
+        }
+
+    }
     /**
      * 注册账户
      */
@@ -1077,47 +1094,50 @@ class Login extends Controller
         return $count;
     }
 
-    /**
-     * 发送注册短信验证码
-     *
-     * @return boolean
-     */
     public function sendSmsRegisterCode()
     {
         $params['mobile'] = request()->post('mobile', '');
         $vertification = request()->post('vertification', '');
-        
+
         $web_config = new WebConfig();
         $code_config = $web_config->getLoginVerifyCodeConfig($this->instance_id);
-        
+
         if ($code_config["value"]['pc'] == 1 && ! captcha_check($vertification)) {
             $result = [
                 'code' => - 1,
                 'message' => "验证码错误"
             ];
         } else {
-            $params['shop_id'] = 0;
-            $result = runhook('Notify', 'registBefor', $params);
-            Session::set('mobileVerificationCode', $result['param']);
-            Session::set('sendMobile', $params['mobile']);
+//            $params['shop_id'] = 0;
+//            $result = runhook('Notify', 'registBefor', $params);
+            $clapi  = new ChuanglanSmsApi();
+            $code = mt_rand(100000,999999);
+            $result = $clapi->sendSMS($params['mobile'], '【花儿盛开】您好，您的验证码是:'. $code);
+            if(!is_null(json_decode($result))){
+                $output=json_decode($result,true);
+                if(isset($output['code'])  && $output['code']=='0'){
+                    Session::set('mobileVerificationCode', $code);
+                    Session::set('sendMobile', $params['mobile']);
+                    return $result = [
+                        'code' => 0,
+                        'message' => "发送成功"
+                    ];
+                }else{
+                    return $result = [
+                        'code' => $output['code'],
+                        'message' => $output["errorMsg"]
+                    ];
+                }
+            }else{
+                return $result = [
+                    'code' => - 1,
+                    'message' => "发送失败"
+                ];
+            }
+
+
         }
-        
-        if (empty($result)) {
-            return $result = [
-                'code' => - 1,
-                'message' => "发送失败"
-            ];
-        }else if($result["code"] != 0) {
-            return $result = [
-                'code' => $result["code"],
-                'message' => $result["message"]
-            ];
-        }else if($result["code"] == 0) {
-            return $result = [
-                'code' => 0,
-                'message' => "发送成功"
-            ];
-        }
+
     }
 
     /**
