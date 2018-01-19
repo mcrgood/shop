@@ -191,8 +191,17 @@ class Myhome extends Controller{
         }
         return view($this->style . 'Myhome/findpasswd');
     }
+
     public function yingshou(){
         return view($this->style . 'Myhome/yingshou');
+    }
+
+    public function jinge(){
+        return view($this->style . 'Myhome/jinge');
+    }
+    
+    public function sous(){
+        return view($this->style . 'Myhome/sous');
     }
 
     //退出登录
@@ -254,7 +263,7 @@ class Myhome extends Controller{
             $data['weidu'] = $weidu;
             $id = db('ns_shop_message')->insert($data);
             if($id){
-                $this->success('申请成功，请等待审核！');
+                $this->success('申请成功，请等待审核！',__URL('ADMIN_MAIN/Myhome/yingshou'));
             }else{
                 $this->error('申请失败！');
             }
@@ -450,6 +459,7 @@ class Myhome extends Controller{
         return $this->fetch('',['signPackage'=>$package,'shopinfo'=>$shop]);
 
     }
+
 
 
 
