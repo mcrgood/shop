@@ -22,6 +22,7 @@ use data\service\WebSite as WebSite;
 use think\Controller;
 use think\Session;
 use think\Cookie;
+use data\extend\chuanglan\ChuanglanSmsApi;
 \think\Loader::addNamespace('data', 'data/');
 
 /**
@@ -335,11 +336,35 @@ class Login extends Controller
                 Session::set('mobileVerificationCode', $result['param']);
             }
         } else {
-            $params['shop_id'] = 0;
+            /*$params['shop_id'] = 0;
             $result = runhook('Notify', 'registBefor', $params);
-            Session::set('mobileVerificationCode', $result['param']);
+            Session::set('mobileVerificationCode', $result['param']);*/
+            $clapi  = new ChuanglanSmsApi();
+            $code = mt_rand(100000,999999);
+            $result = $clapi->sendSMS($params['mobile'], '【花儿盛开】您好，您的验证码是:'. $code);
+            if(!is_null(json_decode($result))){
+                $output=json_decode($result,true);
+                if(isset($output['code'])  && $output['code']=='0'){
+                    Session::set('mobileVerificationCode', $code);
+                    Session::set('sendMobile', $params['mobile']);
+                    return $result = [
+                        'code' => 0,
+                        'message' => "发送成功"
+                    ];
+                }else{
+                    return $result = [
+                        'code' => $output['code'],
+                        'message' => $output["errorMsg"]
+                    ];
+                }
+            }else{
+                return $result = [
+                    'code' => - 1,
+                    'message' => "发送失败"
+                ];
+            }
         }
-        if (empty($result)) {
+       /* if (empty($result)) {
             return $result = [
                 'code' => - 1,
                 'message' => "发送失败"
@@ -354,7 +379,7 @@ class Login extends Controller
                 'code' => $result['code'],
                 'message' => $result['message']
             ];
-        }
+        }*/
     }
 
     /**
@@ -673,13 +698,14 @@ class Login extends Controller
                     Session::set("codeEmail", $send_param);
                 }
             }
-            $params = array(
+          $params = array(
                 "send_type" => $send_type,
                 "send_param" => $send_param,
                 "shop_id" => $shop_id
             );
-            $result = runhook("Notify", "forgotPassword", $params);
+        /*    $result = runhook("Notify", "forgotPassword", $params);
             Session::set('forgotPasswordVerificationCode', $result['param']);
+
             
             if (empty($result)) {
                 return $result = [
@@ -695,6 +721,30 @@ class Login extends Controller
                 return $result = [
                     'code' => $result['code'],
                     'message' => $result['message']
+                ];
+            }*/
+            $clapi  = new ChuanglanSmsApi();
+            $code = mt_rand(100000,999999);
+            $result = $clapi->sendSMS($params['send_param'], '【花儿盛开】您好，您的验证码是:'. $code);
+            if(!is_null(json_decode($result))){
+                $output=json_decode($result,true);
+                if(isset($output['code'])  && $output['code']=='0'){
+                    Session::set('forgotPasswordVerificationCode', $code);
+                   // Session::set('sendMobile', $params['mobile']);
+                    return $result = [
+                        'code' => 0,
+                        'message' => "发送成功"
+                    ];
+                }else{
+                    return $result = [
+                        'code' => $output['code'],
+                        'message' => $output["errorMsg"]
+                    ];
+                }
+            }else{
+                return $result = [
+                    'code' => - 1,
+                    'message' => "发送失败"
                 ];
             }
         }
