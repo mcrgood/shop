@@ -26,11 +26,18 @@ class Myhome extends BaseController
     }
 
 	public function registerlist(){
-		$list = db("ns_goods_login")
-			 ->alias('a')
-			 ->join('ns_shop_message m','a.id=m.userid','LEFT')
-			 ->select();
-		$this->assign('list',$list);
+		$keyword = input('get.keyword');
+			if($keyword){
+				$where['iphone|names'] = ['like',"%$keyword%"];
+			}else{
+				$where = [];
+			}
+			$list = db('ns_goods_login')
+				 ->alias('a')
+				 ->join('ns_shop_message m','a.id=m.userid','LEFT')
+				 ->where($where)
+				 ->select();
+			$this->assign('list',$list);
 		return view($this->style . "Myhome/registerlist");
 	}
 
@@ -49,7 +56,13 @@ class Myhome extends BaseController
 	}
 
 	public function yuding(){
-		$list = db("ns_goods_reserve")->select();
+		$keyword = input('get.keyword');
+		if($keyword){
+				$where['name|iphone'] = ['like',"%$keyword%"];
+			}else{
+				$where = [];
+			}
+		$list = db("ns_goods_reserve")->where($where)->select();
 		$this->assign('list',$list);
 		if($list){
 			foreach ($list as $k => $v) {
@@ -79,6 +92,7 @@ class Myhome extends BaseController
 	public function yingshou(){
 		return view($this->style . "Myhome/yingshou");
 	}
+
 	public function jinge(){
 		return view($this->style . "Myhome/jinge");
 	}
