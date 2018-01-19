@@ -72,7 +72,8 @@
                 success : function(data) {
                     if(data["code"] > 0 ){
                         if(data["code"] == 1){
-                            setTimeout(function(){location.href = data['url']},1000);
+                            //setTimeout(function(){location.href = data['url']},1000);
+                            setTimeout(function(){location.href="{:__URL('APP_MAIN/Myhome/yingshou')}"},1000);
                         }else{
                             setTimeout(function(){location.href="{:__URL('APP_MAIN/Myhome/yingshou')}"},1000);
                         }
