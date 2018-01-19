@@ -19,10 +19,12 @@
 		<th width="30%" style="text-align: left;">
 			<button class="btn-common-delete btn-small" onclick="batchDelete()" style="margin:0 5px 0 0 !important;">批量删除</button>
 		</th>
+		<form action="{:url('myhome/yuding')}" method="get">
 		<th width="20%">
-			<input type="text" id = 'search_text' placeholder="输入姓名 / 预定电话" class="input-common"/>
-			<input type="button" onclick="LoadingInfo(1)" value="搜索" class="btn-common"/>
+			<input type="text" name="keyword" id = 'search_text' placeholder="输入姓名 / 预定电话" class="input-common"/>
+			<input type="submit" value="搜索" class="btn-common"/>
 		</th>
+		</form>
 	</tr>
 </table>
 <table class="table-class">
