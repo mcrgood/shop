@@ -263,7 +263,7 @@ class Myhome extends Controller{
             $data['weidu'] = $weidu;
             $id = db('ns_shop_message')->insert($data);
             if($id){
-                $this->success('申请成功，请等待审核！');
+                $this->success('申请成功，请等待审核！',__URL('ADMIN_MAIN/Myhome/yingshou'));
             }else{
                 $this->error('申请失败！');
             }
