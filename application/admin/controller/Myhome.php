@@ -56,6 +56,7 @@ class Myhome extends BaseController
 	}
 
 	public function yuding(){
+		//搜索+列表页
 		$keyword = input('get.keyword');
 		if($keyword){
 				$where['name|iphone'] = ['like',"%$keyword%"];
@@ -64,13 +65,13 @@ class Myhome extends BaseController
 			}
 		$list = db("ns_goods_reserve")->where($where)->select();
 		$this->assign('list',$list);
+		
 		if($list){
 			foreach ($list as $k => $v) {
 				$list[$k]['time'] = $v['time'];
 			}
 		}
 		$pass = $list[$k]['time'];
-		//dump($pass);die;
 		$now = time();
 		$tf = $now-$pass>0;
 		if($tf){
