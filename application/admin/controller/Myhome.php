@@ -34,7 +34,7 @@ class Myhome extends BaseController
 			}
 			$list = db('ns_goods_login')
 				 ->alias('a')
-				 ->join('ns_shop_message m','a.id=m.userid','LEFT')
+				 ->join('ns_shop_message m','a.loginid=m.userid','LEFT')
 				 ->where($where)
 				 ->select();
 			$this->assign('list',$list);
@@ -48,10 +48,22 @@ class Myhome extends BaseController
             }
             $row = db("ns_shop_message")
             	->alias('a')
-            	->join('ns_goods_login m','a.userid=m.id','LEFT')
+            	->join('ns_goods_login m','a.userid=m.loginid','LEFT')
             	->find($id);
             $this->assign("row", $row); 
+           
 		return view($this->style . "Myhome/registerdetail");
+	}
+
+	public function registerdetail_edit(){
+		if(request()->isAjax()){
+			$id = input('post.id');
+			$row = db("ns_shop_message")->find($id);
+			//dump($row);die;
+			$date['state'] = 0;
+			$data = db('ns_shop_message')->where('id',$id)->update($date);
+			
+		}
 	}
 
 	public function yuding(){
@@ -77,9 +89,6 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/yuding");
 	}
 
-	public function yudingdel(){
-		
-	}
 
 	public function yingshou(){
 		return view($this->style . "Myhome/yingshou");

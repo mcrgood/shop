@@ -1,6 +1,6 @@
 {extend name="adminblue/base" /}
 {block name="resources"/}
-<script src="http://code.jquery.com/jquery-1.4.1.min.js" type="text/javascript"></script> 
+<script type="text/javascript" src="__STATIC__/My97DatePicker/WdatePicker.js"></script>
 <style>
 .brand_img{
 	width: 168px;
@@ -18,7 +18,7 @@
 <table class="mytable">
 	<tr>
 		<th width="30%" style="text-align: left;">
-			<button class="btn-common-delete btn-small"  style="margin:0 5px 0 50 !important;">批量删除</button>
+			<button class="btn-common-delete btn-small btn-smalll" style="margin:0 5px 0 50 !important;">批量删除</button>
 		</th>
 		<form action="{:url('myhome/yuding')}" method="get">
 		<th width="20%">
@@ -58,76 +58,42 @@
 		</tr>
 		{/foreach}
 	</thead>
+	
+
+
 </table>
+<!-- //分页 -->
+<div class="pagination">
+	<ul class="pagination">
+		<li class="total-data" data-total-count="4">共4条数据</li>
+		<li class="according-number">每页显示<input type="text" class="input-medium" id="showNumber" value="11" data-default="1" autocomplete="off">条</li>
+		<li><a id="beginPage" class="page-disable" style="border: 1px solid #dddddd;">首页</a></li>
+		<li><a id="prevPage" class="page-disable">上一页</a></li>
+		<li id="pageNumber"><a onclick="JumpForPage(this)" class="currentPage">1</a><a onclick="JumpForPage(this)">2</a><a onclick="JumpForPage(this)">3</a><a onclick="JumpForPage(this)">4</a></li>
+		<li><a id="nextPage" class="">下一页</a></li>
+		<li><a id="lastPage" class="">末页</a></li>
+		<li class="page-count">共4页</li>
+	</ul>
+</div>
+<script type="text/javascript"> 
+	//全选
+	// jQuery(function($){ 
+	// 	$("#btn1").click(function(){ 
+	// 		$("input[name='checkbox']").attr("checked","true"); 
+	// 	}) 
+	// }) 
+	var a=1;
+	$("#btn1").click(function(){
+		if(a==1){
+			$("input[type='checkbox']").prop('checked',true);
+			a = 0;
+		}else{
+			$("input[type='checkbox']").prop('checked',false);
+			a = 1;
+		}
+	})
+</script> 
 {/block}
 {block name="script"}
-<script type="text/javascript">
 
-jQuery(function($){ 
-	//全选 
-	$("#btn1").click(function(){ 
-		$("input[name='checkbox']").attr("checked","true"); 
-	}) 
-}
-
-//批量删除
-
-
-// function batchDelete(){
-// 	var brand_ids = new Array();
-// 	$(".table-class tbody input[type='checkbox']:checked").each(function() {
-// 		if (!isNaN($(this).val())) {
-// 			brand_ids.push($(this).val());
-// 		}
-// 	});
-// 	if(brand_ids.length==0){
-// 		$( "#dialog" ).dialog({
-// 			buttons: {
-// 				"确定,#e57373": function() {
-// 					$(this).dialog('close');
-// 				}
-// 			},
-// 			contentText:"请选择需要操作的记录",
-// 			title:"消息提醒",
-// 		});
-// 		return false;
-// 	}
-// 	delBrand(brand_ids);
-// }
-// function LoadingInfo(page_index) {
-// 	$.ajax({
-// 		type : "post",
-// 		url : "{:__URL('ADMIN_MAIN/myhome/registerlist')}",
-// 		data : {
-// 			"page_index" : page_index,
-// 			"page_size" : $("#showNumber").val(),
-// 			"search_text" : $("#search_text").val()
-// 		},
-// 		success : function(data) {
-// 			var html = '';
-// 			if (data["data"].length > 0) {
-// 				for (var i = 0; i < data["data"].length; i++) {
-// 					html += '<tr align="center">';
-// 					html += '<td><input name="sub" type="checkbox" value="'+ data["data"][i]["brand_id"] +'" ></td>';
-// 					if(data["data"][i]["brand_pic"]==''){
-// 						html += '<td></td>';
-// 					}else{
-// 						html += '<td><div class="brand_img"><img src="'+ __IMG(data["data"][i]["brand_pic"]) +'"></div></td>';
-// 					}
-// 					html += '<td>' + data["data"][i]["brand_name"] + '</td>';
-// 					html += '<td>' + data["data"][i]["brand_initial"] + '</td>';
-// 					html += '<td>'+data["data"][i]['category_id_1_name']+'&nbsp;'+data["data"][i]['category_id_2_name']+'&nbsp;'+data["data"][i]['category_id_3_name']+'</td>';
-// 					html += '<td><a href="'+__URL('ADMIN_MAIN/goods/updategoodsbrand?brand_id=' + data["data"][i]["brand_id"] )+ '">修改</a>  <a href="javascript:delBrand(' + data["data"][i]["brand_id"] + ')">删除</a></td> ';
-// 					html += '</tr>';
-// 				}
-// 			} else {
-// 				html += '<tr align="center"><td colspan="9">暂无符合条件的数据记录</td></tr>';
-// 			}
-// 			$(".table-class tbody").html(html);
-// 			initPageData(data["page_count"],data['data'].length,data['total_count']);
-// 			$("#pageNumber").html(pagenumShow(jumpNumber,$("#page_count").val(),{$pageshow}));
-// 		}
-// 	});
-// }
-</script>
 {/block}
