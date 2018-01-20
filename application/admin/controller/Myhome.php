@@ -48,7 +48,7 @@ class Myhome extends BaseController
             }
             $row = db("ns_shop_message")
             	->alias('a')
-            	->join('ns_goods_login m','a.userid=m.loginid','LEFT')
+            	->join('ns_goods_login m','a.userid=m.id','LEFT')
             	->find($id);
             $this->assign("row", $row); 
            
