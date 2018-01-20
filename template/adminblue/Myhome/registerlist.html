@@ -45,11 +45,12 @@
 				{elseif $v.leixing eq 3}养生
 				{elseif $v.leixing eq 4}KTV
 				{elseif $v.leixing eq 5}汽车
-				{else/}其他{/if}</th>
+				{elseif $v.leixing eq 6}其他
+				{else/}出错X{/if}</th>
 			<th>{$v.names}</th>
 			<th>{$v.address}</th>
 			<th>{$v.tel}</th>
-			<th>{if $v.state eq 0}未审核{else/}已审核{/if}</th>
+			<th>{if $v.state eq 1}<span style="color:red">未审核</span>{elseif $v.state eq 2}<span style="color:black">重审中</span>{else/}<span style="color:blue;">已审核</span>{/if}</th>
 			<th><a href="{:url('registerdetail',array('id'=>$v['id']))}">查看详细</a></th>
 		</tr>
 	{/foreach}
@@ -57,46 +58,5 @@
 </table>
 {/block}
 {block name="script"}
-<script type="text/javascript">
-
-//加载数据
-function LoadingInfo(page_index) {
-	$.ajax({
-		type : "post",
-		url : "{:__URL('ADMIN_MAIN/myhome/registerlist')}",
-		data : {
-			"page_index" : page_index,
-			"page_size" : $("#showNumber").val(),
-			"search_text" : $("#search_text").val()
-		},
-		success : function(data) {
-			var html = '';
-			if (data["data"].length > 0) {
-				for (var i = 0; i < data["data"].length; i++) {
-					html += '<tr align="center">';
-					html += '<td><input name="sub" type="checkbox" value="'+ data["data"][i]["brand_id"] +'" ></td>';
-					if(data["data"][i]["brand_pic"]==''){
-						html += '<td></td>';
-					}else{
-						html += '<td><div class="brand_img"><img src="'+ __IMG(data["data"][i]["brand_pic"]) +'"></div></td>';
-					}
-					html += '<td>' + data["data"][i]["brand_name"] + '</td>';
-					html += '<td>' + data["data"][i]["brand_initial"] + '</td>';
-					html += '<td>'+data["data"][i]['category_id_1_name']+'&nbsp;'+data["data"][i]['category_id_2_name']+'&nbsp;'+data["data"][i]['category_id_3_name']+'</td>';
-					html += '<td><a href="'+__URL('ADMIN_MAIN/goods/updategoodsbrand?brand_id=' + data["data"][i]["brand_id"] )+ '">修改</a>  <a href="javascript:delBrand(' + data["data"][i]["brand_id"] + ')">删除</a></td> ';
-					html += '</tr>';
-				}
-			} else {
-				html += '<tr align="center"><td colspan="9">暂无符合条件的数据记录</td></tr>';
-			}
-			$(".table-class tbody").html(html);
-			initPageData(data["page_count"],data['data'].length,data['total_count']);
-			$("#pageNumber").html(pagenumShow(jumpNumber,$("#page_count").val(),{$pageshow}));
-		}
-	});
-}
-
-
-</script>
 {/block}
 

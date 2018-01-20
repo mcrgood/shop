@@ -1,5 +1,6 @@
 {extend name="adminblue/base" /}
 {block name="resources"/}
+<script type="text/javascript" src="__STATIC__/My97DatePicker/WdatePicker.js"></script>
 <style>
 .brand_img{
 	width: 168px;
@@ -17,7 +18,7 @@
 <table class="mytable">
 	<tr>
 		<th width="30%" style="text-align: left;">
-			<button class="btn-common-delete btn-small" onclick="batchDelete()" style="margin:0 5px 0 0 !important;">批量删除</button>
+			<button class="btn-common-delete btn-small btn-smalll" style="margin:0 5px 0 50 !important;">批量删除</button>
 		</th>
 		<form action="{:url('myhome/yuding')}" method="get">
 		<th width="20%">
@@ -33,7 +34,9 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th></th>
+			<th style="text-align: left;width:10%;padding-left:20px;">
+				<button class="btn-common-delete btn-small" id="btn1" style="margin:0 5px 0 0 !important;">全选</button>
+			</th>
 			<th>类型</th>
 			<th>姓名</th>
 			<th>时间段</th>
@@ -45,7 +48,7 @@
 	<thead>
 		{foreach name="list" id="v"}
 		<tr>
-			<th><input type="checkbox" onclick="CheckAll(this)" /></th>
+			<th style="padding-right:50px"><input type="checkbox" name="checkbox" /></th>
 			<th>{$v.type}</th>
 			<th>{$v.name}</th>
 			<th>{$v.time}</th>
@@ -55,33 +58,42 @@
 		</tr>
 		{/foreach}
 	</thead>
+	
+
+
 </table>
+<!-- //分页 -->
+<div class="pagination">
+	<ul class="pagination">
+		<li class="total-data" data-total-count="4">共4条数据</li>
+		<li class="according-number">每页显示<input type="text" class="input-medium" id="showNumber" value="11" data-default="1" autocomplete="off">条</li>
+		<li><a id="beginPage" class="page-disable" style="border: 1px solid #dddddd;">首页</a></li>
+		<li><a id="prevPage" class="page-disable">上一页</a></li>
+		<li id="pageNumber"><a onclick="JumpForPage(this)" class="currentPage">1</a><a onclick="JumpForPage(this)">2</a><a onclick="JumpForPage(this)">3</a><a onclick="JumpForPage(this)">4</a></li>
+		<li><a id="nextPage" class="">下一页</a></li>
+		<li><a id="lastPage" class="">末页</a></li>
+		<li class="page-count">共4页</li>
+	</ul>
+</div>
+<script type="text/javascript"> 
+	//全选
+	// jQuery(function($){ 
+	// 	$("#btn1").click(function(){ 
+	// 		$("input[name='checkbox']").attr("checked","true"); 
+	// 	}) 
+	// }) 
+	var a=1;
+	$("#btn1").click(function(){
+		if(a==1){
+			$("input[type='checkbox']").prop('checked',true);
+			a = 0;
+		}else{
+			$("input[type='checkbox']").prop('checked',false);
+			a = 1;
+		}
+	})
+</script> 
 {/block}
 {block name="script"}
-<script type="text/javascript">
 
-//批量删除
-function batchDelete(){
-	var brand_ids = new Array();
-	$(".table-class tbody input[type='checkbox']:checked").each(function() {
-		if (!isNaN($(this).val())) {
-			brand_ids.push($(this).val());
-		}
-	});
-	if(brand_ids.length==0){
-		$( "#dialog" ).dialog({
-			buttons: {
-				"确定,#e57373": function() {
-					$(this).dialog('close');
-				}
-			},
-			contentText:"请选择需要操作的记录",
-			title:"消息提醒",
-		});
-		return false;
-	}
-	delBrand(brand_ids);
-}
-
-</script>
 {/block}
