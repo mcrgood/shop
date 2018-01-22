@@ -1,6 +1,7 @@
 <?php
 namespace app\wap\controller;
 use data\extend\org\wechat\Jssdk;
+use data\service\Platform;
 class Indexx extends BaseController{
 
 	public function indexx(){
@@ -14,6 +15,26 @@ class Indexx extends BaseController{
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
         $package = $jssdk->getSignPackage();
         $this->assign('signPackage', $package);
+        // 首页轮播图
+        $platform = new Platform();
+        $plat_adv_list = $platform->getPlatformAdvPositionDetail(1175);
+        $this->assign('plat_adv_list', $plat_adv_list);
+        //餐饮通用券
+        $index_adv_one = $platform->getPlatformAdvPositionDetail(1170);
+        $this->assign('index_adv_one', $index_adv_one);
+        //酒店通用券
+        $index_adv_two = $platform->getPlatformAdvPositionDetail(1171);
+        $this->assign('index_adv_two', $index_adv_two);
+        //养生通用券
+        $index_adv_three = $platform->getPlatformAdvPositionDetail(1172);
+        $this->assign('index_adv_three', $index_adv_three);
+        // ktv通用券
+        $index_adv_four = $platform->getPlatformAdvPositionDetail(1173);
+        $this->assign('index_adv_four', $index_adv_four);
+        // 其他通用券
+        $index_adv_five = $platform->getPlatformAdvPositionDetail(1174);
+        $this->assign('index_adv_five', $index_adv_five);
+
 		return view($this->style . 'Index/indexx');
 	}
 
