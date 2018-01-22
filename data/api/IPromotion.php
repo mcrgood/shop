@@ -53,7 +53,7 @@ interface IPromotion
      * @param unknown $end_time
      * @param unknown $goods_list
     */
-    function addCouponType($coupon_name, $money, $count, $max_fetch, $at_least, $need_user_level, $range_type, $start_time, $end_time, $goods_list,$is_show);
+    function addCouponType($coupon_name, $money, $count, $max_fetch, $at_least, $need_user_level, $range_type, $start_time, $end_time, $goods_list,$is_show, $leixing);
     /**
      * 修改优惠券类型
      * @param unknown $data

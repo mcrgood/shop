@@ -129,7 +129,7 @@ class Promotion extends BaseService implements IPromotion
      *
      * @see \data\api\ICoupon::addCouponType()
      */
-    public function addCouponType($coupon_name, $money, $count, $max_fetch, $at_least, $need_user_level, $range_type, $start_time, $end_time, $is_show, $goods_list)
+    public function addCouponType($coupon_name, $money, $count, $max_fetch, $at_least, $need_user_level, $range_type, $start_time, $end_time, $is_show, $goods_list, $leixing)
     {
         $coupon_type = new NsCouponTypeModel();
         $error = 0;
@@ -161,7 +161,8 @@ class Promotion extends BaseService implements IPromotion
                 'range_type' => $range_type,
                 'start_time' => getTimeTurnTimeStamp($start_time),
                 'end_time' => getTimeTurnTimeStamp($end_time),
-                'is_show' => $is_show
+                'is_show' => $is_show,
+                'leixing' => $leixing
             );
             $coupon_type->save($data);
             $coupon_type_id = $coupon_type->coupon_type_id;

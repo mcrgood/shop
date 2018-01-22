@@ -11,6 +11,20 @@ input[type="radio"]{margin-top:6px;}
 {block name="main"}
 <div class="set-style">
 	<dl>
+		<dt><span class="required" style="color:red;">*</span>&nbsp;&nbsp;分类:</dt>
+		<dd>
+			<select name='leixing' id="leixing">
+				<option value="1">餐饮</option>
+				<option value="2">酒店</option>
+				<option value="3">养生</option>
+				<option value="4">KTV </option>
+				<option value="5">汽车</option>
+				<option value="6">其他</option>
+			</select>
+
+		</dd>
+	</dl>
+	<dl>
 		<dt><span class="required" style="color:red;">*</span>&nbsp;&nbsp;名称:</dt>
 		<dd>
 			<input type="text" id="coupon_name" maxlength="10" class="input-common">
@@ -88,6 +102,7 @@ function addCouponType(){
 	var is_show = $("input[name='navigationtype']:checked").val();
 	var obj = $(".select-two table tbody tr");
 	var goods_id_array = '';
+    var leixing=$("#leixing").find("option:selected").text();
 	obj.each(function(i){
 		goods_id_array += ','+obj.eq(i).attr("goodsid");
 	});
@@ -111,7 +126,8 @@ function addCouponType(){
 				'start_time' : start_time,
 				'end_time' : end_time,
 				'is_show' : is_show,
-				'goods_list' : goods_id_array
+				'goods_list' : goods_id_array,
+				'leixing'    : leixing
 			},
 			success : function(data) {
 				if (data["code"] > 0) {

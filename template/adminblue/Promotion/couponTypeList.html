@@ -106,9 +106,9 @@ function LoadingInfo(page_index) {
 					html += '<td>' + data["data"][i]["count"] + '</td>';
 					html += '<td>' + timeStampTurnTime(data["data"][i]["start_time"]) + '</td>';
 					html += '<td>' + timeStampTurnTime(data["data"][i]["end_time"]) + '</td>';
-					html += '<td><a href="'+__URL('ADMIN_MAIN/Promotion/updateCouponType?coupon_type_id=' + data["data"][i]["coupon_type_id"])+'">编辑</a>&nbsp;';
-					html += '<a href="javascript:void(0);"onclick="couponTypeInfo('+data["data"][i]["coupon_type_id"]+')">详情</a>'; 
-					html += '<a href="javascript:;" onclick="deletecouponType('+data["data"][i]["coupon_type_id"]+');">删除</a></td>';
+//					html += '<td><a href="'+__URL('ADMIN_MAIN/Promotion/updateCouponType?coupon_type_id=' + data["data"][i]["coupon_type_id"])+'">编辑</a>&nbsp;';
+					html += '<td><a href="javascript:void(0);"onclick="couponTypeInfo('+data["data"][i]["coupon_type_id"]+')">详情</a></td>';
+//					html += '<a href="javascript:;" onclick="deletecouponType('+data["data"][i]["coupon_type_id"]+');">删除</a></td>';
 					html += '</tr>';
 				}
 			} else {

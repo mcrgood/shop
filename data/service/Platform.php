@@ -486,7 +486,7 @@ class Platform extends BaseService implements IPlatform
      * (non-PHPdoc)
      * @see \data\api\IPlatform::addPlatformAdvPosition()
      */
-    public function addPlatformAdvPosition($instance_id, $ap_name, $ap_intro, $ap_class, $ap_display, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword)
+    public function addPlatformAdvPosition($instance_id, $ap_name, $ap_intro, $ap_class, $ap_display, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword, $sheng, $shi)
     {
         $platform_adv_position = new NsPlatformAdvPositionModel();
         $data = array(
@@ -501,7 +501,9 @@ class Platform extends BaseService implements IPlatform
             'default_content'   => $default_content,
             'ap_background_color'   => $ap_background_color,
             'type'   => $type,
-            'ap_keyword' => $ap_keyword
+            'ap_keyword' => $ap_keyword,
+            'sheng' => $sheng,
+            'shi' => $shi
         );
         $res = $platform_adv_position->save($data);
         return $res;
@@ -542,7 +544,7 @@ class Platform extends BaseService implements IPlatform
      * (non-PHPdoc)
      * @see \data\api\IPlatform::updatePlatformAdvPosition()
      */
-    public function updatePlatformAdvPosition($ap_id, $instance_id, $ap_name, $ap_intro, $ap_class, $ap_display, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword)
+    public function updatePlatformAdvPosition($ap_id, $instance_id, $ap_name, $ap_intro, $ap_class, $ap_display, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword, $sheng, $shi)
     {
         $platform_adv_position = new NsPlatformAdvPositionModel();
         $data = array(
@@ -557,7 +559,9 @@ class Platform extends BaseService implements IPlatform
             'default_content' => $default_content,
             'ap_background_color' => $ap_background_color,
             'type' => $type,
-            'ap_keyword' => $ap_keyword
+            'ap_keyword' => $ap_keyword,
+            'sheng' => $sheng,
+            'shi' => $shi
         );
         $res = $platform_adv_position->save($data, ['ap_id' => $ap_id]);
         return $res;

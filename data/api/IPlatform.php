@@ -152,7 +152,7 @@ interface IPlatform
      * @param unknown $ap_width
      * @param unknown $default_content
      */
-    function addPlatformAdvPosition($instance_id, $ap_name, $ap_intro, $ap_class, $ap_display, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword);
+    function addPlatformAdvPosition($instance_id, $ap_name, $ap_intro, $ap_class, $ap_display, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword, $sheng, $shi);
     /**
      * 修改广告位
      * @param unknown $ap_id
@@ -165,7 +165,7 @@ interface IPlatform
      * @param unknown $ap_width
      * @param unknown $default_content
      */
-    function updatePlatformAdvPosition($ap_id, $instance_id, $ap_name, $ap_intro, $ap_class, $ap_display, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword);
+    function updatePlatformAdvPosition($ap_id, $instance_id, $ap_name, $ap_intro, $ap_class, $ap_display, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword, $sheng, $shi );
     /**
      * 获取平台广告列表
      * @param unknown $page_index
