@@ -588,8 +588,10 @@ class System extends BaseController
             $ap_background_color = request()->post('ap_background_color', '');
             $type = request()->post('type', '');
             $ap_keyword = request()->post("ap_keyword", "");
+            $sheng = request()->post("sheng", 0);
+            $shi = request()->post("shi", 0);
             $platform = new Platform();
-            $res = $platform->addPlatformAdvPosition($this->instance_id, $ap_name, $ap_intro, $ap_class, $ap_dis, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword);
+            $res = $platform->addPlatformAdvPosition($this->instance_id, $ap_name, $ap_intro, $ap_class, $ap_dis, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword, $sheng, $shi);
             return AjaxReturn($res);
         }
         return view($this->style . "System/addShopAdvPosition");
@@ -614,7 +616,9 @@ class System extends BaseController
             $ap_background_color = request()->post('ap_background_color', '');
             $type = request()->post('type', '');
             $ap_keyword = request()->post("ap_keyword", '');
-            $res = $platform->updatePlatformAdvPosition($ap_id, $this->instance_id, $ap_name, $ap_intro, $ap_class, $ap_dis, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword);
+            $sheng = request()->post("sheng", 0);
+            $shi = request()->post("shi", 0);
+            $res = $platform->updatePlatformAdvPosition($ap_id, $this->instance_id, $ap_name, $ap_intro, $ap_class, $ap_dis, $is_use, $ap_height, $ap_width, $default_content, $ap_background_color, $type, $ap_keyword, $sheng, $shi);
             return AjaxReturn($res);
         }
         $id = request()->get('ap_id', '');
