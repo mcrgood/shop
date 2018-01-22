@@ -616,6 +616,44 @@ class Platform extends BaseService implements IPlatform
     }
     /**
      * (non-PHPdoc)
+     * @see \data\api\IPlatform::getPlatformAdvPositionDetail()
+     */
+    public function getPlatformAdvPositionDetail_ajax($ap_id, $city_id){
+        $platform_adv_position = new NsPlatformAdvPositionModel();
+        $info = $platform_adv_position->getInfo(['ap_id' => $ap_id, 'shi' => $city_id]);
+
+        $platform_adv_list = array();
+        if(!empty($info)){
+            $platform_adv = new NsPlatformAdvModel();
+            $platform_adv_list = $platform_adv->getQuery(['ap_id'=>$info['ap_id']], '*', ' slide_sort ');
+            if(empty($platform_adv_list)){
+                $platform_adv_list[0] = array(
+                    'adv_title' => $info['ap_name'].'默认图',
+                    'adv_url' => '#',
+                    'adv_image' => $info['default_content'],
+                    'background' => '#FFFFFF',
+                    'adv_width' =>$info['ap_width'],
+                    'adv_height' =>$info['ap_height'],
+                );
+            }
+        }else{
+            $info = array(
+                'ap_id' => 0,
+                'ap_height' => '100%',
+                'ap_width' => '100%'
+            );
+            $platform_adv_list[0] = array(
+                'adv_title' => '无',
+                'adv_url' => '#',
+                'adv_image' => 'upload/default/ajax-loader.gif',
+                'background' => '#FFFFFF'
+            );
+        }
+        $info['adv_list'] = $platform_adv_list;
+        return $info;
+    }
+    /**
+     * (non-PHPdoc)
      * @see \data\api\IPlatform::getPlatformAdDetail()
      */
     public function getPlatformAdDetail($adv_id){
