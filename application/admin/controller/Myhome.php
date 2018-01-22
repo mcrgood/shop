@@ -59,13 +59,22 @@ class Myhome extends BaseController
 		if(request()->isAjax()){
 			$id = input('post.id');
 			$row = db("ns_shop_message")->find($id);
-			//dump($row);die;
 			$date['state'] = 0;
 			$data = db('ns_shop_message')->where('id',$id)->update($date);
-			
 		}
 	}
 
+	public function registerdetail_returns(){
+		if(request()->isAjax()){
+			$id = input('post.id');
+			$beizhu = input('post.beizhu');
+			//dump($id);die;
+			$row = db("ns_shop_message")->find($id);
+			$date['beizhu'] = $beizhu;
+			$date['state'] = 2;
+			$data = db('ns_shop_message')->where('id',$id)->update($date);
+		}
+	}
 	public function yuding(){
 		//搜索+列表页
 		$keyword = input('get.keyword');
