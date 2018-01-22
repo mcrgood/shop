@@ -1,17 +1,19 @@
 <?php
 namespace app\wap\controller;
-use think\Controller;
-
+use data\extend\org\wechat\Jssdk;
 class Indexx extends BaseController{
 
 	public function indexx(){
 
-		//获取广告位信息
-		$adList = db("ns_goods_ad")->where(['shi'=>'南昌市'])->order(['weizhi'=>'asc'])->select();
-		$this->assign('adList', $adList);
-		//获取banner信息
-		$banner = db("ns_goods_ad")->select();
-		$this->assign('banner', $banner);
+//		//获取广告位信息
+//		$adList = db("ns_goods_ad")->where(['shi'=>'南昌市'])->order(['weizhi'=>'asc'])->select();
+//		$this->assign('adList', $adList);
+//		//获取banner信息
+//		$banner = db("ns_goods_ad")->select();
+//		$this->assign('banner', $banner);
+        $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
+        $package = $jssdk->getSignPackage();
+        $this->assign('signPackage', $package);
 		return view($this->style . 'Index/indexx');
 	}
 
