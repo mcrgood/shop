@@ -51,8 +51,19 @@ class Myhome extends BaseController
             	->join('ns_goods_login m','a.userid=m.id','LEFT')
             	->find($id);
             $this->assign("row", $row); 
-            //dump($row);die;
+           
 		return view($this->style . "Myhome/registerdetail");
+	}
+
+	public function registerdetail_edit(){
+		if(request()->isAjax()){
+			$id = input('post.id');
+			$row = db("ns_shop_message")->find($id);
+			//dump($row);die;
+			$date['state'] = 0;
+			$data = db('ns_shop_message')->where('id',$id)->update($date);
+			
+		}
 	}
 
 	public function yuding(){
@@ -64,31 +75,20 @@ class Myhome extends BaseController
 				$where = [];
 			}
 		$list = db("ns_goods_reserve")->where($where)->select();
-		$this->assign('list',$list);
 		
 		if($list){
-			foreach ($list as $k => $v) {
-				$list[$k]['time'] = $v['time'];
+			foreach($list as $k=>$v){
+				if(strtotime($v['time'])<time()){
+					$list[$k]['times'] = '已过期';
+				}else{
+					$list[$k]['times'] = '正常';
+				}
 			}
 		}
-		$pass = $list[$k]['time'];
-		$now = time();
-		$tf = $now-$pass>0;
-		if($tf){
-			$tf = "过期";
-		}else{
-			$tf = "正常";
-		}
-		//print_r($tf) ;die;
-		//$pass = strtotime();
-		//dump($pass);
-		//dump($now);die;
+		$this->assign('list',$list);
 		return view($this->style . "Myhome/yuding");
 	}
 
-	public function yudingdel(){
-		
-	}
 
 	public function yingshou(){
 		return view($this->style . "Myhome/yingshou");

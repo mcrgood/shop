@@ -5,7 +5,7 @@
 <style>
 	.clas{margin-bottom: }
 </style>
-<form action="" >
+<!-- <form action="" > -->
 <div class="set-style" style="margin-bottom: 150px;">
 	<dl>
 		<dt><span class="required"></span>账号：</dt>
@@ -43,12 +43,12 @@
 			<img src="{$row.thumb}" alt="" style="width:280px;height:180px;border: 1px solid #d6d6d6;display: inline-block;" name="thumb" value="{$row.thumb}">
 		</dd>
 	</dl>
-	<dl>
+	<!-- <dl>
 		<dt><span class="required"></span>店铺执照：</dt>
 		<dd>
 			<img src="{$row.thumb_zhizhao}" alt="" style="width:150px;height:180px;border: 1px solid #d6d6d6;display: inline-block;" name="thumb_zhizhao" value="{$row.thumb_zhizhao}">
 		</dd>
-	</dl>
+	</dl> -->
 	<dl>
 		<dt><span class="required"></span>店铺执照正面：</dt>
 		<dd>
@@ -130,17 +130,63 @@
 		</dd>
 	</dl>
 	<dl>
-		<dt><i class="required"></i>审核：</dt>
+		{if condition="$row.state" eq false}
+		<dt><i class="required"></i>审核状态：</dt>
 		<dd>
-		<div class="controls" id="discripContainer">
-			<button>审核通过</button>
-			<button>返回重审</button>
-		</div>
+			<button onclick="pass({$row.id})">审核通过</button>
+			<button>退回重审</button>
 		</dd>
+		{else /}
+		<dt><i class="required"></i>审核状态：</dt>
+		<dd>
+			<button style="background:#0570f2;color:white;"disabled="disabled">审核已通过</button>
+		</dd>
+		{/if}
 	</dl>
 </div>
 </form>
-<script>
-	
+<script type="text/javascript">
+	function pass(id){
+		$( "#dialog" ).dialog({
+			buttons: {
+			"确定": function() {
+				$.ajax({
+					type : "post",
+					url : "{:__URL('ADMIN_MAIN/myhome/registerdetail_edit')}",
+					data : { "id" : id},
+					dataType : "json",
+					success : function(data) {
+						if(data>0){
+							showTip("操作成功","success");
+						}else{
+							showTip("操作成功","error");
+						}
+						if(data["code"] > 0 ){
+							LoadingInfo(getCurrentIndex(id,'#productTbody','tr[class="tr-title"]'));
+							$("#dialog").dialog({
+								buttons: {
+									"确定": function() {
+										$(this).dialog('close');
+									}
+								},
+								modal: true,
+								contentText:data["message"],
+								title:"消息提醒",
+								time:1
+							});
+							$("#chek_all").prop("checked", false);
+						}
+					}
+				});
+				$(this).dialog('close');
+			},
+
+			"取消,#e57373": function() {
+				$(this).dialog('close');
+			},
+		},
+		contentText:"确定通过审核吗？",
+	});
+}
 </script>
 {/block}
