@@ -103,143 +103,27 @@ class Indexx extends BaseController{
 		$message = [];
 
 		if ($myposition!='') {
+            $where['city_name'] = array('eq', $myposition);
+            $result = db("sys_city")->where($where)->find();
+            if ($result) {
+                $city_id = $result['city_id'];
+                $message = $this->getMessage(5, $city_id);
+                if ($message && !empty($message)) {
+                    return ['state' => 1, 'message' => $message];
 
+                } else {
 
+                    //未查到有此城市广告
+                    return ['state' => 0, 'message' => []];
 
-//			$adList = db("ad")->where('shi',$myposition)->whereOr('sheng',$myposition)->order(['weizhi'=>'asc'])->select();
 
+                }
+            } else {
 
+                return ['state' => 0];
 
-			$message = $this->getMessage(5,$myposition);
-
-//			$message1 = db('ad')
-
-//				->where("(shi=:shi and weizhi=1) or (sheng=:sheng and weizhi=2)")
-
-//				->bind(['shi'=>$myposition,'sheng'=>$myposition])
-
-//				->order(['sort'=>'asc','id'=>'desc'])
-
-//				->select();
-
-//
-
-//			if($message1){
-
-//				$message[0] = $message1;
-
-//			}
-
-//
-
-//			$message2 = db('ad')
-
-//				->where("(shi=:shi and weizhi=2) or (sheng=:sheng and weizhi=2)")
-
-//				->bind(['shi'=>$myposition,'sheng'=>$myposition])
-
-//				->order(['sort'=>'asc','id'=>'desc'])
-
-//				->select();
-
-//
-
-//			if($message2){
-
-//				$message[1] = $message2;
-
-//			}
-
-//
-
-//
-
-//			$message3 = db('ad')
-
-//				->where("(shi=:shi and weizhi=3) or (sheng=:sheng and weizhi=3)")
-
-//				->bind(['shi'=>$myposition,'sheng'=>$myposition])
-
-//				->order(['sort'=>'asc','id'=>'desc'])
-
-//				->select();
-
-//
-
-//			if($message3){
-
-//				$message[2] = $message3;
-
-//			}
-
-//			$message4 = db('ad')
-
-//				->where("(shi=:shi and weizhi=4) or (sheng=:sheng and weizhi=4)")
-
-//				->bind(['shi'=>$myposition,'sheng'=>$myposition])
-
-//				->order(['sort'=>'asc','id'=>'desc'])
-
-//				->select();
-
-//
-
-//			if($message4){
-
-//				$message[3] = $message4;
-
-//			}
-
-//			$message5 = db('ad')
-
-//				->where("(shi=:shi and weizhi=5) or (sheng=:sheng and weizhi=5)")
-
-//				->bind(['shi'=>$myposition,'sheng'=>$myposition])
-
-//				->order(['sort'=>'asc','id'=>'desc'])
-
-//				->select();
-
-//
-
-//			if($message5){
-
-//				$message[4] = $message5;
-
-//			}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			if ($message && !empty($message)) {
-
-				//查询到有此城市广告
-
-
-
-				return ['state'=>1,'message'=>$message];
-
-			} else {
-
-				//未查到有此城市广告
-				return ['state'=>0,'message'=>[]];
-
-
-
-			}
-
-		}else{
+            }
+        }else{
 
 			return ['state'=>0];
 
@@ -254,19 +138,11 @@ class Indexx extends BaseController{
 
 		$message = [];
 
-
+        $platform = new Platform();
 
 		for ($i = 1; $i <= $count; $i++){
 
-			$message1 = db('ad')
-
-				->where("(shi=:shi and weizhi=".$i.") or (sheng=:sheng and weizhi=".$i.")")
-
-				->bind(['shi'=>$myposition,'sheng'=>$myposition])
-
-				->order(['sort'=>'asc','id'=>'desc'])
-
-				->select();
+			$message1 = $platform->getPlatformAdvPositionDetail_ajax(1169+$i,$myposition);
 
 
 
@@ -274,7 +150,7 @@ class Indexx extends BaseController{
 
 				$xiabiao = $i - 1;
 
-				$message[$xiabiao] = $message1;
+				$message[$xiabiao] = $message1['adv_list'];
 
 			}
 
