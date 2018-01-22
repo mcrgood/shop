@@ -36,16 +36,18 @@
 <!--轮播-->
 <div class="swiper-container sy-slider">
   <div class="swiper-wrapper banner_index">
-      {volist name="banner" id="vo"}
+      {if condition="$plat_adv_list['is_use'] eq 1"}
+      {foreach name="plat_adv_list['adv_list']" item="v"}
             <div class="swiper-slide swiper-slide-index" >
-                {if condition="$vo.url neq ''"}
-                    <a href="{$vo.url}">
+                {if condition="$v['adv_image'] neq ''"}
+                    <a href="{$v.adv_url}">
                 {else /}
                     <a href="javascript:void(0);">
                 {/if}
-                <img src="{$vo.thumb}" width="100%" height="100%" /></a>
+                <img src="{$v.adv_image}" width="100%" height="100%" /></a>
             </div>
-      {/volist}
+      {/foreach}
+      {/if}
   </div>
   <div class="swiper-pagination swiper-pagination-index"></div>
 </div>
@@ -70,7 +72,11 @@
     <!--<a href="javascript:void(0);" id="ad1"><img src="__INDEX__/images/adzhaoshang.jpg" class="index-img1" /></a>-->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad1">
-            <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
+            {if condition="$index_adv_one['is_use'] eq 1"}
+            {foreach name="$index_adv_one['adv_list']" item="v"}
+            <li class="swiper-slide"><a href="{$v.adv_url}"><img src="{$v.adv_image}"></a></li>
+            {/foreach}
+            {/if}
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -83,7 +89,11 @@
 <!--<a href="javascript:void(0);" id="ad2"><img src="__INDEX__/images/adzhaoshang.jpg" class="index-img1" /></a>-->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad2">
-            <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
+            {if condition="$index_adv_two['is_use'] eq 1"}
+            {foreach name="$index_adv_two['adv_list']" item="v"}
+            <li class="swiper-slide"><a href="{$v.adv_url}"><img src="{$v.adv_image}"></a></li>
+            {/foreach}
+            {/if}
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -98,7 +108,11 @@
     <!-- 轮播图 -->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad3">
-            <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
+            {if condition="$index_adv_three['is_use'] eq 1"}
+            {foreach name="$index_adv_three['adv_list']" item="v"}
+            <li class="swiper-slide"><a href="{$v.adv_url}"><img src="{$v.adv_image}"></a></li>
+            {/foreach}
+            {/if}
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -112,7 +126,11 @@
 <!--<a href="javascript:void(0);" id="ad4"><img src="__INDEX__/images/adzhaoshang.jpg" class="index-img1" /></a>-->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad4">
-            <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
+            {if condition="$index_adv_four['is_use'] eq 1"}
+            {foreach name="$index_adv_four['adv_list']" item="v"}
+            <li class="swiper-slide"><a href="{$v.adv_url}"><img src="{$v.adv_image}"></a></li>
+            {/foreach}
+            {/if}
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -125,7 +143,11 @@
 <!--<a href="javascript:void(0);" id="ad5"><img src="__INDEX__/images/adzhaoshang.jpg" class="index-img1" /></a>-->
     <div class="swiper-container demo1" >
         <ul class="swiper-wrapper" id="ad5">
-            <li class="swiper-slide"><a href=""><img src="/public/static/index/images/adzhaoshang.jpg"></a></li>
+            {if condition="$index_adv_five['is_use'] eq 1"}
+            {foreach name="$index_adv_five['adv_list']" item="v"}
+            <li class="swiper-slide"><a href="{$v.adv_url}"><img src="{$v.adv_image}"></a></li>
+            {/foreach}
+            {/if}
         </ul>
         <!-- 增加指示点 -->
         <div class="swiper-pagination"></div>
@@ -140,7 +162,7 @@
   <a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
   <a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
 </div>
-
+    <script src="/public/static/index/js/js.js"></script>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EWOFpIVomII8KSivhpMAqjxVeaALPYIL"></script>
