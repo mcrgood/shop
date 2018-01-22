@@ -131,10 +131,14 @@
 	</dl>
 	<dl>
 		{if condition="$row.state" eq false}
+		<dt><i class="required"></i><span style="color:red;">*</span>重审备注：</dt>
+		<dd>
+			<input class="input-common" id="beizhu" type="text" name="beizhu" value="{$row.beizhu}" placeholder="退回重审必填！！！">
+		</dd>
 		<dt><i class="required"></i>审核状态：</dt>
 		<dd>
 			<button onclick="pass({$row.id})">审核通过</button>
-			<button>退回重审</button>
+			<button onclick="returns({$row.id},{$row.beizhu})" class="returns">退回重审</button>
 		</dd>
 		{else /}
 		<dt><i class="required"></i>审核状态：</dt>
@@ -157,36 +161,50 @@
 					dataType : "json",
 					success : function(data) {
 						if(data>0){
-							showTip("操作成功","success");
+							showTip("审核通过","success");
 						}else{
-							showTip("操作成功","error");
-						}
-						if(data["code"] > 0 ){
-							LoadingInfo(getCurrentIndex(id,'#productTbody','tr[class="tr-title"]'));
-							$("#dialog").dialog({
-								buttons: {
-									"确定": function() {
-										$(this).dialog('close');
-									}
-								},
-								modal: true,
-								contentText:data["message"],
-								title:"消息提醒",
-								time:1
-							});
-							$("#chek_all").prop("checked", false);
+							showTip("审核通过","error");
 						}
 					}
 				});
 				$(this).dialog('close');
 			},
-
 			"取消,#e57373": function() {
 				$(this).dialog('close');
 			},
-		},
-		contentText:"确定通过审核吗？",
-	});
-}
+			},
+			contentText:"确定通过审核吗？",
+		});
+	}
+	
+	var  id = {$row.id};
+    var  beizhu = "";
+	function returns(id,beizhu){
+		beizhu = $("#beizhu").val();
+		$("#dialog").dialog({
+			buttons:{
+				"确定":function(){
+					$.ajax({
+						type:"post",
+						url:"{:__URL('ADMIN_MAIN/myhome/registerdetail_returns')}",
+						data:{"id":id,"beizhu":beizhu},
+						dataType:"json",
+						success:function(data){
+							if(data>0){
+								showTip("已返回重审中","success");
+							}else{
+								showTip("已返回重审中","error");
+							}
+						}
+					});
+					$(this).dialog('close');
+				},
+				"取消,#e57373":function(){
+					$(this).dialog('close');
+				},
+			},
+			contentText:"确定返回重审吗？",
+		});
+	}
 </script>
 {/block}
