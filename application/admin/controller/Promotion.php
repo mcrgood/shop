@@ -91,8 +91,9 @@ class Promotion extends BaseController
             $end_time = request()->post('end_time', '');
             $is_show = request()->post('is_show', '');
             $goods_list = request()->post('goods_list', '');
+            $leixing =  request()->post('leixing', '');
             $coupon = new PromotionService();
-            $retval = $coupon->addCouponType($coupon_name, $money, $count, $max_fetch, $at_least, $need_user_level, $range_type, $start_time, $end_time, $is_show, $goods_list);
+            $retval = $coupon->addCouponType($coupon_name, $money, $count, $max_fetch, $at_least, $need_user_level, $range_type, $start_time, $end_time, $is_show, $goods_list, $leixing);
             return AjaxReturn($retval);
         } else {
             return view($this->style . "Promotion/addCouponType");

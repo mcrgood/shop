@@ -1,6 +1,7 @@
 {extend name="adminblue/base" /}
 {block name="resources"/}
 <script type="text/javascript" src="__STATIC__/My97DatePicker/WdatePicker.js"></script>
+<script src='ADMIN_JS/goods/init_address.js'></script>
 {/block}
 {block name="main"}
 <div class="set-style">
@@ -97,6 +98,17 @@
 		</dd>
 	</dl>
 	<dl>
+		<dt>地区：</dt>
+		<dd>
+			<select id="provinceSelect"  onchange="getProvince(this,'#citySelect',-1)">
+				<option value="0">请选择省</option>
+			</select>
+			<select id="citySelect" >
+				<option value="0">请选择市</option>
+			</select>
+		</dd>
+	</dl>
+	<dl>
 		<dt></dt>
 		<dd><button class="btn-common btn-big" onclick="updateShopAdvPositionAjax();">保存</button></dd>
 	</dl>
@@ -160,6 +172,8 @@ function updateShopAdvPositionAjax() {
 	var ap_background_color = $("#ap_background_color").val();
 	var type = $("input[type='radio'][name='type']:checked").val();
 	var ap_keyword = $("#ap_keyword").val();
+    var sheng=$("#provinceSelect").find("option:selected").val();
+    var shi=$("#citySelect").find("option:selected").val();
 	if(verify(ap_name,ap_display,ap_width,ap_height)){
 		$.ajax({
 			type : "post",
@@ -176,7 +190,9 @@ function updateShopAdvPositionAjax() {
 				'default_content' : default_content,
 				'ap_background_color' : ap_background_color,
 				'type' : type,
-				'ap_keyword' : ap_keyword
+				'ap_keyword' : ap_keyword,
+                'sheng' : sheng,
+                'shi'   : shi
 			},
 			success : function(data) {
 				if (data["code"] > 0) {
@@ -226,5 +242,14 @@ function verify(ap_name,ap_display,ap_width,ap_height){
 	}
 	return true;;
 }
+var province_id = {$info['sheng']};
+var city_id = {$info['shi']};
+$(function(){
+    initProvince("#provinceSelect",function(){
+        //编辑商品时，加载数据
+        $("#provinceSelect").find("option[value='"+province_id+"']").attr("selected",true);
+        getProvince("#provinceSelect",'#citySelect',city_id);
+    });
+})
 </script>
 {/block}
