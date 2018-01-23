@@ -34,7 +34,7 @@ class Myhome extends BaseController
 			}
 			$list = db('ns_goods_login')
 				 ->alias('a')
-				 ->join('ns_shop_message m','a.id=m.userid','LEFT')
+				 ->join('ns_shop_message m','a.loginid=m.userid','LEFT')
 				 ->where($where)
 				 ->select();
 			$this->assign('list',$list);
@@ -48,7 +48,7 @@ class Myhome extends BaseController
             }
             $row = db("ns_shop_message")
             	->alias('a')
-            	->join('ns_goods_login m','a.userid=m.id','LEFT')
+            	->join('ns_goods_login m','a.userid=m.loginid','LEFT')
             	->find($id);
             $this->assign("row", $row); 
            
@@ -68,8 +68,7 @@ class Myhome extends BaseController
 		if(request()->isAjax()){
 			$id = input('post.id');
 			$beizhu = input('post.beizhu');
-			//dump($id);die;
-			$row = db("ns_shop_message")->find($id);
+			//$row = db("ns_shop_message")->find($id);
 			$date['beizhu'] = $beizhu;
 			$date['state'] = 2;
 			$data = db('ns_shop_message')->where('id',$id)->update($date);
