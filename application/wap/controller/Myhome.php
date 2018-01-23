@@ -21,7 +21,7 @@ use data\extend\chuanglan\ChuanglanSmsApi;
 class Myhome extends Controller{
 
     private $myinfo;
-
+    protected $uid;
     public $user;
 
     public $web_site;
@@ -49,6 +49,7 @@ class Myhome extends Controller{
         $this->web_site = new WebSite();
         $web_info = $this->web_site->getWebSiteInfo();
         $this->user = new Member();
+        $this->uid = $this->user->getSessionUid();
         $this->assign("platform_shopname", $this->user->getInstanceName()); // 平台店铺名称
         $this->assign("title", $web_info['title']);
         $this->logo = $web_info['logo'];
@@ -487,92 +488,47 @@ class Myhome extends Controller{
      */
 
     public function gonggao(){
-
-        return view($this->style . 'Myhome/gonggao');
-
-        $customerInfo = db('customer')->where('openid',$this->myinfo['openid'])->find();
-
+        if (empty($this ->uid)) {
+            $redirect = __URL(__URL__ . "/wap/login");
+            $this->redirect($redirect); // 用户未登录
+        }
         $now_time = time();
-
-        $now_time = date('Y-m-d',$now_time);
-
+        $now_time = date('Y-m-d H:i:s',$now_time);
         $now_time = strtotime($now_time);
-
-
-
         $where = [
-
-            'type'=>1,
-
             'shop_id'=>0,
-
-            'customer_id'=>['neq',$customerInfo['id']],
-
-            'time_end'=>[
-
+            'uid'=>['eq',$this->uid],
+            'end_time'=>[
                 'egt',$now_time
-
             ],
-
-            'state'=>0,
-
-            'is_yuan'=>1,
-
+            'state'=>0
         ];
-
-
-
-        $couponCus = db('coupon')
-
-        ->distinct(true)
-
-        ->field('num')
-
-        ->where(['customer_id'=>$customerInfo['id']])
-
-        ->select();
-
-        // echo empty($couponCus);
-
-        
-
+        $couponCus = db('ns_coupon')->field('coupon_type_id')->where($where)->select();
         $my_nums = [];
-
         if (!empty($couponCus)) {
-
             foreach ($couponCus as $k => $v) {
 
 
-
-                    
-
-                    $my_nums[] = $v['num'];
-
-
+                $my_nums[] = $v['coupon_type_id'];
 
             }
-
             $my_nums = implode(',', $my_nums);
-
         }
-
-
-
+        $where = [
+            'shop_id'=>0,
+            'is_show' =>1,
+            'end_time'=>[
+                'egt',$now_time
+            ]
+        ];
         if (!is_array($my_nums) && $my_nums!='') {
-
-            $where['num']=['NOT IN',$my_nums];
-
+            $where['coupon_type_id']=['NOT IN',$my_nums];
         }
+        $list = db('ns_coupon_type')->where($where)->select();
+        $this->assign('gonggaores',$list);
 
-        $gonggaoList = db('coupon')
+        return view($this->style . 'Myhome/gonggao');
 
-        ->where($where)
-
-        ->select();
-
-
-
-        return $this->fetch('',['gonggaores'=>$gonggaoList,'cus'=>$customerInfo]);
 
     }
 
@@ -588,19 +544,15 @@ class Myhome extends Controller{
 
     public function lingquan(){
 
-
-
-        $customerInfo = db('customer')->where('openid',$this->myinfo['openid'])->find();
-
-        if ($customerInfo['tel'] == '') {
+        if (!$this->uid) {
 
             // $this->error('优惠券领取失败！','myhome/gonggao');
 
             return [
 
-                'state'=>0,
+                'state'=>3,
 
-                'message'=>'请绑定手机后再试！',
+                'message'=>'请登录后操作！',
 
             ];
 
@@ -608,72 +560,39 @@ class Myhome extends Controller{
 
 
 
-        $num = intval(request()->param('num'));
+        $coupon_type_id = intval(request()->param('num'));
 
-        $time_start = intval(request()->param('time_start'));
+        $start_time = intval(request()->param('time_start'));
 
-        $time_end = intval(request()->param('time_end'));
+        $end_time = intval(request()->param('time_end'));
 
-        $condition = request()->param('condition');
+        $money = request()->param('condition');
 
-        $jine = request()->param('jine');
+        $shop_id = request()->param('jine');
 
-        $time = intval(request()->param('time'));
+        $where['uid'] = 0;
+        $where['start_time'] = $start_time;
+        $where['coupon_type_id'] = $coupon_type_id;
+        $where['end_time'] = $end_time;
+        $where['state'] = 0;
+        $where['shop_id'] = $shop_id;
+        $result = db("ns_coupon")->where($where)->find();
+        if (!$result)
+        {
+            return [
 
-        $category = intval(request()->param('category'));
+                'state'=>4,
 
+                'message'=>'已抢完！',
 
+            ];
 
-        
-
-
-
-        $code = uniqid();
-
-        $code = substr($code, 0,8);
-
-
-
-        $data['code'] = $code;
-
-        $data['type'] = 1;
-
-        $data['shop_id'] = 0;
-
-        $data['customer_id'] = $customerInfo['id'];
-
-        $data['time_start'] = $time_start;
-
-        $data['time_end'] = $time_end;
-
-        $data['condition'] = $condition;
-
-        $data['jine'] = $jine;
-
-        $data['state'] = 1;
-
-        $data['time'] = $time;
-
-        $data['category'] = $category;
-
-        $data['num'] = $num;
-
-
-
-
-
-        $result = db('coupon')->insert($data);
-
-        // if ($result) {
-
-        //     $this->success('优惠券领取成功！','myhome/gonggao');
-
-        // } else {
-
-        //     $this->error('优惠券领取失败！','myhome/gonggao');
-
-        // }
-
+        }else
+        {
+            $coupon_id = $result['coupon_id'];
+        }
+        $data["uid"] = $this->uid;
+        $result = db('ns_coupon')->where('coupon_id',$coupon_id)->update($data);
         return ['state'=>1,'message'=>'优惠券领取成功！'];
 
         

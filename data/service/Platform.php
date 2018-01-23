@@ -439,7 +439,7 @@ class Platform extends BaseService implements IPlatform
     public function getPlatformAdvPositionList($page_index=1, $page_size=0, $where='', $order='', $field='*' )
     {
         $platform_adv_position = new NsPlatformAdvPositionModel();
-        $result = $platform_adv_position->pageQuery($page_index, $page_size, $where, $order, $field);
+        $result = $platform_adv_position->pageQuery1($page_index, $page_size, $where, $order, $field);
         foreach ($result['data'] as $k=>$v){
             if($v['ap_class'] == 0){
                 $result['data'][$k]['ap_class_name'] = '图片';
