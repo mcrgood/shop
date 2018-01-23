@@ -34,7 +34,7 @@ class Myhome extends BaseController
 			}
 			$list = db('ns_goods_login')
 				 ->alias('a')
-				 ->join('ns_shop_message m','a.loginid=m.userid','LEFT')
+				 ->join('ns_shop_message m','a.id=m.userid','LEFT')
 				 ->where($where)
 				 ->select();
 			$this->assign('list',$list);
@@ -46,9 +46,9 @@ class Myhome extends BaseController
 			if ($id == 0) {
                 $this->error("没有获取到用户信息");
             }
-            $row = db("ns_shop_message")
+            $row = db("ns_shop_message")->field('a.*,m.iphone')
             	->alias('a')
-            	->join('ns_goods_login m','a.userid=m.loginid','LEFT')
+            	->join('ns_goods_login m','a.userid=m.id','LEFT')
             	->find($id);
             $this->assign("row", $row); 
            
