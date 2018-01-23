@@ -240,6 +240,56 @@ class BaseModel extends Model
         );
     }
     /**
+     * 列表查询
+     *
+     * @param unknown $page_index
+     * @param number $page_size
+     * @param string $order
+     * @param string $where
+     * @param string $field
+     */
+    public function pageQuery1($page_index, $page_size, $condition, $order, $field)
+    {
+        $count = $this->where($condition)->count();
+        if ($page_size == 0) {
+//            $list = $this->field($field)
+//                ->where($condition)
+//                ->order($order)
+//                ->select();
+            $list = db('ns_platform_adv_position')
+                ->alias('a')
+                ->join('sys_city m','a.sheng=m.province_id and a.shi=m.city_id','LEFT')
+                ->order($order)
+                ->where($condition)
+                ->select();
+            $page_count = 1;
+        } else {
+            $start_row = $page_size * ($page_index - 1);
+//            $list = $this->field($field)
+//                ->where($condition)
+//                ->order($order)
+//                ->limit($start_row . "," . $page_size)
+//                ->select();
+            $list = db('ns_platform_adv_position')
+                ->alias('a')
+                ->join('sys_city m','a.sheng=m.province_id and a.shi=m.city_id','LEFT')
+                ->order($order)
+                ->where($condition)
+                ->limit($start_row . "," . $page_size)
+                ->select();
+            if ($count % $page_size == 0) {
+                $page_count = $count / $page_size;
+            } else {
+                $page_count = (int) ($count / $page_size) + 1;
+            }
+        }
+        return array(
+            'data' => $list,
+            'total_count' => $count,
+            'page_count' => $page_count
+        );
+    }
+    /**
      * 获取一定条件下的列表
      * @param unknown $condition
      * @param unknown $field

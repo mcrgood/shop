@@ -18,7 +18,7 @@
 <table class="mytable">
 	<tr>
 		<th width="30%" style="text-align: left;">
-			<button class="btn-common-delete btn-small btn-smalll" style="margin:0 5px 0 50 !important;">批量删除</button>
+			<button class="btn-common-delete btn-small smalll" style="margin:0 5px 0 50 !important;">批量删除</button>
 		</th>
 		<form action="{:url('myhome/yuding')}" method="get">
 		<th width="20%">
@@ -48,7 +48,7 @@
 	<thead>
 		{foreach name="list" id="v"}
 		<tr>
-			<th style="padding-right:50px"><input type="checkbox" name="checkbox" /></th>
+			<th style="padding-right:50px"><input type="checkbox" name="checkboxs" id="checkboxs" /></th>
 			<th>{$v.type}</th>
 			<th>{$v.name}</th>
 			<th>{$v.time}</th>
@@ -78,6 +78,39 @@
 			$("input[type='checkbox']").prop('checked',false);
 			a = 1;
 		}
+	});
+
+	$(".smalll").click(function(){
+		var id = [];
+		var id = new Array();
+		$("input[type='checkbox']:checked").each(function(i){
+				id['i'] = $(this).val();
+				alert(id);
+		});  
+		$( "#dialog" ).dialog({
+			buttons: {
+				"确定": function(){
+					$.ajax({
+						type : "post",
+						url : "{:__URL('ADMIN_MAIN/myhome/yudingdelete')}",
+						data : { "id" : id},
+						dataType : "json",
+						success : function(data) {
+							if(data>0){
+								showTip("删除成功","success");
+							}else{
+								showTip("删除成功","error");
+							}
+						}
+					});
+					$(this).dialog('close');
+				},
+				"取消,#e57373": function() {
+					$(this).dialog('close');
+				},
+			},
+			contentText:"确定删除所选吗？",
+		});
 	})
 </script> 
 {/block}

@@ -28,7 +28,7 @@ class Myhome extends BaseController
 	public function registerlist(){
 		$keyword = input('get.keyword');
 			if($keyword){
-				$where['iphone|names'] = ['like',"%$keyword%"];
+				$where['iphone|names|shi'] = ['like',"%$keyword%"];
 			}else{
 				$where = [];
 			}
@@ -72,6 +72,7 @@ class Myhome extends BaseController
 			$date['beizhu'] = $beizhu;
 			$date['state'] = 2;
 			$data = db('ns_shop_message')->where('id',$id)->update($date);
+			//dump($data);die;
 		}
 	}
 	public function yuding(){
@@ -97,6 +98,16 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/yuding");
 	}
 
+	//预定多选删除
+	public function yudingdelete(){
+		if(request()->isAjax()){
+			$id = input('post.id');
+			//dump($id);die;
+			$where['id'] = array('in',$id);
+			$r = db("ns_goods_reserve")->where($where)->delete();
+		}
+		
+	}
 
 	public function yingshou(){
 		return view($this->style . "Myhome/yingshou");

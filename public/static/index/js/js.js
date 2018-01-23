@@ -37,26 +37,27 @@ $(document).ready(function(){
     });       
 });
 
-function ling(num,time_start,time_end,condition,jine,time,category){
+function ling(num,time_start,time_end,condition,jine){
 
 	data = {
 		'num' :num,
 		'time_start' :time_start,
 		'time_end' :time_end,
 		'condition' :condition,
-		'jine' :jine,
-		'time' :time,
-		'category' :category,
+		'jine' :jine
 	}
 	$.post(SCOPE.url, data, function(result) {
 		
-		if(result.state == 0){
-			$(".Coupon-pop").fadeIn();  
-			$(".log-bg").fadeIn()	
-		}else{
+		if(result.state == 3){
+            alert(result.message);
+            location.href=SCOPE.login;
+		}else if(result.state == 1){
 			alert(result.message);
 			location.href=SCOPE.go;
 		}
+        else if(result.state == 4){
+            alert(result.message);
+        }
 
 	},'json');
 
