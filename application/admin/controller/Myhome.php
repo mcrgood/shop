@@ -28,13 +28,13 @@ class Myhome extends BaseController
 	public function registerlist(){
 		$keyword = input('get.keyword');
 			if($keyword){
-				$where['iphone|names'] = ['like',"%$keyword%"];
+				$where['iphone|names|shi'] = ['like',"%$keyword%"];
 			}else{
 				$where = [];
 			}
 			$list = db('ns_goods_login')
 				 ->alias('a')
-				 ->join('ns_shop_message m','a.loginid=m.userid','LEFT')
+				 ->join('ns_shop_message m','a.id=m.userid','LEFT')
 				 ->where($where)
 				 ->select();
 			$this->assign('list',$list);
@@ -48,7 +48,7 @@ class Myhome extends BaseController
             }
             $row = db("ns_shop_message")
             	->alias('a')
-            	->join('ns_goods_login m','a.userid=m.loginid','LEFT')
+            	->join('ns_goods_login m','a.userid=m.id','LEFT')
             	->find($id);
             $this->assign("row", $row); 
            
@@ -72,6 +72,7 @@ class Myhome extends BaseController
 			$date['beizhu'] = $beizhu;
 			$date['state'] = 2;
 			$data = db('ns_shop_message')->where('id',$id)->update($date);
+			//dump($data);die;
 		}
 	}
 	public function yuding(){
@@ -97,6 +98,16 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/yuding");
 	}
 
+	//预定多选删除
+	public function yudingdelete(){
+		if(request()->isAjax()){
+			$id = input('post.id');
+			//dump($id);die;
+			$where['id'] = array('in',$id);
+			$r = db("ns_goods_reserve")->where($where)->delete();
+		}
+		
+	}
 
 	public function yingshou(){
 		return view($this->style . "Myhome/yingshou");
