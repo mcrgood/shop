@@ -46,17 +46,11 @@
 
 </div>
 
-
-
 <div class="describe-img"><img src="{$shopres.thumb}" />{$shopres.name}</div>
-
-
 
 <div class="describe-title">店铺介绍：</div>
 
 <div class="describe-p">{$shopres.description}</div>
-
-
 
 <div class="describe-tu">地址：{$shopres.address}<br />
 
@@ -72,106 +66,29 @@
 
 <script type="text/javascript">
 
-
-
-
-
  //    wx.config({
-
-
-
  //        debug: false,
-
-
-
  //        appId: '<?php echo $signPackage["appId"];?>',
-
-
-
  //        timestamp: <?php echo $signPackage["timestamp"];?>,
-
-
-
  //        nonceStr: '<?php echo $signPackage["nonceStr"];?>',
-
-
-
  //        signature: '<?php echo $signPackage["signature"];?>',
-
-
-
  //        jsApiList: [
-
-
-
  //            'openLocation',            
-
-
-
  //          ]
-
-
-
  //    });
-
 	// wx.error(function(res) {
-
  //        alert(res);
-
  //    });
-
  //    function OpenAddress(lat, lng,name,address) {
-
-
-
  //        wx.openLocation({
-
  //            latitude: lat, // 纬度，浮点数，范围为90 ~ -90   28.68167
-
  //            longitude: lng, // 经度，浮点数，范围为180 ~ -180。 115.940155
-
  //            name: name, // 位置名
-
  //            address: address, // 地址详情说明
-
  //            scale: 28, // 地图缩放级别,整形值,范围从1~28。默认为最大
-
  //            infoUrl: '/' // 在查看位置界面底部显示的超链接,可点击跳转
-
  //        });
-
  //    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 var map = new BMap.Map("containermap2");
@@ -200,7 +117,7 @@ var sContent =
 
 "</div>";
 
-var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+var infoWindow = new BMap.InfoWindow(sContent); // 创建信息窗口对象
 
 marker.openInfoWindow(infoWindow);
 
@@ -217,14 +134,6 @@ marker.addEventListener("click", function(){
    }
 
 });
-
-
-
-
-
-
-
-
 
 function daohang(){
 
@@ -246,21 +155,7 @@ function daohang(){
 
             //alert('我的位置：'+ latCurrent + ',' + lngCurrent);
 
-
-
             location.href="http://api.map.baidu.com/direction?origin="+latCurrent+","+lngCurrent+"&destination={$shopres.weidu},{$shopres.jingdu}&mode=driving&region=北京&output=html";
-
-
-
-
-
-
-
-
-
-
-
-
 
                 map.addOverlay(marker);  
 
@@ -289,27 +184,6 @@ function daohang(){
     });  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
         else {
@@ -325,9 +199,9 @@ function daohang(){
 }
 
 </script>
-
-	电话：{$shopres.tel} <br /><!-- 营业时间： 08:00-23:59 --></div>
-<!-- //预定 -->
+<!-- 营业时间： 08:00-23:59 -->
+	电话：{$shopres.tel} <br /></div>
+<!-- 预定 -->
 {include file="yuding"}
 {include file="public/footer" /}
 

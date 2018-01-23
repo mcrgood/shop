@@ -8,6 +8,7 @@
     <link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
     <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
     <script src="__INDEX__/js/swiper.min.js"></script>
+    <script src="__INDEX__/js/js.js"></script>
 </head>
 
 <body>
@@ -54,12 +55,12 @@
 
 <div class="index-menu">
     <ul class="index-menu-box">
-        <li><a href="{:url('dingwei/index',['cat'=>0])}"><img src="__INDEX__/images/menu1.png" />餐饮</a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>1])}"><img src="__INDEX__/images/menu2.png" />酒店</a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>2])}"><img src="__INDEX__/images/menu3.png" />养生</a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>3])}"><img src="__INDEX__/images/menu4.png" />KTV </a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>4])}"><img src="__INDEX__/images/menu5.png" />汽车</a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>5])}"><img src="__INDEX__/images/menu6.png" />其他</a></li>
+        <li><a href="{:url('dingwei/index',['cat'=>1])}"><img src="__INDEX__/images/menu1.png" />餐饮</a></li>
+        <li><a href="{:url('dingwei/index',['cat'=>2])}"><img src="__INDEX__/images/menu2.png" />酒店</a></li>
+        <li><a href="{:url('dingwei/index',['cat'=>3])}"><img src="__INDEX__/images/menu3.png" />养生</a></li>
+        <li><a href="{:url('dingwei/index',['cat'=>4])}"><img src="__INDEX__/images/menu4.png" />KTV </a></li>
+        <li><a href="{:url('dingwei/index',['cat'=>5])}"><img src="__INDEX__/images/menu5.png" />汽车</a></li>
+        <li><a href="{:url('dingwei/index',['cat'=>6])}"><img src="__INDEX__/images/menu6.png" />其他</a></li>
     </ul>
 </div>
 <div class="kong"></div>
@@ -162,7 +163,7 @@
     <a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
     <a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
 </div>
-<script src="/public/static/index/js/js.js"></script>
+<script src="__INDEX__/js/js.js"></script>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EWOFpIVomII8KSivhpMAqjxVeaALPYIL"></script>
@@ -218,7 +219,7 @@
                 });
 
             },
-            cancel: function (res) {
+            cancel: function (res){
 
             }
         });
@@ -237,10 +238,6 @@
                 if(data.message.toString().split(',').length >0){
 
                     getMessage(5, data);
-
-
-
-
                 }
             }
         },'JSON');
