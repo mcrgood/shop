@@ -22,6 +22,7 @@ class Myhome extends Controller{
 
     private $myinfo;
     protected $uid;
+    protected $business_id; //商户id
     public $user;
 
     public $web_site;
@@ -50,6 +51,7 @@ class Myhome extends Controller{
         $web_info = $this->web_site->getWebSiteInfo();
         $this->user = new Member();
         $this->uid = $this->user->getSessionUid();
+        $this->business_id = Session::get('business_id');
         $this->assign("platform_shopname", $this->user->getInstanceName()); // 平台店铺名称
         $this->assign("title", $web_info['title']);
         $this->logo = $web_info['logo'];
@@ -215,6 +217,10 @@ class Myhome extends Controller{
 
     //商家申请
 	public function shenqing(){
+        if (empty($this ->business_id)) {
+            $redirect = __URL(__URL__ . "/wap/myhome/login");
+            $this->redirect($redirect); // 用户未登录
+        }
         if(request()->isPost()){
             $business_id = Session::get('business_id');
             //检测商户
