@@ -130,25 +130,67 @@
             <span></span>
         </div>
     </div>
-	<div class="contents">
+    <div class="contents">
       <div class="service">
         <div class="service_left">
-		<p>{$row.names}</p><br />
-		<p>评分:<span style="margin-left:20px;"><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/></span>
+        <p>{$row.names}</p><br />
+        <p>评分:<span style="margin-left:20px;"><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/></span>
         <span style="color:#ff6363;margin-left:10px;font-weight:bold;">5.0分</span></p>
-		</div>
+        </div>
         <div class="service_right">
-          <a href=""><img src="__INDEX__/images/3_03.gif" /></a>
+          <a href="tel:13330096988"><img src="__INDEX__/images/3_03.gif" /></a>
         </div>
       </div>
       <div class="map">
         <div class="map_left">
           <p>{$row.address}</p>
           </div>
-          <div class="map_right">
-          <a href=""><img src="__INDEX__/images/3_10.gif" /></a>
+          <div class="map_right" id="right">
+          <img src="__INDEX__/images/3_10.gif" />
         </div>
       </div>
+<script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js"></script>   
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=hciazEcdcBOtKFYCfZQaBlMKYygPR1me&s=1"></script>   
+<script type="text/javascript" src="__INDEX__/js/convertor.js"></script>        
+<div id="allmap"></div>
+<style type="text/css"> 
+#allmap { 
+width: 100%;height:300px;overflow: auto;margin:0; 
+} 
+</style>
+<script type="text/javascript">
+var map = new BMap.Map("allmap");//创建地图实例
+//页面初始化
+$(function() {
+    //初始化地图 默认加载北京天安门
+    var point = new BMap.Point(116.331398,39.897445);
+    map.centerAndZoom(point,35);//初始化地图，point为中心点，缩放级别为16
+    //判断手机浏览器是否支持定位
+    if(navigator.geolocation){
+        var geolocation = new BMap.Geolocation();//创建定位实例
+        geolocation.getCurrentPosition(showLocation,{enableHighAccuracy: true});//enableHighAccuracy 要求浏览器获取最佳结果
+    }else{
+        map.addControl(new BMap.GeolocationControl());//添加定位控件 支持定位
+    }
+});
+//处理定位后的信息
+function showLocation(r){
+    if(this.getStatus() == BMAP_STATUS_SUCCESS) {
+        console.log(r.address.city)
+        //新建中心点 并将地图中心移动过去
+        var centerPoint = new BMap.Point(r.longitude,r.latitude);
+        map.panTo(centerPoint);
+        map.setCenter(centerPoint);
+        //新建标注
+        var mk = new BMap.Marker(centerPoint);
+        mk.disableDragging();// 不可拖拽
+        map.addOverlay(mk);
+    }
+    else {
+        alert('failed'+this.getStatus());//定位失败
+    }        
+}
+</script>
       <div class="yytime">
           <div class="time">
             <img src="__INDEX__/images/3_13.gif" />
@@ -169,15 +211,15 @@
             <button>预定</button>
         </a>
     </div>
-	<script type="text/javascript">
+    <script type="text/javascript">
         window.onload=function(){
              var container = document.getElementById('main');
-				autoMove(container);
+                autoMove(container);
         }
         //轮播图函数
         function autoMove(container){
-			var imgs = container.getElementsByTagName('img');
-			var spans = container.getElementsByTagName('span');
+            var imgs = container.getElementsByTagName('img');
+            var spans = container.getElementsByTagName('span');
 
             //每次轮播后样式
             /*轮播到哪个位置，就对哪个位置的图片样式进行设置，首先让所有的图片样式opacity变为0，然后对移动到的位置的样式进行设置opacity为1*/
