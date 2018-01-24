@@ -58,17 +58,14 @@
 		</tr>
 		{/foreach}
 	</thead>
-	
-
-
 </table>
-<script type="text/javascript"> 
+<script type="text/javascript">
 	//全选
-	// jQuery(function($){ 
-	// 	$("#btn1").click(function(){ 
-	// 		$("input[name='checkbox']").attr("checked","true"); 
-	// 	}) 
-	// }) 
+	// jQuery(function($){
+	// 	$("#btn1").click(function(){
+	// 		$("input[name='checkbox']").attr("checked","true");
+	// 	})
+	// })
 	var a=1;
 	$("#btn1").click(function(){
 		if(a==1){
@@ -86,7 +83,7 @@
 		$("input[type='checkbox']:checked").each(function(i){
 				id['i'] = $(this).val();
 				alert(id);
-		});  
+		});
 		$( "#dialog" ).dialog({
 			buttons: {
 				"确定": function(){
@@ -112,8 +109,7 @@
 			contentText:"确定删除所选吗？",
 		});
 	})
-</script> 
+</script>
 {/block}
 {block name="script"}
-
 {/block}

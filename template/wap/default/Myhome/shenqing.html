@@ -5,7 +5,7 @@
 	#up-file1 input{border:1px #4d4d4d solid;}
 	#up-file1 p{line-height: 20px;}
 	#up-file1 span{color: #323232;font-size: 0.45rem;}
-	#up-file1 input::-webkit-input-placeholder { font-size:0.25rem;} 
+	#up-file1 input::-webkit-input-placeholder { font-size:0.25rem;}
 </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -97,7 +97,7 @@
 		<label>
 			<img src="__INDEX__/images/upload2.png" id="thumb_yhk2_img">
 			<input class="up-fileh error" name="thumb_yhk2" onchange="" type="text" id="thumb_yhk2" onclick="wximg('thumb_yhk2')">
-		</label>	
+		</label>
 	</div>
 	<div class="kong"></div>
 	<div class="intake-img">
@@ -155,7 +155,7 @@
 			客旺旺的所有内容版权属花儿盛开所有，严禁未经花儿盛开书面许可进行任何形式的部分或全部拷贝、反编译、传播。
 	</div>
 	<div class="log-bg"></div>
-</form>	
+</form>
 <!--底部-->
 	<div class="foot">
 		<a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Index') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
@@ -169,8 +169,6 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EWOFpIVomII8KSivhpMAqjxVeaALPYIL"></script>
 
 <script>
-
-
 
     wx.config({
 
@@ -197,14 +195,9 @@
         'openLocation',
 
         'getLocation'
-
-
-
     ]
 
     });
-
-
 
     function wximg(name){
 
@@ -222,20 +215,11 @@
 
                 syncUpload(localIds,name);
 
-
-
             }
 
         });
 
     }
-
-
-
-
-
-
-
 
 
     var syncUpload = function(localIds,name){
@@ -251,8 +235,6 @@
             success: function (res) {
 
                 var serverId = res.serverId; // 返回图片的服务器端ID
-
-
 
                 //获取真实upload地址开始
 
@@ -271,8 +253,6 @@
                         $("#"+name+"_img").attr('src', '/public/static/index/uploads/cateimg/'+data);
 
                         $("#"+name).val('/public/static/index/uploads/cateimg/'+data);
-
-
 
                     }
 
@@ -341,8 +321,6 @@
 
                 });
 
-
-
                 //去数据库查询获取附近的门店
 
             },
@@ -372,8 +350,6 @@
 
 
     function check(){
-
-
 
         if ($("#name").val()=='') {
 
@@ -451,8 +427,7 @@
             alert('请同意商家协议！');
             return false;
         }
-
-
+	
         return true;
 
     }
@@ -461,4 +436,3 @@
 
 </body>
 </html>
-
