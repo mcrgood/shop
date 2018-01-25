@@ -84,6 +84,7 @@ class Myhome extends BaseController
 				$where = [];
 			}
 		$list = db("ns_goods_reserve")->where($where)->select();
+		//$list = db("ns_shop_message")->select();
 
 		if($list){
 			foreach($list as $k=>$v){
@@ -102,11 +103,14 @@ class Myhome extends BaseController
 	public function yudingdelete(){
 		if(request()->isAjax()){
 			$id = input('post.id');
-			//dump($id);die;
-			$where['id'] = array('in',$id);
+			$where['id'] = array('in', $id);
 			$r = db("ns_goods_reserve")->where($where)->delete();
+			if (!$r) {
+				return false;
+			}else {
+		                return $r;
+			}
 		}
-
 	}
 
 	public function yingshou(){
