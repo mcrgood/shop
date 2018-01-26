@@ -162,6 +162,7 @@
 					success : function(data) {
 						if(data>0){
 							showTip("审核通过","success");
+							window.location.href = "{:__URL('ADMIN_MAIN/myhome/registerdetail')}"
 						}else{
 							showTip("审核通过","error");
 						}
@@ -176,7 +177,7 @@
 			contentText:"确定通过审核吗？",
 		});
 	}
-	
+
 	var  id = {$row.id};
     var  beizhu = "";
 	function returns(id,beizhu){

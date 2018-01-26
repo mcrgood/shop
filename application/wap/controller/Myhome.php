@@ -268,6 +268,7 @@ class Myhome extends Controller{
             $data['shi'] = $shi;
             $data['jingdu'] = $jingdu;
             $data['weidu'] = $weidu;
+            $data['business_hours'] = $business_hours;
             $id = db('ns_shop_message')->insert($data);
 
             if($id){

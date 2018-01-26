@@ -21,12 +21,12 @@
 <ul class="supermarket-title">
 <li class="supermarket-li">
 {switch name="$Request.param.cat"}
-    {case value="1"}餐饮{/case}   
-    {case value="2"}酒店{/case}   
-    {case value="3"}养生{/case}   
-    {case value="4"}KTV {/case}   
-    {case value="5"}汽车{/case}   
-    {case value="6"}其他{/case}   
+    {case value="1"}餐饮{/case}
+    {case value="2"}酒店{/case}
+    {case value="3"}养生{/case}
+    {case value="4"}KTV {/case}
+    {case value="5"}汽车{/case}
+    {case value="6"}其他{/case}
     {default /}餐饮
 {/switch}
 </li>
@@ -56,6 +56,7 @@
 		<a href="{:url('catdetail',array('id'=>$vo['id']))}">
 		<img src="{$vo.thumb}" /><span>{$vo.name}</span>
 		</a>
+                店名：{$vo.names}<br/>
 		地址：{$vo.address}<br />
 		电话：{$vo.tel}<a href="{:url('catdetail',array('id'=>$vo['id']))}" class="merchant-ul-a">>>更多详情</a>
 	</li>
@@ -134,7 +135,7 @@ function dingwei(){
 	        $(".merchant-ul").text('');
 	               $(shopInfo).each(function(index,el){
 	                    $(".merchant-ul").append('<li><a href="{:url(\'dingwei/show\',array(\'shop_id\'=>'+el.id+'))}"><img src="'+el.thumb+'" /><span>'+el.name+'</span></a>地址：'+el.address+'<br />电话：'+el.tel+'<a href="{:url(\'dingwei/show\',array(\'shop_id\'=>'+el.id+'))}" class="merchant-ul-a">>>更多详情</a></li>');
-	               })                        
+	               })
 	          }
 	        });
        	//主要逻辑结束
@@ -142,4 +143,3 @@ function dingwei(){
 </script>
 </body>
 </html>
-
