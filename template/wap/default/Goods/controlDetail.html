@@ -257,10 +257,10 @@ input{appearance:none;-moz-appearance:none;-webkit-appearance:none;outline: none
 			
 			<div class="pro-info">
 				<p class="name" >{$goods_detail.goods_name}</p>
-				<p class="pro-price" id="price">
+				<p class="pro-price" >
 					￥{if condition="$goods_detail.promotion_price < $goods_detail.member_price"}{$goods_detail.promotion_price}{else/}{$goods_detail.member_price}{/if}
 					{if condition="$goods_detail.point_exchange_type==1 && $goods_detail.point_exchange>0"}
-					<span style="font-size:16px;display: inline-block;vertical-align: middle;">+{$goods_detail.point_exchange}{:lang('goods_integral')}</span>
+					<span style="font-size:16px;display: inline-block; vertical-align: middle;">+{$goods_detail.point_exchange}{:lang('goods_integral')}</span>
 					{/if}
 				</p>
 			</div>
