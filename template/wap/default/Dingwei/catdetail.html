@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -15,7 +15,7 @@
             height:550px;
             margin: 0 auto;
             position: relative;
-        
+
         }
         #main .scollimg{
             width: 100%;
@@ -91,9 +91,7 @@
         .contents{width: 100%;margin: 0 auto;}
         .service{width: 100%;height: 160px;margin-top: 40px;border-bottom: 1px solid #cccccc;}
         .service p{font-size: 55px;color:#4d4d4d;padding-left: 20px;}
-        .service_left{width: 80%;float:left;}
-        .service_right{width: 20%;float:left;}
-        .service_right img{margin-left: 80px;margin-top: 40px;width: 60px;height: 60px;}
+        .service_left{width: 100%;float:left;}
         .map{width: 100%;height:120px;margin: 0 auto;border-bottom: 1px solid #cccccc;}
         .map p{color:#4d4d4d;font-size: 40px;letter-spacing: 2px;line-height: 120px;padding-left: 20px;}
         .map_left{width: 80%;float:left;}
@@ -133,30 +131,28 @@
     <div class="contents">
       <div class="service">
         <div class="service_left">
-        <p>{$row.names}</p><br />
-        <p>评分:<span style="margin-left:20px;"><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/></span>
+        <p style="border-bottom: 1px solid #cccccc;">店名：{$row.names}</p><br />
+        <p>电话：{$row.tel}<a href="tel:{$row.tel}" style="display:inline-block;float:right;"><img src="__INDEX__/images/3_03.gif" width="60px" height="60px"style="padding-right: 60px;"/></a></p><br />
+        <p>评分：<span style="margin-left:20px;"><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/></span>
         <span style="color:#ff6363;margin-left:10px;font-weight:bold;">5.0分</span></p>
-        </div>
-        <div class="service_right">
-          <a href="tel:13330096988"><img src="__INDEX__/images/3_03.gif" /></a>
         </div>
       </div>
       <div class="map">
         <div class="map_left">
-          <p>{$row.address}</p>
+          <p>地址：{$row.address}</p>
           </div>
           <div class="map_right" id="right">
           <img src="__INDEX__/images/3_10.gif" />
         </div>
       </div>
-<script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js"></script>   
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=hciazEcdcBOtKFYCfZQaBlMKYygPR1me&s=1"></script>   
-<script type="text/javascript" src="__INDEX__/js/convertor.js"></script>        
+<script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=hciazEcdcBOtKFYCfZQaBlMKYygPR1me&s=1"></script>
+<script type="text/javascript" src="__INDEX__/js/convertor.js"></script>
 <div id="allmap"></div>
-<style type="text/css"> 
-#allmap { 
-width: 100%;height:300px;overflow: auto;margin:0; 
-} 
+<style type="text/css">
+#allmap {
+width: 100%;height:480px;overflow: auto;margin:0;
+}
 </style>
 <script type="text/javascript">
 var map = new BMap.Map("allmap");//创建地图实例
@@ -188,20 +184,20 @@ function showLocation(r){
     }
     else {
         alert('failed'+this.getStatus());//定位失败
-    }        
+    }
 }
 </script>
       <div class="yytime">
           <div class="time">
             <img src="__INDEX__/images/3_13.gif" />
               <h2>营业时间</h2>
-              <span>8:00-18:30</span>
+              <span>{$row.business_hours}</span>
           </div>
       </div>
        <div class="comment">
           <div class="comment_1">
             <img src="__INDEX__/images/3_17.gif" />
-              <a href=""><h2>查看评论</h2></a>
+              <a href="javascript:;"><h2>查看评论</h2></a>
               <span></span>
           </div>
       </div>

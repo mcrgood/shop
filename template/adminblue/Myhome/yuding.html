@@ -38,6 +38,7 @@
 				<button class="btn-common-delete btn-small" id="btn1" style="margin:0 5px 0 0 !important;">全选</button>
 			</th>
 			<th>类型</th>
+			<th>店名</th>
 			<th>姓名</th>
 			<th>时间段</th>
 			<th>人数</th>
@@ -48,27 +49,25 @@
 	<thead>
 		{foreach name="list" id="v"}
 		<tr>
-			<th style="padding-right:50px"><input type="checkbox" name="checkboxs" id="checkboxs" /></th>
-			<th>{$v.type}</th>
+			<th style="padding-right:50px"><input type="checkbox"  value="{$v.id}" name="checkboxs" id="checkboxs" /></th>
+			<th>{$v.leixing}</th>
+			<th>{$v.names}</th>
 			<th>{$v.name}</th>
 			<th>{$v.time}</th>
-			<th>{$v.num} </th>
+			<th>{$v.num}</th>
 			<th>{$v.iphone}</th>
 			<th>{$v.times}</th>
 		</tr>
 		{/foreach}
 	</thead>
-	
-
-
 </table>
-<script type="text/javascript"> 
+<script type="text/javascript">
 	//全选
-	// jQuery(function($){ 
-	// 	$("#btn1").click(function(){ 
-	// 		$("input[name='checkbox']").attr("checked","true"); 
-	// 	}) 
-	// }) 
+	// jQuery(function($){
+	// 	$("#btn1").click(function(){
+	// 		$("input[name='checkbox']").attr("checked","true");
+	// 	})
+	// })
 	var a=1;
 	$("#btn1").click(function(){
 		if(a==1){
@@ -84,20 +83,26 @@
 		var id = [];
 		var id = new Array();
 		$("input[type='checkbox']:checked").each(function(i){
-				id['i'] = $(this).val();
-				alert(id);
-		});  
+				id[i] = $(this).val();
+		});
+		var str_id = id.join();
+		if(!str_id){
+			showTip("请选择删除项！","error");
+			return;
+		}
+
 		$( "#dialog" ).dialog({
 			buttons: {
 				"确定": function(){
 					$.ajax({
 						type : "post",
 						url : "{:__URL('ADMIN_MAIN/myhome/yudingdelete')}",
-						data : { "id" : id},
+						data : { "id" : str_id},
 						dataType : "json",
 						success : function(data) {
 							if(data>0){
 								showTip("删除成功","success");
+								window.location.href = "{:__URL('ADMIN_MAIN/myhome/yuding')}"
 							}else{
 								showTip("删除成功","error");
 							}
@@ -112,8 +117,7 @@
 			contentText:"确定删除所选吗？",
 		});
 	})
-</script> 
+</script>
 {/block}
 {block name="script"}
-
 {/block}

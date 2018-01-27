@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace app\admin\controller;
 use Qiniu\json_decode;
 use think\Config;
@@ -50,8 +50,8 @@ class Myhome extends BaseController
             	->alias('a')
             	->join('ns_goods_login m','a.userid=m.id','LEFT')
             	->find($id);
-            $this->assign("row", $row); 
-           
+            $this->assign("row", $row);
+
 		return view($this->style . "Myhome/registerdetail");
 	}
 
@@ -84,7 +84,8 @@ class Myhome extends BaseController
 				$where = [];
 			}
 		$list = db("ns_goods_reserve")->where($where)->select();
-		
+		//$list = db("ns_shop_message")->select();
+
 		if($list){
 			foreach($list as $k=>$v){
 				if(strtotime($v['time'])<time()){
@@ -102,11 +103,14 @@ class Myhome extends BaseController
 	public function yudingdelete(){
 		if(request()->isAjax()){
 			$id = input('post.id');
-			//dump($id);die;
-			$where['id'] = array('in',$id);
+			$where['id'] = array('in', $id);
 			$r = db("ns_goods_reserve")->where($where)->delete();
+			if (!$r) {
+				return false;
+			}else {
+		                return $r;
+			}
 		}
-		
 	}
 
 	public function yingshou(){

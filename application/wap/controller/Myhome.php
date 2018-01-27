@@ -75,7 +75,7 @@ class Myhome extends Controller{
         $this->assign("style", "wap/" . $use_wap_template['value']);
     }
     //个人中心首页
-	public function index(){		
+	public function index(){
         return view($this->style . 'Myhome/index');
         $cus = db('customer')->where('openid',$this->myinfo['openid'])->find();
         $shop = db('shop')->where('customer_id',$cus['id'])->find();
@@ -159,14 +159,14 @@ class Myhome extends Controller{
                 if($xx){
                     $this->error('用户已存在，请登录','Myhome/login');
                 }
-                $data['iphone'] = $iphone; 
+                $data['iphone'] = $iphone;
                 $data['password'] = MD5('MD5_PRE'.$password);
                 $id = db('ns_goods_login')->insert($data);
                 if ($id) {
                     $this->success('注册成功！','shenqing');
                 } else {
                     $this->error('注册失败');
-                }  
+                }
             }*/
         if (request()->isAjax()) {
             $password = request()->post('password', '');
@@ -202,7 +202,7 @@ class Myhome extends Controller{
     public function jinge(){
         return view($this->style . 'Myhome/jinge');
     }
-    
+
     public function sous(){
         return view($this->style . 'Myhome/sous');
     }
@@ -268,9 +268,11 @@ class Myhome extends Controller{
             $data['shi'] = $shi;
             $data['jingdu'] = $jingdu;
             $data['weidu'] = $weidu;
+            $data['business_hours'] = $business_hours;
             $id = db('ns_shop_message')->insert($data);
+
             if($id){
-                $this->success('申请成功，请等待审核！',__URL('ADMIN_MAIN/Myhome/yingshou'));
+                $this->success('申请成功，请等待审核！',__URL('wap/myhome/yingshou'));
             }else{
                 $this->error('申请失败！');
             }
@@ -467,24 +469,6 @@ class Myhome extends Controller{
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
 
      * [gonggao 公告]
@@ -514,7 +498,6 @@ class Myhome extends Controller{
         if (!empty($couponCus)) {
             foreach ($couponCus as $k => $v) {
 
-
                 $my_nums[] = $v['coupon_type_id'];
 
             }
@@ -535,10 +518,7 @@ class Myhome extends Controller{
 
         return view($this->style . 'Myhome/gonggao');
 
-
     }
-
-
 
     /**
 
@@ -563,8 +543,6 @@ class Myhome extends Controller{
             ];
 
         }
-
-
 
         $coupon_type_id = intval(request()->param('num'));
 
@@ -601,17 +579,7 @@ class Myhome extends Controller{
         $result = db('ns_coupon')->where('coupon_id',$coupon_id)->update($data);
         return ['state'=>1,'message'=>'优惠券领取成功！'];
 
-        
-
-
-
-
-
-
-
     }
-
-
 
     /**
 
@@ -623,41 +591,23 @@ class Myhome extends Controller{
 
     public function fasong(){
 
-
-
         $tel = input('post.haoma');
 
-
-
-        $code = mt_rand(1000,9999);        
-
-
+        $code = mt_rand(1000,9999);
 
         $msg = new MsgApi(config('msg.api_account'),config('msg.api_password'),config('msg.api_send_url'));
 
-
-
         $result = $msg->sendSMS($tel, config('msg.qianming').$code,false);
-
-
 
         if(!empty($result)){
 
-
-
             $res = json_decode($result,true);
 
-
-
             if (isset($res['code']) && $res['code'] == 0) {
-
-
 
                  return ['state'=>1,'message'=>'短信发送成功！','code'=>$code];
 
             }else{
-
-
 
                 return ['state'=>0,'message'=>$res['errorMsg']];
 
@@ -665,17 +615,11 @@ class Myhome extends Controller{
 
         }else{
 
-
-
             return ['state'=>0,'message'=>json_decode($result,true)['errorMsg']];
 
         }
 
-
-
     }
-
-
 
     /**
 
@@ -689,15 +633,9 @@ class Myhome extends Controller{
 
         $code = input('post.code');
 
-
-
         $customerInfo = db('customer')->where('openid',$this->myinfo['openid'])->find();
 
-
-
         $result = db('customer')->where('id',$customerInfo['id'])->update(['tel'=>$code]);
-
-
 
         if ($result) {
 
@@ -707,15 +645,9 @@ class Myhome extends Controller{
 
             return ['state'=>0,'message'=>'手机绑定失败！'];
 
-        }     
-
-
-
-
+        }
 
     }
-
-
 
     /**
 
@@ -727,17 +659,9 @@ class Myhome extends Controller{
 
     public function mycoupon(){
 
-
-
         $type = request()->param('type');
 
-
-
         $customerInfo = db('customer')->where('openid',$this->myinfo['openid'])->find();
-
-
-
-
 
         //判断是否已过期
 
@@ -746,8 +670,6 @@ class Myhome extends Controller{
         $now_time = date('Y-m-d',$now_time);
 
         $now_time = strtotime($now_time);
-
-
 
         $where = [
 
@@ -763,23 +685,17 @@ class Myhome extends Controller{
 
         ];
 
-
-
         $mycouponres = db("coupon")
 
         ->alias('c')
 
-        ->JOIN('bk_shop s','c.shop_id=s.id','LEFT')        
+        ->JOIN('bk_shop s','c.shop_id=s.id','LEFT')
 
         ->field('c.*,s.name')
 
         ->where($where)
 
         ->select();
-
-
-
-
 
         $where1 = [
 
@@ -797,14 +713,13 @@ class Myhome extends Controller{
 
         ->alias('c')
 
-        ->JOIN('bk_shop s','c.shop_id=s.id','LEFT')        
+        ->JOIN('bk_shop s','c.shop_id=s.id','LEFT')
 
         ->field('c.*,s.name')
 
         ->where($where1)
 
         ->count();
-
 
 
         $where2 = [
@@ -823,7 +738,7 @@ class Myhome extends Controller{
 
         ->alias('c')
 
-        ->JOIN('bk_shop s','c.shop_id=s.id','LEFT')        
+        ->JOIN('bk_shop s','c.shop_id=s.id','LEFT')
 
         ->field('c.*,s.name')
 
@@ -831,21 +746,9 @@ class Myhome extends Controller{
 
         ->count();
 
-
-
-
-
-
-
         return $this->fetch('',['mycouponres'=>$mycouponres,'type1'=>$type1,'type2'=>$type2]);
 
-
-
     }
-
-
-
-    
 
     /**
 
@@ -857,11 +760,7 @@ class Myhome extends Controller{
 
     public function jianyan(){
 
-
-
         if (request()->isPost()) {
-
-
 
             //获取post表单参数
 
@@ -869,17 +768,11 @@ class Myhome extends Controller{
 
             $jine = input('post.jine');
 
-
-
             //获取商家信息：先获取customer表，然后根据关联获取shop商家信息
 
             $cus = db("customer")->where('openid',$this->myinfo['openid'])->find();
 
             $shop = db("shop")->where('customer_id',$cus['id'])->find();
-
-
-
-
 
             //判断是否已过期
 
@@ -889,23 +782,15 @@ class Myhome extends Controller{
 
             $now_time = strtotime($now_time);
 
-
-
             if($vo['time_end'] < $now_time){
 
             echo 'class="on"';
 
             }
 
-
-
-
-
             //当前券规则：分类要和此商家一致，状态为已领取
 
             $coupon = db('coupon')->where(['code'=>$code,'state'=>1,'is_yuan'=>0,'category'=>$shop['category'],'time_end'=>['egt',$now_time]])->find();
-
-
 
             if ($coupon) {
 
@@ -915,8 +800,6 @@ class Myhome extends Controller{
 
                 db('coupon')->where('id',$coupon['id'])->update(['state'=>2]);
 
-                
-
                 //查找此商家是否有设置优惠券规则
 
                 $cus_coupon = db('coupon')->where(['shop_id'=>$shop['id'],'is_yuan'=>1,'checkinfo'=>1])->find();
@@ -925,21 +808,11 @@ class Myhome extends Controller{
 
                     //如果设置了规则，则按照规则返券
 
-                    
-
-
-
                     $count = floor($jine/$cus_coupon['condition']);
-
-                    
-
-
 
                     if (intval($count) != 0) {
 
-
-
-                        for ($i=1; $i <=$count ; $i++) { 
+                        for ($i=1; $i <=$count ; $i++) {
 
                             $inset_data['code'] = uniqid();
 
@@ -973,41 +846,17 @@ class Myhome extends Controller{
 
                         }
 
-                            
-
-
-
                     }
 
-
-
-
-
-
-
                     $this->success('核券成功！');
-
-                    
-
-
-
-                    
 
                 } else {
 
                     //如果没有设置规则，或者设置原价，那么则不返券
 
-                    
-
                     $this->success('核券成功！');
 
                 }
-
-                
-
-
-
-
 
                 $result = db('coupon')->where('id',$coupon['id'])->update(['state'=>2]);
 
@@ -1021,14 +870,6 @@ class Myhome extends Controller{
 
                 }
 
-
-
-
-
-
-
-
-
             } else {
 
                 //无此券
@@ -1037,17 +878,11 @@ class Myhome extends Controller{
 
             }
 
-            
-
         }
-
-
 
         return $this->fetch('');
 
     }
-
-
 
     /**
 
@@ -1059,11 +894,7 @@ class Myhome extends Controller{
 
     public function shezhi(){
 
-
-
         if (request()->isPost()) {
-
-
 
             $data['quan'] = input('post.quan');
 
@@ -1071,13 +902,9 @@ class Myhome extends Controller{
 
             $data['jine'] = input('post.jine',0,'floatval');
 
-            
-
             $cus = db("customer")->where('openid',$this->myinfo['openid'])->find();
 
             $shop = db("shop")->where('customer_id',$cus['id'])->find();
-
-
 
             $where = [
 
@@ -1089,17 +916,11 @@ class Myhome extends Controller{
 
             ];
 
-
-
             $shop_coupon = db('coupon')->where($where)->find();
-
-
 
             if ($shop_coupon) {
 
                 //优惠券表中有当前商家的优惠券数据，则更新
-
-                
 
                 if ($data['quan'] == 'yuanjia') {
 
@@ -1117,15 +938,9 @@ class Myhome extends Controller{
 
                     }
 
-                    
-
-
-
                 } else {
 
                     //如果商家此时设置不为原价时，那么则更新此条数据
-
-                    
 
                     $insert_data['time'] = time();
 
@@ -1137,8 +952,6 @@ class Myhome extends Controller{
 
                     $result = db('coupon')->where('id',$shop_coupon['id'])->update($insert_data);
 
-
-
                     if ($result) {
 
                         $this->success('设置成功！');
@@ -1149,21 +962,13 @@ class Myhome extends Controller{
 
                     }
 
-
-
-
-
                 }
-
-                
 
                 halt($shop_coupon);
 
             } else {
 
                 //优惠券表中没有当前商家的优惠券数据，则新增
-
-                
 
                 $insert_data['time'] = time();
 
@@ -1181,8 +986,6 @@ class Myhome extends Controller{
 
                 $insert_data['time_end'] = strtotime('2070-01-01');
 
-
-
                 $numInfo = db('coupon')->order('num desc')->find();
 
                 if ($numInfo) {
@@ -1195,8 +998,6 @@ class Myhome extends Controller{
 
                 }
 
-
-
                 if ($data['quan'] != 'yuanjia' && $data['quan'] == 'youhui') {
 
                    //如果商家此时设置不为原价时，那么则新增数据
@@ -1206,8 +1007,6 @@ class Myhome extends Controller{
                     $insert_data['jine']=$data['jine'];
 
                     $insert_data['category']=$shop['category'];
-
-
 
                     $result = db('coupon')->insert($insert_data);
 
@@ -1221,25 +1020,13 @@ class Myhome extends Controller{
 
                     }
 
-                    
-
-
-
                 }
 
                 $this->success('设置成功！');
 
             }
 
-            
-
-
-
-            
-
         }
-
-
 
         $cus = db("customer")->where('openid',$this->myinfo['openid'])->find();
 
@@ -1257,16 +1044,11 @@ class Myhome extends Controller{
 
             ];
 
-
-
         $shop_coupon = db('coupon')->where($where)->find();
-
-
 
         return $this->fetch('',['coupon'=>$shop_coupon]);
 
     }
-
 
 
 }
