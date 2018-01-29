@@ -66,6 +66,7 @@
     function showUnreadNews(){
 
         $.post('{:url("dingwei/getData")}', {jingdu: longitude, weidu: latitude}, function(data) {
+            alert(latitude);
 
             if (data.state ==1) {
 					$('.merchant-ul').html(data.message);
