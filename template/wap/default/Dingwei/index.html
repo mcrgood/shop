@@ -11,6 +11,69 @@
 </head>
 
 <body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<script type="text/javascript">
+    //配置信息验证接口
+    var latitude ;
+    var longitude;
+    wx.config({
+        debug: false,
+        appId: '<?php echo $signPackage["appId"];?>',
+        timestamp: '<?php echo $signPackage["timestamp"];?>',
+        nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+        signature: '<?php echo $signPackage["signature"];?>',
+        jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'checkJsApi',
+            'openLocation',
+            'getLocation'
+        ]
+    });
+    //验证之后进入该函数，所有需要加载页面时调用的接口都必须写在该里面
+    wx.ready(function () {
+        //基础接口判断当前客户端版本是否支持指定JS接口
+        wx.checkJsApi({
+            jsApiList: [
+                'getLocation'
+            ],
+            success: function (res) {
+                if (res.checkResult.getLocation == false) {
+                    alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+                    return;
+                }
+            }
+        });
+        //微信获取地理位置并拉取用户列表（用户允许获取用户的经纬度）
+        wx.getLocation({
+            success: function (res) {
+                flag = true;
+                 latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                 longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+
+
+            },
+            cancel: function (res){
+
+            }
+        });
+
+    });
+
+</script>
+<script type="text/javascript ">
+    showUnreadNews();
+    function showUnreadNews(){
+
+        $.post('{:url("dingwei/getData")}', {jingdu: latitude, weidu: longitude}, function(data) {
+
+            if (data.state ==1) {
+					$('.merchant-ul').html(data.message);
+                }
+
+        },'JSON');
+    }
+</script>
 <div class="top-kong"></div>
 <div class="top">
 <a href="{:url('indexx/indexx')}" class="top-a1"></a>
@@ -51,95 +114,9 @@
 </div>
 
 <ul class="merchant-ul">
-{volist name="list" id="vo"}
-	<li>
-		<a href="{:url('catdetail',array('id'=>$vo['id']))}">
-		<img src="{$vo.thumb}" /><span>{$vo.name}</span>
-		</a>
-                店名：{$vo.names}<br/>
-		地址：{$vo.address}<br />
-		电话：{$vo.tel}<a href="{:url('catdetail',array('id'=>$vo['id']))}" class="merchant-ul-a">>>更多详情</a>
-	</li>
-{/volist}
+
 </ul>
 
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script type="text/javascript">
-	var flag = false;
-	var jingdu ='';
-	var weidu='';
-//配置信息验证接口
-wx.config({
-   debug: false,
-   appId: '<?php echo $signPackage["appId"];?>',
-   timestamp: '<?php echo $signPackage["timestamp"];?>',
-   nonceStr: '<?php echo $signPackage["nonceStr"];?>',
-   signature: '<?php echo $signPackage["signature"];?>',
-   jsApiList: [
-       // 所有要调用的 API 都要加到这个列表中
-       'checkJsApi',
-       'openLocation',
-       'getLocation'
-     ]
-           });
 
-
-//验证之后进入该函数，所有需要加载页面时调用的接口都必须写在该里面
-wx.ready(function () {
-	//基础接口判断当前客户端版本是否支持指定JS接口
-	wx.checkJsApi({
-	   jsApiList: [
-	       'getLocation'
-	   ],
-	   success: function (res) {
-	       // alert(JSON.stringify(res));
-	       // alert(JSON.stringify(res.checkResult.getLocation));
-	       if (res.checkResult.getLocation == false) {
-	           alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
-	           return;
-	       }
-	   }
-	});
-
-	//微信获取地理位置并拉取用户列表（用户允许获取用户的经纬度）
-	wx.getLocation({
-	   success: function (res) {
-	   		flag = true;
-	       var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-	       var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-	       jingdu = longitude;
-	       weidu = latitude;
-
-           //去数据库查询获取附近的门店
-	   },
-	   cancel: function (res) {
-	    // $(".city").triggerHandler("focus");
-	   }
-	                });
-});
-
-function dingwei(){
-	if (flag == false) {
-		alert('请刷新页面，同意访问地理位置后重试！');
-		location.href="";
-		return false;
-	}
-		//主要逻辑开始
-        $.ajax({
-	        type: 'post',
-	        url: '{:url("dingwei/dw")}',
-	        dataType: 'json',
-	        data: {"jingdu": jingdu,"weidu":weidu,"cat":{if condition="$Request.param.cat eq null"}0{else/}{$Request.param.cat}{/if}},
-	        success:function(shopInfo){
-	        //index是下表，el是值
-	        $(".merchant-ul").text('');
-	               $(shopInfo).each(function(index,el){
-	                    $(".merchant-ul").append('<li><a href="{:url(\'dingwei/show\',array(\'shop_id\'=>'+el.id+'))}"><img src="'+el.thumb+'" /><span>'+el.name+'</span></a>地址：'+el.address+'<br />电话：'+el.tel+'<a href="{:url(\'dingwei/show\',array(\'shop_id\'=>'+el.id+'))}" class="merchant-ul-a">>>更多详情</a></li>');
-	               })
-	          }
-	        });
-       	//主要逻辑结束
-}
-</script>
 </body>
 </html>
