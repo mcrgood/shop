@@ -163,10 +163,10 @@
     <a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
     <a href="{:url('myhome/index')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>我的</a>
 </div>
+<div class="foot_kong"></div>
 <script src="__INDEX__/js/js.js"></script>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EWOFpIVomII8KSivhpMAqjxVeaALPYIL"></script>
 <script type="text/javascript">
     //配置信息验证接口
     wx.config({
