@@ -35,7 +35,7 @@ class Dingwei extends BaseController{
         $list = db("ns_shop_message")->where('state','0')->select();
         foreach ($list as $k => $v)
         {
-            $list[$k]['distance'] = $this -> getDistance($jingdu, $weidu, $v['jingdu'], $v['weidu']);
+            $list[$k]['distance'] = $this -> getDistance($weidu, $jingdu, $v['weidu'], $v['jingdu']);
 
         }
         foreach ($list as $key => $value)
