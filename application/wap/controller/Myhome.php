@@ -198,7 +198,9 @@ class Myhome extends Controller{
     public function yingshou(){
         return view($this->style . 'Myhome/yingshou');
     }
-
+    public function yincan(){
+        return view($this->style . 'Myhome/yincan');
+    }
     public function jinge(){
         return view($this->style . 'Myhome/jinge');
     }
