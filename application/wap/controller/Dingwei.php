@@ -12,6 +12,7 @@ use data\service\Platform;
 use data\service\promotion\GoodsExpress;
 use data\service\Address;
 use data\service\WebSite;
+use data\extend\org\wechat\Jssdk;
 
 class Dingwei extends BaseController{
 	public function index(){
@@ -20,10 +21,46 @@ class Dingwei extends BaseController{
 		$where['leixing'] = array('eq',$leixing_id);
 		$list = db("ns_shop_message")->where($where)->where('state','0')->select();
 		$this->assign('list',$list);
-		return view($this->style . 'Dingwei/index');
+        $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
+        $package = $jssdk->getSignPackage();
+        $this->assign('signPackage', $package);
+        //$limit = $this->getDistance("39.976315","116.492302","39.97635","116.492302");
+        return view($this->style . 'Dingwei/index');
 	}
+	public function  getData()
+    {
+        $str = '';
+        $jingdu = input('post.jingdu');
+        $weidu = input('post.weidu');
+        $list = db("ns_shop_message")->where('state','0')->select();
+        foreach ($list as $k => $v)
+        {
+            $list[$k]['distance'] = $this -> getDistance($jingdu, $weidu, $v['jingdu'], $v['weidu']);
 
-	public function catdetail(){
+        }
+        foreach ($list as $key => $value)
+        {
+            $str.= '<li><a href="' . url("catdetail",array("id"=>$value['id'])) . '">' .
+            '<img src="' . $value['thumb'] . '" /><span>' . $value['name']. '</span></a>
+            店名：' . $value['names'] .'<br/>地址：' . $value['address'] .'<br />距离：'. $value['distance']. ' km <br />电话：' . $value['tel'] . '<a href="'. url('catdetail',array('id'=>$value['id'])) . ' class="merchant-ul-a">>>更多详情</a></li>';
+
+        }
+        return ["message" => $str ,"state" => 1];
+    }
+    public function getDistance($lat1, $lng1, $lat2, $lng2){
+        $earthRadius = 6367000; //approximate radius of earth in meters
+        $lat1 = ($lat1 * pi() ) / 180;
+        $lng1 = ($lng1 * pi() ) / 180;
+        $lat2 = ($lat2 * pi() ) / 180;
+        $lng2 = ($lng2 * pi() ) / 180;
+        $calcLongitude = $lng2 - $lng1;
+        $calcLatitude = $lat2 - $lat1;
+        $stepOne = pow(sin($calcLatitude / 2), 2) + cos($lat1) * cos($lat2) * pow(sin($calcLongitude / 2), 2);
+        $stepTwo = 2 * asin(min(1, sqrt($stepOne)));
+        $calculatedDistance = $earthRadius * $stepTwo;
+        return round($calculatedDistance);
+    }
+    public function catdetail(){
 		$id = input('param.id');
 		$row = db("ns_shop_message")->find($id);
 		$this->assign('row',$row);
