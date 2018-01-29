@@ -35,7 +35,7 @@ class Dingwei extends BaseController{
         $list = db("ns_shop_message")->where('state','0')->select();
         foreach ($list as $k => $v)
         {
-            $list[$k]['distance'] = $this -> getDistance($weidu, $jingdu, $v['weidu'], $v['jingdu']);
+            $list[$k]['distance'] = $this -> get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
 
         }
         foreach ($list as $key => $value)
@@ -59,6 +59,19 @@ class Dingwei extends BaseController{
         $stepTwo = 2 * asin(min(1, sqrt($stepOne)));
         $calculatedDistance = $earthRadius * $stepTwo;
         return round($calculatedDistance);
+    }
+    function get_distance($from,$to,$km=true,$decimal=2){
+        sort($from);
+        sort($to);
+        $EARTH_RADIUS = 6370.996; // 地球半径系数
+
+        $distance = $EARTH_RADIUS*2*asin(sqrt(pow(sin( ($from[0]*pi()/180-$to[0]*pi()/180)/2),2)+cos($from[0]*pi()/180)*cos($to[0]*pi()/180)* pow(sin( ($from[1]*pi()/180-$to[1]*pi()/180)/2),2)))*1000;
+
+        if($km){
+            $distance = $distance / 1000;
+        }
+
+        return round($distance, $decimal);
     }
     public function catdetail(){
 		$id = input('param.id');
