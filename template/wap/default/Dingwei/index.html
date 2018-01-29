@@ -50,6 +50,14 @@
                 flag = true;
                  latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                  longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                	$.post('{:url("dingwei/getData")}', {jingdu: longitude, weidu: latitude}, function(data) {
+                    alert(latitude);
+
+                    if (data.state ==1) {
+                        $('.merchant-ul').html(data.message);
+                    }
+
+                },'JSON');
 
 
             },
@@ -63,14 +71,7 @@
 </script>
 <script type="text/javascript ">
     $(document).ready(function(){
-        $.post('{:url("dingwei/getData")}', {jingdu: longitude, weidu: latitude}, function(data) {
-            alert(latitude);
 
-            if (data.state ==1) {
-                $('.merchant-ul').html(data.message);
-            }
-
-        },'JSON');
     });
 
 </script>
