@@ -62,18 +62,17 @@
 
 </script>
 <script type="text/javascript ">
-    showUnreadNews();
-    function showUnreadNews(){
-
+    $(document).ready(function(){
         $.post('{:url("dingwei/getData")}', {jingdu: longitude, weidu: latitude}, function(data) {
             alert(latitude);
 
             if (data.state ==1) {
-					$('.merchant-ul').html(data.message);
-                }
+                $('.merchant-ul').html(data.message);
+            }
 
         },'JSON');
-    }
+    });
+
 </script>
 <div class="top-kong"></div>
 <div class="top">
