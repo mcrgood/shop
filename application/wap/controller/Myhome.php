@@ -196,33 +196,39 @@ class Myhome extends Controller{
     }
 
     public function yingshou(){
+        $this->check_login();
         return view($this->style . 'Myhome/yingshou');
     }
     public function yincan(){
+        $this->check_login();
         return view($this->style . 'Myhome/yincan');
     }
     public function jinge(){
+        $this->check_login();
         return view($this->style . 'Myhome/jinge');
     }
 
     public function sous(){
+        $this->check_login();
         return view($this->style . 'Myhome/sous');
     }
 
     //退出登录
 	public function out(){
-		//删除cookie
-        cookie('myinfo',null);
-		cookie('myposition',null);
-		return $this->redirect('indexx/indexx');
+        Session::set('business_id', "");
+        $redirect = __URL(__URL__ . "/wap/myhome/login");
+		return $this->redirect($redirect);
 	}
-
-    //商家申请
-	public function shenqing(){
+    public function check_login()
+    {
         if (empty($this ->business_id)) {
             $redirect = __URL(__URL__ . "/wap/myhome/login");
             $this->redirect($redirect); // 用户未登录
         }
+    }
+    //商家申请
+	public function shenqing(){
+
         if(request()->isPost()){
             $business_id = Session::get('business_id');
             //检测商户
