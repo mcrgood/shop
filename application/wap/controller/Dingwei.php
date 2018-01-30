@@ -38,7 +38,7 @@ class Dingwei extends BaseController{
             $list[$k]['distance'] = $this -> get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
 
         }
-        array_multisort(array_column($list,'distance'),SORT_ASC,$list);
+        array_multisort(array_column($list,'distance'),SORT_DESC,$list);
         foreach ($list as $key => $value)
         {
             $str.= '<li><a href="' . url("catdetail",array("id"=>$value['id'])) . '">' .
