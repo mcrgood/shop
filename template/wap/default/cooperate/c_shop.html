@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>login test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="description" content="ajax方式">
+    <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#login").click(function () {
+                var company = $('#company').val();
+                var phone = $('#phone').val();
+                var address = $('#address').val();
+                var duty = $('#duty').val();
+
+                if (company == '') {
+                    alert("请输入企业名称");
+                    return false;
+                    }
+                    else {
+                    if (phone == '') {
+                        alert("请输入电话");
+                        return false;
+                        }else
+                        if (address == '') {                
+                                alert("请输入你的地址");                
+                                return false;
+                         }else
+                            if(!isNaN(company)){
+                         alert("请填写正确的名称");
+                             return false;
+                         }
+                         else
+                         if(!company.match(/^[\u4e00-\u9fa5]+$/)){
+                              alert("请填写正确的名称");
+                                return false;
+                         }else
+                         if (duty == '') {                
+                                alert("请输入你的名字");                
+                                return false;
+                        }else
+                            $.ajax({  
+                                type: "POST",   //提交的方法
+                                url:"{:url('cooperate/index')}", //提交的地址  url
+                                data:$('#form1').serialize(),// 序列化表单值 表单id
+                                async: false,  
+                                error: function(request) {  //失败的话
+                                     alert("Connection error");  
+                                },  
+                                success: function(data) {  //成功
+                                    if (data.error == 0) {
+                                        alert(data.message);
+                                        window.location.href = '{:url(\'wap/index\')}'
+                                    }
+                                    else
+                                    {
+                                        alert(data.message);
+                                    }
+                                }  
+                             });
+                        }
+              });  
+        });
+    </script>
+</head>
+<style type="text/css">
+    #form-div{width: 100%;height: auto;padding: 0;margin: 0;}
+    #form1{width: 100%;height: auto;display: block;}
+    #form1 h2{font-size: 45px;text-align: center;padding-left: 100px;height: 40px;line-height: 80px;letter-spacing: 8px;}
+    #form1 p{font-size: 50px;text-align: center;height: 30px;}
+    #form1 p input{width: 30%;font-size: 45px;margin-left: 10px;border:1px solid gray;}
+</style>
+<body>
+<div id="form-div">
+    <form id="form1"><!--将form元素的属性action和method去掉，添加id=”form1”,form元素就变为<form id="form1">-->
+        <h2>合作商户</h2>
+        <p>企业：<input name="company" type="text" id="company" value=""/></p>
+        <p>电话：<input name="telphone" type="tel" id="phone" value=""/></p>
+        <p>地址：<input name="address" type="text" id="address"  value=""/></p>
+        <p>负责人：<input name="duty" type="text" id="duty"  value="" style="margin-right:40px;"/></p>
+        <textarea rows="3" cols="40" name="message" placeholder="留言信息" style="font-size:35px;border:1px solid gray;margin-left:12%;"></textarea>
+        <p><input type="button" value="提交" id="login">&nbsp;<input type="reset" value="重置"></p>
+    </form>
+</div>
+</body>
+</html>
