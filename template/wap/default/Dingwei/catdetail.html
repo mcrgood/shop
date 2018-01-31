@@ -142,7 +142,7 @@
           <p>地址：{$row.address}</p>
           </div>
           <div class="map_right" id="right">
-          <img src="__INDEX__/images/3_10.gif" />
+              <a href="javascript:daohang();" target="_blank"><img src="__INDEX__/images/3_10.gif" /></a>
         </div>
       </div>
 <script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js"></script>
@@ -185,6 +185,65 @@ function showLocation(r){
     else {
         alert('failed'+this.getStatus());//定位失败
     }
+}
+function daohang(){
+
+    var geolocation = new BMap.Geolocation();
+
+    geolocation.getCurrentPosition(function(r){
+
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+
+            var mk = new BMap.Marker(r.point);
+
+            map.addOverlay(mk);
+
+            //map.panTo(r.point);//地图中心点移到当前位置
+
+            var latCurrent = r.point.lat;
+
+            var lngCurrent = r.point.lng;
+
+            //alert('我的位置：'+ latCurrent + ',' + lngCurrent);
+
+            location.href="http://api.map.baidu.com/direction?origin="+latCurrent+","+lngCurrent+"&destination={$row.weidu},{$row.jingdu}&mode=driving&region=北京&output=html";
+            map.addOverlay(marker);
+
+            var licontent="<b>{$row.names}</b><br>";
+
+            licontent+="<span><strong>地址：</strong>{$row.address}</span><br>";
+
+            licontent+="<span><strong>电话：</strong>{$row.tel}</span><br>";
+
+            var opts = {
+
+                width : 200,
+
+                height: 80,
+
+            };
+
+            var  infoWindow = new BMap.InfoWindow(licontent, opts);
+
+            marker.openInfoWindow(infoWindow);
+
+            marker.addEventListener('click',function(){
+
+                marker.openInfoWindow(infoWindow);
+
+            });
+        }
+
+        else {
+
+            // alert('failed'+this.getStatus());
+
+            window.history.go(-1);
+
+        }
+
+    },{enableHighAccuracy: true})
+
 }
 </script>
       <div class="yytime">
