@@ -36,20 +36,21 @@ class Dingwei extends BaseController{
         $where['leixing'] = $leixing_id;
         $where['state'] = 0;
         $list = db("ns_shop_message")->where($where)->select();
-        foreach ($list as $k => $v)
-        {
-            $list[$k]['distance'] = $this -> get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
+        if (!empty($list)) {
+            foreach ($list as $k => $v) {
+                $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
 
-        }
-        array_multisort(array_column($list,'distance'),SORT_ASC,$list);
-        foreach ($list as $key => $value)
-        {
-            $str.= '<li><a href="' . url("catdetail",array("id"=>$value['id'])) . '">' .
-            '<img src="' . $value['thumb'] . '" /><span>' . $value['name']. '</span></a>
-            店名：' . $value['names'] .'<br/>地址：' . $value['address'] .'<br />距离：'. $value['distance']. ' km <br />电话：' . $value['tel'] . '<a href="'. url('catdetail',array('id'=>$value['id'])) . ' class="merchant-ul-a">>>更多详情</a></li>';
+            }
+            array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
+            foreach ($list as $key => $value) {
+                $str .= '<li><a href="' . url("catdetail", array("id" => $value['id'])) . '">' .
+                    '<img src="' . $value['thumb'] . '" /><span>' . $value['name'] . '</span></a>
+                店名：' . $value['names'] . '<br/>地址：' . $value['address'] . '<br />距离：' . $value['distance'] . ' km <br />电话：' . $value['tel'] . '<a href="' . url('catdetail', array('id' => $value['id'])) . ' class="merchant-ul-a">>>更多详情</a></li>';
 
+            }
+            return ["message" => $str, "state" => 1];
         }
-        return ["message" => $str ,"state" => 1];
+        return ["message" => "没有数据", "state" => 1];
     }
     public function getDistance($lat1, $lng1, $lat2, $lng2){
         $earthRadius = 6367000; //approximate radius of earth in meters
