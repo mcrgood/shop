@@ -24,7 +24,7 @@ class Dingwei extends BaseController{
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
         $package = $jssdk->getSignPackage();
         $this->assign('signPackage', $package);
-        //$limit = $this->getDistance("39.976315","116.492302","39.97635","116.492302");
+        $this->assign('leixing_id', $leixing_id);
         return view($this->style . 'Dingwei/index');
 	}
 	public function  getData()
@@ -32,7 +32,10 @@ class Dingwei extends BaseController{
         $str = '';
         $jingdu = input('post.jingdu');
         $weidu = input('post.weidu');
-        $list = db("ns_shop_message")->where('state','0')->select();
+        $leixing_id = input('post.leixing_id');
+        $where['leixing'] = $leixing_id;
+        $where['state'] = 0;
+        $list = db("ns_shop_message")->where($where)->select();
         foreach ($list as $k => $v)
         {
             $list[$k]['distance'] = $this -> get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
