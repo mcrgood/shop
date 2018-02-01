@@ -1,36 +1,124 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>搜索</title>
-<style>
-*{margin:0;padding: 0;}
-.bigest{margin: 0 auto;height: 100%;}
-/*店铺名称*/
-.content_top1{width: 100%;height: 140px;margin-top: 70px;}
-.content_top1 p{font-size: 50px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
- padding-left: 50px;}
-.sous{width: 90%; height: 50px;border-radius: 10px;border: 1px solid #ff5d5e;margin: 0 5%;}
-/*消费时间*/
-.content_top2{width: 100%;height: 300px;}
-.content_top2 p{font-size: 50px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
- padding-left: 50px;margin-top: 40px;}
- .tag{margin: 0 auto;height:230px;}
- .tag label{width: 200px;border: 1px solid #cccccc;border-radius: 10px;height: 60px;display: inline-block;text-align: center;margin-right: 5px;}
- .tag label:first-child{margin-left: 5%;}
- .content_top2 label{text-decoration: none;font-size: 30px;line-height: 60px;}
-/*消费方式*/
- .content_top3{width: 100%;height: 180px;}
- .content_top3 label{text-decoration: none;font-size: 30px;line-height: 60px;}
-.content_top3 p{font-size: 50px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
- padding-left: 50px;margin-top: 40px;}
- .btn1{width: 90%;margin: 0px 5%;border-radius: 10px;background-color: #ff5d5e;height: 80px;font-size: 40px;font-weight: bold;color: #ffffff;cursor: pointer;}
- .on{background:#ff5d5e;color:#ffffff;}
-</style>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>搜索</title>
+	<style>
+		*{margin:0;padding: 0;}
+		.bigest{margin: 0 auto;height: 100%;}
+		/*店铺名称*/
+		.content_top1{width: 100%;height: 140px;margin-top: 70px;}
+		.content_top1 p{font-size: 50px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
+			padding-left: 50px;}
+		.sous{width: 90%; height: 50px;border-radius: 10px;border: 1px solid #ff5d5e;margin: 0 5%;}
+		/*消费时间*/
+		.content_top2{width: 100%;height: auto;}
+		.content_top2 p{font-size: 50px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
+			padding-left: 50px;margin-top: 40px;}
+		.tag{margin: 0 auto;height:auto;}
+		.tag label{width: 200px;border: 1px solid #cccccc;border-radius: 10px;height: 60px;display: inline-block;text-align: center;margin-right: 5px;}
+		.tag label:first-child{margin-left: 5%;}
+		.tag2{margin: 0 auto;height:230px;}
+		.tag2 span{width: 200px;border: 1px solid #cccccc;border-radius: 10px;height: 60px;display: inline-block;text-align: center;margin-right: 5px;font-size: 30px;line-height: 60px;}
+		.tag2 span:first-child{margin-left: 5%;}
+		.content_top2 label{text-decoration: none;font-size: 30px;line-height: 60px;}
+		/*消费方式*/
+		.content_top3{width: 100%;height: 180px;}
+		.content_top3 label{text-decoration: none;font-size: 30px;line-height: 60px;}
+		.content_top3 p{font-size: 50px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
+			padding-left: 50px;margin-top: 40px;}
+		.btn1{width: 90%;margin: 0px 5%;border-radius: 10px;background-color: #ff5d5e;height: 80px;font-size: 40px;font-weight: bold;color: #ffffff;cursor: pointer;}
+		.on{background:#ff5d5e;color:#ffffff;}
+		/*日期*/
+
+		[name='jHsDate'] {
+			position: absolute;
+			max-width: 336px;
+			width: auto;
+			height: 164px;
+			border: 1px solid #dddddd;
+			border-radius: 2px;
+			background-color:#ffffff;
+		}
+
+		.yearHsDate,
+		.dayHsDate,
+		.hourHsDate,
+		.minuteHsDate {
+			height: 164px;
+			width: 95px;
+			margin: 0;
+			padding: 0;
+			text-align: center;
+			overflow-y: auto;
+			overflow-x: hidden;
+			font-size: 14px;
+			display: inline-block;
+		}
+
+		.hs_year,
+		.hs_day,
+		.hs_hour,
+		.hs_minute {
+			list-style: none;
+			width: 72px;
+			height: 32px;
+			line-height: 32px;
+			cursor: pointer;
+		}
+
+		.hs_year:hover,
+		.hs_day:hover,
+		.hs_mon:hover {
+			background-color: #eeeeee;
+			color: #000000;
+		}
+
+		.hs_check,
+		.hs_check :hover{
+			background-color: #3ab2d0!important;
+			color: #ffffff!important;
+		}
+
+		.monHsDate {
+			width: 150px;
+			display: inline-block;
+			padding: 4px 5px;
+			margin: 0;
+		}
+
+		.hs_mon {
+			list-style: none;
+			width: 29px;
+			height: 15px;
+			text-align: center;
+			line-height: 15px;
+			font-size: 14px;
+			display: inline-block;
+			padding: 7px 5px;
+			border-radius: 4px;
+			float: left;
+			cursor: pointer;
+			margin: 5px;
+		}
+
+		.noCheck {
+			background-color: #f4f4f4;
+			cursor: not-allowed;
+		}
+
+		.dayHsDate {
+			width: 77px;
+			border-left: 1px solid #dddddd;
+		}
+		#riqi,#riqi2{width: 90%;height: 50px;text-align: center;margin:10px 5%;font-size: 30px;display: none;}
+		#riqi input,#riqi2 input{width:35%;margin-top:15px;height: 30px;font-size: 25px;border:1px solid gray; }
+	</style>
 </head>
 <script type="text/javascript">
-window.onload = function(){
-    var aLab = document.getElementsByTagName('label');
+    window.onload = function(){
+        var aLab = document.getElementsByTagName('label');
+        var aSpan = document.getElementsByTagName('span');
         for(let i = 0;i<aLab.length;i++) {
             aLab[i].addEventListener('click',function() {
                 for(let i=0;i<aLab.length;i++) {
@@ -39,7 +127,15 @@ window.onload = function(){
                 this.setAttribute('class','on')
             })
         }
-};
+        for(let i = 0;i<aSpan.length;i++) {
+            aSpan[i].addEventListener('click',function() {
+                for(let i=0;i<aSpan.length;i++) {
+                    aSpan[i].removeAttribute('class');
+                }
+                this.setAttribute('class','on')
+            })
+        }
+    };
 </script>
 <body>
 <div class="bigest">
@@ -50,19 +146,53 @@ window.onload = function(){
 	<div class="content_top2">
 		<p>最近消费时间</p>
 		<div class="tag">
-				<label class="on">近三天</label>
-				<label>近一周</label>
-				<label>近一月</label>
-				<label style="width:90%;margin:0px 5%;margin-top:15px;">开始时间</label>
-				<label style="width:90%;margin:0px 5%;margin-top:15px;">结束时间</label>
+			<label class="on">近三天</label>
+			<label>近一周</label>
+			<label>近一月</label>
+			<label style="width:90%;margin:0px 5%;margin-top:15px;">开始时间</label>
+			<div id="riqi">请选择：<input type="text" id="date" placeholder="请选择开始日期" /></div>
+			<label style="width:90%;margin:0px 5%;margin-top:15px;" onclick="showDate2()">结束时间</label>
+			<div id="riqi2">请选择：<input type="text" id="date2" placeholder="请选择开始日期" /></div>
 		</div>
+		<script type="text/javascript">
+            var aLa = document.getElementsByTagName('label')[3];
+            var aDate = document.getElementById('riqi');
+            var onOff = true;
+            aLa.onclick = function(){
+                if( onOff ){
+                    aDate.style.display = 'block';
+                    onOff = false;
+                }else{
+                    aDate.style.display = 'none';
+                    onOff = true;
+                }
+            };
+            var oLa = document.getElementsByTagName('label')[4];
+            var oDate = document.getElementById('riqi2');
+            var onOff = true;
+            oLa.onclick = function(){
+                if( onOff ){
+                    oDate.style.display = 'block';
+                    onOff = false;
+                }else{
+                    oDate.style.display = 'none';
+                    onOff = true;
+                }
+            };
+		</script>
+		<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="__INDEX__/js/jHsDate.js"></script>
+		<script type="text/javascript">
+            $('#date').jHsDate();
+            $('#date2').jHsDate();
+		</script>
 	</div>
 	<div class="content_top3">
 		<p>消费方式</p>
-		<div class="tag">
-				<label>微信</label>
-				<label>支付宝</label>
-				<label>银联</label>
+		<div class="tag2">
+			<span class="on">微信</span>
+			<span>支付宝</span>
+			<span>银联</span>
 		</div>
 	</div>
 	<div>
