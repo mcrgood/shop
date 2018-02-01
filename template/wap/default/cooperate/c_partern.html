@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>招商合伙人表单填写</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+    <meta http-equiv="description" content="ajax方式">
+    <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#login").click(function () {
+                var username = $('#UserName').val();
+                var phone = $('#phone').val();
+                var province = $('#province').val();
+                var city = $('#city').val();
+                var area = $('#area').val();
+
+                if (username == '') {
+                    alert("请输入姓名");
+                    return false;
+                    }
+                    else {
+                    if (phone == '') {
+                        alert("请输入电话");
+                        return false;
+                        }else
+                        if (province == '') {                
+                                alert("请输入省名");                
+                                return false;
+                        }else
+                        if (city == '') {                
+                                alert("请输入你的城市");                
+                                return false;
+                         }else
+                            if(!isNaN(username)){
+                         alert("请填写正确的姓名");
+                             return false;
+                         }
+                         else
+                         if(!username.match(/^[\u4e00-\u9fa5]+$/)){
+                              alert("请填写正确的姓名");
+                                return false;
+                         }else
+                         if (area == '') {                
+                                alert("请输入你的县城");                
+                                return false;
+                        }else
+
+                            $.ajax({  
+                                type: "POST",   //提交的方法
+                                url:"{:url('cooperate/c_partern')}", //提交的地址  url
+                                data:$('#form1').serialize(),// 序列化表单值 表单id 
+                                async: false,  
+                                error: function(request) {  //失败的话
+                                     alert("Connection error");  
+                                },  
+                                success: function(data) {  //成功
+                                    if (data.error == 0) {
+                                        alert(data.message);
+                                        window.location.href = '{:url(\'wap/index\')}'
+                                    }
+                                    else
+                                    {
+                                        alert(data.message);
+                                    }
+                                }  
+                             });
+                        }
+              });  
+        });
+    </script>
+</head>
+<style type="text/css">
+    #form-div{width: 100%;height: auto;padding: 0;margin: 0;}
+    #form1{width: 100%;height: auto;display: block;}
+    #form1 h2{font-size: 35px;text-align: center;height: 60px;line-height: 60px;letter-spacing: 8px;width:100%;margin: 0;display:block;}
+    #form1 p{font-size: 30px;text-align: center;height: 40px;width:100%;display:block;margin:20px 0;}
+    #form1 p input{width: 55%;font-size: 25px;border:1px solid gray;}
+</style>
+<body>
+<div id="form-div">
+    <form id="form1"><!--将form元素的属性action和method去掉，添加id=”form1”,form元素就变为<form id="form1">-->
+        <h2>招商合伙人</h2>
+        <p>姓名：<input name="userName" type="text" id="UserName" value=""/></p>
+        <p>电话：<input name="telphone" type="tel" id="phone" value=""/></p>
+        <p>省名：<input name="province" type="text" id="province"  value=""/></p>
+        <p>城市：<input name="city" type="text" id="city"  value=""/></p>
+        <p>城区：<input name="area" type="text" id="area"  value=""/></p>
+        <textarea rows="3" id="message" name="message" cols="20" placeholder="留言信息" style="font-size:25px;border:1px solid gray;width:90%;margin:0 5%;"></textarea>
+        <p><input type="button" value="提交" id="login" style="width:30%;display:inline-block;">&nbsp;<input type="reset" value="重置" style="width:30%;display:inline-block;"></p>
+    </form>
+</div>
+</body>
+</html>
