@@ -1,66 +1,91 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>隐藏页面</title>
-<style>
-*{margin: 0;padding: 0;}
-.bigest{width: 80%;margin: 0px;}
-.head{width: 100%;height: 600px;background: url(__INDEX__/images/33_02.gif) no-repeat;;background-size: cover;}
-.head_pic{width: 70%;height: 200px;margin-left:6%;position: absolute;top: 12%;}
-.head_pic img{z-index: 3;max-width: 100%;max-height: 100%;display: inline-block;float: left;}
-.login{width: 350px;height: 170px;float: left;position: relative;top:10%;margin-left: 50px;}
-.login span{color: #ff0000;font-size: 55px;line-height: 90px;}
-.login span a{color:#333333;font-weight: bold;text-decoration: none; }
-.content{width: 100%;margin: 0px;}
-ul,h2{margin: 0;padding: 0;}
-li{list-style: none;}
-#list{width: 100%;border-bottom: 1px solid #cccccc;margin: 0 auto;}
-#list.lis{}
-#list h2{height: 100px;line-height: 100px;text-indent: 20px;background-color: #ffffff;color:#333333;font-size: 50px;}
-#list ul{display: none;}
-#list ul li{line-height: 100px;border-bottom: 1px solid #cccccc;text-indent: 24px;font-size: 50px;}
-#list ul li a{text-decoration: none;width: 100%;display: block;}
-/*#list ul .active a{background-color: #6e6b6b;color: #ffffff;}*/
-</style>
-<script type="text/javascript">
-	window.onload = function(){
-		var oUI = document.getElementById('list');
-		var aH2 = oUI.getElementsByTagName('h2');
-		var aUI = oUI.getElementsByTagName('ul');
-		var aLi = null;
-		var arrLi = [];
-		var onOff = true;
-		for(var i=0;i<aH2.length;i++){
-			aH2[i].index = i;
-			aH2[i].onclick = function(){
-				if( onOff ){
-				aUI[this.index].style.display = 'block';
-				onOff = false;
-			}else{
-				aUI[this.index].style.display = 'none';
-				onOff = true;
-			}
-			};
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>隐藏页面</title>
+	<style>
+		*{margin: 0;padding: 0;}
+		.bigest{width: 100%;margin: 0px;}
+		.head{width: 100%;height: 600px;background: url(__INDEX__/images/33_02.gif) no-repeat;;background-size: cover;}
+		.back_1{width: 120px;height: 120px;float: right;z-index: 3;margin: 30px;}
+		.back_1 a{
+			width: 100%;
+			height: 100%;
+			display: block;
+			color: #ffffff;
+			font-size: 55px;
+			text-decoration: none;
+			font-weight: bold;
+			line-height: 120px;
 		}
-	};
-</script>
+		.head_pic{width: 70%;height: 200px;margin-left:6%;position: absolute;top: 12%;}
+		.head_pic img{z-index: 3;max-width: 100%;max-height: 100%;display: inline-block;float: left;}
+		.login{width: 350px;height: 170px;float: left;position: relative;top:10%;margin-left: 50px;}
+		.login span{color: #ff0000;font-size: 55px;line-height: 90px;}
+		.login span a{color:#333333;font-weight: bold;text-decoration: none; }
+		.content{width: 100%;margin: 0px;}
+		ul,h2{margin: 0;padding: 0;}
+		li{list-style: none;}
+		#list{width: 100%;border-bottom: 1px solid #cccccc;margin: 0 auto;}
+		#list.lis{}
+		#list h2{height: 100px;line-height: 100px;text-indent: 40px;background-color: #ffffff;color:#333333;font-size: 50px;}
+		#list h2 span{width:20%;height:100px;line-height: 100px;display: inline-block;float: right;}
+		#list ul{display: none;}
+		#list ul li{line-height: 100px;border-bottom: 1px solid #cccccc;text-indent: 24px;font-size: 50px;}
+		#list ul li a{text-decoration: none;width: 100%;display: block;text-indent: 45px;}
+		/*#list ul .active a{background-color: #6e6b6b;color: #ffffff;}*/
+	</style>
+	<script type="text/javascript">
+        window.onload = function(){
+            var oUI = document.getElementById('list');
+            var aH2 = oUI.getElementsByTagName('h2');
+            var aUI = oUI.getElementsByTagName('ul');
+            var aLi = null;
+            var arrLi = [];
+            var onOff = true;
+            for(var i=0;i<aH2.length;i++){
+                aH2[i].index = i;
+                aH2[i].onclick = function(){
+                    if( onOff ){
+                        aUI[this.index].style.display = 'block';
+                        onOff = false;
+                    }else{
+                        aUI[this.index].style.display = 'none';
+                        onOff = true;
+                    }
+                };
+            }
+        };
+	</script>
 </head>
 <body>
 <div class="bigest">
 	<div class="head">
+		<div class="back_1">
+			<a href="">Back</a>
+		</div>
 		<div class="head_pic">
 			<img src="__INDEX__/images/30_03.gif" />
 			<div class="login">
+
+				{if $state eq 2}
+				<span>重新审核中...</span>
+				{elseif $state eq 1}
+				<span>未审核</span>
+				{elseif $state eq 0 }
 				<span><a href="">用户名</a></span>
-				<span><a href="">1517***3830</a></span>
+				<span>{$phone}</span>
+				{else/}
+				<span><a href="{:__URL('APP_MAIN/Myhome/shenqing')}">去认证</a></span>
+				{/if}
+
 			</div>
-		</div>	
+		</div>
 	</div>
 	<div class="content">
 		<ul id="list">
 			<li class="lis">
-				<h2>营销管理 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp ></h2>
+				<h2>营销管理<span>></span></h2>
 				<ul>
 					<li><a href="">一</a></li>
 					<li><a href="">一</a></li>
@@ -68,7 +93,7 @@ li{list-style: none;}
 				</ul>
 			</li>
 			<li class="lis">
-				<h2>账户管理 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp ></h2>
+				<h2>账户管理<span>></span></h2>
 				<ul>
 					<li><a href="">一</a></li>
 					<li><a href="">一</a></li>
@@ -76,7 +101,7 @@ li{list-style: none;}
 				</ul>
 			</li>
 			<li class="lis">
-				<h2>广告管理 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp ></h2>
+				<h2>广告管理<span>></span></h2>
 				<ul>
 					<li><a href="">一</a></li>
 					<li><a href="">一</a></li>
@@ -84,13 +109,13 @@ li{list-style: none;}
 				</ul>
 			</li>
 			<li class="lis">
-				<h2>店铺管理 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp ></h2>
+				<h2>店铺管理<span>></span></h2>
 				<ul>
 					<li><a href="">一</a></li>
 					<li><a href="">一</a></li>
 					<li><a href="">一</a></li>
 				</ul>
-			</li>		
+			</li>
 		</ul>
 	</div>
 </div>

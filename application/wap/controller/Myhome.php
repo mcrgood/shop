@@ -34,7 +34,7 @@ class Myhome extends Controller{
     protected $instance_id;
 
     protected $shop_name;
-
+   protected  $mobile;
     // 验证码配置
     public $login_verify_code;
 
@@ -52,6 +52,7 @@ class Myhome extends Controller{
         $this->user = new Member();
         $this->uid = $this->user->getSessionUid();
         $this->business_id = Session::get('business_id');
+        $this->mobile = Session::get('mobile');
         $this->assign("platform_shopname", $this->user->getInstanceName()); // 平台店铺名称
         $this->assign("title", $web_info['title']);
         $this->logo = $web_info['logo'];
@@ -90,10 +91,11 @@ class Myhome extends Controller{
             $password = request()->post('password', '');
             $mobile = request()->post('mobile', '');
             $info = Db::table("ns_goods_login")->where("iphone='" . $mobile . "' and password='" . md5($password) . "'")
-                ->field("id")
+                ->field("id,iphone")
                 ->find();
             if ($info) {
                 Session::set('business_id', $info['id']);
+                Session::set('mobile', $info['iphone']);
                 if (!empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,
@@ -130,10 +132,11 @@ class Myhome extends Controller{
             $password = request()->post('password', '');
             $mobile = request()->post('mobile', '');
             $info = Db::table("ns_goods_login")->where("iphone='".$mobile."' and password='".md5($password)."'")
-                ->field("id")
+                ->field("id,iphone")
                 ->find();
             if ($info)
                 Session::set('business_id', $info['id']);
+                Session::set('mobile', $info['iphone']);
             $retval = AjaxReturn(1);
 
             return $retval;
@@ -201,6 +204,14 @@ class Myhome extends Controller{
     }
     public function yincan(){
         $this->check_login();
+        $where['userid'] = $this->business_id;
+        $result = db("ns_shop_message")->where($where)->select();
+        if ($result)
+            $state = $result[0]['state'];
+        else
+            $state = 3;
+        $this->assign('state', $state);
+        $this->assign('phone',$this->mobile);
         return view($this->style . 'Myhome/yincan');
     }
     public function jinge(){
