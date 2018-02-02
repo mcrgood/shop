@@ -1,0 +1,121 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+<script type="text/javascript" src="__STATIC__/My97DatePicker/WdatePicker.js"></script>
+<style>
+.brand_img{
+	width: 168px;
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+}
+.brand_img img{
+	max-width: 100%;
+	max-height: 100%;
+}
+</style>
+{/block}
+{block name="main"}
+<!--<table class="mytable">
+	<tr>
+		<th width="30%" style="text-align: left;">
+			<button class="btn-common-delete btn-small smalll" style="margin:0 5px 0 50 !important;">批量删除</button>
+		</th>
+		<form action="{:url('myhome/yuding')}" method="get">
+		<th width="20%">
+			<input type="text" name="keyword" id = 'search_text' placeholder="电话" class="input-common"/>
+			<input type="submit" value="搜索" class="btn-common"/>
+		</th>
+		</form>
+	</tr>
+</table>-->
+<table class="table-class">
+	<colgroup>
+		<col style="width: 5%;">
+	</colgroup>
+	<thead>
+		<tr>
+			<!--<th style="text-align: left;width:10%;padding-left:20px;">-->
+				<!--<button class="btn-common-delete btn-small" id="btn1" style="margin:0 5px 0 0 !important;">全选</button>-->
+			<!--</th>-->
+			<th>姓名</th>
+			<th>电话</th>
+			<th>地址</th>
+			<th>联系人</th>
+			<th>留言</th>
+			<th>时间</th>
+		</tr>
+	</thead>
+	<thead>
+		{foreach name="list" id="v"}
+		<tr>
+			<!--<th style="padding-right:50px"><input type="checkbox"  value="{$v.id}" name="checkboxs" id="checkboxs" /></th>-->
+			<th>{$v.name}</th>
+			<th>{$v.tel}</th>
+			<th>{$v.address}</th>
+			<th>{$v.contact}</th>
+			<th>{$v.message}</th>
+			<th>{$v.add_time|date="Y-m-d H:i:s:",###}</th>
+		</tr>
+		{/foreach}
+	</thead>
+</table>
+<script type="text/javascript">
+	//全选
+	// jQuery(function($){
+	// 	$("#btn1").click(function(){
+	// 		$("input[name='checkbox']").attr("checked","true");
+	// 	})
+	// })
+	var a=1;
+	$("#btn1").click(function(){
+		if(a==1){
+			$("input[type='checkbox']").prop('checked',true);
+			a = 0;
+		}else{
+			$("input[type='checkbox']").prop('checked',false);
+			a = 1;
+		}
+	});
+
+	$(".smalll").click(function(){
+		var id = [];
+		var id = new Array();
+		$("input[type='checkbox']:checked").each(function(i){
+				id[i] = $(this).val();
+		});
+		var str_id = id.join();
+		if(!str_id){
+			showTip("请选择删除项！","error");
+			return;
+		}
+
+		$( "#dialog" ).dialog({
+			buttons: {
+				"确定": function(){
+					$.ajax({
+						type : "post",
+						url : "{:__URL('ADMIN_MAIN/myhome/yudingdelete')}",
+						data : { "id" : str_id},
+						dataType : "json",
+						success : function(data) {
+							if(data>0){
+								showTip("删除成功","success");
+								window.location.href = "{:__URL('ADMIN_MAIN/myhome/yuding')}"
+							}else{
+								showTip("删除成功","error");
+							}
+						}
+					});
+					$(this).dialog('close');
+				},
+				"取消,#e57373": function() {
+					$(this).dialog('close');
+				},
+			},
+			contentText:"确定删除所选吗？",
+		});
+	})
+</script>
+{/block}
+{block name="script"}
+{/block}
