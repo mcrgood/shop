@@ -10,16 +10,16 @@
 		.content_top1{width: 100%;height: 140px;margin-top: 70px;}
 		.content_top1 p{font-size: 50px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
 			padding-left: 50px;}
-		.sous{width: 90%; height: 50px;border-radius: 10px;border: 1px solid #ff5d5e;margin: 0 5%;}
+		.sous{width: 90%; height: 50px;border-radius: 10px;border: 1px solid #ff5d5e;margin: 0 5%;font-size: 30px;}
 		/*消费时间*/
 		.content_top2{width: 100%;height: auto;}
 		.content_top2 p{font-size: 50px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
 			padding-left: 50px;margin-top: 40px;}
 		.tag{margin: 0 auto;height:auto;}
-		.tag label{width: 200px;border: 1px solid #cccccc;border-radius: 10px;height: 60px;display: inline-block;text-align: center;margin-right: 5px;}
+		.tag label{width: 20%;border: 1px solid #cccccc;border-radius: 10px;height: 60px;display: inline-block;text-align: center;margin-right: 5px;}
 		.tag label:first-child{margin-left: 5%;}
 		.tag2{margin: 0 auto;height:230px;}
-		.tag2 span{width: 200px;border: 1px solid #cccccc;border-radius: 10px;height: 60px;display: inline-block;text-align: center;margin-right: 5px;font-size: 30px;line-height: 60px;}
+		.tag2 span{width: 20%;border: 1px solid #cccccc;border-radius: 10px;height: 60px;display: inline-block;text-align: center;margin-right: 5px;font-size: 30px;line-height: 60px;}
 		.tag2 span:first-child{margin-left: 5%;}
 		.content_top2 label{text-decoration: none;font-size: 30px;line-height: 60px;}
 		/*消费方式*/
@@ -33,8 +33,8 @@
 
 		[name='jHsDate'] {
 			position: absolute;
-			max-width: 336px;
-			width: auto;
+			max-width: 100%;
+			width: 80%;
 			height: 164px;
 			border: 1px solid #dddddd;
 			border-radius: 2px;
@@ -46,7 +46,7 @@
 		.hourHsDate,
 		.minuteHsDate {
 			height: 164px;
-			width: 95px;
+			width: 10%;
 			margin: 0;
 			padding: 0;
 			text-align: center;
@@ -61,7 +61,7 @@
 		.hs_hour,
 		.hs_minute {
 			list-style: none;
-			width: 72px;
+			width: 18%;
 			height: 32px;
 			line-height: 32px;
 			cursor: pointer;
@@ -81,7 +81,7 @@
 		}
 
 		.monHsDate {
-			width: 150px;
+			width: 18%;
 			display: inline-block;
 			padding: 4px 5px;
 			margin: 0;
@@ -89,7 +89,7 @@
 
 		.hs_mon {
 			list-style: none;
-			width: 29px;
+			width: 18%;
 			height: 15px;
 			text-align: center;
 			line-height: 15px;
@@ -108,7 +108,7 @@
 		}
 
 		.dayHsDate {
-			width: 77px;
+			width: 8%;
 			border-left: 1px solid #dddddd;
 		}
 		#riqi,#riqi2{width: 90%;height: 50px;text-align: center;margin:10px 5%;font-size: 30px;display: none;}
@@ -139,65 +139,87 @@
 </script>
 <body>
 <div class="bigest">
-	<div class="content_top1">
-		<p>店铺名称</p>
-		<div><input type="text" class="sous" /></div>
-	</div>
-	<div class="content_top2">
-		<p>最近消费时间</p>
-		<div class="tag">
-			<label class="on">近三天</label>
-			<label>近一周</label>
-			<label>近一月</label>
-			<label style="width:90%;margin:0px 5%;margin-top:15px;">开始时间</label>
-			<div id="riqi">请选择：<input type="text" id="date" placeholder="请选择开始日期" /></div>
-			<label style="width:90%;margin:0px 5%;margin-top:15px;" onclick="showDate2()">结束时间</label>
-			<div id="riqi2">请选择：<input type="text" id="date2" placeholder="请选择开始日期" /></div>
+	<form id="form1">
+		<div class="content_top1">
+			<p>店铺名称</p>
+			<div><input type="text" class="sous" /></div>
 		</div>
-		<script type="text/javascript">
-            var aLa = document.getElementsByTagName('label')[3];
-            var aDate = document.getElementById('riqi');
-            var onOff = true;
-            aLa.onclick = function(){
-                if( onOff ){
-                    aDate.style.display = 'block';
-                    onOff = false;
-                }else{
-                    aDate.style.display = 'none';
-                    onOff = true;
-                }
-            };
-            var oLa = document.getElementsByTagName('label')[4];
-            var oDate = document.getElementById('riqi2');
-            var onOff = true;
-            oLa.onclick = function(){
-                if( onOff ){
-                    oDate.style.display = 'block';
-                    onOff = false;
-                }else{
-                    oDate.style.display = 'none';
-                    onOff = true;
-                }
-            };
-		</script>
-		<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="__INDEX__/js/jHsDate.js"></script>
-		<script type="text/javascript">
-            $('#date').jHsDate();
-            $('#date2').jHsDate();
-		</script>
-	</div>
-	<div class="content_top3">
-		<p>消费方式</p>
-		<div class="tag2">
-			<span class="on">微信</span>
-			<span>支付宝</span>
-			<span>银联</span>
+		<div class="content_top2">
+			<p>最近消费时间</p>
+			<div class="tag">
+				<label class="on">近三天</label>
+				<label>近一周</label>
+				<label>近一月</label>
+				<label style="width:90%;margin:0px 5%;margin-top:15px;">开始时间</label>
+				<div id="riqi">请选择：<input type="text" id="date" placeholder="请选择开始日期" /></div>
+				<label style="width:90%;margin:0px 5%;margin-top:15px;" onclick="showDate2()">结束时间</label>
+				<div id="riqi2">请选择：<input type="text" id="date2" placeholder="请选择开始日期" /></div>
+			</div>
+			<script type="text/javascript">
+                var aLa = document.getElementsByTagName('label')[3];
+                var aDate = document.getElementById('riqi');
+                var onOff = true;
+                aLa.onclick = function(){
+                    if( onOff ){
+                        aDate.style.display = 'block';
+                        onOff = false;
+                    }else{
+                        aDate.style.display = 'none';
+                        onOff = true;
+                    }
+                };
+                var oLa = document.getElementsByTagName('label')[4];
+                var oDate = document.getElementById('riqi2');
+                var onOff = true;
+                oLa.onclick = function(){
+                    if( onOff ){
+                        oDate.style.display = 'block';
+                        onOff = false;
+                    }else{
+                        oDate.style.display = 'none';
+                        onOff = true;
+                    }
+                };
+			</script>
+			<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+			<script type="text/javascript" src="__INDEX__/js/jHsDate.js"></script>
+			<script type="text/javascript">
+                $('#date').jHsDate();
+                $('#date2').jHsDate();
+			</script>
 		</div>
-	</div>
-	<div>
-		<input type="button" id="submit" value="确定" class="btn1" onclick="javascrtpt:window.location.href=''" />
-	</div>
+		<div class="content_top3">
+			<p>消费方式</p>
+			<div class="tag2">
+				<span class="on">微信</span>
+				<span>支付宝</span>
+				<span>银联</span>
+			</div>
+		</div>
+		<div>
+			<input type="button" id="submit" value="确定" class="btn1" />
+		</div>
+	</form>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            $.ajax({
+                type: "POST",   //提交的方法
+                url:"/home/request", //提交的地址  url
+                data:$('form1').serialize(),// 序列化表单值 表单id
+                async: false,
+                error: function(request) {  //失败的话
+                    alert("Connection error");
+                },
+                success: function(data) {  //成功
+                    alert(data);  //就将返回的数据显示出来
+                    window.location.href="跳转页面"
+                }
+            });
+        });
+    });
+</script>
+</script>
 </body>
 </html>
