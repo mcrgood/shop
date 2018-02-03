@@ -34,7 +34,7 @@ use data\extend\chuanglan\ChuanglanSmsApi;
  * 前台用户登录
  *
  * @author Administrator
- *        
+ *
  */
 class Login extends Controller
 {
