@@ -34,7 +34,7 @@ class Dingwei extends BaseController{
         $weidu = input('post.weidu');
         $leixing_id = input('post.leixing_id');
         $where['leixing'] = $leixing_id;
-        $where['state'] = 0;
+        $where['state'] = 1;
         $list = db("ns_shop_message")->where($where)->select();
         if (!empty($list)) {
             foreach ($list as $k => $v) {
