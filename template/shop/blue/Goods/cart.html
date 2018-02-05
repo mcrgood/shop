@@ -74,7 +74,7 @@
 											{/if}
 											</font>
 										</td>
-										<td align="center" width="15%"><font class="cart_jmprice" id="subtotal_{$cart_info.cart_id}" data-total="{$cart_info.price*$cart_info.num}" data-integral="{if condition='$cart_info.point_exchange_type==1'}{$cart_info.point_exchange*$cart_info.num}{else/}0{/if}"  data-price="{$cart_info.price}">￥{$cart_info.price*$cart_info.num}+{$cart_info.point_exchange*$cart_info.num}{:lang('goods_integral')}</font></td>
+										<td align="center" width="15%"><font class="cart_jmprice" id="subtotal_{$cart_info.cart_id}" data-total="{$cart_info.price*$cart_info.num}" data-integral="{if condition='$cart_info.point_exchange_type==1'}{$cart_info.point_exchange*$cart_info.num}{else/}0{/if}" data-integral_one="{if condition='$cart_info.point_exchange_type==1'}{$cart_info.point_exchange}{else/}0{/if}"  data-price="{$cart_info.price}" >￥{$cart_info.price*$cart_info.num}+{$cart_info.point_exchange*$cart_info.num}{:lang('goods_integral')}</font></td>
 										<td align="center" width="10%">
 											<a href="javascript:deleteShoppingCartById({$cart_info.cart_id},true)" class="f6">{:lang('goods_delete')}</a>
 										</td>
@@ -196,5 +196,5 @@
 {block name="javascript"}
 <script type="text/javascript" src="__TEMP__/{$style}/public/js/user.js"></script>
 <script type="text/javascript" src="__TEMP__/{$style}/public/js/order_pickpoint.js"></script>
-<script src="__TEMP__/{$style}/public/js/cart.js"></script>
+<script src="__TEMP__/{$style}/public/js/cart.js?version=1.0"></script>
 {/block}

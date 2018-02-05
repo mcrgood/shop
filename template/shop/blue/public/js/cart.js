@@ -162,7 +162,9 @@ function add_num(cart_id, max_buy, goodsid, obj, stock) {
 	var temp_num = 0;// 要修改的数量
 	var is_update = true;// 是否更新，true：更新，false：不更新
 	var price = $("#subtotal_" + cart_id).attr("data-price");// 商品单价
-
+	//更新小计旺旺币 by mcrgood
+    var integral = parseInt($("#subtotal_" + cart_id).attr("data-integral_one"));
+	//end
 	if (max_buy == 0) {// 不限购
 
 		if (number < stock) {
@@ -191,8 +193,15 @@ function add_num(cart_id, max_buy, goodsid, obj, stock) {
 	if (is_update) {
 		var total_price = temp_num * price;
 		total_price = total_price.toFixed(2);
-		$("#subtotal_" + cart_id).text("￥" + total_price);
+        //更新旺旺币 by mcrgood
+        var total_integral = temp_num * integral;
+        //end
+
+		$("#subtotal_" + cart_id).text("￥" + total_price + "+" + total_integral+ "旺旺币");
 		$("#subtotal_" + cart_id).attr("data-total", total_price);
+        //更新旺旺币 by mcrgood
+        $("#subtotal_" + cart_id).attr("data-integral", total_integral);
+        //end
 		getCopeSum();// 刷新应付总额
 		updateGoodsNumber(cart_id, temp_num,goods_obj);// 更新商品数量
 	}
@@ -203,7 +212,9 @@ function minus_num(cart_id, max_buy, stock, min_buy) {
 	var obj = $("#goods_number_" + cart_id);
 	var number = parseInt(obj.val());
 	var price = $("#subtotal_" + cart_id).attr("data-price");// 商品单价
-
+    //更新小计旺旺币 by mcrgood
+    var integral = parseInt($("#subtotal_" + cart_id).attr("data-integral_one"));
+    //end
 	if (number > 1) {
 		if(min_buy >= number){
 			$.msg("该商品最少购买" + min_buy + "件");
@@ -213,8 +224,15 @@ function minus_num(cart_id, max_buy, stock, min_buy) {
 			obj.val(number);
 			var total_price = number * price;
 			total_price = total_price.toFixed(2);
-			$("#subtotal_" + cart_id).text("￥" + total_price);
-			$("#subtotal_" + cart_id).attr("data-total", total_price);
+            //更新旺旺币 by mcrgood
+            var total_integral = number * integral;
+
+            //end
+            $("#subtotal_" + cart_id).text("￥" + total_price + "+" + total_integral+ "旺旺币");
+            $("#subtotal_" + cart_id).attr("data-total", total_price);
+            //更新旺旺币 by mcrgood
+            $("#subtotal_" + cart_id).attr("data-integral", total_integral);
+            //end
 			getCopeSum();// 刷新应付总额
 			updateGoodsNumber(cart_id, number,obj);// 更新商品数量
 		}
@@ -240,7 +258,9 @@ function change_price(cart_id, max_buy, goodsid, obj, stock, min) {
 
 		var is_update = true;// 是否更新，true：更新，false：不更新
 		var price = $("#subtotal_" + cart_id).attr("data-price");// 商品单价
-
+        //更新小计旺旺币 by mcrgood
+        var integral = parseInt($("#subtotal_" + cart_id).attr("data-integral_one"));
+        //end
 		if (max_buy == 0) {// 不限购
 			if (number < stock) {
 				// 正常情况
@@ -273,8 +293,11 @@ function change_price(cart_id, max_buy, goodsid, obj, stock, min) {
 		
 		$(obj).val(temp_num);
 		if (is_update) {
-			$("#subtotal_" + cart_id).text("￥" + temp_num * price);
+			$("#subtotal_" + cart_id).text("￥" + temp_num * price + "+" + temp_num * integral + "旺旺币");
 			$("#subtotal_" + cart_id).attr("data-total", temp_num * price);
+            //更新旺旺币 by mcrgood
+            $("#subtotal_" + cart_id).attr("data-integral", temp_num * integral);
+            //end
 			getCopeSum();// 刷新应付总额
 			updateGoodsNumber(cart_id, temp_num,$(obj));// 更新商品数量
 		}
