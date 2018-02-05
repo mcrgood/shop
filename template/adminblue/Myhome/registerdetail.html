@@ -138,7 +138,7 @@
 		<dt><i class="required"></i>审核状态：</dt>
 		<dd>
 			<button onclick="pass({$row.id})">审核通过</button>
-			<button onclick="returns({$row.id},{$row.beizhu})" class="returns">退回重审</button>
+			<button onclick="returns()" class="returns">退回重审</button>
 		</dd>
 		<else />
 		<dt><i class="required"></i>审核状态：</dt>
@@ -180,7 +180,7 @@
 
 	var  id = {$row.id};
     var  beizhu = "";
-	function returns(id,beizhu){
+	function returns(){
 		beizhu = $("#beizhu").val();
 		$("#dialog").dialog({
 			buttons:{
