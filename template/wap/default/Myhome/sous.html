@@ -6,15 +6,17 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="format-detection" content="telephone=no">
+	<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
 	<title>搜索</title>
 	<style>
 		*{margin:0;padding: 0;}
+		body{overflow:hidden;}
 		.bigest{margin: 0 auto;height: auto;width:100%}
 		/*店铺名称*/
 		.content_top1{width: 100%;height: 80px;margin-top: 20px;}
 		.content_top1 p{font-size: 20px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
 			padding-left: 20px;}
-		.sous{width: 90%; height: 25px;border-radius: 10px;border: 1px solid #ff5d5e;outline:none;margin: 0 5%;font-size: 25px;}
+		.sous{width: 90%; height: 25px;border-radius: 10px;border: 1px solid #ff5d5e;outline:none;margin: 0 5%;font-size: 15px;}
 		/*消费时间*/
 		.content_top2{width: 100%;height: auto;}
 		.content_top2 p{font-size: 20px;color:#262626;font-weight: bold;margin-bottom: 0px;margin-bottom: 15px;
@@ -34,115 +36,16 @@
 		.btn1{width: 90%;margin: 0px 5%;border-radius: 10px;background-color: #ff5d5e;height: 40px;font-size: 20px;font-weight: bold;color: #ffffff;cursor: pointer;}
 		.on{background:#ff5d5e;color:#ffffff;}
 		/*日期*/
+		.demo-input{padding-left: 10px; height: 38px; min-width: 262px; line-height: 38px; border: 1px solid #e6e6e6;  background-color: #fff;  border-radius: 2px;}
+		.demo-footer{padding: 50px 0; color: #999; font-size: 14px;}
+		.demo-footer a{padding: 0 5px; color: #01AAED;}
+		/*! laydate-v5.0.9 日期与时间组件 MIT License  http://www.layui.com/laydate/  By 贤心 */
+		.laydate-set-ym,.layui-laydate,.layui-laydate *,.layui-laydate-list{box-sizing:border-box}html #layuicss-laydate{display:none;position:absolute;width:1989px}.layui-laydate *{margin:0;padding:0}.layui-laydate{position:absolute;z-index:66666666;margin:5px 0;border-radius:2px;font-size:14px;-webkit-animation-duration:.3s;animation-duration:.3s;-webkit-animation-fill-mode:both;animation-fill-mode:both;-webkit-animation-name:laydate-upbit;animation-name:laydate-upbit}.layui-laydate-main{width:272px}.layui-laydate-content td,.layui-laydate-header *,.layui-laydate-list li{transition-duration:.3s;-webkit-transition-duration:.3s}@-webkit-keyframes laydate-upbit{from{-webkit-transform:translate3d(0,20px,0);opacity:.3}to{-webkit-transform:translate3d(0,0,0);opacity:1}}@keyframes laydate-upbit{from{transform:translate3d(0,20px,0);opacity:.3}to{transform:translate3d(0,0,0);opacity:1}}.layui-laydate-static{position:relative;z-index:0;display:inline-block;margin:0;-webkit-animation:none;animation:none}.laydate-ym-show .laydate-next-m,.laydate-ym-show .laydate-prev-m{display:none!important}.laydate-ym-show .laydate-next-y,.laydate-ym-show .laydate-prev-y{display:inline-block!important}.laydate-time-show .laydate-set-ym span[lay-type=month],.laydate-time-show .laydate-set-ym span[lay-type=year],.laydate-time-show .layui-laydate-header .layui-icon,.laydate-ym-show .laydate-set-ym span[lay-type=month]{display:none!important}.layui-laydate-header{position:relative;line-height:30px;padding:10px 70px 5px}.laydate-set-ym span,.layui-laydate-header i{padding:0 5px;cursor:pointer}.layui-laydate-header *{display:inline-block;vertical-align:bottom}.layui-laydate-header i{position:absolute;top:10px;color:#999;font-size:18px}.layui-laydate-header i.laydate-prev-y{left:15px}.layui-laydate-header i.laydate-prev-m{left:45px}.layui-laydate-header i.laydate-next-y{right:15px}.layui-laydate-header i.laydate-next-m{right:45px}.laydate-set-ym{width:100%;text-align:center;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.laydate-time-text{cursor:default!important}.layui-laydate-content{position:relative;padding:10px;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none}.layui-laydate-content table{border-collapse:collapse;border-spacing:0}.layui-laydate-content td,.layui-laydate-content th{width:36px;height:30px;padding:5px;text-align:center}.layui-laydate-content td{position:relative;cursor:pointer}.laydate-day-mark{position:absolute;left:0;top:0;width:100%;height:100%;line-height:30px;font-size:12px;overflow:hidden}.laydate-day-mark::after{position:absolute;content:'';right:2px;top:2px;width:5px;height:5px;border-radius:50%}.layui-laydate-footer{position:relative;height:46px;line-height:26px;padding:10px 20px}.layui-laydate-footer span{margin-right:15px;display:inline-block;cursor:pointer;font-size:12px}.layui-laydate-footer span:hover{color:#5FB878}.laydate-footer-btns{position:absolute;right:10px;top:10px}.laydate-footer-btns span{height:26px;line-height:26px;margin:0 0 0 -1px;padding:0 10px;border:1px solid #C9C9C9;background-color:#fff;white-space:nowrap;vertical-align:top;border-radius:2px}.layui-laydate-list>li,.layui-laydate-range .layui-laydate-main{display:inline-block;vertical-align:middle}.layui-laydate-list{position:absolute;left:0;top:0;width:100%;height:100%;padding:10px;background-color:#fff}.layui-laydate-list>li{position:relative;width:33.3%;height:36px;line-height:36px;margin:3px 0;text-align:center;cursor:pointer}.laydate-month-list>li{width:25%;margin:17px 0}.laydate-time-list>li{height:100%;margin:0;line-height:normal;cursor:default}.laydate-time-list p{position:relative;top:-4px;line-height:29px}.laydate-time-list ol{height:181px;overflow:hidden}.laydate-time-list>li:hover ol{overflow-y:auto}.laydate-time-list ol li{width:130%;padding-left:33px;line-height:30px;text-align:left;cursor:pointer}.layui-laydate-hint{position:absolute;top:115px;left:50%;width:250px;margin-left:-125px;line-height:20px;padding:15px;text-align:center;font-size:12px}.layui-laydate-range{width:546px}.layui-laydate-range .laydate-main-list-0 .laydate-next-m,.layui-laydate-range .laydate-main-list-0 .laydate-next-y,.layui-laydate-range .laydate-main-list-1 .laydate-prev-m,.layui-laydate-range .laydate-main-list-1 .laydate-prev-y{display:none}.layui-laydate-range .laydate-main-list-1 .layui-laydate-content{border-left:1px solid #e2e2e2}.layui-laydate,.layui-laydate-hint{border:1px solid #d2d2d2;box-shadow:0 2px 4px rgba(0,0,0,.12);background-color:#fff;color:#666}.layui-laydate-header{border-bottom:1px solid #e2e2e2}.layui-laydate-header i:hover,.layui-laydate-header span:hover{color:#5FB878}.layui-laydate-content{border-top:none 0;border-bottom:none 0}.layui-laydate-content th{font-weight:400;color:#333}.layui-laydate-content td{color:#666}.layui-laydate-content td.laydate-selected{background-color:#00F7DE}.laydate-selected:hover{background-color:#00F7DE!important}.layui-laydate-content td:hover,.layui-laydate-list li:hover{background-color:#eaeaea;color:#333}.laydate-time-list li ol{margin:0;padding:0;border:1px solid #e2e2e2;border-left-width:0}.laydate-time-list li:first-child ol{border-left-width:1px}.laydate-time-list>li:hover{background:0 0}.layui-laydate-content .laydate-day-next,.layui-laydate-content .laydate-day-prev{color:#d2d2d2}.laydate-selected.laydate-day-next,.laydate-selected.laydate-day-prev{background-color:#f8f8f8!important}.layui-laydate-footer{border-top:1px solid #e2e2e2}.layui-laydate-hint{color:#FF5722}.laydate-day-mark::after{background-color:#5FB878}.layui-laydate-content td.layui-this .laydate-day-mark::after{display:none}.layui-laydate-footer span[lay-type=date]{color:#5FB878}.layui-laydate .layui-this{background-color:#009688!important;color:#fff!important}.layui-laydate .laydate-disabled,.layui-laydate .laydate-disabled:hover{background:0 0!important;color:#d2d2d2!important;cursor:not-allowed!important;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none}.laydate-theme-molv{border:none}.laydate-theme-molv.layui-laydate-range{width:548px}.laydate-theme-molv .layui-laydate-main{width:274px}.laydate-theme-molv .layui-laydate-header{border:none;background-color:#009688}.laydate-theme-molv .layui-laydate-header i,.laydate-theme-molv .layui-laydate-header span{color:#f6f6f6}.laydate-theme-molv .layui-laydate-header i:hover,.laydate-theme-molv .layui-laydate-header span:hover{color:#fff}.laydate-theme-molv .layui-laydate-content{border:1px solid #e2e2e2;border-top:none;border-bottom:none}.laydate-theme-molv .laydate-main-list-1 .layui-laydate-content{border-left:none}.laydate-theme-grid .laydate-month-list>li,.laydate-theme-grid .laydate-year-list>li,.laydate-theme-grid .layui-laydate-content td,.laydate-theme-grid .layui-laydate-content thead,.laydate-theme-molv .layui-laydate-footer{border:1px solid #e2e2e2}.laydate-theme-grid .laydate-selected,.laydate-theme-grid .laydate-selected:hover{background-color:#f2f2f2!important;color:#009688!important}.laydate-theme-grid .laydate-selected.laydate-day-next,.laydate-theme-grid .laydate-selected.laydate-day-prev{color:#d2d2d2!important}.laydate-theme-grid .laydate-month-list,.laydate-theme-grid .laydate-year-list{margin:1px 0 0 1px}.laydate-theme-grid .laydate-month-list>li,.laydate-theme-grid .laydate-year-list>li{margin:0 -1px -1px 0}.laydate-theme-grid .laydate-year-list>li{height:43px;line-height:43px}.laydate-theme-grid .laydate-month-list>li{height:71px;line-height:71px}@font-face{font-family:laydate-icon;src:url(font/iconfont.eot);src:url(font/iconfont.eot#iefix) format('embedded-opentype'),url(font/iconfont.svg#iconfont) format('svg'),url(font/iconfont.woff) format('woff'),url(font/iconfont.ttf) format('truetype')}.laydate-icon{font-family:laydate-icon!important;font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
-		[name='jHsDate'] {
-			position: absolute;
-			max-width: 100%;
-			width: 100%;
-			height: 164px;
-			border: 1px solid #dddddd;
-			border-radius: 2px;
-			background-color:#ffffff;
-		}
-
-		.yearHsDate,
-		.dayHsDate,
-		.hourHsDate,
-		.minuteHsDate {
-			height: 164px;
-			width: 95px;
-			margin: 0;
-			padding: 0;
-			text-align: center;
-			overflow-y: auto;
-			overflow-x: hidden;
-			font-size: 14px;
-			display: inline-block;
-		}
-
-		.hs_year,
-		.hs_day,
-		.hs_hour,
-		.hs_minute {
-			list-style: none;
-			width: 72px;
-			height: 32px;
-			line-height: 32px;
-			cursor: pointer;
-		}
-
-		.hs_year:hover,
-		.hs_day:hover,
-		.hs_mon:hover {
-			background-color: #eeeeee;
-			color: #000000;
-		}
-
-		.hs_check,
-		.hs_check :hover{
-			background-color: #3ab2d0!important;
-			color: #ffffff!important;
-		}
-
-		.monHsDate {
-			width: 150px;
-			display: inline-block;
-			padding: 4px 5px;
-			margin: 0;
-		}
-
-		.hs_mon {
-			list-style: none;
-			width: 29px;
-			height: 15px;
-			text-align: center;
-			line-height: 15px;
-			font-size: 14px;
-			display: inline-block;
-			padding: 7px 5px;
-			border-radius: 4px;
-			float: left;
-			cursor: pointer;
-			margin: 5px;
-		}
-
-		.noCheck {
-			background-color: #f4f4f4;
-			cursor: not-allowed;
-		}
-
-		.dayHsDate {
-			width: 77px;
-			border-left: 1px solid #dddddd;
-		}
-		#datehsdate{left:5% !important;}
-		#date2hsdate{left:5% !important;}
 		#riqi,#riqi2{width: 90%;height: 50px;text-align: center;margin:0px 5%;font-size: 15px;display: none;}
-		#riqi input,#riqi2 input{width:43%;margin-top:15px;height: 30px;font-size: 12px;border:1px solid gray;outline:none;border-radius: 10px; }
+		#riqi input,#riqi2 input{width:35%;margin-top:15px;height: 30px;font-size: 12px;border:1px solid gray;outline:none;border-radius: 10px;text-align: center;}
 	</style>
 </head>
-<script type="text/javascript">
-    window.onload = function(){
-        var aLab = document.getElementsByTagName('label');
-        var aSpan = document.getElementsByTagName('span');
-        for(let i = 0;i<aLab.length;i++) {
-            aLab[i].addEventListener('click',function() {
-                for(let i=0;i<aLab.length;i++) {
-                    aLab[i].removeAttribute('class');
-                }
-                this.setAttribute('class','on')
-            })
-        }
-        for(let i = 0;i<aSpan.length;i++) {
-            aSpan[i].addEventListener('click',function() {
-                for(let i=0;i<aSpan.length;i++) {
-                    aSpan[i].removeAttribute('class');
-                }
-                this.setAttribute('class','on')
-            })
-        }
-    };
-</script>
 <body>
 <div class="bigest">
 	<form id="form1">
@@ -152,15 +55,35 @@
 		</div>
 		<div class="content_top2">
 			<p>最近消费时间</p>
-			<div class="tag">
+			<div class="tag" id="list">
 				<label class="on">近三天</label>
 				<label>近一周</label>
 				<label>近一月</label>
 				<label style="width:90%;margin:0px 5%;margin-top:15px;">开始时间</label>
-				<div id="riqi">请选择：<input type="text" id="date" placeholder="请选择开始日期" /></div>
-				<label style="width:90%;margin:0px 5%;margin-top:15px;" onclick="showDate2()">结束时间</label>
-				<div id="riqi2">请选择：<input type="text" id="date2" placeholder="请选择开始日期" /></div>
+				<div id="riqi">请选择：<input type="text" placeholder="请选择日期" id="test1" /></div>
+				<label style="width:90%;margin:0px 5%;margin-top:15px;">结束时间</label>
+				<div id="riqi2">请选择：<input type="text" placeholder="请选择日期" id="test2" /></div>
 			</div>
+			<script type="text/javascript">
+                $(document).ready(
+                    function () {
+                        $("#list label").click(function () {
+                            $(this).addClass("on").siblings().removeClass("on");//这里用JQuery选择器对<li>中的<a>再设置一个class？
+                        })
+                    });
+			</script>
+			<script src="__INDEX__/js/laydate.js"></script>
+			<script>
+                lay('#version').html('-v'+ laydate.v);
+
+                //执行一个laydate实例
+                laydate.render({
+                    elem: '#test1' //指定元素
+                });
+                laydate.render({
+                    elem: '#test2' //指定元素
+                });
+			</script>
 			<script type="text/javascript">
                 var aLa = document.getElementsByTagName('label')[3];
                 var aDate = document.getElementById('riqi');
@@ -187,21 +110,25 @@
                     }
                 };
 			</script>
-			<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
-			<script type="text/javascript" src="__INDEX__/js/jHsDate.js"></script>
-			<script type="text/javascript">
-                $('#date').jHsDate();
-                $('#date2').jHsDate();
-			</script>
+
 		</div>
 		<div class="content_top3">
 			<p>消费方式</p>
-			<div class="tag2">
+			<div class="tag2" id="list2">
 				<span class="on">微信</span>
 				<span>支付宝</span>
 				<span>银联</span>
 			</div>
 		</div>
+		<script type="text/javascript">
+            $(document).ready(
+                function () {
+                    $("#list2 span").click(function () {
+
+                        $(this).addClass("on").siblings().removeClass("on");//这里用JQuery选择器对<li>中的<a>再设置一个class？
+                    })
+                });
+		</script>
 		<div>
 			<input type="button" id="submit" value="确定" class="btn1" />
 		</div>
