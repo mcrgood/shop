@@ -130,7 +130,7 @@
 		</dd>
 	</dl>
 	<dl>
-		{if condition="$row.state" eq false}
+		<if condition="$row.state" eq 0>
 		<dt><i class="required"></i><span style="color:red;">*</span>重审备注：</dt>
 		<dd>
 			<input class="input-common" id="beizhu" type="text" name="beizhu" value="{$row.beizhu}" placeholder="退回重审必填！！！">
@@ -140,12 +140,12 @@
 			<button onclick="pass({$row.id})">审核通过</button>
 			<button onclick="returns({$row.id},{$row.beizhu})" class="returns">退回重审</button>
 		</dd>
-		{else /}
+		<else />
 		<dt><i class="required"></i>审核状态：</dt>
 		<dd>
 			<button style="background:#0570f2;color:white;"disabled="disabled">审核已通过</button>
 		</dd>
-		{/if}
+		</if>
 	</dl>
 </div>
 </form>
