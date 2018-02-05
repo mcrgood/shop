@@ -59,7 +59,7 @@ class Myhome extends BaseController
 		if(request()->isAjax()){
 			$id = input('post.id');
 			$row = db("ns_shop_message")->find($id);
-			$date['state'] = 0;
+			$date['state'] = 1;
 			$data = db('ns_shop_message')->where('id',$id)->update($date);
 		}
 	}
