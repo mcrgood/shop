@@ -69,7 +69,7 @@
 			<div class="login">
 
 				{if $state eq 2}
-				<span>重新审核中...</span>
+				<span><a href="{:__URL('APP_MAIN/Myhome/shengqingedit','id='.$id)}">审核没通过</a></span>
 				{elseif $state eq 1}
 				<span>未审核</span>
 				{elseif $state eq 0 }
