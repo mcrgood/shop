@@ -206,11 +206,14 @@ class Myhome extends Controller{
         $this->check_login();
         $where['userid'] = $this->business_id;
         $result = db("ns_shop_message")->where($where)->select();
-        if ($result)
+        if ($result) {
             $state = $result[0]['state'];
+            $id = $result[0]['id'];
+        }
         else
             $state = 3;
         $this->assign('state', $state);
+        $this->assign('id', $id);
         $this->assign('phone',$this->mobile);
         return view($this->style . 'Myhome/yincan');
     }
@@ -445,46 +448,80 @@ class Myhome extends Controller{
 
 
     public function shengqingedit(){
-
-
-
-        if (request()->isPost()) {
-
-            $data = input('post.');
-
-            // halt($data);
-
-            $customer = db('customer')->where('openid',$this->myinfo['openid'])->find();
-
-            $data['customer_id'] = $customer['id'];
-
-            $data['state'] = 1;
-
-            db('customer')->where('id',$data['customer_id'])->update(['tel'=>$data['tel'],'state'=>2]);
-
-            $result = db('shop')->update($data);
-
-            if ($result) {
-
-                $this->success('修改信息成功，请等待审核','wait');
-
-                // db('pay')->insert(['shop_id'=>$result,'state'=>0]);
-
-                // $this->redirect('myhome/ruzhu');
-
-                // $this->redirect(url('ruzhu'));
-
-            } else {
-                $this->error('修改信息失败！');
-
+        $id = request()->get('id', 0);
+        if(!$id)
+            $this->error('参数错误');
+        $condition['id'] = $id;
+        $condition['userid'] = $this->business_id;
+        if(request()->isPost()){
+            //检测商户
+            $result = db("ns_shop_message")->where($condition)->find();
+            if(!$result){
+                $this->error('用户不存在');
             }
+            $leixing = input('post.leixing');
+            $names = input('post.names');
+            $address = input('post.address');
+            $tel = input('post.tel');
+            $thumb = input('post.thumb');
+            $thumb_zhizhao = input('post.thumb_zhizhao');
+            $thumb_zhengmian = input('post.thumb_zhengmian');
+            $thumb_fanmian = input('post.thumb_fanmian');
+            $yhk_name = input('post.yhk_name');
+            $yhk_num = input('post.yhk_num');
+            $yhk_address = input('post.yhk_address');
+            $bank = input('post.bank');
+            $thumb_yhk1 = input('post.thumb_yhk1');
+            $thumb_yhk2 = input('post.thumb_yhk2');
+            $sheng = input('sheng');
+            $shi = input('shi');
+            $jingdu = input('jingdu');
+            $weidu = input('weidu');
+            $content = input('post.content');
+            $business_hours = input('post.business_hours');
+            $data['leixing'] = $leixing;
+            $data['names'] = $names;
+            $data['address'] = $address;
+            $data['tel'] = $tel;
+            $data['thumb'] = $thumb;
+            $data['thumb_zhizhao'] = $thumb_zhizhao;
+            $data['thumb_zhengmian'] = $thumb_zhengmian;
+            $data['thumb_fanmian'] = $thumb_fanmian;
+            $data['yhk_name'] = $yhk_name;
+            $data['yhk_num'] = $yhk_num;
+            $data['yhk_address'] = $yhk_address;
+            $data['bank'] = $bank;
+            $data['thumb_yhk1'] = $thumb_yhk1;
+            $data['thumb_yhk2'] = $thumb_yhk2;
+            $data['content'] = $content;
+            $data['sheng'] = $sheng;
+            $data['shi'] = $shi;
+            $data['jingdu'] = $jingdu;
+            $data['weidu'] = $weidu;
+            $data['state'] = 1;
+            $data['business_hours'] = $business_hours;
+            $id = db('ns_shop_message')->where($condition)->update($data);
 
+            if($id){
+                $this->success('提交成功，请等待审核！',__URL('wap/myhome/yingshou'));
+            }else{
+                $this->error('提交失败！');
+            }
         }
-        $info = db('customer')->where('openid',$this->myinfo['openid'])->find();
-        $shop = db('shop')->where('customer_id',$info['id'])->find();
-        $jssdk = new Jssdk(config('wechat.appID'),config('wechat.appsecret'));
+
+        $shopinfo = db("ns_shop_message")->where($condition)->find();
+        if(!$shopinfo)
+            $this->error('没有查找到相关信息！');
+        $this->assign('shopinfo', $shopinfo);
+
+        $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
         $package = $jssdk->getSignPackage();
-        return $this->fetch('',['signPackage'=>$package,'shopinfo'=>$shop]);
+        $this->assign('signPackage', $package);
+
+
+        return view($this->style . 'Myhome/shengqingedit');
+
+
 
     }
 
