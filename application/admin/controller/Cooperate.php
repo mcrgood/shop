@@ -39,6 +39,19 @@ class Cooperate extends BaseController{
         $this->assign('list',$list);
         return view($this->style . 'cooperate/c_shop');
 	}
+	public function  c_shop_detail()
+    {
+        $id = input('param.id');
+        if (!$id) {
+            $this->error("参数错误");
+        }
+        $condition['id'] = $id;
+        $shopinfo = db("ns_cooperate")->where($condition)->find();
+        if(!$shopinfo)
+            $this->error('没有查找到相关信息！');
+        $this->assign('shopinfo', $shopinfo);
+        return view($this->style . "cooperate/c_shop_detail");
+    }
 	public function  c_partern()
     {
         if (request()->isAjax()) {
@@ -78,6 +91,19 @@ class Cooperate extends BaseController{
         $list = db("ns_partern")->where($where)->select();
         $this->assign('list',$list);
         return view($this->style . 'cooperate/c_partern');
+    }
+    public function  c_partern_detail()
+    {
+        $id = input('param.id');
+        if (!$id) {
+            $this->error("参数错误");
+        }
+        $condition['id'] = $id;
+        $shopinfo = db("ns_partern")->where($condition)->find();
+        if(!$shopinfo)
+            $this->error('没有查找到相关信息！');
+        $this->assign('shopinfo', $shopinfo);
+        return view($this->style . "cooperate/c_partern_detail");
     }
 
 }

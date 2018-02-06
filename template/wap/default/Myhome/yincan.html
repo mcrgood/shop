@@ -69,10 +69,11 @@
 			<div class="login">
 
 				{if $state eq 2}
-				<span><a href="{:__URL('APP_MAIN/Myhome/shengqingedit','id='.$id)}">审核没通过</a></span>
-				{elseif $state eq 1}
+				<span><a style="text-decoration: underline" href="{:__URL('APP_MAIN/Myhome/shengqingedit','id='.$id)}">审核没通过</a></span><br>
+				<span>退回原因:{$beizhu}</span>
+				{elseif $state eq 0}
 				<span>未审核</span>
-				{elseif $state eq 0 }
+				{elseif $state eq 1 }
 				<span><a href="">用户名</a></span>
 				<span>{$phone}</span>
 				{else/}
