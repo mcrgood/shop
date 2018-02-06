@@ -1,0 +1,65 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+{/block}
+{block name="main"}
+<style>
+	.clas{margin-bottom: }
+</style>
+<!-- <form action="" > -->
+<div class="set-style" style="margin-bottom: 150px;">
+	<dl>
+		<dt><span class="required"></span>名字：</dt>
+		<dd>
+			<p>{$shopinfo.name}</p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>电话：</dt>
+		<dd>
+			<p>{$shopinfo.tel}</p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>省：</dt>
+		<dd>
+			<p>{$shopinfo.sheng}</p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>市：</dt>
+		<dd>
+			<p>{$shopinfo.shi}</p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>地区：</dt>
+		<dd>
+			<p>{$shopinfo.area}</p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>留言：</dt>
+		<dd>
+			<p><textarea cols="10" rows="5" disabled="true"> {$shopinfo.message}</textarea></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>提交时间：</dt>
+		<dd>
+			<p>{$shopinfo.add_time|date="Y-m-d H:i:s:",###}</p>
+		</dd>
+	</dl>
+
+
+	<dl>
+		<dt><i class="required"></i></dt>
+		<dd >
+
+			<button onclick="javascript:window.history.go(-1)" class="returns">返回</button>
+		</dd>
+
+	</dl>
+</div>
+</form>
+
+{/block}

@@ -208,12 +208,14 @@ class Myhome extends Controller{
         $result = db("ns_shop_message")->where($where)->select();
         if ($result) {
             $state = $result[0]['state'];
+            $beizhu = $result[0]['beizhu'];
             $id = $result[0]['id'];
         }
         else
             $state = 3;
         $this->assign('state', $state);
         $this->assign('id', $id);
+        $this->assign('beizhu', $beizhu);
         $this->assign('phone',$this->mobile);
         return view($this->style . 'Myhome/yincan');
     }

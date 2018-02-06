@@ -37,13 +37,14 @@
 			<!--<th style="text-align: left;width:10%;padding-left:20px;">-->
 				<!--<button class="btn-common-delete btn-small" id="btn1" style="margin:0 5px 0 0 !important;">全选</button>-->
 			<!--</th>-->
-			<th>姓名</th>
+			<th width="20%">姓名</th>
 			<th>电话</th>
 			<th>省</th>
 			<th>市</th>
 			<th>区</th>
 			<th>留言</th>
 			<th>时间</th>
+			<th>操作</th>
 		</tr>
 	</thead>
 	<thead>
@@ -57,6 +58,7 @@
 			<th>{$v.area}</th>
 			<th>{$v.message}</th>
 			<th>{$v.add_time|date="Y-m-d H:i:s:",###}</th>
+			<th><a href="{:url('c_partern_detail',array('id'=>$v['id']))}">查看详细</a></th>
 		</tr>
 		{/foreach}
 	</thead>
