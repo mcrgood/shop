@@ -228,7 +228,14 @@ class Myhome extends Controller{
         $this->check_login();
         return view($this->style . 'Myhome/sous');
     }
-
+    public function member(){
+        $this->check_login();
+        return view($this->style . 'Myhome/member');
+    }
+    public function message(){
+        $this->check_login();
+        return view($this->style . 'Myhome/message');
+    }
     //退出登录
 	public function out(){
         Session::set('business_id', "");
