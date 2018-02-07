@@ -87,7 +87,6 @@
 		<p>电话：<input name="telphone" type="tel" id="phone" value=""/></p>
 		<p>人数：<input name="renshu" type="num" id="num"  value=""/></p>
 		<p>日期：<input type="text" class="demo-input" placeholder="请选择日期" name="jHsDateInput" id="jHsDateInput"/></p>
-		<p>时间：<input name="sj" type="text" id="data"  placeholder="请输入具体时间"/></p>
 		<textarea rows="3" name="message" id="message" cols="40" placeholder="留言信息" style="font-size:15px;border:1px solid gray;width:80%;margin:0 10%;"></textarea>
 		<p style="margin-top:20px;"><input type="button" value="提交" id="login"></p>
 	</form>
@@ -98,7 +97,8 @@
 
     //执行一个laydate实例
     laydate.render({
-        elem: '#jHsDateInput' //指定元素
+        elem: '#jHsDateInput' //指定元素，
+        ,type: 'datetime'
     });
 </script>
 </body>
