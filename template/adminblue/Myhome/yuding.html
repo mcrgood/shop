@@ -16,7 +16,7 @@
 {/block}
 {block name="main"}
 <table class="mytable">
-	<tr>
+	<!--<tr>
 		<th width="30%" style="text-align: left;">
 			<button class="btn-common-delete btn-small smalll" style="margin:0 5px 0 50 !important;">批量删除</button>
 		</th>
@@ -26,7 +26,7 @@
 			<input type="submit" value="搜索" class="btn-common"/>
 		</th>
 		</form>
-	</tr>
+	</tr>-->
 </table>
 <table class="table-class">
 	<colgroup>
@@ -34,29 +34,36 @@
 	</colgroup>
 	<thead>
 		<tr>
-			<th style="text-align: left;width:10%;padding-left:20px;">
-				<button class="btn-common-delete btn-small" id="btn1" style="margin:0 5px 0 0 !important;">全选</button>
-			</th>
+			<!--<th style="text-align: left;width:10%;padding-left:20px;">-->
+				<!--<button class="btn-common-delete btn-small" id="btn1" style="margin:0 5px 0 0 !important;">全选</button>-->
+			<!--</th>-->
 			<th>类型</th>
 			<th>店名</th>
 			<th>姓名</th>
-			<th>时间段</th>
+			<th>预订时间</th>
 			<th>人数</th>
 			<th>预订电话</th>
-			<th>状态</th>
+			<th>留言</th>
 		</tr>
 	</thead>
 	<thead>
 		{foreach name="list" id="v"}
 		<tr>
-			<th style="padding-right:50px"><input type="checkbox"  value="{$v.id}" name="checkboxs" id="checkboxs" /></th>
-			<th>{$v.leixing}</th>
+			<th>{switch name="$v.leixing"}
+				{case value="1"}餐饮{/case}
+				{case value="2"}酒店{/case}
+				{case value="3"}养生{/case}
+				{case value="4"}KTV {/case}
+				{case value="5"}汽车{/case}
+				{case value="6"}其他{/case}
+				{default /}餐饮
+				{/switch}</th>
 			<th>{$v.names}</th>
 			<th>{$v.name}</th>
 			<th>{$v.time}</th>
 			<th>{$v.num}</th>
 			<th>{$v.iphone}</th>
-			<th>{$v.times}</th>
+			<th>{$v.message}</th>
 		</tr>
 		{/foreach}
 	</thead>

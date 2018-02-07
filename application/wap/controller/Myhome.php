@@ -526,58 +526,45 @@ class Myhome extends Controller{
 
 
     }
-
-    /**
-
-     * [gonggao 公告]
-
-     * @return [type] [description]
-
+    /*
+     * 预订
      */
 
-    public function gonggao(){
-        if (empty($this ->uid)) {
-            $redirect = __URL(__URL__ . "/wap/login");
-            $this->redirect($redirect); // 用户未登录
-        }
-        $now_time = time();
-        $now_time = date('Y-m-d H:i:s',$now_time);
-        $now_time = strtotime($now_time);
-        $where = [
-            'shop_id'=>0,
-            'uid'=>['eq',$this->uid],
-            'end_time'=>[
-                'egt',$now_time
-            ],
-            'state'=>0
-        ];
-        $couponCus = db('ns_coupon')->field('coupon_type_id')->where($where)->select();
-        $my_nums = [];
-        if (!empty($couponCus)) {
-            foreach ($couponCus as $k => $v) {
+    public function book()
+    {
 
-                $my_nums[] = $v['coupon_type_id'];
-
+        if (request()->isAjax()) {
+            $name = request()->post('username', '');
+            $iphone = request()->post('telphone', '');
+            $num = request()->post('renshu', '');
+            $time = request()->post('jHsDateInput', '');
+            $message = request()->post('message', '');
+            $add_time = time();
+            $shop_id = request()->post('userid', '');
+            $where['iphone'] = $iphone;
+            $result = db("ns_goods_reserve")->where($where)->find();
+            if($result){
+                return $result = ['error' => 2, 'message' => "你已提交"];
             }
-            $my_nums = implode(',', $my_nums);
-        }
-        $where = [
-            'shop_id'=>0,
-            'is_show' =>1,
-            'end_time'=>[
-                'egt',$now_time
-            ]
-        ];
-        if (!is_array($my_nums) && $my_nums!='') {
-            $where['coupon_type_id']=['NOT IN',$my_nums];
-        }
-        $list = db('ns_coupon_type')->where($where)->select();
-        $this->assign('gonggaores',$list);
+            $data['name'] = $name;
+            $data['iphone'] = $iphone;
+            $data['num'] = $num;
+            $data['time'] = $time;
+            $data['message'] = $message;
+            $data['add_time'] = $add_time;
+            $data['shop_id'] = $shop_id;
+            $id = db('ns_goods_reserve')->insert($data);
+            if ($id)
+                return $result = ['error' => 0, 'message' => "提交成功"];
+            else
 
-        return view($this->style . 'Myhome/gonggao');
+                return $result = ['error' => 1, 'message' => "提交失败"];
 
+        }
+        $userid = request()->get('userid', 0);
+        $this->assign('userid', $userid);
+        return view($this->style . 'Myhome/book');
     }
-
     /**
 
      * [lingquan 前台领券]
@@ -636,6 +623,57 @@ class Myhome extends Controller{
         $data["uid"] = $this->uid;
         $result = db('ns_coupon')->where('coupon_id',$coupon_id)->update($data);
         return ['state'=>1,'message'=>'优惠券领取成功！'];
+
+    }
+
+    /**
+
+     * [gonggao 公告]
+
+     * @return [type] [description]
+
+     */
+
+    public function gonggao(){
+        if (empty($this ->uid)) {
+            $redirect = __URL(__URL__ . "/wap/login");
+            $this->redirect($redirect); // 用户未登录
+        }
+        $now_time = time();
+        $now_time = date('Y-m-d H:i:s',$now_time);
+        $now_time = strtotime($now_time);
+        $where = [
+            'shop_id'=>0,
+            'uid'=>['eq',$this->uid],
+            'end_time'=>[
+                'egt',$now_time
+            ],
+            'state'=>0
+        ];
+        $couponCus = db('ns_coupon')->field('coupon_type_id')->where($where)->select();
+        $my_nums = [];
+        if (!empty($couponCus)) {
+            foreach ($couponCus as $k => $v) {
+
+                $my_nums[] = $v['coupon_type_id'];
+
+            }
+            $my_nums = implode(',', $my_nums);
+        }
+        $where = [
+            'shop_id'=>0,
+            'is_show' =>1,
+            'end_time'=>[
+                'egt',$now_time
+            ]
+        ];
+        if (!is_array($my_nums) && $my_nums!='') {
+            $where['coupon_type_id']=['NOT IN',$my_nums];
+        }
+        $list = db('ns_coupon_type')->where($where)->select();
+        $this->assign('gonggaores',$list);
+
+        return view($this->style . 'Myhome/gonggao');
 
     }
 
