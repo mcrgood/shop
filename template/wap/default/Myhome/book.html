@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>预定</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="description" content="ajax方式">
+	<link rel="stylesheet" type="text/css" href="__INDEX__/css/jHsDate.css">
+	<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+        $(document).ready(function () {
+            $("#login").click(function () {
+                var username = $('#username').val();
+                var phone = $('#phone').val();
+                var num = $('#num').val();
+                var date = $('#date').val();
+                var isMobile=/^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
+                var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+                if (username == '') {
+                    alert("请输入姓名");
+                    return false;
+                }
+                else {
+                    if (phone == '') {
+                        alert("请输入电话");
+                        return false;
+                    }else
+                    if (num == '') {
+                        alert("请输入人数");
+                        return false;
+                    }else
+                    if(!isNaN(username)){
+                        alert("请填写正确的名称");
+                        return false;
+                    }else
+                    if(!username.match(/^[\u4e00-\u9fa5]+$/)){
+                        alert("请填写正确的名称");
+                        return false;
+                    }else
+
+                    if (date == '') {
+                        alert("请输入日期");
+                        return false;
+                    }else
+                        $.ajax({
+                            type: "POST",   //提交的方法
+                            url:"{:url('Myhome/book')}", //提交的地址  url
+                            data:$('#form1').serialize(),// 序列化表单值 表单id
+                            async: false,
+                            error: function(request) {  //失败的话
+                                alert("Connection error");
+                            },
+                            success: function(data) {  //成功
+                                if (data.error == 0) {
+                                    alert(data.message);
+                                    window.location.href = '{:url(\'wap/index\')}'
+                                }
+                                else
+                                {
+                                    alert(data.message);
+                                }
+                            }
+                        });
+                }
+            });
+        });
+	</script>
+</head>
+<style type="text/css">
+	#form-div{width: 100%;height: auto;padding: 0;margin: 0;}
+	#form1{width: 100%;height: auto;display: block;}
+	#form1 h2{font-size: 45px;text-align: center;padding-left: 100px;height: 40px;line-height: 80px;letter-spacing: 8px;}
+	#form1 p{font-size: 50px;text-align: center;height: 30px;}
+	#form1 p input{width: 30%;font-size: 45px;margin-left: 10px;border:1px solid gray;}
+</style>
+<body>
+<div id="form-div">
+	<form id="form1"><!--将form元素的属性action和method去掉，添加id=”form1”,form元素就变为<form id="form1">-->
+		<h2>预定</h2>
+		<p>姓名：<input name="username" type="text" id="username" value=""/></p>
+		<p>电话：<input name="telphone" type="tel" id="phone" value=""/></p>
+		<p>人数：<input name="renshu" type="num" id="num"  value=""/></p>
+		<p>时间：<input type="text" name="datetimeformat" id="datetimeformat" style="width:30%;" /></p>
+		<input type="hidden" name="userid" id="userid" value="{$userid}" />
+		<textarea rows="3" id="message" name="message" cols="40" placeholder="留言信息" style="font-size:35px;border:1px solid gray;margin-left:12%;"></textarea>
+		<p><input type="button" value="提交" id="login"></p>
+	</form>
+</div>
+<script type="text/javascript" src="__INDEX__/js/jHsDate.js"></script>
+<script type="text/javascript">
+    $('#datetimeformat').jHsDate({
+        format: 'yyyy年MM月dd日 hh时mm分'
+    });
+</script>
+</body>
+</html>

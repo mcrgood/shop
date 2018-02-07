@@ -76,14 +76,12 @@ class Myhome extends BaseController
 		}
 	}
 	public function yuding(){
-		//搜索+列表页
-		$keyword = input('get.keyword');
-		if($keyword){
-				$where['name|iphone'] = ['like',"%$keyword%"];
-			}else{
-				$where = [];
-			}
-		$list = db("ns_goods_reserve")->where($where)->select();
+
+        $list = db('ns_goods_reserve')->field('a.*,m.names,m.leixing')
+            ->alias('a')
+            ->join('ns_shop_message m','a.shop_id=m.userid','LEFT')
+            ->select();
+		//$list = db("ns_goods_reserve")->where($where)->select();
 		//$list = db("ns_shop_message")->select();
 
 		if($list){

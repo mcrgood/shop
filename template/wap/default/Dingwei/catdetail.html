@@ -263,9 +263,9 @@ function daohang(){
       </div>
     </div>
     <div class="order">
-        <a href="">
-            <button>预定</button>
-        </a>
+
+            <button onclick="javascript:window.location.href='{:__URL(\'APP_MAIN/Myhome/book\',\'userid=\'.$row.userid)}'">去预定</button>
+
     </div>
     <script type="text/javascript">
         window.onload=function(){
