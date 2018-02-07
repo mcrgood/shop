@@ -500,7 +500,7 @@ class Myhome extends Controller{
             $data['shi'] = $shi;
             $data['jingdu'] = $jingdu;
             $data['weidu'] = $weidu;
-            $data['state'] = 1;
+            $data['state'] = 0;
             $data['business_hours'] = $business_hours;
             $id = db('ns_shop_message')->where($condition)->update($data);
 
