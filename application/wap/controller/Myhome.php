@@ -544,9 +544,7 @@ class Myhome extends Controller{
             $name = request()->post('username', '');
             $iphone = request()->post('telphone', '');
             $num = request()->post('renshu', '');
-            $date = request()->post('jHsDateInput', '');
-            $sj = request()->post('sj', '');
-            $time = $date.$sj;
+            $time = request()->post('jHsDateInput', '');
             $message = request()->post('message', '');
             $add_time = time();
             $shop_id = request()->post('userid', 0);
