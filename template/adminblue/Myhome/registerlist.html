@@ -50,7 +50,7 @@
 			<th>{$v.names}</th>
 			<th>{$v.address}</th>
 			<th>{$v.tel}</th>
-			<th>{if $v.state eq 0}<span style="color:red">未审核</span>{elseif $v.state eq 2}<span style="color:black">重审中</span>{else/}<span style="color:blue;">已审核</span>{/if}</th>
+			<th>{if $v.state eq 0}<span style="color:red">正在审核</span>{elseif $v.state eq 2}<span style="color:black">重审中</span>{else/}<span style="color:blue;">已审核</span>{/if}</th>
 			<th><a href="{:url('registerdetail',array('id'=>$v['id']))}">查看详细</a></th>
 		</tr>
 	{/foreach}
