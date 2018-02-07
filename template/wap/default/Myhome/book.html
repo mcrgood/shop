@@ -4,15 +4,20 @@
 	<title>预定</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="description" content="ajax方式">
-	<link rel="stylesheet" type="text/css" href="__INDEX__/css/jHsDate.css">
-	<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+	<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="__INDEX__/css/laydate.css">
+	<script src="__INDEX__/js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript">
         $(document).ready(function () {
             $("#login").click(function () {
                 var username = $('#username').val();
                 var phone = $('#phone').val();
                 var num = $('#num').val();
-                var date = $('#date').val();
+                var sj = $('#date').val();
+                var date = $('#test1').val();
                 var isMobile=/^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
                 var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
                 if (username == '') {
@@ -28,22 +33,21 @@
                         alert("请输入人数");
                         return false;
                     }else
-                    if(!isNaN(username)){
-                        alert("请填写正确的名称");
-                        return false;
-                    }else
-                    if(!username.match(/^[\u4e00-\u9fa5]+$/)){
-                        alert("请填写正确的名称");
-                        return false;
-                    }else
-
                     if (date == '') {
                         alert("请输入日期");
                         return false;
                     }else
+                    if (sj == '') {
+                        alert("请输入具体时间");
+                        return false;
+                    }else
+                    if(!isNaN(username)){
+                        alert("请填写正确的姓名");
+                        return false;
+                    }else
                         $.ajax({
                             type: "POST",   //提交的方法
-                            url:"{:url('Myhome/book')}", //提交的地址  url
+                            url:"{:__URL('APP_MAIN/Myhome/book')}", //提交的地址  url
                             data:$('#form1').serialize(),// 序列化表单值 表单id
                             async: false,
                             error: function(request) {  //失败的话
@@ -66,11 +70,14 @@
 	</script>
 </head>
 <style type="text/css">
-	#form-div{width: 100%;height: auto;padding: 0;margin: 0;}
+	*{margin:0;padding:0;}
+	#form-div{width: 100%;height: auto;}
 	#form1{width: 100%;height: auto;display: block;}
-	#form1 h2{font-size: 45px;text-align: center;padding-left: 100px;height: 40px;line-height: 80px;letter-spacing: 8px;}
-	#form1 p{font-size: 50px;text-align: center;height: 30px;}
-	#form1 p input{width: 30%;font-size: 45px;margin-left: 10px;border:1px solid gray;}
+	#form1 h2{font-size: 18px;text-align: center;height: 40px;line-height: 40px;width: 100%;}
+	#form1 p{font-size: 15px;text-align: center;height: 30px;line-height: 30px;width: 100%;}
+	#form1 p input{width: 30%;font-size: 15px;border:1px solid gray;outline: none;}
+	.demo-footer{padding: 50px 0; color: #999; font-size: 14px;}
+	.demo-footer a{padding: 0 5px; color: #01AAED;}
 </style>
 <body>
 <div id="form-div">
@@ -79,16 +86,19 @@
 		<p>姓名：<input name="username" type="text" id="username" value=""/></p>
 		<p>电话：<input name="telphone" type="tel" id="phone" value=""/></p>
 		<p>人数：<input name="renshu" type="num" id="num"  value=""/></p>
-		<p>时间：<input type="text" name="datetimeformat" id="datetimeformat" style="width:30%;" /></p>
-		<input type="hidden" name="userid" id="userid" value="{$userid}" />
-		<textarea rows="3" id="message" name="message" cols="40" placeholder="留言信息" style="font-size:35px;border:1px solid gray;margin-left:12%;"></textarea>
-		<p><input type="button" value="提交" id="login"></p>
+		<p>日期：<input type="text" class="demo-input" placeholder="请选择日期" name="jHsDateInput" id="jHsDateInput"/></p>
+		<p>时间：<input name="sj" type="text" id="data"  placeholder="请输入具体时间"/></p>
+		<textarea rows="3" name="message" id="message" cols="40" placeholder="留言信息" style="font-size:15px;border:1px solid gray;width:80%;margin:0 10%;"></textarea>
+		<p style="margin-top:20px;"><input type="button" value="提交" id="login"></p>
 	</form>
 </div>
-<script type="text/javascript" src="__INDEX__/js/jHsDate.js"></script>
-<script type="text/javascript">
-    $('#datetimeformat').jHsDate({
-        format: 'yyyy年MM月dd日 hh时mm分'
+<script src="__INDEX__/js/laydate.js"></script>
+<script>
+    lay('#version').html('-v'+ laydate.v);
+
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#jHsDateInput' //指定元素
     });
 </script>
 </body>

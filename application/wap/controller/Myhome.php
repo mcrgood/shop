@@ -544,10 +544,14 @@ class Myhome extends Controller{
             $name = request()->post('username', '');
             $iphone = request()->post('telphone', '');
             $num = request()->post('renshu', '');
-            $time = request()->post('jHsDateInput', '');
+            $date = request()->post('jHsDateInput', '');
+            $sj = request()->post('sj', '');
+            $time = $date.$sj;
             $message = request()->post('message', '');
             $add_time = time();
-            $shop_id = request()->post('userid', '');
+            $shop_id = request()->post('userid', 0);
+            if (!$shop_id)
+                return $result = ['error' => 3, 'message' => 页面过期，请重新提交];
             $where['iphone'] = $iphone;
             $result = db("ns_goods_reserve")->where($where)->find();
             if($result){
