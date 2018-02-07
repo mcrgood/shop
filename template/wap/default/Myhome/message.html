@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<title>消息</title>
+	<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+</head>
+<style type="text/css">
+	*{margin: 0;padding: 0;}
+	.tab-header{
+		width: 100%;
+		margin: 0 auto;
+		height: 40px;
+		text-align: center;
+	}
+
+
+	.tab-header ul li{
+		list-style-type: none;
+		float: left;
+		width: 49.5%;
+		line-height: 40px;
+		height: 40px;
+		cursor: pointer;
+		margin:auto;
+	}
+	.tab-header ul li span{
+		font-size: 18px;
+		letter-spacing: 2px;
+		color:#4c4a4a;
+	}
+	.first-li{
+		border:1px  solid #e1e1e1;
+		border-right: none;
+		background-color: #fff;
+	}
+	.second-li{
+		border:1px  solid #e1e1e1;
+		border-left: none;
+		background-color: #fff;
+	}
+
+	.content{
+		width: 100%;
+		margin: auto;
+		height: auto;
+	}
+
+	.first-content{
+		width: 100%;
+		margin: auto;
+		height: auto;
+	}
+	/*消息、历史*/
+	.first_content_1{
+		width: 100%;
+		margin: auto;
+		height: auto;
+		padding-top:20px;
+		padding-bottom:10px;
+		background-color: #efefef;
+	}
+	.first_content_1 ul li{
+		list-style: none;
+		height: 150px;
+		width: 90%;
+		margin: 0 5%;
+		background-color: #fff;
+		margin-bottom: 15px;
+		border-radius: 12px;
+	}
+	.inform{width: 100%;margin: auto;height: 50px;}
+	.inform h4{display: inline-block;float: left;width: 30%;height: 50px;line-height: 50px;text-align: center;color: #000000;font-size: 17px;}
+	.inform span{display: inline-block;float: right;width: 30%;height: 50px;line-height: 50px;text-align: center;color: #333333;font-size: 14px;}
+	.inform_content{width: 100%;margin: auto;height: 50px;}
+	.inform_content p{width: 90%;padding: 0 5%;font-size: 15px;line-height: 20px;text-overflow: ellipsis;
+		overflow: hidden;color: #262626;}
+	.inform_content2{width: 100%;margin: auto;height: 30px;}
+	.inform_content2 span{display: inline-block;width: 40%;height: 30px;line-height: 30px;font-size: 10px;color: #a5a5a5;padding-left: 5%;}
+	/*历史*/
+	#contents{width: 100%;height: auto;margin: 0 auto}
+	.search_1{width: 90%;margin: 0 5%;height: 30px;border: 1px solid #e4dfdf;border-radius: 11px;background-color: #fff;margin-bottom: 10px;}
+	.search_btn{width: 10%;height: 30px; background: url(images/search_03.png) left no-repeat;background-size:25px;background-position-x:10px;display: inline-block;border: none;float: left;outline: none;}
+	.search_input{width: 82%;border: none;outline: none;height: 30px;font-size: 14px;color:#999999;display: inline-block;float: left;padding-left: 5px;}
+
+
+
+	/*控制列表选项卡活动状态时的背景颜色*/
+	.tab-header .active{
+		border-bottom:1px solid #ff0000;
+	}
+
+
+	/*控制列表切换内容的显示与隐藏*/
+	.first-content, .second-content{
+		display: none;
+	}
+	.first-content.active, .second-content.active {
+		display: block;
+	}
+</style>
+<body>
+<!--列表切换的选项卡-->
+<div class="tab-header">
+	<ul>
+		<li class="first-li active"><span>消息</span></li>
+		<li class="second-li"><span>历史</span></li>
+	</ul>
+</div>
+
+
+<!--切换的内容部分-->
+<div class="content">
+	<div class="m-box first-content active">
+		<div class="first_content_1">
+			<ul>
+				<li>
+					<div class="inform"><h4>预退通知</h4><span>昨天 15:40</span></div>
+					<div class="inform_content"><p>旺旺国际大酒店预定豪华包间908预定人数10时间2018年2月15日晚上7点已返还899元</p></div>
+					<div class="inform_content2"><span>姓名:无名氏</span><span style="text-align:right;padding-right:5%;float:right;">联系:15170123175</span></div>
+				</li>
+				<li>
+					<div class="inform"><h4>预定通知</h4><span>18/2/21</span></div>
+					<div class="inform_content"><p>旺旺国际大酒店预定豪华包间908预定人数10时间2018年2月15日晚上7点已返还899元</p></div>
+					<div class="inform_content2"><span>姓名:无名氏</span><span style="text-align:right;padding-right:5%;float:right;">联系:15170123175</span></div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="m-box second-content">
+		<div class="first_content_1">
+			<div class="search_1"><input type="submit" value="" class="search_btn"/><input class="search_input" type="text" placeholder="请输入历史时间进行搜索 例:18/1/1" onfocus="if (placeholder=='请输入历史时间进行搜索 例:18/1/1'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入历史时间进行搜索 例:18/1/1'}"/>
+			</div>
+			<ul id="content_news_list">
+				<li>
+					<div id="contents">
+						<div class="inform"><h4>预退通知</h4><span>今天 15:40</span></div>
+						<div class="inform_content"><p>旺旺国际大酒店预定豪华包间908预定人数10时间2018年2月15日晚上7点已返还899元</p></div>
+						<div class="inform_content2"><span>姓名:无名氏</span><span style="text-align:right;padding-right:5%;float:right;">联系:15170123175</span></div>
+					</div>
+				</li>
+				<li>
+					<div id="contents">
+						<div class="inform"><h4>预定通知</h4><span>18/2/21</span></div>
+						<div class="inform_content"><p>旺旺国际大酒店预定豪华包间908预定人数10时间2018年2月15日晚上7点已返还899元</p></div>
+						<div class="inform_content2"><span>姓名:无名氏</span><span style="text-align:right;padding-right:5%;float:right;">联系:15170123175</span></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript">
+        $(function(){
+
+            $("input[type=text]").change(function () {
+                var searchText = $(this).val();//获取输入的搜索内容
+                var $searchLi = "";//预备对象，用于存储匹配出的li
+
+                if (searchText != "") {
+
+                    //获取所有匹配的li
+                    $searchLi = $("#content_news_list").find('#contents:contains('+ searchText +')').parent();
+                    //将内容清空
+                    $("#content_news_list").html("");
+                }
+
+                //将获取的元素追加到列表中
+                $("#content_news_list").html($searchLi).clone();
+
+                //判断搜索内容是否有效，若无效，输出not find
+                if ($searchLi.length <= 0) {
+                    $("#content_news_list").html("<li>not find</li>")
+                }
+            })
+
+            $("input[type=submit]").click(function () {
+                $("searchText").change();
+            })
+        })
+	</script>
+</div>
+</body>
+<script type="text/javascript">
+    //tab切换效果
+    $(document).ready(function () {
+        $(".tab-header li").on("click", function (e) {
+            e.preventDefault();
+            var i=$(this).index();
+            $(".tab-header li").removeClass("active").eq(i).addClass("active"),
+                $(".content .m-box").removeClass("active").eq(i).addClass("active")
+        });
+    });
+</script>
+</script>
+</html>

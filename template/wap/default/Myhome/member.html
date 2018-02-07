@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<title>注册会员</title>
+	<style>
+		*{margin: 0;padding: 0;}
+		.big{width: 100%;height: auto;margin: 0 auto;}
+		.header{width: 100%;height: 50px;margin: 0 auto;background: #fd5454;}
+		.header_left{width: 20%;display: inline-block;float: left;text-align: center;height: 50px;}
+		.header_left a{text-decoration: none;font-size: 35px;font-weight: bold;color: #fff;line-height: 45px;padding-right: 20px;}
+		.header_center{width: 60%;height: 50px;text-align: center;font-size: 20px;color: #fff;display: inline-block;float: left;line-height: 50px;font-weight: bold;}
+		.header_right{width: 20%;display: inline-block;float: left;text-align: center;color: #fff;height: 50px;}
+		.header_right a{text-decoration: none;font-size: 18px;font-weight: bold;color: #fff;line-height: 50px;}
+		.search{width: 90%;height: 80px;margin: auto;margin: 0 5%;margin-top: 20px;}
+		.search_1{width: 100%;margin: 0 auto;height: 30px;border: 1px solid #e4dfdf;border-radius: 11px;}
+		.search_btn{width: 10%;height: 30px; background: url(__INDEX__/images/search_03.png) left no-repeat;background-size:25px;background-position-x:10px;display: inline-block;border: none;float: left;outline: none;}
+		.search_input{width: 82%;border: none;outline: none;height: 30px;font-size: 14px;color:#999999;display: inline-block;float: left;padding-left: 5px;}
+		.user{width: 100%;margin: 0 auto;text-align: center;height: 50px;border-bottom: 1px solid #e4dfdf;}
+		.user span{font-size: 16px;color: #666666;height: 50px;line-height: 50px;letter-spacing:0.2em;}
+		.users_1{width: 90%;height: auto;margin: 0 5%;}
+		.users_1 ul{list-style: none;}
+		.users_1 ul li{width: 95%;height: 60px;margin: auto;border-bottom: 1px solid #e4dfdf;margin-top: 10px;padding-left: 5%;}
+		.users_1 ul li img{width: 50px;height: 50px;display: inline-block;float: left;}
+		.users_2{width:77% ;height: 60px;display: inline-block;float: left;padding-left: 10px;}
+		.users_2 h4{font-size: 16px;color: #5a5959;height: 25px;line-height: 25px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;width: 45%;}
+		.users_2 span{color: #999999;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;font-size: 15px;height: 25px;line-height: 25px;width: 100%;}
+	</style>
+</head>
+<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+<body>
+<div class="big">
+	<div class="header">
+		<div class="header_left"><a href="" > < </a></div>
+		<div class="header_center">会员</div>
+		<div class="header_right"><a href="" >筛选</a></div>
+	</div>
+	<div class="search">
+		<div class="search_1"><input type="submit" value="" class="search_btn"/><input class="search_input" type="text" placeholder="请输入会员手机号、姓名关键字进行搜索" onfocus="if (placeholder =='请输入会员手机号、姓名关键字进行搜索'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入会员手机号、姓名关键字进行搜索'}"/></div>
+		<div class="user"><span>共10位会员</span></div>
+	</div>
+	<div class="users_1">
+		<ul id="content_news_list">
+			<li>
+				<div id="contents">
+					<img src="__INDEX__/images/tx_03.png"/>
+					<div class="users_2">
+						<h4>用户名1</h4>
+						<span>15170123175</span>
+					</div>
+				</div>
+			</li>
+			<li>
+				<div id="contents">
+					<img src="__INDEX__/images/tx_03.png"/>
+					<div class="users_2">
+						<h4>用户名2</h4>
+						<span>15170123175</span>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+        $(function(){
+
+            $("input[type=text]").change(function () {
+                var searchText = $(this).val();//获取输入的搜索内容
+                var $searchLi = "";//预备对象，用于存储匹配出的li
+
+                if (searchText != "") {
+
+                    //获取所有匹配的li
+                    $searchLi = $("#content_news_list").find('#contents:contains('+ searchText +')').parent();
+                    //将内容清空
+                    $("#content_news_list").html("");
+                }
+
+                //将获取的元素追加到列表中
+                $("#content_news_list").html($searchLi).clone();
+
+                //判断搜索内容是否有效，若无效，输出not find
+                if ($searchLi.length <= 0) {
+                    $("#content_news_list").html("<li>not find</li>")
+                }
+            })
+
+            $("input[type=submit]").click(function () {
+                $("searchText").change();
+            })
+        })
+	</script>
+</div>
+</body>
+</html>
