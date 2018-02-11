@@ -240,8 +240,13 @@ class Myhome extends Controller{
             ->join('ns_shop_message m','a.shop_id=m.userid','left')
             ->where($where)
             ->select();
-        //$list = db("ns_goods_reserve")->where($where)->select();
+        $count = db('ns_goods_reserve')->field('a.*,m.names')
+            ->alias('a')
+            ->join('ns_shop_message m','a.shop_id=m.userid','left')
+            ->where($where)
+            ->count();
         $this->assign('list', $list);
+        $this->assign('count', $count);
         return view($this->style . 'Myhome/message');
     }
     //退出登录
