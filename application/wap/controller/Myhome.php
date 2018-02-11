@@ -638,6 +638,7 @@ class Myhome extends Controller{
             $coupon_id = $result['coupon_id'];
         }
         $data["uid"] = $this->uid;
+        $data["state"] = 1;
         $result = db('ns_coupon')->where('coupon_id',$coupon_id)->update($data);
         return ['state'=>1,'message'=>'优惠券领取成功！'];
 
@@ -665,7 +666,7 @@ class Myhome extends Controller{
             'end_time'=>[
                 'egt',$now_time
             ],
-            'state'=>0
+            'state'=>1
         ];
         $couponCus = db('ns_coupon')->field('coupon_type_id')->where($where)->select();
         $my_nums = [];
