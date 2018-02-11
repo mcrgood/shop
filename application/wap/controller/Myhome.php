@@ -234,6 +234,14 @@ class Myhome extends Controller{
     }
     public function message(){
         $this->check_login();
+        $where['shop_id'] = $this->business_id;
+        $list = db('ns_goods_reserve')->field('a.*,m.names')
+            ->alias('a')
+            ->join('ns_shop_message m','a.shop_id=m.userid','left')
+            ->where($where)
+            ->select();
+        //$list = db("ns_goods_reserve")->where($where)->select();
+        $this->assign('list', $list);
         return view($this->style . 'Myhome/message');
     }
     //退出登录
