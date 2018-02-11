@@ -114,6 +114,16 @@
     	color: white;
     	padding-right: 70px;
 }
+.info label{
+	z-index: 3;
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border-radius: 50px;
+	background: red;
+	display: inline-block;
+	margin: 40px 0 0 0;
+}
 </style>
 <body>
 <div class="big">
@@ -151,7 +161,7 @@
 				</li>
 				<li class="info">
 					<img src="__INDEX__/images/3_03.png" />
-					<a href="{:url('Myhome/message')}"><span class="wenzi">消息&nbsp></span></a>
+					<a href="{:url('Myhome/message')}"><span class="wenzi">消息&nbsp><label></label></span></a>
 				</li>
 			</ul>
 		</div>
