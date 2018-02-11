@@ -118,16 +118,13 @@
 	<div class="m-box first-content active">
 		<div class="first_content_1">
 			<ul>
+                {foreach name="list" id="v"}
 				<li>
-					<div class="inform"><h4>预退通知</h4><span>昨天 15:40</span></div>
-					<div class="inform_content"><p>旺旺国际大酒店预定豪华包间908预定人数10时间2018年2月15日晚上7点已返还899元</p></div>
-					<div class="inform_content2"><span>姓名:无名氏</span><span style="text-align:right;padding-right:5%;float:right;">联系:15170123175</span></div>
+					<div class="inform"><h4>预退通知</h4><span>{$v.time}</span></div>
+					<div class="inform_content"><p>{$v.names}预定人数{$v.num}时间{$v.time}</p></div>
+					<div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.iphone}</span></div>
 				</li>
-				<li>
-					<div class="inform"><h4>预定通知</h4><span>18/2/21</span></div>
-					<div class="inform_content"><p>旺旺国际大酒店预定豪华包间908预定人数10时间2018年2月15日晚上7点已返还899元</p></div>
-					<div class="inform_content2"><span>姓名:无名氏</span><span style="text-align:right;padding-right:5%;float:right;">联系:15170123175</span></div>
-				</li>
+                {/foreach}
 			</ul>
 		</div>
 	</div>
@@ -137,20 +134,13 @@
 			<div class="search_1"><input type="submit" value="" class="search_btn"/><input class="search_input" type="text" placeholder="请输入历史时间进行搜索 例:18/1/1" onfocus="if (placeholder=='请输入历史时间进行搜索 例:18/1/1'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入历史时间进行搜索 例:18/1/1'}"/>
 			</div>
 			<ul id="content_news_list">
-				<li>
-					<div id="contents">
-						<div class="inform"><h4>预退通知</h4><span>今天 15:40</span></div>
-						<div class="inform_content"><p>旺旺国际大酒店预定豪华包间908预定人数10时间2018年2月15日晚上7点已返还899元</p></div>
-						<div class="inform_content2"><span>姓名:无名氏</span><span style="text-align:right;padding-right:5%;float:right;">联系:15170123175</span></div>
-					</div>
-				</li>
-				<li>
-					<div id="contents">
-						<div class="inform"><h4>预定通知</h4><span>18/2/21</span></div>
-						<div class="inform_content"><p>旺旺国际大酒店预定豪华包间908预定人数10时间2018年2月15日晚上7点已返还899元</p></div>
-						<div class="inform_content2"><span>姓名:无名氏</span><span style="text-align:right;padding-right:5%;float:right;">联系:15170123175</span></div>
-					</div>
-				</li>
+                {foreach name="list" id="v"}
+                <li>
+                    <div class="inform"><h4>预退通知</h4><span>{$v.time}</span></div>
+                    <div class="inform_content"><p>{$v.names}预定人数{$v.num}时间{$v.time}</p></div>
+                    <div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.iphone}</span></div>
+                </li>
+                {/foreach}
 			</ul>
 		</div>
 	</div>
