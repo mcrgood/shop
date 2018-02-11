@@ -73,9 +73,9 @@
 	*{margin:0;padding:0;}
 	#form-div{width: 100%;height: auto;}
 	#form1{width: 100%;height: auto;display: block;}
-	#form1 h2{font-size: 18px;text-align: center;height: 40px;line-height: 40px;width: 100%;}
-	#form1 p{font-size: 15px;text-align: center;height: 30px;line-height: 30px;width: 100%;}
-	#form1 p input{width: 30%;font-size: 15px;border:1px solid gray;outline: none;}
+	#form1 h2{font-size: 30px;text-align: center;height: 60px;line-height: 60px;width: 100%;letter-spacing: 5px;}
+	#form1 p{font-size: 18px;text-align: center;height: 60px;line-height: 60px;width: 100%;}
+	#form1 p input{width: 45%;font-size: 18px;border:1px solid gray;outline: none;height: 30px}
 	.demo-footer{padding: 50px 0; color: #999; font-size: 14px;}
 	.demo-footer a{padding: 0 5px; color: #01AAED;}
 </style>
@@ -87,9 +87,9 @@
 		<p>电话：<input name="telphone" type="tel" id="phone" value=""/></p>
 		<p>人数：<input name="renshu" type="num" id="num"  value=""/></p>
 		<p>日期：<input type="text" class="demo-input" placeholder="请选择日期" name="jHsDateInput" id="jHsDateInput"/></p>
-		<textarea rows="3" name="message" id="message" cols="40" placeholder="留言信息" style="font-size:15px;border:1px solid gray;width:80%;margin:0 10%;"></textarea>
+		<textarea rows="3" name="message" id="message" cols="40" placeholder="留言信息" style="font-size:18px;border:1px solid gray;width:80%;margin:0 10%;outline:none;"></textarea>
 		<input type="hidden" name="userid" id="userid" value="{$userid}" />
-		<p style="margin-top:20px;"><input type="button" value="提交" id="login"></p>
+		<p  style="margin-top:50px;"><input type="button" value="提交" id="login"></p>
 	</form>
 </div>
 <script src="__INDEX__/js/laydate.js"></script>
