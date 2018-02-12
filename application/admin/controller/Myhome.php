@@ -36,7 +36,8 @@ class Myhome extends BaseController
 				 ->alias('a')
 				 ->join('ns_shop_message m','a.id=m.userid','LEFT')
 				 ->where($where)
-				 ->select();
+				 ->paginate(20);
+        	$page = $list->render();
 			$this->assign('list',$list);
 		return view($this->style . "Myhome/registerlist");
 	}
