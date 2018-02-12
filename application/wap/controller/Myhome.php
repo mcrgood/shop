@@ -200,10 +200,15 @@ class Myhome extends Controller{
 
     public function yingshou(){
         $this->check_login();
+        $where['shop_id'] = $this->business_id;
+        $where['state'] = 0;
+        $count = db('ns_goods_reserve')->where($where)->count();
+        $this->assign('count', $count);
         return view($this->style . 'Myhome/yingshou');
     }
     public function yincan(){
         $this->check_login();
+
         $where['userid'] = $this->business_id;
         $result = db("ns_shop_message")->where($where)->select();
         if ($result) {
@@ -234,19 +239,20 @@ class Myhome extends Controller{
     }
     public function message(){
         $this->check_login();
+        db("ns_goods_reserve")->where("shop_id",$this->business_id)->update(["state"=>1]);
         $where['shop_id'] = $this->business_id;
         $list = db('ns_goods_reserve')->field('a.*,m.names')
             ->alias('a')
             ->join('ns_shop_message m','a.shop_id=m.userid','left')
             ->where($where)
             ->select();
-        $count = db('ns_goods_reserve')->field('a.*,m.names')
-            ->alias('a')
-            ->join('ns_shop_message m','a.shop_id=m.userid','left')
-            ->where($where)
-            ->count();
+//        $count = db('ns_goods_reserve')->field('a.*,m.names')
+//            ->alias('a')
+//            ->join('ns_shop_message m','a.shop_id=m.userid','left')
+//            ->where($where)
+//            ->count();
         $this->assign('list', $list);
-        $this->assign('count', $count);
+       // $this->assign('count', $count);
         return view($this->style . 'Myhome/message');
     }
     //退出登录
