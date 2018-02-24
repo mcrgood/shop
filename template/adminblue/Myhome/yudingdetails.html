@@ -1,0 +1,57 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+{/block}
+{block name="main"}
+<style>
+	.clas{margin-bottom: }
+</style>
+<form action="" >
+<div class="set-style" style="margin-bottom: 150px;">
+	<dl>
+		<dt><span class="required"></span>类型：</dt>
+		<dd>
+			<p><input class="input-common" id="admin_name" type="text" name="type" value="{$row.type}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>店名：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="name" value="{$row.name}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>预订人姓名：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="names" value="{$row.names}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>预定时间：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="address" value="{$row.address}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>预订人数：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="num" value="{$row.num}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>预定电话：</dt>
+		<dd>
+			<p><input class="input-common" id="user_password" type="text" name="iphone" value="{$row.iphone}" disabled="disabled"></p>
+		</dd>
+	</dl>
+
+	<dl>
+		<dt><i class="required"></i>留言信息：</dt>
+		<dd>
+		<div class="controls" id="discripContainer">
+			<textarea style="outline:none;resize:none;height:200px;" name="message" disabled="disabled">{$row.message}</textarea>
+		</div>
+		</dd>
+	</dl>
+</div>
+</form>
+{/block}

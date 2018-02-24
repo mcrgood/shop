@@ -15,19 +15,19 @@
 </style>
 {/block}
 {block name="main"}
-<!--<table class="mytable">
+<table class="mytable">
 	<tr>
-		<th width="30%" style="text-align: left;">
+		<!-- <th width="30%" style="text-align: left;">
 			<button class="btn-common-delete btn-small smalll" style="margin:0 5px 0 50 !important;">批量删除</button>
-		</th>
+		</th> -->
 		<form action="{:url('myhome/yuding')}" method="get">
 		<th width="20%">
-			<input type="text" name="keyword" id = 'search_text' placeholder="电话" class="input-common"/>
+			<input type="text" name="keyword" id = 'search_text' placeholder="姓名 / 电话 / 省 / 市 / 区" class="input-common"/>
 			<input type="submit" value="搜索" class="btn-common"/>
 		</th>
 		</form>
 	</tr>
-</table>-->
+</table>
 <table class="table-class">
 	<colgroup>
 		<col style="width: 5%;">
@@ -57,7 +57,7 @@
 			<th>{$v.shi}</th>
 			<th>{$v.area}</th>
 			<!--<th>{$v.message}</th>-->
-			<th>{$v.add_time|date="Y-m-d H:i:s:",###}</th>
+			<th>{$v.add_time|date="Y-m-d H:i:s",###}</th>
 			<th><a href="{:url('c_partern_detail',array('id'=>$v['id']))}">查看详细</a></th>
 		</tr>
 		{/foreach}

@@ -76,6 +76,7 @@ class Myhome extends BaseController
 			//dump($data);die;
 		}
 	}
+	//预定
 	public function yuding(){
 
         $list = db('ns_goods_reserve')->field('a.*,m.names,m.leixing')
@@ -110,6 +111,20 @@ class Myhome extends BaseController
 		                return $r;
 			}
 		}
+	}
+
+	//预定详情
+	public function yudingdetails(){
+		$id = input('param.id');
+		//dump($id);die;
+		if($id==0){
+			$this->error("没有获取到用户信息");
+		}else{
+			$row = db("ns_goods_reserve")->find($id);
+			$this->assign('row',$row);
+			//dump($row);die;
+		}
+		return view($this->style."Myhome/yudingdetails");
 	}
 
 	public function yingshou(){
