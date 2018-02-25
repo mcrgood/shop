@@ -78,11 +78,16 @@ class Myhome extends BaseController
 	}
 	//预定
 	public function yuding(){
-
+	$keyword = input('get.keyword');
+		if($keyword){
+			$where['type|name|names'] = ['like',"$keyword"];
+		}else{
+			$where = [];
+		}
         $list = db('ns_goods_reserve')->field('a.*,m.names,m.leixing')
             ->alias('a')
             ->join('ns_shop_message m','a.shop_id=m.userid','LEFT')
-            ->select();
+            ->where($where)->select();
 		//$list = db("ns_goods_reserve")->where($where)->select();
 		//$list = db("ns_shop_message")->select();
 
@@ -103,6 +108,7 @@ class Myhome extends BaseController
 	public function yudingdelete(){
 		if(request()->isAjax()){
 			$id = input('post.id');
+			//dump($id);die;
 			$where['id'] = array('in', $id);
 			$r = db("ns_goods_reserve")->where($where)->delete();
 			if (!$r) {

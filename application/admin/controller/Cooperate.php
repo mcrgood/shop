@@ -25,13 +25,11 @@ class Cooperate extends BaseController{
             if ($id)
                 return $result = ['error' => 0, 'message' => "提交成功"];
             else
-
                 return $result = ['error' => 1, 'message' => "提交失败"];
-
         }
         $keyword = input('get.keyword');
         if($keyword){
-            $where['tel'] = ['like',"%$keyword%"];
+            $where['tel|name|contact'] = ['like',"$keyword"];
         }else{
             $where = [];
         }
@@ -84,7 +82,7 @@ class Cooperate extends BaseController{
         }
         $keyword = input('get.keyword');
         if($keyword){
-            $where['tel'] = ['like',"%$keyword%"];
+            $where['tel|name|sheng|shi|area'] = ['like',"$keyword"];
         }else{
             $where = [];
         }
