@@ -2,23 +2,16 @@
 
 namespace app\wap\controller;
 use data\service\Config as WebConfig;
-use data\service\Goods as GoodsService;
-use data\service\GoodsBrand as GoodsBrand;
-use data\service\GoodsCategory;
-use data\service\GoodsGroup;
 use data\service\Member;
-use data\service\Order as OrderService;
-use data\service\Platform;
-use data\service\promotion\GoodsExpress;
-use data\service\Address;
 use data\service\WebSite;
 use think\Controller;
 use think\Db;
 use think\Session;
 use data\extend\org\wechat\Jssdk;
 use data\extend\chuanglan\ChuanglanSmsApi;
-
-class Myhome extends Controller{
+use \data\extend\QRcode as QRcode;
+class Myhome extends Controller
+{
 
     private $myinfo;
     protected $uid;
@@ -34,7 +27,7 @@ class Myhome extends Controller{
     protected $instance_id;
 
     protected $shop_name;
-   protected  $mobile;
+    protected $mobile;
     // 验证码配置
     public $login_verify_code;
 
@@ -69,24 +62,28 @@ class Myhome extends Controller{
         if (empty($use_wap_template)) {
             $use_wap_template['value'] = 'default';
         }
-        if (! checkTemplateIsExists("wap", $use_wap_template['value'])) {
+        if (!checkTemplateIsExists("wap", $use_wap_template['value'])) {
             $this->error("模板配置有误，请联系商城管理员");
         }
-        $this->style = "wap/" . $use_wap_template['value']."/";
+        $this->style = "wap/" . $use_wap_template['value'] . "/";
         $this->assign("style", "wap/" . $use_wap_template['value']);
     }
+
     //个人中心首页
-	public function index(){
+    public function index()
+    {
         return view($this->style . 'Myhome/index');
-        $cus = db('customer')->where('openid',$this->myinfo['openid'])->find();
-        $shop = db('shop')->where('customer_id',$cus['id'])->find();
-		return $this->fetch('',[
-			'userInfo' => $this->myinfo,
+        $cus = db('customer')->where('openid', $this->myinfo['openid'])->find();
+        $shop = db('shop')->where('customer_id', $cus['id'])->find();
+        return $this->fetch('', [
+            'userInfo' => $this->myinfo,
             'cus' => $cus,
             'shopinfo' => $shop,
-		]);
-	}
-    public function login(){
+        ]);
+    }
+
+    public function login()
+    {
         if (request()->isAjax()) {
             $password = request()->post('password', '');
             $mobile = request()->post('mobile', '');
@@ -96,6 +93,9 @@ class Myhome extends Controller{
             if ($info) {
                 Session::set('business_id', $info['id']);
                 Session::set('mobile', $info['iphone']);
+                $url = __URL('wap/myhome/pay?id=' . $info['id']);
+                $shop_qrcode = getQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $info['id']);
+                db('ns_shop_message')->where(array("userid" => $info['id']))->update(array("shop_qrcode" => $shop_qrcode));
                 if (!empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,
@@ -108,24 +108,45 @@ class Myhome extends Controller{
                     ];
                 }
 
-            }else
-            {
+            } else {
                 $retval = AjaxReturn(-2001);
             }
             return $retval;
         }
         $pre_url = '';
         $_SESSION['bund_pre_url'] = '';
-        if (! empty($_SERVER['HTTP_REFERER'])) {
+        if (!empty($_SERVER['HTTP_REFERER'])) {
             $pre_url = $_SERVER['HTTP_REFERER'];
             if (strpos($pre_url, 'register') || strpos($pre_url, 'findpasswd')) {
                 $pre_url = '';
             }
             $_SESSION['login_pre_url'] = $pre_url;
         }
-            return view($this->style . 'Myhome/login');
-        }
+        return view($this->style . 'Myhome/login');
+    }
 
+    /*
+     * 支付
+     */
+    public function pay()
+    {
+        $this->check_login();
+
+    }
+
+    /*
+     * 二维码
+     */
+    public function qrcode()
+    {
+        $this->check_login();
+        $where['userid'] = $this->business_id;
+        $result = db("ns_shop_message")->where($where)->select();
+        if ($result)
+            $qrcode = $result[0]['shop_qrcode'];
+        $this->assign('qrcode', $qrcode);
+        return view($this->style . 'Myhome/qrcode');
+    }
     public function mobile_login()
     {
         if (request()->isAjax()) {
@@ -134,9 +155,10 @@ class Myhome extends Controller{
             $info = Db::table("ns_goods_login")->where("iphone='".$mobile."' and password='".md5($password)."'")
                 ->field("id,iphone")
                 ->find();
-            if ($info)
+            if ($info) {
                 Session::set('business_id', $info['id']);
                 Session::set('mobile', $info['iphone']);
+            }
             $retval = AjaxReturn(1);
 
             return $retval;
@@ -320,8 +342,10 @@ class Myhome extends Controller{
             $data['weidu'] = $weidu;
             $data['business_hours'] = $business_hours;
             $id = db('ns_shop_message')->insert($data);
-
+            $url = __URL('wap/myhome/pay?id='.$id);
+            $shop_qrcode = getQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $id);
             if($id){
+                db('ns_shop_message')->where(array("id"=>$id))->update(array("shop_qrcode"=>$shop_qrcode));
                 $this->success('申请成功，请等待审核！',__URL('wap/myhome/yingshou'));
             }else{
                 $this->error('申请失败！');
