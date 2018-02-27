@@ -46,30 +46,45 @@
 			<th>操作</th>
 		</tr>
 	</thead>
-	<thead>
-		{foreach name="list" id="v"}
-		<tr>
-			<th><input type="checkbox" name="" value=""></th>
-  			<th>{switch name="$v.leixing"}
-				{case value="1"}餐饮{/case}
-				{case value="2"}酒店{/case}
-				{case value="3"}养生{/case}
-				{case value="4"}KTV{/case}
-				{case value="5"}汽车{/case}
-				{case value="6"}其他{/case}
-				{default /}餐饮
-				{/switch}</th>
-			<th>{$v.names}</th>
-			<th>{$v.name}</th>
-			<th>{$v.time}</th>
-			<th>{$v.num}</th>
-			<th>{$v.iphone}</th>
-			<th><a href="{:url('yudingdetails',array('id'=>$v['id']))}">查看详细</a></th>
-		</tr>
-		{/foreach}
-	</thead>
+	<tbody></tbody>
 </table>
-<script type="text/javascript">
+{/block}
+{block name="script"}
+	<script type="text/javascript">
+	function LoadingInfo(page_index) {
+	var search_text = $("#search_text").val();
+	$.ajax({
+		type : "post",
+		url : "{:__URL('ADMIN_MAIN/myhome/yuding')}",
+		data : {
+			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text
+		},
+		success : function(data) {
+			var html = '';
+			if (data["data"].length > 0) {
+				for (var i = 0; i < data["data"].length; i++) {
+					html += '<tr align="center">';
+					html += '<td><input name="id" type="checkbox" value="'+ data["data"][i]["id"]+'" ></td>';
+					html += '<td>'+ data["data"][i]["type"] +'</td>'
+					html += '<td>'+data["data"][i]["shop_id"]+'</td>';
+					html += '<td>'+ data["data"][i]["name"] +'</td>';
+					html += '<td>'+ data["data"][i]["time"] +'</td>';
+					html += '<td>'+ data["data"][i]["num"] +'</td>';
+					html += '<td>'+ data["data"][i]["iphone"] +'</td>';
+					html += '<td>';
+					html += '<a href="">查看详情</a>';
+					html += '</td>';
+					html += '</tr>';
+				}
+			} else {
+				html += '<tr align="center"><td colspan="9">暂无符合条件的数据记录</td></tr>';
+			}
+			$(".table-class tbody").html(html);
+			initPageData(data["page_count"],data['data'].length,data['total_count']);
+			$("#pageNumber").html(pagenumShow(jumpNumber,$("#page_count").val(),{$pageshow}));
+		}
+	});
+}
 	//全选
 	// jQuery(function($){
 	// 	$("#btn1").click(function(){
@@ -126,6 +141,4 @@
 		});
 	})
 </script>
-{/block}
-{block name="script"}
 {/block}
