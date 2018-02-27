@@ -1,5 +1,6 @@
 <?php
 namespace app\admin\controller;
+use app\admin\controller\BaseController;
 use Qiniu\json_decode;
 use think\Config;
 use think\Db;
@@ -12,6 +13,8 @@ use data\service\GoodsCategory as GoodsCategory;
 use data\service\GoodsGroup as GoodsGroup;
 use data\service\Supplier;
 use think\Request;
+use data\service\MyhomeService as MyhomeService;
+use data\service\Member as MemberService;
 header("Content-Type: text/html; charset=UTF-8"); //编码
 
 class Myhome extends BaseController
@@ -76,31 +79,17 @@ class Myhome extends BaseController
 			//dump($data);die;
 		}
 	}
-	//预定
+	//预定列表
 	public function yuding(){
-	$keyword = input('get.keyword');
-		if($keyword){
-			$where['type|name|names'] = ['like',"$keyword"];
-		}else{
-			$where = [];
-		}
-        $list = db('ns_goods_reserve')->field('a.*,m.names,m.leixing')
-            ->alias('a')
-            ->join('ns_shop_message m','a.shop_id=m.userid','LEFT')
-            ->where($where)->select();
-		//$list = db("ns_goods_reserve")->where($where)->select();
-		//$list = db("ns_shop_message")->select();
-
-		if($list){
-			foreach($list as $k=>$v){
-				if(strtotime($v['time'])<time()){
-					$list[$k]['times'] = '已过期';
-				}else{
-					$list[$k]['times'] = '正常';
-				}
-			}
-		}
-		$this->assign('list',$list);
+	if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $condition['type|name|shop_id'] = ['LIKE',"%".$search_text."%"];
+            $member = new MyhomeService();
+            $list = $member->getYuDingList($page_index, $page_size, $condition, $order = '', $field = '*');
+            return $list;
+        }
 		return view($this->style . "Myhome/yuding");
 	}
 

@@ -104,7 +104,7 @@ class Order extends BaseController
                 $condition['payment_type'] = $payment_type;
             }
             if (! empty($user_name)) {
-                $condition['receiver_name'] = $user_name;
+                $condition[''] = $user_name;
             }
             if (! empty($order_no)) {
                 $condition['order_no'] = $order_no;
