@@ -52,7 +52,7 @@ function refreshShopCart(){
 					}else{
 						str += '<strong>¥'+data[i].price+'</strong>×'+data[i].num+'</div>';
 					}
-						str += '<a href="javascript:;" class="p-del" onclick="deleteShoppingCartById('+data[i].cart_id+')">删除</a>';
+						str += '<a href="javascript:;" class="p-del" onclick="deleteShoppingCartById('+data[i].cart_id+')">删除2</a>';
 						str += '</div></div>';
 					total += data[i].price * data[i].num;
 				}
@@ -264,6 +264,7 @@ function refreshShopCartBlue(){
 		success : function(data){
 			var str = "";
 			var total = 0;
+			var points = 0;
 			if(data.length>0){//没登录会返回首页html代码
 				for(var i=0;i<data.length;i++){
 					cart_id_arr.push(data[i].goods_id);
@@ -281,7 +282,7 @@ function refreshShopCartBlue(){
 					str += '<p class="goods_name">'+data[i].goods_name+'&nbsp;'+data[i].sku_name+'</p>';
 					str += '<div class="price_del">';
 					if(data[i].point_exchange_type==1){
-						str += '<span class="price">¥'+data[i].price+'+积分'+data[i].point_exchange+'x'+data[i].num+'</span>';
+						str += '<span class="price">¥'+data[i].price+'+'+data[i].point_exchange+'旺旺币 x'+data[i].num+'</span>';
 					}else{
 						str += '<span class="price">¥'+data[i].price+'×'+data[i].num+'</span>';
 					}
@@ -290,9 +291,10 @@ function refreshShopCartBlue(){
 					str += '<a href="javascript:;" class="del" onclick="deleteShoppingCartById('+data[i].cart_id+',' + flag + ')">删除</a>';
 					str += '</div></div></li>';
 					total += data[i].price * data[i].num;
+					points += data[i].point_exchange * data[i].num;
 				}
 				total = total.toFixed(2);
-				$(".header-right .cart-box-mask-layer .cart-box-bottom .total").html("共"+data.length+"种商品，总金额"+total+"元");
+				$(".header-right .cart-box-mask-layer .cart-box-bottom .total").html("共"+data.length+"种商品，总金额"+total+"元 + "+points+"旺旺币");
 			}else{
 				//再次查询
 				str += '<p class="cart_empty">您的购物车中暂无商品</p>';
