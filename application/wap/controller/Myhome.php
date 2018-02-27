@@ -131,6 +131,7 @@ class Myhome extends Controller
     public function pay()
     {
         $this->check_login();
+        echo "支付接入";
 
     }
 
