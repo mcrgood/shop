@@ -140,12 +140,13 @@
 
         </div>
     </div>
+
      <div class="map">
        <div class="map_left">
          <p>地址：{$row.address}</p>
          </div>
          <div class="map_right" id="right">
-             <a href="javascript:daohang();" target="_blank"><img src="__INDEX__/images/3_10.gif" /></a>
+             <a href="javascript:daohang();"  target="_blank"><img  src="__INDEX__/images/3_10.gif" /></a>
        </div>
      </div>
     <script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js"></script>
@@ -190,7 +191,6 @@
             }
         }
         function daohang(){
-
             var geolocation = new BMap.Geolocation();
 
             geolocation.getCurrentPosition(function(r){
