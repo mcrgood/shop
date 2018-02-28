@@ -17,7 +17,7 @@ use data\extend\org\wechat\Jssdk;
 class Dingwei extends BaseController{
 	public function index(){
 		//查出当前分类的东东(判断审核状态)
-		$leixing_id = input("param.cat");
+		$leixing_id = input("param.cat",'1');
 		$where['leixing'] = array('eq',$leixing_id);
 		$list = db("ns_shop_message")->where($where)->where('state','0')->select();
 		$this->assign('list',$list);
