@@ -20,10 +20,10 @@
 		<!-- <th width="30%" style="text-align: left;">
 			<button class="btn-common-delete btn-small smalll" style="margin:0 5px 0 50 !important;">批量删除</button>
 		</th> -->
-		<form action="{:url('cooperate/index')}" method="get">
+		<form >
 		<th width="20%">
 			<input type="text" name="keyword" id = 'search_text' placeholder="企业名称 / 联系人 / 电话" class="input-common"/>
-			<input type="submit" value="搜索" class="btn-common"/>
+			<input type="button" onclick="searchData()" value="搜索" class="btn-common"/>
 		</th>
 		</form>
 	</tr>
@@ -41,83 +41,53 @@
 			<th>电话</th>
 			<th>地址</th>
 			<th>联系人</th>
-			<!--<th>留言</th>-->
 			<th>时间</th>
 			<th>操作</th>
 		</tr>
 	</thead>
-	<thead>
-		{foreach name="list" id="v"}
-		<tr>
-			<!--<th style="padding-right:50px"><input type="checkbox"  value="{$v.id}" name="checkboxs" id="checkboxs" /></th>-->
-			<th>{$v.name}</th>
-			<th>{$v.tel}</th>
-			<th>{$v.address}</th>
-			<th>{$v.contact}</th>
-			<!--<th>{$v.message}</th>-->
-			<th>{$v.add_time|date="Y-m-d H:i:s",###}</th>
-			<th><a href="{:url('c_shop_detail',array('id'=>$v['id']))}">查看详细</a></th>
-		</tr>
-		{/foreach}
-	</thead>
+	<tbody></tbody>
 </table>
-<script type="text/javascript">
-	//全选
-	// jQuery(function($){
-	// 	$("#btn1").click(function(){
-	// 		$("input[name='checkbox']").attr("checked","true");
-	// 	})
-	// })
-	var a=1;
-	$("#btn1").click(function(){
-		if(a==1){
-			$("input[type='checkbox']").prop('checked',true);
-			a = 0;
-		}else{
-			$("input[type='checkbox']").prop('checked',false);
-			a = 1;
-		}
-	});
 
-	$(".smalll").click(function(){
-		var id = [];
-		var id = new Array();
-		$("input[type='checkbox']:checked").each(function(i){
-				id[i] = $(this).val();
-		});
-		var str_id = id.join();
-		if(!str_id){
-			showTip("请选择删除项！","error");
-			return;
-		}
-
-		$( "#dialog" ).dialog({
-			buttons: {
-				"确定": function(){
-					$.ajax({
-						type : "post",
-						url : "{:__URL('ADMIN_MAIN/myhome/yudingdelete')}",
-						data : { "id" : str_id},
-						dataType : "json",
-						success : function(data) {
-							if(data>0){
-								showTip("删除成功","success");
-								window.location.href = "{:__URL('ADMIN_MAIN/myhome/yuding')}"
-							}else{
-								showTip("删除成功","error");
-							}
-						}
-					});
-					$(this).dialog('close');
-				},
-				"取消,#e57373": function() {
-					$(this).dialog('close');
-				},
-			},
-			contentText:"确定删除所选吗？",
-		});
-	})
-</script>
 {/block}
 {block name="script"}
+<script type="text/javascript">
+	function LoadingInfo(page_index) {
+	var search_text = $("#search_text").val();
+	$.ajax({
+		type : "post",
+		url : "{:__URL('ADMIN_MAIN/cooperate/c_shop')}",
+		data : {
+			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text
+		},
+		success : function(data) {
+			var html = '';
+			if (data["data"].length > 0) {
+				for (var i = 0; i < data["data"].length; i++) {
+					html += '<tr align="center">';
+					html += '<td>'+ data["data"][i]["name"] +'</td>'
+					html += '<td>'+data["data"][i]["tel"]+'</td>';
+					html += '<td>'+ data["data"][i]["address"] +'</td>';
+					html += '<td>'+ data["data"][i]["contact"] +'</td>';
+					html += '<td>'+ data["data"][i]["add_time"] +'</td>';
+					html += '<td>';
+					html += '<a>查看详情</a>';
+					html += '</td>';
+					html += '</tr>';
+				}
+			} else {
+				html += '<tr align="center"><td colspan="9">暂无符合条件的数据记录</td></tr>';
+			}
+			$(".table-class tbody").html(html);
+			initPageData(data["page_count"],data['data'].length,data['total_count']);
+			$("#pageNumber").html(pagenumShow(jumpNumber,$("#page_count").val(),{$pageshow}));
+		}
+	});
+}
+	// 搜索
+	function searchData(){
+		LoadingInfo(1);
+	}
+	
+	
+</script>
 {/block}

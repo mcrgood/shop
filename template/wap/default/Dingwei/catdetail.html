@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>客旺旺服务中心</title>
-<style>
- *{
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>客旺旺服务中心</title>
+    <style>
+        *{
             margin: 0;
             padding: 0;
         }
@@ -55,9 +55,9 @@
             top: 0;
             right:0;
         }
-         /*左右button里的三角形*/
+        /*左右button里的三角形*/
         .triangle{
-             margin-top: 50px;
+            margin-top: 50px;
             width: 0;
             height: 0;
             border-width:70px 40px;
@@ -89,7 +89,7 @@
             cursor: pointer;
         }
         .contents{width: 100%;margin: 0 auto;}
-        .service{width: 100%;height: 160px;margin-top: 40px;}
+        .service{width: 100%;height: 160px;margin-top: 40px;border-bottom: 1px solid #cccccc;}
         .service p{font-size: 55px;color:#4d4d4d;padding-left: 20px;}
         .service_left{width: 100%;float:left;}
         .map{width: 100%;height:120px;margin: 0 auto;border-bottom: 1px solid #cccccc;}
@@ -110,226 +110,225 @@
         .comment_1 img{width: 60px;height: 60px;display: inline-block;float: left;margin: 30px;}
         .comment_1 span{font-size: 40px;color: #808080;display: inline-block;float: left;line-height: 120px;margin-left: 20px;}
         .order{width: 100%;height: 600px;margin: 0 auto;text-align: center;position: relative;}
-        .order button{width: 40%;height:80px;margin: 0 auto;background-color: #ff6363;color: #ffffff;font-size: 50px;border:none;border-radius: 20px;font-weight: bold;position: absolute;bottom: -12%;left: 30%;}
-</style>
+        .order button{width: 40%;height:80px;margin: 0 auto;background-color: #ff6363;color: #ffffff;font-size: 50px;border:none;border-radius: 20px;font-weight: bold;position: absolute;bottom: 10%;left: 30%;}
+    </style>
 </head>
 <body>
 <div id="main">
-        <div class="scollimg">
-            <img src="__INDEX__/images/3_01.png" alt="">
-            <img src="__INDEX__/images/30_03.png" alt="">
-            <img src="__INDEX__/images/3_01.png" alt="">
-        </div>
-        <div class="btn">
-            <div id="btnleft"><div class="triangle"></div></div>
-            <div id="btnright"><div class="triangle"></div></div>
-        </div>
-        <div class="item">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+    <div class="scollimg">
+        <img src="__INDEX__/images/3_01.png" alt="">
+        <img src="__INDEX__/images/30_03.png" alt="">
+        <img src="__INDEX__/images/3_01.png" alt="">
     </div>
-    <div class="contents">
-      <div class="service">
+    <div class="btn">
+        <div id="btnleft"><div class="triangle"></div></div>
+        <div id="btnright"><div class="triangle"></div></div>
+    </div>
+    <div class="item">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<div class="contents">
+    <div class="service">
         <div class="service_left">
-        <p style="border-bottom: 1px solid #cccccc;">店名：{$row.names}</p><br />
-        <p style="border-bottom: 1px solid #cccccc;">电话：{$row.tel}<a href="tel:{$row.tel}" style="display:inline-block;float:right;"><img src="__INDEX__/images/3_03.gif" width="60px" height="60px"style="padding-right: 60px;"/></a></p><br />
-        <p style="border-bottom: 1px solid #cccccc;">评分：<span style="margin-left:20px;"><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/></span>
-        <span style="color:#ff6363;margin-left:10px;font-weight:bold;">5.0分</span></p><br/>
-        <p style=" border-bottom: 1px solid #cccccc; ">地址：{$row.address}<a class="map-a" href="javascript:daohang();" target="_blank"><img  width="60px" height="60px" style="padding-right:60px;float: right" src="__INDEX__/images/3_10.gif" /></a></p>
+            <p style="border-bottom: 1px solid #cccccc;">店名：{$row.names}</p><br />
+            <p>电话：{$row.tel}<a href="tel:{$row.tel}" style="display:inline-block;float:right;"><img src="__INDEX__/images/3_03.gif" width="60px" height="60px"style="padding-right: 60px;"/></a></p><br />
+            <p>评分：<span style="margin-left:20px;"><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/></span>
+                <span style="color:#ff6363;margin-left:10px;font-weight:bold;">5.0分</span></p><br/>
+            <p style="margin-top: 30px; ">地址：{$row.address}<a href="javascript:daohang();" target="_blank"><img width="60px" height="60px" style="padding-right:60px;float: right" src="__INDEX__/images/3_10.gif" /></a></p>
         </div>
-      </div>
-     <!-- <div class="map">
-        <div class="map_left">
-          <p>地址：{$row.address}</p>
-          </div>
-          <div class="map_right" id="right">
-              <a href="javascript:daohang();" target="_blank"><img src="__INDEX__/images/3_10.gif" /></a>
-        </div>
-      </div>-->
-<script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=hciazEcdcBOtKFYCfZQaBlMKYygPR1me&s=1"></script>
-<script type="text/javascript" src="__INDEX__/js/convertor.js"></script>
-<div id="allmap"></div>
-<style type="text/css">
-#allmap {
-width: 100%;height:480px;overflow: auto;margin:0;display: none;
-}
-</style>
-<script type="text/javascript">
-var map = new BMap.Map("allmap");//创建地图实例
-//页面初始化
-$(function() {
-    //初始化地图 默认加载北京天安门
-    var point = new BMap.Point(116.331398,39.897445);
-    map.centerAndZoom(point,35);//初始化地图，point为中心点，缩放级别为16
-    //判断手机浏览器是否支持定位
-    if(navigator.geolocation){
-        var geolocation = new BMap.Geolocation();//创建定位实例
-        geolocation.getCurrentPosition(showLocation,{enableHighAccuracy: true});//enableHighAccuracy 要求浏览器获取最佳结果
-    }else{
-        map.addControl(new BMap.GeolocationControl());//添加定位控件 支持定位
-    }
-});
-//处理定位后的信息
-function showLocation(r){
-    if(this.getStatus() == BMAP_STATUS_SUCCESS) {
-        console.log(r.address.city)
-        //新建中心点 并将地图中心移动过去
-        var centerPoint = new BMap.Point(r.longitude,r.latitude);
-        map.panTo(centerPoint);
-        map.setCenter(centerPoint);
-        //新建标注
-        var mk = new BMap.Marker(centerPoint);
-        mk.disableDragging();// 不可拖拽
-        map.addOverlay(mk);
-    }
-    else {
-        alert('failed'+this.getStatus());//定位失败
-    }
-}
-$(".map-a").click(function(){
-        daohang();
-})
-function daohang(){
-
-    var geolocation = new BMap.Geolocation();
-
-    geolocation.getCurrentPosition(function(r){
-
-        if(this.getStatus() == BMAP_STATUS_SUCCESS){
-
-            var mk = new BMap.Marker(r.point);
-
-            map.addOverlay(mk);
-
-            //map.panTo(r.point);//地图中心点移到当前位置
-
-            var latCurrent = r.point.lat;
-
-            var lngCurrent = r.point.lng;
-
-            //alert('我的位置：'+ latCurrent + ',' + lngCurrent);
-
-            location.href="http://api.map.baidu.com/direction?origin="+latCurrent+","+lngCurrent+"&destination={$row.weidu},{$row.jingdu}&mode=driving&region=北京&output=html";
-            map.addOverlay(marker);
-
-            var licontent="<b>{$row.names}</b><br>";
-
-            licontent+="<span><strong>地址：</strong>{$row.address}</span><br>";
-
-            licontent+="<span><strong>电话：</strong>{$row.tel}</span><br>";
-
-            var opts = {
-
-                width : 200,
-
-                height: 80,
-
-            };
-
-            var  infoWindow = new BMap.InfoWindow(licontent, opts);
-
-            marker.openInfoWindow(infoWindow);
-
-            marker.addEventListener('click',function(){
-
-                marker.openInfoWindow(infoWindow);
-
-            });
-        }
-
-        else {
-
-            // alert('failed'+this.getStatus());
-
-            window.history.go(-1);
-
-        }
-
-    },{enableHighAccuracy: true})
-
-}
-</script>
-      <div class="yytime">
-          <div class="time">
-            <img src="__INDEX__/images/3_13.gif" />
-              <p>营业时间</p>
-              <span>{$row.business_hours}</span>
-          </div>
-      </div>
-       <div class="comment">
-          <div class="comment_1">
-            <img src="__INDEX__/images/3_17.gif" />
-              <p>查看评论<p/>
-              <span></span>
-          </div>
-      </div>
     </div>
-    <div class="order">
-            <button onclick="javascript:window.location.href='{:__URL(\'APP_MAIN/Myhome/book\',\'userid=\'.$row.userid)}'">去预定</button>
-    </div>
+    <!-- <div class="map">
+       <div class="map_left">
+         <p>地址：{$row.address}</p>
+         </div>
+         <div class="map_right" id="right">
+             <a href="javascript:daohang();" target="_blank"><img src="__INDEX__/images/3_10.gif" /></a>
+       </div>
+     </div>-->
+    <script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=hciazEcdcBOtKFYCfZQaBlMKYygPR1me&s=1"></script>
+    <script type="text/javascript" src="__INDEX__/js/convertor.js"></script>
+    <div id="allmap"></div>
+    <style type="text/css">
+        #allmap {
+            width: 100%;height:480px;overflow: auto;margin:0;display: none;
+        }
+    </style>
     <script type="text/javascript">
-        window.onload=function(){
-             var container = document.getElementById('main');
-                autoMove(container);
-        }
-        //轮播图函数
-        function autoMove(container){
-            var imgs = container.getElementsByTagName('img');
-            var spans = container.getElementsByTagName('span');
-
-            //每次轮播后样式
-            /*轮播到哪个位置，就对哪个位置的图片样式进行设置，首先让所有的图片样式opacity变为0，然后对移动到的位置的样式进行设置opacity为1*/
-            function InitMove(index){
-                for(var i=0;i<imgs.length;i++){
-                    imgs[i].style.opacity='0';
-                    spans[i].style.background='#ccc';
-                }
-                imgs[index].style.opacity='1';
-                spans[index].style.background='red';
+        var map = new BMap.Map("allmap");//创建地图实例
+        //页面初始化
+        $(function() {
+            //初始化地图 默认加载北京天安门
+            var point = new BMap.Point(116.331398,39.897445);
+            map.centerAndZoom(point,35);//初始化地图，point为中心点，缩放级别为16
+            //判断手机浏览器是否支持定位
+            if(navigator.geolocation){
+                var geolocation = new BMap.Geolocation();//创建定位实例
+                geolocation.getCurrentPosition(showLocation,{enableHighAccuracy: true});//enableHighAccuracy 要求浏览器获取最佳结果
+            }else{
+                map.addControl(new BMap.GeolocationControl());//添加定位控件 支持定位
             }
-            //第一次初始化
-            InitMove(0);
-            //轮播过程的变换函数
-            /*前面已经初始化了图片最开始看到的效果，接着轮播的话会隐藏第一张出现第二张
-             *这里count从1开始（图片的初始化位置是count为0的情况），count=1执行一次Init*Move(count),使第一张隐藏第二张出现，依次执行。当count==imgs.leghth时由于*图片最后一张的位置是imgs.length-1,所以此时把count置为0；相当于轮播图轮回
-             *依次重新开始。
-             */
-            var count=1;
-            function fMove(){
-                if(count==imgs.length){
-                    count=0;
-                }
-                InitMove(count);
-                count++;
+        });
+        //处理定位后的信息
+        function showLocation(r){
+            if(this.getStatus() == BMAP_STATUS_SUCCESS) {
+                console.log(r.address.city)
+                //新建中心点 并将地图中心移动过去
+                var centerPoint = new BMap.Point(r.longitude,r.latitude);
+                map.panTo(centerPoint);
+                map.setCenter(centerPoint);
+                //新建标注
+                var mk = new BMap.Marker(centerPoint);
+                mk.disableDragging();// 不可拖拽
+                map.addOverlay(mk);
             }
-            //设置自动轮播定时器；
-            var scollMove=setInterval(fMove,2500);
-
-
-            //点击移动图片；
-            /*这里就是点击左右移动的button来让图片根据用户的点击左右移动；需要注意一点就*是每次点击左移动或右移动需要首先清除定时器，等移动完了在重新添加定时器不然的*话你点击移动后图片虽然该变了，但是由于定时器还没移动到这张图片上面，所以就需*要等待定时器移动到你移动到的那张图片上面让后才开始定时轮播。比如如果你从开始
-            *就点击移动图片，一直移动到最后一张那么你就要等待两个定时器的时间才能看到自动*轮播。
-            */
-            var btnleft=document.getElementById('btnleft');
-            var btnright=document.getElementById('btnright');
-            btnleft.onclick=function(){
-                clearInterval(scollMove);
-                if(count==0){
-                    count=imgs.length;
-                }
-                count--;
-                InitMove(count);
-                scollMove=setInterval(fMove,2500);
-            };
-            btnright.onclick=function(){
-                clearInterval(scollMove);
-                fMove();
-                scollMove=setInterval(fMove,2500);
+            else {
+                alert('failed'+this.getStatus());//定位失败
             }
         }
- </script>
+        function daohang(){
+
+            var geolocation = new BMap.Geolocation();
+
+            geolocation.getCurrentPosition(function(r){
+
+                if(this.getStatus() == BMAP_STATUS_SUCCESS){
+
+                    var mk = new BMap.Marker(r.point);
+
+                    map.addOverlay(mk);
+
+                    //map.panTo(r.point);//地图中心点移到当前位置
+
+                    var latCurrent = r.point.lat;
+
+                    var lngCurrent = r.point.lng;
+
+                    //alert('我的位置：'+ latCurrent + ',' + lngCurrent);
+
+                    location.href="http://api.map.baidu.com/direction?origin="+latCurrent+","+lngCurrent+"&destination={$row.weidu},{$row.jingdu}&mode=driving&region=北京&output=html";
+                    map.addOverlay(marker);
+
+                    var licontent="<b>{$row.names}</b><br>";
+
+                    licontent+="<span><strong>地址：</strong>{$row.address}</span><br>";
+
+                    licontent+="<span><strong>电话：</strong>{$row.tel}</span><br>";
+
+                    var opts = {
+
+                        width : 200,
+
+                        height: 80,
+
+                    };
+
+                    var  infoWindow = new BMap.InfoWindow(licontent, opts);
+
+                    marker.openInfoWindow(infoWindow);
+
+                    marker.addEventListener('click',function(){
+
+                        marker.openInfoWindow(infoWindow);
+
+                    });
+                }
+
+                else {
+
+                    // alert('failed'+this.getStatus());
+
+                    window.history.go(-1);
+
+                }
+
+            },{enableHighAccuracy: true})
+
+        }
+    </script>
+    <div class="yytime">
+        <div class="time">
+            <img src="__INDEX__/images/3_13.gif" />
+            <p>营业时间</p>
+            <span>{$row.business_hours}</span>
+        </div>
+    </div>
+    <div class="comment">
+        <div class="comment_1">
+            <img src="__INDEX__/images/3_17.gif" />
+            <p>查看评论<p/>
+            <span></span>
+        </div>
+    </div>
+</div>
+<div class="order">
+
+    <button onclick="javascript:window.location.href='{:__URL(\'APP_MAIN/Myhome/book\',\'userid=\'.$row.userid)}'">去预定</button>
+
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        var container = document.getElementById('main');
+        autoMove(container);
+    }
+    //轮播图函数
+    function autoMove(container){
+        var imgs = container.getElementsByTagName('img');
+        var spans = container.getElementsByTagName('span');
+
+        //每次轮播后样式
+        /*轮播到哪个位置，就对哪个位置的图片样式进行设置，首先让所有的图片样式opacity变为0，然后对移动到的位置的样式进行设置opacity为1*/
+        function InitMove(index){
+            for(var i=0;i<imgs.length;i++){
+                imgs[i].style.opacity='0';
+                spans[i].style.background='#ccc';
+            }
+            imgs[index].style.opacity='1';
+            spans[index].style.background='red';
+        }
+        //第一次初始化
+        InitMove(0);
+        //轮播过程的变换函数
+        /*前面已经初始化了图片最开始看到的效果，接着轮播的话会隐藏第一张出现第二张
+         *这里count从1开始（图片的初始化位置是count为0的情况），count=1执行一次Init*Move(count),使第一张隐藏第二张出现，依次执行。当count==imgs.leghth时由于*图片最后一张的位置是imgs.length-1,所以此时把count置为0；相当于轮播图轮回
+         *依次重新开始。
+         */
+        var count=1;
+        function fMove(){
+            if(count==imgs.length){
+                count=0;
+            }
+            InitMove(count);
+            count++;
+        }
+        //设置自动轮播定时器；
+        var scollMove=setInterval(fMove,2500);
+
+
+        //点击移动图片；
+        /*这里就是点击左右移动的button来让图片根据用户的点击左右移动；需要注意一点就*是每次点击左移动或右移动需要首先清除定时器，等移动完了在重新添加定时器不然的*话你点击移动后图片虽然该变了，但是由于定时器还没移动到这张图片上面，所以就需*要等待定时器移动到你移动到的那张图片上面让后才开始定时轮播。比如如果你从开始
+        *就点击移动图片，一直移动到最后一张那么你就要等待两个定时器的时间才能看到自动*轮播。
+        */
+        var btnleft=document.getElementById('btnleft');
+        var btnright=document.getElementById('btnright');
+        btnleft.onclick=function(){
+            clearInterval(scollMove);
+            if(count==0){
+                count=imgs.length;
+            }
+            count--;
+            InitMove(count);
+            scollMove=setInterval(fMove,2500);
+        };
+        btnright.onclick=function(){
+            clearInterval(scollMove);
+            fMove();
+            scollMove=setInterval(fMove,2500);
+        }
+    }
+</script>
 </body>
 </html>
