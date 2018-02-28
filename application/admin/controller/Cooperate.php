@@ -89,16 +89,22 @@ class Cooperate extends BaseController{
                 return $result = ['error' => 1, 'message' => "提交失败"];
 
         }
-        $keyword = input('get.keyword');
-        if($keyword){
-            $where['tel|name|sheng|shi|area'] = ['like',"$keyword"];
-        }else{
-            $where = [];
-        }
-        $list = db("ns_partern")->where($where)->select();
-        $this->assign('list',$list);
+        
         return view($this->style . 'cooperate/c_partern');
     }
+    //合作伙伴
+    public function c_parternList(){
+        if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $condition['name|tel|sheng|shi|area'] = ['LIKE',"%".$search_text."%"];
+            $member = new MyhomeService();
+            $list = $member->getParternList($page_index, $page_size, $condition, $order = '');
+            return $list;
+        }
+    }
+
     public function  c_partern_detail()
     {
         $id = input('param.id');

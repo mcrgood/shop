@@ -24,6 +24,7 @@ use data\service\BaseService;
 use data\model\NsRegisterListModel as NsRegisterListModel;
 use data\model\NsMyhomeModel as NsMyhomeModel;
 use data\model\NsCooperateListModel as NsCooperateListModel;
+use data\model\NsParternListModel as NsParternListModel;
 
 class MyhomeService extends BaseService{
 
@@ -81,9 +82,22 @@ class MyhomeService extends BaseService{
         $myhome = new NsCooperateListModel();
         $result = $myhome->getCooperate($page_index, $page_size, $condition, $order);
         foreach ($result['data'] as $k => $v) {
-            $result['data'][$k]['add_time'] = date('Y-m-d',$v['add_time']);
+            $result['data'][$k]['add_time'] = date('Y-m-d H:i',$v['add_time']);
         }
         return $result;
     }
+     /**
+     * 合作伙伴
+     */
+    public function getParternList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsParternListModel();
+        $result = $myhome->getPartern($page_index, $page_size, $condition, $order);
+        foreach ($result['data'] as $k => $v) {
+            $result['data'][$k]['add_time'] = date('Y-m-d H:i',$v['add_time']);
+        }
+        return $result;
+    }
+
     
 }
