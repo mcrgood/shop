@@ -84,7 +84,26 @@ class Dingwei extends BaseController{
 		$this->assign('row',$row);
 		return view($this->style . 'Dingwei/catdetail');
 	}
-
+	 //百度地图
+         public function baidumap(){
+		 if(request()->isAjax()){
+			 $address = input('post.address');
+			 // dump($address);die;
+			 $row = db("ns_shop_message")->where('address',$address)->find();
+			// dump($row);die;
+			if($row){
+				$info = [
+					'data' => $row,
+					'status' =>1
+				];
+			}
+			return json($info);
+		 }else{
+			 $data = input('get.');
+			 $this->assign('data',$data);
+			 return view($this->style . 'Dingwei/baidumap');
+		 }
+         }
 	public function show(){
 		$id = request()->param('shop_id');
 		$shopInfo = db('shop')->find($id);
@@ -100,7 +119,7 @@ class Dingwei extends BaseController{
 
 		$result = Db::query('select * from
 			(select *,  ROUND
-				(6378.138*2*ASIN(SQRT(POW(SIN(('.$weidu.'*PI()/180-`weidu`*PI()/180)/2),2)+COS('.$weidu.'*PI()/180)*COS(`weidu`*PI()/180)*POW(SIN(('.$jingdu.'*PI()/180-`jingdu`*PI()/180)/2),2)))*1000) AS distance from bk_shop where `category`='.$cat.' and `state`=2 order by distance )
+			(6378.138*2*ASIN(SQRT(POW(SIN(('.$weidu.'*PI()/180-`weidu`*PI()/180)/2),2)+COS('.$weidu.'*PI()/180)*COS(`weidu`*PI()/180)*POW(SIN(('.$jingdu.'*PI()/180-`jingdu`*PI()/180)/2),2)))*1000) AS distance from bk_shop where `category`='.$cat.' and `state`=2 order by distance )
 			 as a where a.distance<=5000');
 		return $result;
 	}

@@ -109,15 +109,15 @@
         .comment_1 h2{font-size: 40px;color:#1a1a1a;line-height: 120px;display: inline-block;float: left;}
         .comment_1 img{width: 60px;height: 60px;display: inline-block;float: left;margin: 30px;}
         .comment_1 span{font-size: 40px;color: #808080;display: inline-block;float: left;line-height: 120px;margin-left: 20px;}
-        .order{width: 100%;height: 600px;margin: 0 auto;text-align: center;position: relative;}
-        .order button{width: 40%;height:80px;margin: 0 auto;background-color: #ff6363;color: #ffffff;font-size: 50px;border:none;border-radius: 20px;font-weight: bold;position: absolute;bottom: -12%;left: 30%;}
+        .order{width: 100%;margin: 0 auto;text-align: center;height: 80px;float: left;margin-top: 200px;}
+        .order button{width: 40%;height:80px;margin: 0 auto;background-color: #ff6363;color: #ffffff;font-size: 50px;border:none;border-radius: 20px;font-weight: bold;bottom: -12%;left: 30%;}
 </style>
 </head>
 <body>
 <div id="main">
         <div class="scollimg">
             <img src="__INDEX__/images/3_01.png" alt="">
-            <img src="__INDEX__/images/30_03.png" alt="">
+            <img src="__INDEX__/images/3_01.png" alt="">
             <img src="__INDEX__/images/3_01.png" alt="">
         </div>
         <div class="btn">
@@ -137,121 +137,33 @@
         <p style="border-bottom: 1px solid #cccccc;">电话：{$row.tel}<a href="tel:{$row.tel}" style="display:inline-block;float:right;"><img src="__INDEX__/images/3_03.gif" width="60px" height="60px"style="padding-right: 60px;"/></a></p><br />
         <p style="border-bottom: 1px solid #cccccc;">评分：<span style="margin-left:20px;"><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/></span>
         <span style="color:#ff6363;margin-left:10px;font-weight:bold;">5.0分</span></p><br/>
-        <p style=" border-bottom: 1px solid #cccccc; ">地址：{$row.address}<a class="map-a" href="javascript:daohang();" target="_blank"><img  width="60px" height="60px" style="padding-right:60px;float: right" src="__INDEX__/images/3_10.gif" /></a></p>
+        <p style=" border-bottom: 1px solid #cccccc;" >地址：<span id="address">{$row.address}</span><a  class="map1" ><img  width="60px" height="60px" style="padding-right:60px;float: right" src="__INDEX__/images/3_10.gif" /></a></p>
         </div>
       </div>
-     <!-- <div class="map">
-        <div class="map_left">
-          <p>地址：{$row.address}</p>
-          </div>
-          <div class="map_right" id="right">
-              <a href="javascript:daohang();" target="_blank"><img src="__INDEX__/images/3_10.gif" /></a>
-        </div>
-      </div>-->
 <script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=hciazEcdcBOtKFYCfZQaBlMKYygPR1me&s=1"></script>
 <script type="text/javascript" src="__INDEX__/js/convertor.js"></script>
+<script type="text/javascript">
+        $(".map1").click(function(){
+                var address = $('#address').text();
+                //alert(address);href="{:url('Dingwei/baidumap')}"   target="_blank"
+                var data = {
+                        "address":address
+                };
+                var url = "{:url('Dingwei/baidumap')}";
+                $.post(url,data,function(res){
+                        if(res.status==1){
+                                location.href = "{:url('Dingwei/baidumap')}?names="+res.data.names+"&tel="+res.data.tel+"&jingdu="+res.data.jingdu+"&weidu="+res.data.weidu+"&address="+res.data.address;
+                        }
+                },'json')
+        })
+</script>
 <div id="allmap"></div>
 <style type="text/css">
 #allmap {
 width: 100%;height:480px;overflow: auto;margin:0;display: none;
 }
 </style>
-<script type="text/javascript">
-var map = new BMap.Map("allmap");//创建地图实例
-//页面初始化
-$(function() {
-    //初始化地图 默认加载北京天安门
-    var point = new BMap.Point(116.331398,39.897445);
-    map.centerAndZoom(point,35);//初始化地图，point为中心点，缩放级别为16
-    //判断手机浏览器是否支持定位
-    if(navigator.geolocation){
-        var geolocation = new BMap.Geolocation();//创建定位实例
-        geolocation.getCurrentPosition(showLocation,{enableHighAccuracy: true});//enableHighAccuracy 要求浏览器获取最佳结果
-    }else{
-        map.addControl(new BMap.GeolocationControl());//添加定位控件 支持定位
-    }
-});
-//处理定位后的信息
-function showLocation(r){
-    if(this.getStatus() == BMAP_STATUS_SUCCESS) {
-        console.log(r.address.city)
-        //新建中心点 并将地图中心移动过去
-        var centerPoint = new BMap.Point(r.longitude,r.latitude);
-        map.panTo(centerPoint);
-        map.setCenter(centerPoint);
-        //新建标注
-        var mk = new BMap.Marker(centerPoint);
-        mk.disableDragging();// 不可拖拽
-        map.addOverlay(mk);
-    }
-    else {
-        alert('failed'+this.getStatus());//定位失败
-    }
-}
-$(".map-a").click(function(){
-        daohang();
-})
-function daohang(){
-
-    var geolocation = new BMap.Geolocation();
-
-    geolocation.getCurrentPosition(function(r){
-
-        if(this.getStatus() == BMAP_STATUS_SUCCESS){
-
-            var mk = new BMap.Marker(r.point);
-
-            map.addOverlay(mk);
-
-            //map.panTo(r.point);//地图中心点移到当前位置
-
-            var latCurrent = r.point.lat;
-
-            var lngCurrent = r.point.lng;
-
-            //alert('我的位置：'+ latCurrent + ',' + lngCurrent);
-
-            location.href="http://api.map.baidu.com/direction?origin="+latCurrent+","+lngCurrent+"&destination={$row.weidu},{$row.jingdu}&mode=driving&region=北京&output=html";
-            map.addOverlay(marker);
-
-            var licontent="<b>{$row.names}</b><br>";
-
-            licontent+="<span><strong>地址：</strong>{$row.address}</span><br>";
-
-            licontent+="<span><strong>电话：</strong>{$row.tel}</span><br>";
-
-            var opts = {
-
-                width : 200,
-
-                height: 80,
-
-            };
-
-            var  infoWindow = new BMap.InfoWindow(licontent, opts);
-
-            marker.openInfoWindow(infoWindow);
-
-            marker.addEventListener('click',function(){
-
-                marker.openInfoWindow(infoWindow);
-
-            });
-        }
-
-        else {
-
-            // alert('failed'+this.getStatus());
-
-            window.history.go(-1);
-
-        }
-
-    },{enableHighAccuracy: true})
-
-}
-</script>
       <div class="yytime">
           <div class="time">
             <img src="__INDEX__/images/3_13.gif" />
