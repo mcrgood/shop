@@ -54,7 +54,7 @@ return [
     // 应用命名空间
     'app_namespace' => 'app',
     // 应用调试模式，正式发布版本时改为false
-    'app_debug' => true,
+    'app_debug' => false,
     // 应用Trace
     'app_trace' => false,
     // 应用模式状态
