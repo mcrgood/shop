@@ -45,7 +45,7 @@ class Cooperate extends BaseController{
         
     }
 
-
+    //合作商家详情
 	public function  c_shop_detail()
     {
         $id = input('param.id');

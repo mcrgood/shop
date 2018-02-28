@@ -1,12 +1,53 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>店铺二维码</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>二维码页面</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        body{width: 100%;height: auto;margin: 0 auto; background: url('__INDEX__/images/erweima.png') no-repeat;background-size: 100%;}
+        .erweimabox{width: 100%;height: 280px;margin: 0 auto;position: absolute;top: 34%;}
+        .erweima{width: 65%;margin: 0 auto;height: 240px;}
+        .erweima img{width: 100%;max-height: 100%;}
+        .pic{width: 30%;margin: 0 auto;height: 40px;text-align: center;}
+        .pic button{background:none;border: none;font-size: 22px;color: #fff;letter-spacing: 2px;height: 40px;line-height: 40px;font-family: cursive;outline: none;}
 
+        @media (device-height:812px) and (-webkit-min-device-pixel-ratio:2){
+            /*iphoneX*/
+            body{width: 100%;height:810px;margin: 0 auto; background: url('__INDEX__/images/erweima.png') no-repeat;background-size: 100%;}
+            .erweimabox{width: 100%;height: 280px;margin: 0 auto;position: absolute;top: 29%;}
+            .erweima{width: 65%;margin: 0 auto;height: 240px;}
+        }
+    </style>
 </head>
-
 <body>
-<img src="/{$qrcode}" alt=""/>
+<div class="erweimabox">
+    <div class="erweima">
+        <img src="/{$qrcode}" id="DemoImg" border="0">
+    </div>
+    <div class="pic">
+        <button onclick="SaveAs5(this.src)">保存图片</button>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function SaveAs5(imgURL)
+
+    {
+
+        var oPop = window.open(imgURL,"","width=1, height=1, top=5000, left=5000");
+
+        for(; oPop.document.readyState != "complete"; )
+
+        { if (oPop.document.readyState == "complete")break; }
+
+        oPop.document.execCommand("SaveAs"); oPop.close();
+
+    }
+</script>
 </body>
 </html>
