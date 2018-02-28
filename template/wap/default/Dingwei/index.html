@@ -10,7 +10,6 @@
 <script src="__INDEX__/js/swiper.min.js"></script>
     <script src="__INDEX__/js/js.js"></script>
 </head>
-
 <body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 
@@ -18,6 +17,7 @@
     //配置信息验证接口
     var latitude ;
     var longitude;
+    var leixing_id = "{$leixing_id}";
     wx.config({
         debug: false,
         appId: '<?php echo $signPackage["appId"];?>',
@@ -51,8 +51,7 @@
                 flag = true;
                  latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                  longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180
-                	$.post('{:url("dingwei/getData")}', {jingdu: longitude, weidu: latitude, leixing_id: <?php echo $leixing_id;?>}, function(data) {
-
+                	$.post('{:url("dingwei/getData")}', {jingdu: longitude, weidu: latitude, leixing_id: leixing_id}, function(data) {
                     if (data.state ==1) {
                         $('.merchant-ul').html(data.message);
                     }
@@ -86,7 +85,7 @@
     {case value="1"}餐饮{/case}
     {case value="2"}酒店{/case}
     {case value="3"}养生{/case}
-    {case value="4"}KTV {/case}
+    {case value="4"}KTV{/case}
     {case value="5"}汽车{/case}
     {case value="6"}其他{/case}
     {default /}餐饮
@@ -103,7 +102,7 @@
 	<li><a href="{:url('dingwei/index',['cat'=>3])}">养生</a></li>
 	<li><a href="{:url('dingwei/index',['cat'=>4])}">KTV </a></li>
 	<li><a href="{:url('dingwei/index',['cat'=>5])}">汽车</a></li>
-	<li><a href="{:url('dingwei/index',['cat'=>6])}">其他</a></li>
+	<li class="gg"><a href="{:url('dingwei/index',['cat'=>6])}">其他</a></li>
 </ul>
 
 <ul class="supermarket-main1">

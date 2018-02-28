@@ -70,7 +70,7 @@
 					html += '<td>'+ data["data"][i]["contact"] +'</td>';
 					html += '<td>'+ data["data"][i]["add_time"] +'</td>';
 					html += '<td>';
-					html += '<a>查看详情</a>';
+					html += '<a href="{:url("cooperate/c_shop_detail")}?id='+data["data"][i]["id"]+' ">查看详情</a>';
 					html += '</td>';
 					html += '</tr>';
 				}

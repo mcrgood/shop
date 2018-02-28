@@ -117,14 +117,16 @@
 .supermarket-li-1{ position:absolute; left:0; top:0; opacity:0; display:none; z-index:99}
 
 .supermarket-li-2{position:absolute; left:50%; top:0; opacity:0;display:none;}
+.supermarket-main ul{border:1px red solid;}
 
-.supermarket-main,.supermarket-main1{ width:100%; background:#fff; position: absolute; left:0; top:1.29rem; overflow:hidden; display:none; z-index:99;}
+.supermarket-main,.supermarket-main1{ width:14%; background:#fff; position: absolute; left:18%; top:1.29rem; overflow:hidden; display:none; z-index:99;}
 
-.supermarket-main li,.supermarket-main1 li{ width:100%; height:1rem; line-height:1rem; font-size:.45rem;padding:0 .38rem; border-bottom:1px solid #dcdcdc}
+.supermarket-main li,.supermarket-main1 li{ width:142%; height:1rem; line-height:1.01rem; font-size:.45rem;padding:0 .38rem; border:1px solid #dcdcdc;    margin-left: -21%;}
 
-.supermarket-main li a,.supermarket-main1 li a{ display:block}
+.supermarket-main li a,.supermarket-main1 li a{ display:block; border: 1px #4c4949 solid;text-align: center;}
+.supermarket-main .gg {border-bottom: 1px solid #4c4949}
 
-.supermarket-ul{ margin-left:.38rem; overflow:hidden}
+.supermarket-ul{ margin-left:.38rem; overflow:hidden;}
 
 .supermarket-ul li{ width:50%; float:left; overflow:hidden; font-size:.38rem; line-height:.94rem; margin-bottom:.19rem;}
 
@@ -380,31 +382,3 @@ top: 1.68rem;
 .shangjia h1{ font-size:.48rem; line-height:1rem; text-align:center; font-weight:bold;}
 .shangjia-close{ width:.48rem; height:.48rem; background:rgba(0,0,0,0.7); text-align:center; font-size:.32rem; line-height:.48rem; color:#fff; position:absolute; right:.1rem; top:.1rem; border-radius:50%;}
 .shangjia h2{ font-weight:bold; color:#333; line-height:.4rem; line-height:.7rem;}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
