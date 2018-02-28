@@ -36,7 +36,8 @@ class MyhomeService extends BaseService{
     public function getYuDingList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsMyhomeModel();
-        return $myhome->pageQuery($page_index, $page_size, $condition, $order, $field);
+        $res = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        return $res;
     }
     
 }

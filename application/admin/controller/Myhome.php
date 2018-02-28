@@ -85,9 +85,9 @@ class Myhome extends BaseController
             $page_index = request()->post("page_index", 1);
             $page_size = request()->post('page_size', PAGESIZE);
             $search_text = request()->post('search_text', '');
-            $condition['type|name|shop_id'] = ['LIKE',"%".$search_text."%"];
+            $condition['type|name|s.names'] = ['LIKE',"%".$search_text."%"];
             $member = new MyhomeService();
-            $list = $member->getYuDingList($page_index, $page_size, $condition, $order = '', $field = '*');
+            $list = $member->getYuDingList($page_index, $page_size, $condition, $order = '');
             return $list;
         }
 		return view($this->style . "Myhome/yuding");

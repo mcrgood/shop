@@ -28,4 +28,40 @@ class NsMyhomeModel extends BaseModel {
     protected $msg = [
         'id'  =>  '',
     ];
+    //获取数据集和页数
+    public function getMyhomeList($page_index, $page_size, $condition, $order){
+    
+        $queryList = $this->getMyhomeQuery($page_index, $page_size, $condition, $order);
+        $queryCount = $this->getMyhomeCount($condition);
+        $list = $this->setReturnList($queryList, $queryCount, $page_size);
+        return $list;
+    }
+     /**
+     * 获取多表关联数据
+     * @param unknown $condition
+     */
+    public function getMyhomeQuery($page_index, $page_size, $condition, $order)
+    {
+        //设置查询视图
+        $viewObj = $this->alias('a')
+        ->join('ns_shop_message s','a.shop_id = s.userid','left')
+        ->field('a.*,s.names');
+        $list = $this->viewPageQuery($viewObj, $page_index, $page_size, $condition, $order);
+        return $list;
+    }
+
+     /**
+     * 获取列表数量
+     * @param unknown $condition
+     * @return \data\model\unknown
+     */
+    public function getMyhomeCount($condition)
+    {
+        $viewObj = $this->alias('a')
+        ->join('ns_shop_message s','a.shop_id = s.userid','left')
+        ->field('a.*,s.names');
+        $count = $this->viewCount($viewObj,$condition);
+        return $count;
+    }
+
 }
