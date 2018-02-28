@@ -23,6 +23,7 @@ namespace data\service;
 use data\service\BaseService;
 use data\model\NsRegisterListModel as NsRegisterListModel;
 use data\model\NsMyhomeModel as NsMyhomeModel;
+use data\model\NsCooperateListModel as NsCooperateListModel;
 
 class MyhomeService extends BaseService{
 
@@ -68,6 +69,19 @@ class MyhomeService extends BaseService{
             else{
                 $v['leixing'] = '出错X';
             }
+        }
+        return $result;
+    }
+
+    /**
+     * 合作商家
+     */
+    public function getCooperateList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsCooperateListModel();
+        $result = $myhome->getCooperate($page_index, $page_size, $condition, $order);
+        foreach ($result['data'] as $k => $v) {
+            $result['data'][$k]['add_time'] = date('Y-m-d',$v['add_time']);
         }
         return $result;
     }

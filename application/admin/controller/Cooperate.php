@@ -1,7 +1,9 @@
 <?php
 namespace app\admin\controller;
-
+use app\admin\controller\BaseController;
+use data\service\MyhomeService as MyhomeService;
 class Cooperate extends BaseController{
+    
 	public function index(){
         if (request()->isAjax()) {
             $name = request()->post('company', '');
@@ -27,16 +29,23 @@ class Cooperate extends BaseController{
             else
                 return $result = ['error' => 1, 'message' => "提交失败"];
         }
-        $keyword = input('get.keyword');
-        if($keyword){
-            $where['tel|name|contact'] = ['like',"$keyword"];
-        }else{
-            $where = [];
-        }
-        $list = db("ns_cooperate")->where($where)->select();
-        $this->assign('list',$list);
-        return view($this->style . 'cooperate/c_shop');
+        return view($this->style . 'cooperate/c_shop'); 
 	}
+    //合作商家页面
+    public function c_shop(){
+        if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $condition['name|contact|tel'] = ['LIKE',"%".$search_text."%"];
+            $member = new MyhomeService();
+            $list = $member->getCooperateList($page_index, $page_size, $condition, $order = '');
+            return $list;
+        }
+        
+    }
+
+
 	public function  c_shop_detail()
     {
         $id = input('param.id');

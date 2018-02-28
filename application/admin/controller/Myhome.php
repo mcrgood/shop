@@ -19,7 +19,7 @@ class Myhome extends BaseController
     public function myhomelist(){
     	return view($this->style . "Myhome/myhomelist");
     }
-
+    //商家管理列表
 	public function registerlist(){
 		if (request()->isAjax()) {
 	            $page_index = request()->post("page_index", 1);
