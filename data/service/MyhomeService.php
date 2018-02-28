@@ -21,6 +21,7 @@ namespace data\service;
  */
 
 use data\service\BaseService;
+use data\model\NsRegisterListModel as NsRegisterListModel;
 use data\model\NsMyhomeModel as NsMyhomeModel;
 
 class MyhomeService extends BaseService{
@@ -36,8 +37,39 @@ class MyhomeService extends BaseService{
     public function getYuDingList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsMyhomeModel();
-        $res = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
-        return $res;
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        return $result;
+    }
+    /**
+     * 商家管理
+     */
+    public function getRegisters($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsRegisterListModel();
+        $result = $myhome->getRegisterList($page_index, $page_size, $condition, $order);
+        foreach ($result['data'] as $k => $v) {
+            if($result['data'][$k]['leixing']==1){
+                $v['leixing'] = '餐饮';
+            }elseif($result['data'][$k]['leixing']==2){
+                $v['leixing'] = '酒店';
+            }
+            elseif($result['data'][$k]['leixing']==3){
+                $v['leixing'] = '养生';
+            }
+            elseif($result['data'][$k]['leixing']==4){
+                $v['leixing'] = 'KTV';
+            }
+            elseif($result['data'][$k]['leixing']==5){
+                $v['leixing'] = '汽车';
+            }
+            elseif($result['data'][$k]['leixing']==6){
+                $v['leixing'] = '其他';
+            }
+            else{
+                $v['leixing'] = '出错X';
+            }
+        }
+        return $result;
     }
     
 }

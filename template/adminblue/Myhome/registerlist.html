@@ -19,7 +19,7 @@
 		<th width="20%">
 		<form action="{:url('myhome/registerlist')}" method="get">
 			<input type="text" name="keyword" id = 'search_text' placeholder="账号 / 店铺名称 / 城市" class="input-common"/>
-			<input type="submit" value="搜索" class="btn-common"/>
+			<input type="button" onclick="searchData()" value="搜索" class="btn-common"/>
 		</form>
 		</th>
 	</tr>
@@ -36,28 +36,60 @@
 			<th>操作</th>
 		</tr>
 	</thead>
-	<thead>
-	{foreach name="list" id="v"}
-		<tr>
-			<th>{$v.iphone}</th>
-			<th>{if $v.leixing eq 1}餐饮
-				{elseif $v.leixing eq 2}酒店
-				{elseif $v.leixing eq 3}养生
-				{elseif $v.leixing eq 4}KTV
-				{elseif $v.leixing eq 5}汽车
-				{elseif $v.leixing eq 6}其他
-				{else/}出错X{/if}</th>
-			<th>{$v.names}</th>
-			<th>{$v.address}</th>
-			<th>{$v.tel}</th>
-			<th>{if $v.state eq 0}<span style="color:red">正在审核</span>{elseif $v.state eq 2}<span style="color:black">重审中</span>{else/}<span style="color:blue;">已审核</span>{/if}</th>
-			<th><a href="{:url('registerdetail',array('id'=>$v['id']))}">查看详细</a></th>
-		</tr>
-	{/foreach}
-	<tr><th colspan="5">{$list->render()}</th></tr>
-	</thead>
+	<tbody>
+	</tbody>
 </table>
 {/block}
+
 {block name="script"}
+	<script type="text/javascript">
+	function LoadingInfo(page_index) {
+	var search_text = $("#search_text").val();
+	$.ajax({
+		type : "post",
+		url : "{:__URL('ADMIN_MAIN/myhome/registerlist')}",
+		data : {
+			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text
+		},
+		success : function(data) {
+			console.log(data);
+			var html = '';
+			if (data["data"].length > 0) {
+				for (var i = 0; i < data["data"].length; i++) {
+					html += '<tr align="center">';
+					html += '<td>'+ data["data"][i]["iphone"] +'</td>'
+					html += '<td>'+data["data"][i]["leixing"]+'</td>';
+					html += '<td>'+ data["data"][i]["names"] +'</td>';
+					html += '<td>'+ data["data"][i]["address"] +'</td>';
+					html += '<td>'+ data["data"][i]["tel"] +'</td>';
+					if(data["data"][i]["state"]==0 || data["data"][i]["state"]==null){
+						html += '<td style="color:red">正在审核</td>';
+					}else if(data["data"][i]["state"]==1){
+						html += '<td style="color:blue">已审核</td>';
+					}else if(data["data"][i]["state"]==2){
+						html += '<td style="color:black">重审中</td>';
+					}
+					html += '<td>';
+					html += '<a>查看详情</a>';
+					html += '</td>';
+					html += '</tr>';
+				}
+			} else {
+				html += '<tr align="center"><td colspan="9">暂无符合条件的数据记录</td></tr>';
+			}
+			$(".table-class tbody").html(html);
+			initPageData(data["page_count"],data['data'].length,data['total_count']);
+			$("#pageNumber").html(pagenumShow(jumpNumber,$("#page_count").val(),{$pageshow}));
+		}
+	});
+}
+	// 搜索
+	function searchData(){
+		LoadingInfo(1);
+	}
+	
+	
+</script>
 {/block}
+
 

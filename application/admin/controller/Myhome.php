@@ -4,17 +4,9 @@ use app\admin\controller\BaseController;
 use Qiniu\json_decode;
 use think\Config;
 use think\Db;
-use data\service\Address;
-use data\service\Album;
-use data\service\Express as Express;
-use data\service\Goods as GoodsService;
-use data\service\GoodsBrand as GoodsBrand;
-use data\service\GoodsCategory as GoodsCategory;
-use data\service\GoodsGroup as GoodsGroup;
 use data\service\Supplier;
 use think\Request;
 use data\service\MyhomeService as MyhomeService;
-use data\service\Member as MemberService;
 header("Content-Type: text/html; charset=UTF-8"); //编码
 
 class Myhome extends BaseController
@@ -29,19 +21,15 @@ class Myhome extends BaseController
     }
 
 	public function registerlist(){
-		$keyword = input('get.keyword');
-			if($keyword){
-				$where['iphone|names|shi'] = ['like',"%$keyword%"];
-			}else{
-				$where = [];
-			}
-			$list = db('ns_goods_login')
-				 ->alias('a')
-				 ->join('ns_shop_message m','a.id=m.userid','LEFT')
-				 ->where($where)
-				 ->paginate(20);
-        	$page = $list->render();
-			$this->assign('list',$list);
+		if (request()->isAjax()) {
+	            $page_index = request()->post("page_index", 1);
+	            $page_size = request()->post('page_size', PAGESIZE);
+	            $search_text = request()->post('search_text', '');
+	            $condition['iphone|address|names'] = ['LIKE',"%".$search_text."%"];
+	            $member = new MyhomeService();
+	            $list = $member->getRegisters($page_index, $page_size, $condition, $order = '');
+	            return $list;
+	    }
 		return view($this->style . "Myhome/registerlist");
 	}
 
@@ -81,16 +69,16 @@ class Myhome extends BaseController
 	}
 	//预定列表
 	public function yuding(){
-	if (request()->isAjax()) {
-            $page_index = request()->post("page_index", 1);
-            $page_size = request()->post('page_size', PAGESIZE);
-            $search_text = request()->post('search_text', '');
-            $condition['type|name|s.names'] = ['LIKE',"%".$search_text."%"];
-            $member = new MyhomeService();
-            $list = $member->getYuDingList($page_index, $page_size, $condition, $order = '');
-            return $list;
-        }
-		return view($this->style . "Myhome/yuding");
+		if (request()->isAjax()) {
+	            $page_index = request()->post("page_index", 1);
+	            $page_size = request()->post('page_size', PAGESIZE);
+	            $search_text = request()->post('search_text', '');
+	            $condition['type|name|s.names'] = ['LIKE',"%".$search_text."%"];
+	            $member = new MyhomeService();
+	            $list = $member->getYuDingList($page_index, $page_size, $condition, $order = '');
+	            return $list;
+	    }
+			return view($this->style . "Myhome/yuding");
 	}
 
 	//预定多选删除
