@@ -22,8 +22,8 @@
 		</th>
 		<form action="{:url('myhome/yuding')}" method="get">
 		<th width="20%">
-			<input type="text" name="keyword" id = 'search_text' placeholder="类型 / 店名 / 姓名" class="input-common"/>
-			<input type="submit" value="搜索" class="btn-common"/>
+			<input type="text" name="keyword" id ='search_text' placeholder="类型 / 店名 / 姓名" class="input-common"/>
+			<input type="button" onclick="searchData()" value="搜索" class="btn-common"/>
 		</th>
 		</form>
 	</tr>
@@ -46,7 +46,8 @@
 			<th>操作</th>
 		</tr>
 	</thead>
-	<tbody></tbody>
+	<tbody>
+	</tbody>
 </table>
 {/block}
 {block name="script"}
@@ -60,13 +61,14 @@
 			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text
 		},
 		success : function(data) {
+			console.log(data);
 			var html = '';
 			if (data["data"].length > 0) {
 				for (var i = 0; i < data["data"].length; i++) {
 					html += '<tr align="center">';
 					html += '<td><input name="id" type="checkbox" value="'+ data["data"][i]["id"]+'" ></td>';
 					html += '<td>'+ data["data"][i]["type"] +'</td>'
-					html += '<td>'+data["data"][i]["shop_id"]+'</td>';
+					html += '<td>'+data["data"][i]["names"]+'</td>';
 					html += '<td>'+ data["data"][i]["name"] +'</td>';
 					html += '<td>'+ data["data"][i]["time"] +'</td>';
 					html += '<td>'+ data["data"][i]["num"] +'</td>';
@@ -91,6 +93,10 @@
 	// 		$("input[name='checkbox']").attr("checked","true");
 	// 	})
 	// })
+	// 搜索
+	function searchData(){
+		LoadingInfo(1);
+	}
 	var a=1;
 	$("#btn1").click(function(){
 		if(a==1){
