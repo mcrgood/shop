@@ -16,6 +16,7 @@ use data\extend\org\wechat\Jssdk;
 
 class Dingwei extends BaseController{
 	public function index(){
+		ob_clean();//清除缓存
 		//查出当前分类的东东(判断审核状态)
 		$leixing_id = input("param.cat",'1');
 		$where['leixing'] = array('eq',$leixing_id);
@@ -43,7 +44,7 @@ class Dingwei extends BaseController{
             }
             array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
             foreach ($list as $key => $value) {
-                $str .= '<li style="border-bottom: 1px solid #cccccc;"><a href="' . url("catdetail", array("id" => $value['id'])) . '">' .
+                $str .= '<li style="border-bottom: 1px solid #cccccc;padding:10px 10px;"><a href="' . url("catdetail", array("id" => $value['id'])) . '">' .
                     '<img src="' . $value['thumb'] . '" /><span>' . $value['name'] . '</span></a>
                 店名：' . $value['names'] . '<br/>地址：' . $value['address'] . '<br />距离：' . $value['distance'] . ' km <br />电话：' . $value['tel'] . '<a href="' . url('catdetail', array('id' => $value['id'])) . '" class="merchant-ul-a">>>更多详情</a></li>';
             }
