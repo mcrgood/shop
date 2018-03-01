@@ -79,6 +79,7 @@ class Dingwei extends BaseController{
         return round($distance, $decimal);
     }
     public function catdetail(){
+        ob_clean();
 		$id = input('param.id');
 		$row = db("ns_shop_message")->find($id);
 		$this->assign('row',$row);
