@@ -43,10 +43,9 @@ class Dingwei extends BaseController{
             }
             array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
             foreach ($list as $key => $value) {
-                $str .= '<li><a href="' . url("catdetail", array("id" => $value['id'])) . '">' .
+                $str .= '<li style="border-bottom: 1px solid #cccccc;"><a href="' . url("catdetail", array("id" => $value['id'])) . '">' .
                     '<img src="' . $value['thumb'] . '" /><span>' . $value['name'] . '</span></a>
                 店名：' . $value['names'] . '<br/>地址：' . $value['address'] . '<br />距离：' . $value['distance'] . ' km <br />电话：' . $value['tel'] . '<a href="' . url('catdetail', array('id' => $value['id'])) . '" class="merchant-ul-a">>>更多详情</a></li>';
-
             }
             return ["message" => $str, "state" => 1];
         }
@@ -79,6 +78,7 @@ class Dingwei extends BaseController{
         return round($distance, $decimal);
     }
     public function catdetail(){
+        ob_clean();
 		$id = input('param.id');
 		$row = db("ns_shop_message")->find($id);
 		$this->assign('row',$row);
