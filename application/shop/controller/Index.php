@@ -276,4 +276,9 @@ class Index extends BaseController
     {
         return view($this->style . "Index/testTag");
     }
+    //客旺旺文章页面
+    public function kww()
+    {
+        return view($this->style . "kww");
+    }
 }
