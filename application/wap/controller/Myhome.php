@@ -30,6 +30,8 @@ class Myhome extends Controller
     protected $mobile;
     // 验证码配置
     public $login_verify_code;
+    private  $font = "data/font/airbus_special.ttf";
+    private $fontsize = 16;
 
     public function __construct()
     {
@@ -94,7 +96,8 @@ class Myhome extends Controller
                 Session::set('business_id', $info['id']);
                 Session::set('mobile', $info['iphone']);
                 $url = __URL('wap/myhome/pay?id=' . $info['id']);
-                $shop_qrcode = getQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $info['id']);
+                $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $info['id']);
+                $this->create($url, $shop_qrcode,"1234 4514 2344 5114");
                 db('ns_shop_message')->where(array("userid" => $info['id']))->update(array("shop_qrcode" => $shop_qrcode));
                 if (!empty($_SESSION['login_pre_url'])) {
                     $retval = [
@@ -134,7 +137,42 @@ class Myhome extends Controller
         echo "支付接入";
 
     }
+    public function create($string='',$filename='',$extinfo='')
+    {
+        if(!$string || !$filename){
+            return false;
+        }
+        $tmpfile = $filename;
+        if(!file_exists($tmpfile)){
+            return false;
+        }
+        $QR = imagecreatefromstring(file_get_contents($tmpfile));
+        $QR_width = imagesx($QR);
+        $QR_height = imagesy($QR);
+        if(!$extinfo){
+            imagepng($QR,$filename);
+            @unlink($tmpfile);
+            return true;
+        }
+        @unlink($tmpfile);
+        imagepng($QR,$tmpfile);
+        unset($QR);
+        $QR = imagecreate($QR_width,($QR_height + 30));
+        $white = imagecolorallocate($QR, 255, 255, 255);
+        $black = imagecolorallocate($QR,0,0,0);
+        imagefilledrectangle($QR, 0, 0,$QR_width,($QR_height + 30), $white);
 
+        $qrimg = imagecreatefromstring(file_get_contents($tmpfile));
+        imagecopyresampled($QR,$qrimg,0,0,0,0,$QR_width,$QR_height,$QR_width,$QR_height);
+        if($this->font && function_exists('imagettftext')){
+            imagettftext($QR, $this->fontsize, 0, 21, ($QR_height+10), $black, $this->font, $extinfo);
+        }else{
+            imagestring($QR,5,21,($QR_height + 10),$extinfo,$black);
+        }
+        imagepng($QR,$filename);
+        //@unlink($tmpfile);
+        return true;
+    }
     /*
      * 二维码
      */

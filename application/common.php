@@ -300,7 +300,30 @@ function getQRcode($url, $path, $qrcode_name)
     QRcode::png($url, $path, '', 4, 1);
     return $path;
 }
-
+/**
+ * 获取商铺式
+ *
+ * @param unknown $url
+ * @param unknown $path
+ * @param unknown $ext
+ */
+function getShopQRcode($url, $path, $qrcode_name)
+{
+    if (! is_dir($path)) {
+        $mode = intval('0777', 8);
+        mkdir($path, $mode, true);
+        chmod($path, $mode);
+    }
+    $path = $path . '/' . $qrcode_name . '.png';
+    if (file_exists($path)) {
+        unlink($path);
+    }
+    $errorCorrectionLevel = 'L';
+    $matrixPointSize = 10;
+    QRcode::png($url, $path, $errorCorrectionLevel, $matrixPointSize, 2);
+    //QRcode::png($url, $path, '', 4, 1);
+    return $path;
+}
 /**
  * 根据HTTP请求获取用户位置
  */
