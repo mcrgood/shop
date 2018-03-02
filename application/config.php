@@ -187,7 +187,8 @@ return [
     // 视图输出字符串内容替换
     'view_replace_str' => [
         '__ROOT__' =>'/',
-        '__INDEX__' =>'/public/static/index'
+        '__INDEX__' =>'/public/static/index',
+        '__PUBLIC__' =>'/public'
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl' => ROOT_PATH . 'template' . DS . 'success_tmpl.html',
