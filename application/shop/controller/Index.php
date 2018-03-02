@@ -59,7 +59,7 @@ class Index extends BaseController
         if ($web_info['web_status'] == 2) {
             webClose($web_info['close_reason']);
         }
-        
+
         // 当切换到PC端时，隐藏右下角返回手机端按钮
         if (! request()->isMobile() && $default_client == "shop") {
             $default_client = "";
@@ -70,14 +70,14 @@ class Index extends BaseController
             "shop_id" => $this->instance_id
         ], "sort");
         $this->assign("notice", $notice["data"]);
-        
+
         // 文章列表
         $article = new Article();
         $article_list = $article->getArticleList(1, 11, [
             "status" => 2
         ], 'public_time desc');
         $this->assign("article_list", $article_list['data']);
-        
+
         // 楼层版块
         // $this->controlCommendBlock();
         // $web_block_list = $platform->getWebBlockListDetail();
@@ -112,16 +112,16 @@ class Index extends BaseController
         ], '', '');
         $this->assign('block_list', $block_list);
         $this->assign('goods_brand_list', $goods_brand_list);
-        
+
         // 限时折扣
         $goods = new Goods();
         $page = request()->get('page', 1);
         $category_id = request()->get('category_id', 0);
-        
+
         // 获取当前时间
         $current_time = $this->getCurrentTime();
         $this->assign('ms_time', $current_time);
-        
+
         $condition['ng.state'] = 1;
         $condition['status'] = 1;
         if (! empty($category_id)) {
@@ -145,7 +145,7 @@ class Index extends BaseController
             "is_show" => 1
         ], 'link_sort desc');
         $this->assign("link_list", $link_list["data"]);
-        
+
         return view($this->style . 'Index/index');
     }
 
@@ -192,7 +192,7 @@ class Index extends BaseController
             $sale_price = round($sale_down, 2);
             $discount_list['data'][$k]['sale_down'] = $sale_price;
         }
-        
+
         foreach ($assign_get_list as $key => $value) {
             $this->assign($key, $value);
         }
@@ -254,7 +254,7 @@ class Index extends BaseController
     public function getRecommendGoodsList()
     {
         $recommend_goods_list = Cache::get("shop_recommend_goods_list" . $this->instance_id);
-        
+
         if (empty($recommend_goods_list)) {
             $Platform = new Platform();
             $recommend_goods_list = $Platform->getRecommendGoodsQuery($this->instance_id);
@@ -280,5 +280,9 @@ class Index extends BaseController
     public function kww()
     {
         return view($this->style . "kww");
+    }
+    //元宵节页面
+    public function yuanxiao(){
+            return view($this->style. "yuanxiao");
     }
 }
