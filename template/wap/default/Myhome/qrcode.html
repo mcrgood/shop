@@ -10,24 +10,50 @@
     <style>
         *{margin: 0;padding: 0;}
         body{width: 100%;height: auto;margin: 0 auto; background: url('__INDEX__/images/erweima.png') no-repeat;background-size: 100%;}
-        .erweimabox{width: 100%;height: 280px;margin: 0 auto;position: absolute;top: 34%;}
-        .erweima{width: 65%;margin: 0 auto;height: 240px;}
-        .erweima img{width: 100%;max-height: 100%;}
-        .pic{width: 30%;margin: 0 auto;height: 40px;text-align: center;}
+        .erweimabox{width: 100%;height: auto;margin:61% 0 0 0;position: absolute;}
+        .erweima{width: 65%;margin: 0 auto;height: 17rem;position: relative;}
+        .erweima img{width: 100%;max-height: 100%;display: block;}
+        .pic{width: 30%;margin: 0 auto;height: 3rem;text-align: center;}
         .pic button{background:none;border: none;font-size: 22px;color: #fff;letter-spacing: 2px;height: 40px;line-height: 40px;font-family: cursive;outline: none;}
 
+        @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+            .erweimabox{width: 100%;height: 14rem;margin: 0 auto;position: absolute;bottom:25%;}
+            .erweima{width: 65%;margin: 0 auto;height: 13rem;position: relative;}
+            .erweima span{
+                text-align: center;
+                position: absolute;
+                display: block;
+                z-index: 3;
+                margin-top: -7%;
+                margin-left: 8%;
+            }
+        }
+        @media (device-height:667px) and (-webkit-min-device-pixel-ratio:2){
+
+            /* 兼容iphone6、iphone7、iphone8*/
+            .erweimabox{width: 100%;height: 18rem;margin: 0 auto;position: absolute;bottom:21%;}
+            .erweima{width: 65%;margin: 0 auto;height: 16rem;position: relative;}
+
+        }
+        @media (device-height:736px) and (-webkit-min-device-pixel-ratio:2){
+
+            /* 兼容iphone6plus、iphone7plus、iphone8plus*/
+            .erweimabox{width: 100%;height: 18rem;margin: 0 auto;position: absolute;bottom:26%;}
+            .erweima{width: 65%;margin: 0 auto;height: 17rem;position: relative;}
+
+        }
         @media (device-height:812px) and (-webkit-min-device-pixel-ratio:2){
             /*iphoneX*/
             body{width: 100%;height:810px;margin: 0 auto; background: url('__INDEX__/images/erweima.png') no-repeat;background-size: 100%;}
-            .erweimabox{width: 100%;height: 280px;margin: 0 auto;position: absolute;top: 29%;}
-            .erweima{width: 65%;margin: 0 auto;height: 240px;}
+            .erweimabox{width: 100%;height: 20rem;margin: 0 auto;position: absolute;bottom:32%;}
+            .erweima{width: 65%;margin: 0 auto;height: 16rem;position: relative;}
         }
     </style>
 </head>
 <body>
 <div class="erweimabox">
     <div class="erweima">
-        <img src="/{$qrcode}" id="DemoImg" border="0">
+        <div style="position:relative"><img src="/{$qrcode}" id="DemoImg" border="0"></div>
     </div>
     <div class="pic">
         <button onclick="SaveAs5(this.src)">保存图片</button>
