@@ -68,7 +68,12 @@
 </script>
 <script type="text/javascript ">
     $(document).ready(function(){
-
+        var cat = "{$Request.param.cat}";
+        $('.supermarket-main').find('li').each(function(i,v){
+            if($(v).attr('data-cat')==cat){
+                $(v).css({'display':'none'});
+            };
+        })
     });
 
 </script>
@@ -97,12 +102,12 @@
 </ul>
 
 <ul class="supermarket-main">
-	<li><a href="{:url('dingwei/index',['cat'=>1])}">餐饮</a></li>
-	<li><a href="{:url('dingwei/index',['cat'=>2])}">酒店</a></li>
-	<li><a href="{:url('dingwei/index',['cat'=>3])}">养生</a></li>
-	<li><a href="{:url('dingwei/index',['cat'=>4])}">KTV </a></li>
-	<li><a href="{:url('dingwei/index',['cat'=>5])}">汽车</a></li>
-	<li class="gg"><a href="{:url('dingwei/index',['cat'=>6])}">其他</a></li>
+	<li data-cat="1"><a href="{:url('dingwei/index',['cat'=>1])}">餐饮</a></li>
+	<li data-cat="2"><a href="{:url('dingwei/index',['cat'=>2])}">酒店</a></li>
+	<li data-cat="3"><a href="{:url('dingwei/index',['cat'=>3])}">养生</a></li>
+	<li data-cat="4"><a href="{:url('dingwei/index',['cat'=>4])}">KTV</a></li>
+	<li data-cat="5"><a href="{:url('dingwei/index',['cat'=>5])}">汽车</a></li>
+	<li data-cat="6"><a href="{:url('dingwei/index',['cat'=>6])}">其他</a></li>
 </ul>
 
 <ul class="supermarket-main1">
