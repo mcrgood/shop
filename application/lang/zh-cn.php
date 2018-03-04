@@ -84,6 +84,7 @@ return [
      'no_account_yet'                 => '还没有账号',
      'register_immediately'           => '立即注册',
      'member_login'                   => '会员登录',
+     'business_login'                 => '商家登录',
      'cell_phone_number'              => '手机号',
      'member_name'                    => '会员名',
      'mailbox'                        => '邮箱',

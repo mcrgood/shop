@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery-1.8.1.min.js"></script>
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
+<title>旺旺币设置</title>
+<style>
+*{margin: 0;padding: 0;}
+.big{width: 100%;height: auto;margin: 0 auto;}
+.top{width: 100%;height: 50px;margin: 0 auto;background-color: #fd5454;}
+.left_1{width: 15%;height: 50px;font-size: 30px;color:#fff;text-align: center;display: inline-block;text-decoration: none;float: left;}
+.middle{width: 65%;height: 50px;font-size: 23px;float: left;display: inline-block;color:#fff;text-align: center;line-height: 45px;}
+.shezhi{width: 25%;height: 50px;font-size: 16px;line-height: 50px;color: #fff;display: inline-block;float: left;text-decoration: none;}
+.content{width: 100%;height: auto;margin: 10px auto;}
+.shangjia{width: 90%;height: 70px;border-top: 1px solid #bdbcbc;border-bottom: 1px solid #bdbcbc; margin: 10px auto;}
+.shangjia span{font-size: 25px;line-height: 70px;color: #060606;font-family: 微软雅黑;display: inline-block;float: left;    letter-spacing: 1px;}
+.num{display: inline-block;width: 15%;height: 55px;font-size: 25px;float: right;padding-top: 15px;}
+.num select{    
+	font-size: 25px;
+    border: none;
+    outline: none;
+    width: 100%;
+    display: inline;
+    float: right;
+}
+.guke{width: 90%;height: 70px;border-top: 1px solid #bdbcbc; border-bottom: 1px solid #bdbcbc; margin: 10px auto;}
+.guke span{font-size: 25px;line-height: 70px;color: #060606;display: inline-block;float: left;letter-spacing: 1px;}
+.num_right{display: inline-block;width: 15%;float: right;height: 70px;font-size: 25px;line-height: 70px;text-align: center;}
+.num_right2{display: inline-block;width: 15%;height: 70px;font-size: 25px;float: right;line-height: 70px;}
+.zhuantai{width: 90%;height: 70px;border-top: 1px solid #bdbcbc; border-bottom: 1px solid #bdbcbc; margin: 10px auto;}
+.yinye{display: inline-block;height: 70px;width: 30%;float: left;color: #ff4949; font-size: 25px;line-height: 70px;text-align: center;}
+.xiuxi{display: inline-block;height: 70px;width: 30%;float: right;font-size: 25px;line-height: 70px;text-align: center;}
+.last{width: 90%;height: 70px; margin: 10px auto;padding-left: 10%;}
+.last input{display: inline-block;float: left;height: 75px;outline: none;}
+.shuoming{height: 70px;display: inline-block;float: left;line-height: 70px;margin-left: 3%;font-size: 16px;}
+.shuoming a{color:#ff4949;text-decoration: none;}
+.baocun{width: 90%;height: 70px; margin: 10px auto;}
+.baocun input{width: 100%;height: 50px;border-radius: 25px;border: none;color: #fff;font-size: 25px;background-color: #ff4949;outline: none;}
+@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){
+  /* 兼容iphone5 */
+  .num {
+    display: inline-block;
+    width: 19%;
+    height: 55px;
+    font-size: 25px;
+    float: right;
+    padding-top: 15px;
+}
+   .shuoming {
+    height: 70px;
+    display: inline-block;
+    float: left;
+    line-height: 70px;
+    margin-left: 3%;
+    font-size: 16px;
+    width: 91%;
+}
+  }
+#fullbg {   
+	background-color:gray;   
+	left:0;   
+	opacity:0.8;   
+	position:absolute;   
+	top:0;   
+	z-index:3;   
+	filter:alpha(opacity=80);   
+	-moz-opacity:0.5;   
+	-khtml-opacity:0.5; 
+	width: 100% !important;  
+}   
+#dialog {   
+	background-color:#fff;   
+	border:none;   
+	height:480px;       
+	padding:1px;     
+	position:absolute;   
+	top:3.5%;   
+	width:80%;   
+	z-index:5;      
+	display:none;   
+	overflow: auto;
+}  
+#dialog h3{
+text-align:center;font-size:20px;
+}
+#dialog h5{
+font-size: 16px;
+}
+#dialog p {   
+    font-size: 18px;
+    margin: 5px 0;   
+}   
+#dialog p.close {   
+	text-align:right;   
+	padding-right:10px;   
+}   
+#dialog p.close a {   
+	color:#131212;   
+	text-decoration:none;   
+} 
+</style>
+</head>
+<body>
+<div class="big">
+	<div class="top">
+		<a onclick="javascript:window.history.go(-1)" class="left_1"><</a>
+		<div class="middle">旺旺币设置</div>
+		<!-- <a href="" class="shezhi">设置说明</a> -->
+	</div>
+	<form id="form1">
+	<div class="content">
+		<div class="shangjia">
+			<span>商家营销比例(%)</span>
+			<div class="num">
+			<select id="xuanze" onchange="changeValue();">
+			{volist name="arr" id="v"}
+				<option value="{$v}" {eq name="row.ratio|default=''" value="$v"}selected{/eq}>{$v}</option>
+			{/volist}	
+			</select>
+			</div>
+		</div>
+		<div class="guke">
+			<span>平台补顾客旺币</span>
+			<div class="num_right" id="num_right">{$row.gold|default=25.0}</div>
+		</div>
+		<div class="guke">
+			<span>旺旺币获取条件</span>
+			<div class="num_right2">0元</div>
+		</div>
+		<div class="zhuantai" id="zt">
+		{if $row.business_status eq 2}
+			<span class="yinye" style="color:#060606">营业中</span>
+			<span class="xiuxi" style="color:#ff4949">休息中</span>
+		{else/}	
+			<span class="yinye" style="color:#ff4949">营业中</span>
+			<span class="xiuxi" style="color:#060606">休息中</span>
+		{/if}
+		</div>
+<script type="text/javascript">
+function changeValue(){
+    	var obj = document.getElementById('xuanze'); //定位id
+		var index = obj.selectedIndex; // 选中索引
+		var value = obj.options[index].value; // 选中值
+    	var n1 = Number(value);
+    	var newdiv = document.getElementById("num_right"); 
+			newdiv.innerHTML = n1*2.5;
+  };
+    window.onload=function(){
+        var lis=document.getElementById("zt").getElementsByTagName("span");
+        for(var i=0;i<lis.length;i++){
+            lis[i].setAttribute("index",i);
+            lis[i].onclick=function(){
+                for(var i=0;i<lis.length;i++){
+                    if(this.getAttribute("index")==i){
+                        lis[i].style.color="#ff4949";
+                    }else{
+                        lis[i].style.color="#060606";
+                    }
+                }
+            }
+        }
+    }
+</script>
+</div>
+<div class="last">
+	<input type="checkbox" id="my_input" />
+		<div class="shuoming">
+		我已阅读并同意《<a href="javascript:showBg();">客旺旺商家活动协议</a>》
+		</div>
+	<div id="fullbg"></div><!--弹窗-->   
+	<div id="dialog">   
+		<p class="close"><a href="#" onclick="closeBg();">关闭</a></p>   
+		<div>
+		<h3>《客旺旺营销服务用户协议》</h3>
+		<p>客旺旺营销服务（以下简称“客旺旺”）是由江西花儿盛开科技有限公司（以下简称 “花儿盛开”）开发及运营的。下列协议适用于“客旺旺”用户，若您使用花儿盛开提供的服务，说明您已知晓并同意接受本协议。</p>
+		<h5>协议接受</h5>
+		<p>当您使用花儿盛开提供的服务时，您知晓并且同意此协议中的条款。 此协议在必要时将进行更新，每次改动都会即刻发布，并立即生效。 如果您拒绝接受新的协议，您必须放弃使用花儿盛开提供的服务；若您继续使用花儿盛开提供的服务，则表明您接受新的协议。 除非特别声明，任何增强服务的新功能都将适用此协议。</p>
+		<h5>用户</h5>
+		<p>用户是指使用客旺旺营销服务，并能够独立承担相应法律责任的单位或个人。若您不具备此资格，请不要使用客旺旺提供的服务。 要求用户在使用客旺旺服务时必须遵守国家的相关法律、法规，但对用户使用客旺旺所产生的纠纷不负法律责任。 花儿盛开有权依据自己的判断随时中断对某一用户的服务。</p>
+		<h5>注册条款</h5>
+		<p>若您注册成为客旺旺的用户，您同意并承诺： 申请帐号时，提供真实、准确、即时、完整的注册信息。若您提供的信息不真实、不准确、不即时、不完整，花儿盛开有权暂停或终止您的服务。 如您代表其他自然人、法人及其他组织在客旺旺上注册会员，则您声明并保证，您已获得授权并有权使前述法律主体受本协议的约束。</p>
+		<h5>使用条款</h5>
+		<p>用户正确谨慎使用客旺旺服务，因用户个人操作错误、失误等造成任何后果，花儿盛开不承担责任。 用户应合法使用客旺旺从事营销活动，并对自己的营销比例设置、营销活动金额设置和营销宣传活动等行为负全部责任。 当用户出现违法违纪违约的情形时，花儿盛开有权暂停或终止其服务，并不对因此造成的任何影响或损失负责。 因互联网的特殊性，黑客攻击、互联网连通中断或者系统故障等不可抗力，由此给用户造成的损失，花儿盛开不承担责任。 用户不得以任何形式擅自转让自己的客旺旺账号。</p>
+		<h5>费用</h5>
+		<p>花儿盛开有权制定费用条款，并保留修改费用条款的权利，一旦费用条款被修改，将立即发送消息通知进行说明。</p>
+		<h5>终止</h5>
+		<p>无论因何种原因，客旺旺服务终止后，花儿盛开均没有义务为用户保留原账号中或与之相关的任何信息，或转发任何未曾阅读或发送的信息给用户。 无论花儿盛开与用户之间的服务因何种原因以何种方式终止，花儿盛开仍有权保存或不保存该用户的注册数据及以前的行为记录。对于用户在服务终止前实施的违法或违约行为，花儿盛开有追索权。</p>
+		<h5>责任声明</h5>
+		<p>花儿盛开对下列事项不作任何陈述与保证： 使用客旺旺时，因用户个人的硬件、软件、系统或数据结合导致的问题，不发生错误； 花儿盛开有权对其系统功能进行更新，在未经通知的情况下随时改变或不继续提供某些或全部服务（暂时性的或永久的）； 您使用客旺旺服务后所产生的任何行为，如购买或获得的任何产品、服务、信息或其它事物等，将符合您的要求或经验。</p>
+		<h5>安全策略</h5>
+		<p>花儿盛开采取严格安全策略，对由于用户在使用客旺旺的过程中，违反本协议或通过提及而纳入本协议的条款和规则、或用户违反任何法律或第三方的权利而产生或引起的每一种类和性质的任何索赔、要求、诉讼、损失和损害而言，无论是已知或未知的，包括合理的律师费，用户同意就此对花儿盛开、员工、所有者及代理进行补偿并使其免受损害。</p>
+		<h5>管辖</h5>
+		<p>本协议条款的解释及适用，以及与本协议条款有关的争议，均应依照中华人民共和国法律予以处理，并以花儿盛开所在地法院为管辖法院。 </p>
+		<h5>版权声明</h5>
+		<p>客旺旺的所有内容版权属花儿盛开所有，严禁未经花儿盛开书面许可进行任何形式的部分或全部拷贝、反编译、传播。</p>
+		</div>   
+	</div> 
+</div>
+<script type="text/javascript">    
+//显示灰色 jQuery 遮罩层   
+function showBg() {   
+    var bh = $("body").height();   
+    var bw = $("body").width();   
+    $("#fullbg").css({   
+        height:bh,   
+        width:bw,   
+        display:"block"   
+    });   
+ $("#dialog").show();   
+}   
+//关闭灰色 jQuery 遮罩   
+function closeBg() {   
+$("#fullbg,#dialog").hide();   
+}   
+</script>  
+	<div class="baocun">
+		<input type="button" value="保存" id="login">
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#login").click(function () {
+            if($("#my_input").attr("checked")){
+            	if($('.yinye').css('color')=="rgb(255, 73, 73)"){
+            		var business_status = 1;
+            	}else{
+            		var business_status = 2;
+            	}
+            	var ratio = $('#xuanze').val();
+            	var gold = $('#num_right').text();
+	            $.ajax({  
+	                type: "POST",   //提交的方法
+	                url:"{:url('Myhome/wwb')}", //提交的地址  url
+	                //data:$('#form1').serialize(),// 序列化表单值 表单id 
+	                data:{
+	                	business_status:business_status,
+	                	ratio:ratio,
+	                	gold:gold
+
+	                },
+	                dataType:'json',
+	                success: function(res) {  //成功
+	                	 if(res.status==0){
+	                	 	layer.msg(res.msg,{time:1300});  
+	                	 }else{
+	                	 	layer.msg(res.msg,{time:1300});
+	                	 	setTimeout(function(){
+	                	 		window.location.reload();
+	                	 	},1300)
+	                	 }	
+	                     
+	                }  
+	           });
+        }else{
+	         layer.msg("您未同意协议!",{time:1300});
+	    }
+	   });  
+     });
+    </script>
+</body>
+</html>
