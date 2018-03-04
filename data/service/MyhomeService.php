@@ -25,6 +25,7 @@ use data\model\NsRegisterListModel as NsRegisterListModel;
 use data\model\NsMyhomeModel as NsMyhomeModel;
 use data\model\NsCooperateListModel as NsCooperateListModel;
 use data\model\NsParternListModel as NsParternListModel;
+use data\model\NsWwbListModel as NsWwbListModel;
 
 class MyhomeService extends BaseService{
 
@@ -95,6 +96,23 @@ class MyhomeService extends BaseService{
         $result = $myhome->getPartern($page_index, $page_size, $condition, $order);
         foreach ($result['data'] as $k => $v) {
             $result['data'][$k]['add_time'] = date('Y-m-d H:i',$v['add_time']);
+        }
+        return $result;
+    }
+    /**
+     * 旺旺币管理
+     */
+    public function getWwbList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsWwbListModel();
+        $result = $myhome->getWwb($page_index, $page_size, $condition, $order);
+        foreach ($result['data'] as $k => $v) {
+            if($result['data'][$k]['business_status'] == 1){
+                $v['business_status'] = '营业中';
+            }else{
+                $v['business_status'] = '休息中';
+            }   
+            $result['data'][$k]['create_time'] = date('Y-m-d H:i',$v['create_time']);
         }
         return $result;
     }

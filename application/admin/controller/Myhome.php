@@ -19,6 +19,58 @@ class Myhome extends BaseController
     public function myhomelist(){
     	return view($this->style . "Myhome/myhomelist");
     }
+    //旺旺币设置
+   	public function wwb(){
+   		if (request()->isAjax()) {
+	            $page_index = request()->post("page_index", 1);
+	            $page_size = request()->post('page_size', PAGESIZE);
+	            $search_text = request()->post('search_text', '');
+	            $condition['tel|names'] = ['LIKE',"%".$search_text."%"];
+	            $member = new MyhomeService();
+	            $list = $member->getWwbList($page_index, $page_size, $condition, $order = '');
+	            return $list;
+	    }else{
+	    	$arr = [10,15,20,25,30,35,40];
+	    	$this->assign('arr',$arr);
+    	return view($this->style . "Myhome/wwb");
+	    }
+    }
+    //旺旺币管理-修改商家店铺比例
+    public function wwbEdit(){
+   		if (request()->isAjax()) {
+           $data = input('post.');
+           $dd['ratio'] = $data['ratio'];
+           $dd['gold'] = $data['gold'];
+           $dd['create_time'] = time();
+           $row = db('ns_wwb')->where('userid',$data['userid'])->find();
+	       if($data['ratio'] < $row['first_ratio']){
+	       		$info = [
+                    'status' =>0,
+                    'msg' => '您修改的比例不能低于首次设置的比例！'
+                ];
+	       }elseif($row['ratio']==$data['ratio'] && $row['gold']==$data['gold']){
+	       		$info = [
+                    'status' =>0,
+                    'msg' => '您未做任何修改！'
+                ];
+	       }else{
+	       		$res = db('ns_wwb')->where('userid',$data['userid'])->update($dd);
+	       		if($res){
+	       			$info = [
+                        'status' =>1,
+                        'msg' => '修改比例成功！'
+                    ];
+	       		}else{
+	       			$info = [
+                        'status' =>0,
+                        'msg' => '修改比例失败！'
+                    ];
+	       		}
+	       }
+	    }
+	    return json($info);
+    }
+
     //商家管理列表
 	public function registerlist(){
 		if (request()->isAjax()) {

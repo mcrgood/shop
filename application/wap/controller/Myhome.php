@@ -219,7 +219,7 @@ class Myhome extends Controller
                 if($data['ratio'] < $row['first_ratio']){
                     $info = [
                         'status' =>0,
-                        'msg' => '您修改的比例不能低于第一次设置的比例！'
+                        'msg' => '您修改的比例不能低于首次设置的比例！'
                     ];
                 }elseif($row['business_status']==$data['business_status'] && $row['ratio']==$data['ratio']&& $row['gold']==$data['gold']){
                     $info = [
