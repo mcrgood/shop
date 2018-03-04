@@ -204,6 +204,75 @@ class Myhome extends Controller
         }
 
     }
+    //旺旺币设置页面
+    public function wwb(){
+        $userid = $this->business_id;
+        if(request()->isAjax()){
+            $data = input('post.');
+            $row = db('ns_wwb')->where('userid',$userid)->find();
+            if($row){
+                //修改
+                $dd['business_status'] = $data['business_status']; //营业状态
+                $dd['ratio'] = $data['ratio']; //商家营销比例
+                $dd['gold'] = $data['gold']; //平台补顾客旺币
+                $dd['create_time'] = time();
+                if($data['ratio'] < $row['first_ratio']){
+                    $info = [
+                        'status' =>0,
+                        'msg' => '您修改的比例不能低于第一次设置的比例！'
+                    ];
+                }elseif($row['business_status']==$data['business_status'] && $row['ratio']==$data['ratio']&& $row['gold']==$data['gold']){
+                    $info = [
+                        'status' =>0,
+                        'msg' => '您未做任何修改！'
+                    ];
+                }else{
+                    $res = db('ns_wwb')->where('userid',$userid)->update($dd);
+                    if($res){
+                        $info = [
+                            'status' =>1,
+                            'msg' => '修改设置成功！'
+                        ];
+                    }else{
+                        $info = [
+                            'status' =>0,
+                            'msg' => '修改设置失败，请刷新重试！'
+                        ];
+                    }
+                }
+            }else{
+                //第一次新增
+                $dd['business_status'] = $data['business_status']; //营业状态
+                $dd['ratio'] = $data['ratio']; //商家营销比例
+                $dd['gold'] = $data['gold']; //平台补顾客旺币
+                $dd['create_time'] = time();
+                $dd['userid'] = $userid;
+                $dd['first_ratio'] = $data['ratio'];
+                $res = db('ns_wwb')->insertGetId($dd);
+                if($res){
+                     $info = [
+                        'status' =>1,
+                        'msg' => '新增设置成功！'
+                    ];
+                }else{
+                     $info = [
+                        'status' =>0,
+                        'msg' => '新增设置失败，请刷新重试！'
+                    ];
+                }
+            }
+            return json($info);
+        }else{
+            $arr = [10,15,20,25,30,35,40];
+            $row = db('ns_wwb')->where('userid',$userid)->find();
+            if($row){
+                $this->assign('row',$row);
+            }
+            $this->assign('arr',$arr);
+            return view($this->style . 'Myhome/wwb');
+        }
+       
+    }
     public function register(){
        /* if(request()->isPost()){
             $iphone = input('post.iphone');
@@ -267,6 +336,7 @@ class Myhome extends Controller
         $this->assign('count', $count);
         return view($this->style . 'Myhome/yingshou');
     }
+    //隐藏页面
     public function yincan(){
         $this->check_login();
 
