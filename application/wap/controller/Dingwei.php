@@ -30,24 +30,31 @@ class Dingwei extends BaseController{
 	}
 	public function  getData()
     {
+        ob_clean();//清除缓存
         $str = '';
         $jingdu = input('post.jingdu');
         $weidu = input('post.weidu');
-        $aaa = 40;
         $leixing_id = input('post.leixing_id');
-        $where['leixing'] = $leixing_id;
-        $where['state'] = 1;
-        $list = db("ns_shop_message")->where($where)->select();
+        $where['s.leixing'] = $leixing_id;
+        $where['s.state'] = 1;
+        $list = db("ns_shop_message")
+        ->alias('s')
+        ->join('ns_wwb w','s.userid = w.userid','LEFT')
+        ->where($where)->select();
         if (!empty($list)) {
-            // foreach ($list as $k => $v) {
-            //     $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
-
-            // }
-            // array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
+            foreach ($list as $k => $v) {
+                $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
+                if($list[$k]['business_status'] == 1){
+                    $list[$k]['business_status'] = '营业中';
+                }elseif($list[$k]['business_status'] == 2){
+                    $list[$k]['business_status'] = '休息中';
+                }
+            }
+            array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
             foreach ($list as $key => $value) {
                 $str .= '<li style="border-bottom: 1px solid #cccccc;"><a href="' . url("catdetail", array("id" => $value['id'])) . '">' .
-                    '<img src="' . $value['thumb'] . '" /></a> <span style="float:right;font-size:0.72rem;color:red;">'.$aaa.'%</span>
-                店名：' . $value['names'] . '<br/>地址：' . $value['address'] . '<br />距离：' . $value['distance'] . ' km <br />电话：' . $value['tel'] .'<br/><span style="color:#ff5803;">营业中 <span>'. '<a href="' . url('catdetail', array('id' => $value['id'])) . '" class="merchant-ul-a">>>更多详情</a></li>';
+                    '<img src="' . $value['thumb'] . '" /></a> <span style="float:right;font-size:0.72rem;color:red;">'.$value['ratio'].'%</span>
+                店名：' . $value['names'] . '<br/>地址：' . $value['address'] . '<br />距离：' . $value['distance'] . ' km <br />电话：' . $value['tel'] .'<br/><span style="color:#ff5803;">'.$value['business_status'].' <span>'. '<a href="' . url('catdetail', array('id' => $value['id'])) . '" class="merchant-ul-a">>>更多详情</a></li>';
             }
             return ["message" => $str, "state" => 1];
         }
