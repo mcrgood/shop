@@ -33,20 +33,21 @@ class Dingwei extends BaseController{
         $str = '';
         $jingdu = input('post.jingdu');
         $weidu = input('post.weidu');
+        $aaa = 40;
         $leixing_id = input('post.leixing_id');
         $where['leixing'] = $leixing_id;
         $where['state'] = 1;
         $list = db("ns_shop_message")->where($where)->select();
         if (!empty($list)) {
-            foreach ($list as $k => $v) {
-                $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
+            // foreach ($list as $k => $v) {
+            //     $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
 
-            }
-            array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
+            // }
+            // array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
             foreach ($list as $key => $value) {
                 $str .= '<li style="border-bottom: 1px solid #cccccc;"><a href="' . url("catdetail", array("id" => $value['id'])) . '">' .
-                    '<img src="' . $value['thumb'] . '" /><span>' . $value['name'] . '</span></a>
-                店名：' . $value['names'] . '<br/>地址：' . $value['address'] . '<br />距离：' . $value['distance'] . ' km <br />电话：' . $value['tel'] .'<br/>营业状态：营业中'. '<a href="' . url('catdetail', array('id' => $value['id'])) . '" class="merchant-ul-a">>>更多详情</a></li>';
+                    '<img src="' . $value['thumb'] . '" /></a> <span style="float:right;font-size:0.72rem;color:red;">'.$aaa.'%</span>
+                店名：' . $value['names'] . '<br/>地址：' . $value['address'] . '<br />距离：' . $value['distance'] . ' km <br />电话：' . $value['tel'] .'<br/><span style="color:#ff5803;">营业中 <span>'. '<a href="' . url('catdetail', array('id' => $value['id'])) . '" class="merchant-ul-a">>>更多详情</a></li>';
             }
             return ["message" => $str, "state" => 1];
         }
