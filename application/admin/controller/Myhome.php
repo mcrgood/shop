@@ -30,7 +30,7 @@ class Myhome extends BaseController
 	            $list = $member->getWwbList($page_index, $page_size, $condition, $order = '');
 	            return $list;
 	    }else{
-	    	$arr = [10,15,20,25,30,35,40];
+	    	$arr = config('business_arr');
 	    	$this->assign('arr',$arr);
     	return view($this->style . "Myhome/wwb");
 	    }
@@ -39,16 +39,12 @@ class Myhome extends BaseController
     public function wwbEdit(){
    		if (request()->isAjax()) {
            $data = input('post.');
-           $dd['ratio'] = $data['ratio'];
-           $dd['gold'] = $data['gold'];
+           $dd['ratio'] = $data['ratio']; //商家比例
+           $dd['gold'] = $data['gold'];  //补旺币
+           $dd['first_ratio'] = $data['first_ratio']; //首次设置比例
            $dd['create_time'] = time();
            $row = db('ns_wwb')->where('userid',$data['userid'])->find();
-	       if($data['ratio'] < $row['first_ratio']){
-	       		$info = [
-                    'status' =>0,
-                    'msg' => '您修改的比例不能低于首次设置的比例！'
-                ];
-	       }elseif($row['ratio']==$data['ratio'] && $row['gold']==$data['gold']){
+		   if($row['ratio']==$data['ratio'] && $row['first_ratio']==$data['first_ratio']){
 	       		$info = [
                     'status' =>0,
                     'msg' => '您未做任何修改！'
