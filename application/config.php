@@ -47,6 +47,8 @@ if (! $rewrite) {
 define('UPLOAD', "upload"); // 上传文件路径
 define('ADMIN_MODULE', "admin"); // 重新定义后台模块
 
+
+
 return [
     // +----------------------------------------------------------------------
     // | 应用设置
@@ -347,11 +349,14 @@ return [
         'list_rows' => 14,
         'list_showpages' => 5,
         'picture_page_size' => 15
-    ]
+    ],
+    //商家比例数组
+    "business_arr" =>[10,15,20,25,30,35,40]
 ];
 
 return array(
     //'配置项'=>'配置值'
     "MD5_PRE" =>'ns_',
+    
 );
 

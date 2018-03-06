@@ -263,7 +263,7 @@ class Myhome extends Controller
             }
             return json($info);
         }else{
-            $arr = [10,15,20,25,30,35,40];
+            $arr = config('business_arr');
             $row = db('ns_wwb')->where('userid',$userid)->find();
             if($row){
                 $this->assign('row',$row);

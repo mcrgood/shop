@@ -67,13 +67,14 @@
 							<td colspan='3' id="time"><input  disabled class="input-common tel"></td>
 						</tr>
 						
-						
-						<tr>
-							<td>首次比例：</td>
-							<td colspan='3' id="time"><input  disabled class="input-common first_ratio"></td>
-						</tr>
 						<input type="hidden" id="userid">
 					</table>
+					首次比例：
+							<select class="first_ratio">
+								{volist name="arr" id="v"}
+								<option value="{$v}">{$v}</option>
+								{/volist}
+							</select>
 					
 				</div>
 			</div>
@@ -153,10 +154,12 @@
 		var userid = $('#userid').val();
 		var ratio = $("#ratio").val();
 		var gold = $(".gold").val();
+		var first_ratio = $(".first_ratio").val();
 		var data = {
 			userid:userid,
 			ratio:ratio,
-			gold:gold
+			gold:gold,
+			first_ratio:first_ratio
 		};
 		var url = "{:url('Myhome/wwbEdit')}";
 		$.post(url,data,function(res){

@@ -138,13 +138,13 @@
 
 .merchant-ul{ width:100%; overflow:hidden; margin-top:.75rem;}
 
-.merchant-ul li{ padding-left:4.3rem; margin-bottom:.94rem; position:relative; height:2.83rem; overflow:hidden; font-size:.38rem; color:#646464; line-height:.72rem;}
+.merchant-ul li{ padding-left:4.3rem; padding-bottom:.25rem; margin-bottom:.25rem; position:relative;  overflow:hidden; font-size:.38rem; color:#646464; line-height:.72rem;}
 
-.merchant-ul li img{ width:3.58rem; height:2.83rem; position:absolute; left:.26rem; top:0;}
+.merchant-ul li img{ width:3.58rem; height:76%; position:absolute; left:.26rem; top:0;margin-top:0.25rem;}
 
-.merchant-ul li span{ font-size:.42rem; color:#202020; line-height:1.13rem; display:block}
+.merchant-ul li span{ font-size:.42rem; color:#202020;  display:block}
 
-.merchant-ul-a{ display:inline-block; color:#ff5803; position:absolute; bottom:.13rem; right:.23rem}
+.merchant-ul-a{ display:inline-block; color:#ff5803; position:absolute; bottom:.5rem; right:.23rem}
 
 /**************************公告**********************/
 

@@ -30,27 +30,38 @@ class Dingwei extends BaseController{
 	}
 	public function  getData()
     {
-        $str = '';
-        $jingdu = input('post.jingdu');
-        $weidu = input('post.weidu');
-        $leixing_id = input('post.leixing_id');
+        ob_clean();//清除缓存
+        $jingdu = input('param.jingdu');
+        $weidu = input('param.weidu');
+        $leixing_id = input('param.leixing_id');
+        $page = input('param.page');   //第几页
+        $size = input('param.size');   //每页的数据个数
         $where['leixing'] = $leixing_id;
         $where['state'] = 1;
-        $list = db("ns_shop_message")->where($where)->select();
+        $count = db("ns_shop_message")
+        ->alias('s')
+        ->join('ns_wwb w','s.userid = w.userid','LEFT')
+        ->where($where)->count();
+        $pages = ceil($count/$size); //总页数
+        $list = db("ns_shop_message")
+        ->alias('s')
+        ->join('ns_wwb w','s.userid = w.userid','LEFT')
+        ->limit(($page-1)*$size,$size)
+        ->where($where)->select();
         if (!empty($list)) {
             foreach ($list as $k => $v) {
                 $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
-
+                if($list[$k]['business_status'] == 1){
+                    $list[$k]['business_status'] = '营业中';
+                }elseif($list[$k]['business_status'] == 2){
+                    $list[$k]['business_status'] = '休息中';
+                }
             }
-            array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
-            foreach ($list as $key => $value) {
-                $str .= '<li style="border-bottom: 1px solid #cccccc;"><a href="' . url("catdetail", array("id" => $value['id'])) . '">' .
-                    '<img src="' . $value['thumb'] . '" /><span>' . $value['name'] . '</span></a>
-                店名：' . $value['names'] . '<br/>地址：' . $value['address'] . '<br />距离：' . $value['distance'] . ' km <br />电话：' . $value['tel'] .'<br/>营业状态：营业中'. '<a href="' . url('catdetail', array('id' => $value['id'])) . '" class="merchant-ul-a">>>更多详情</a></li>';
-            }
-            return ["message" => $str, "state" => 1];
+             array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
+            return ["message" => $list, "state" => 1,'pages' => $pages];
+        }else{
+            return ["message" => "没有数据", "state" => 0];
         }
-        return ["message" => "没有数据", "state" => 1];
     }
     public function getDistance($lat1, $lng1, $lat2, $lng2){
         $earthRadius = 6367000; //approximate radius of earth in meters
@@ -81,7 +92,12 @@ class Dingwei extends BaseController{
     public function catdetail(){
         ob_clean();
 		$id = input('param.id');
-		$row = db("ns_shop_message")->find($id);
+		$row = db("ns_shop_message")
+        ->alias('s')
+        ->join('ns_wwb w','s.userid = w.userid','LEFT')
+        ->where('s.id',$id)
+        ->field('s.*,w.business_status')
+        ->find();
 		$this->assign('row',$row);
 		return view($this->style . 'Dingwei/catdetail');
 	}
