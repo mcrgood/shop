@@ -106,7 +106,7 @@
                         $('.merchant-ul').append(html);
                         // 每次数据插入，必须重置
                         me.resetload();
-                    },1000);
+                    },700);
                 },
                 error: function(xhr, type){
                     alert('Ajax error!');
@@ -116,6 +116,7 @@
             });
         }
     });
+   
             },
             cancel: function (res){
 
@@ -175,7 +176,7 @@
 //                         $('.merchant-ul').append(html);
 //                         // 每次数据插入，必须重置
 //                         me.resetload();
-//                     },1000);
+//                     },700);
 //                 },
 //                 error: function(xhr, type){
 //                     alert('Ajax error!');
@@ -187,6 +188,8 @@
 //     });
 // });
 
+ //上面为本地测试加载数据↑
+ 
 </script>
 <script type="text/javascript ">
 

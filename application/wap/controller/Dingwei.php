@@ -50,14 +50,14 @@ class Dingwei extends BaseController{
         ->where($where)->select();
         if (!empty($list)) {
             foreach ($list as $k => $v) {
-                $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
+                //$list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
                 if($list[$k]['business_status'] == 1){
                     $list[$k]['business_status'] = '营业中';
                 }elseif($list[$k]['business_status'] == 2){
                     $list[$k]['business_status'] = '休息中';
                 }
             }
-             array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
+             //array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
             return ["message" => $list, "state" => 1,'pages' => $pages];
         }else{
             return ["message" => "没有数据", "state" => 0];
