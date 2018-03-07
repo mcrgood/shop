@@ -12,6 +12,8 @@
 <title>商家入驻-{$confres.sitename}</title>
 <link href="__INDEX__/css/main.css" rel="stylesheet" />
 <link href="__INDEX__/css/reset.css" rel="stylesheet" />
+<link href="__INDEX__/css/bs.css" rel="stylesheet">
+<link href="__INDEX__/css/index.css" rel="stylesheet">
 <link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
 <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
 <script src="__INDEX__/js/swiper.min.js"></script>
@@ -89,10 +91,125 @@
 	</div>
 	<div class="intake-title" id="up-file1">银行卡信息</div>
 	<div class="up-file f-fl" id="up-file1">
-		<p><span>户&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名：</span><input type="text"/placeholder="银行卡户主名"/ name="yhk_name"></p><br />
-		<p><span>卡&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号：</span><input type="text"/placeholder="银行卡号"/ name="yhk_num"></p><br />
-		<p><span>开户地区：</span><input type="text" placeholder="省-市-(区)-县-政(乡)"/ name="yhk_address"></p><br />
-		<p><span>所属支行：</span><input type="text" placeholder="银行卡办理点"/ name="bank"></p><br />
+		<div class="container-fluid" id="con">
+<div class="row bg-fff  par-top-40 pad-right-15" id="bank_show1"  >
+    <table class="table">
+        <tr>
+            <td class="form_td border-none td_bot" >姓名</td><td class="border-none td_bot"><input type="text" class="form-control" id="uname" placeholder="输入姓名" onfocus="if (placeholder =='输入姓名'){placeholder =''}" onblur="if (placeholder ==''){placeholder='输入姓名'}"/></td>
+        </tr>
+        <tr>
+            <td class="form_td border-none td_bot">银行卡号</td><td class="border-none td_bot"><input type="text" class="form-control" id="kahao" placeholder="输入银行卡号" onfocus="if (placeholder =='输入银行卡号'){placeholder =''}" onblur="if (placeholder ==''){placeholder='输入银行卡号'}"/></td>
+        </tr>
+        <tr>
+            <td class="form_td border-none td_bot">选择银行</td>
+            <td class="border-none td_bot">
+                <div class="position-rel">
+                    <div class="position-rel">
+                        <input type="text" id="chose_input"   class="form-control" id="bank" placeholder="--银行--"/>
+                        <div class="bank_xljt"><img class="jt_xz" width="20" src="__INDEX__/images/jtx.png" alt=""/></div>
+                        <div id="chose_bank" class="bank_xljt1"></div>
+                    </div>
+                    <div class="bank_xl" style="display: none">
+                        <ul>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="中国农业银行">
+                                    中国农业银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="中国建设银行">
+                                    中国建设银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="中国工商银行">
+                                    中国工商银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="交通银行">
+                                    交通银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="中国邮政储蓄银行">
+                                    中国邮政储蓄银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="中国银行">
+                                    中国银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="中国光大银行">
+                                    中国光大银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="招商银行">
+                                    招商银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="浦发银行">
+                                    浦发银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="中信银行">
+                                    中信银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="华夏银行">
+                                    华夏银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="中国民生银行">
+                                    中国民生银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="广发银行">
+                                    广发银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="平安银行">
+                                    平安银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="兴业银行">
+                                    兴业银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="恒丰银行">
+                                    恒丰银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="浙商银行">
+                                    浙商银行
+                                </a>
+                            </li>
+                            <li class="hotBank-list">
+                                <a href="javascript:" class="hotBank-list-ico "  title="渤海银行">
+                                    渤海银行
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+           </td>
+        </tr>
+    </table>
+</div>
+</div>
+<div style="width:100%;margin-bottom:20px;">银行卡正反面</div>
 		<label>
 			<img src="__INDEX__/images/upload1.png" id="thumb_yhk1_img">
 			<input class="up-fileh error" name="thumb_yhk1" onchange="" type="text" id="thumb_yhk1" onclick="wximg('thumb_yhk1')">
@@ -102,6 +219,20 @@
 			<input class="up-fileh error" name="thumb_yhk2" onchange="" type="text" id="thumb_yhk2" onclick="wximg('thumb_yhk2')">
 		</label>
 	</div>
+    <script>
+$(function(){
+//        下拉银行卡
+    $(".hotBank-list-ico").bind('click',function(){
+       $('#chose_input').val($(this).attr('title'));
+        $('.bank_xl').hide();
+        $("#chose_bank").parent('div').find('a').addClass('jt_xz');
+    });
+    $("#chose_bank").click(function(){
+        $('.bank_xl').show();
+        $("#chose_bank").parent('div').find('a').removeClass('jt_xz');
+    });
+})
+</script>
 	<div class="kong"></div>
 	<div class="intake-img">
 		<div class="intake-title1">商家介绍</div>
@@ -419,6 +550,33 @@
             alert('请上法人反面照片');
 
             $("#thumb_fanmian").focus();
+
+            return false;
+
+        }
+        if ($("#uname").val()=='') {
+
+            alert('请银行卡姓名');
+
+            $("#uname").focus();
+
+            return false;
+
+        }
+        if ($("#kahao").val()=='') {
+
+            alert('请输入银行卡号');
+
+            $("#kahao").focus();
+
+            return false;
+
+        }
+        if ($("#bank").val()=='') {
+
+            alert('请选择银行');
+
+            $("#bank").focus();
 
             return false;
 
