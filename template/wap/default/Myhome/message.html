@@ -67,11 +67,11 @@
 	}
 	.first_content_1 ul li{
 		list-style: none;
-		height: 150px;
 		width: 90%;
 		margin: 0 5%;
 		background-color: #fff;
-		margin-bottom: 15px;
+		margin-bottom: 10px;
+		padding-bottom: 10px;
 		border-radius: 12px;
 	}
 	.inform{width: 100%;margin: auto;height: 50px;}
@@ -115,6 +115,8 @@
 	.first-content.active, .second-content.active {
 		display: block;
 	}
+	.agree{width:25%;margin: 0 auto; margin-left: 4%; background-color: #ff6363;color: #ffffff;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
+	.notagree{width:33%;margin: 0 auto;float:right; margin-right: 4%; background-color: #488de3;color: #ffffff;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
 </style>
 <body>
 <!--列表切换的选项卡-->
@@ -134,8 +136,10 @@
                 {foreach name="list" id="v"}
 				<li>
 					<div class="inform"><h4>预定通知</h4><span>{$v.time}</span></div>
-					<div class="inform_content"><p>{$v.names}预定人数{$v.num}时间{$v.time}</p></div>
+					<div class="inform_content"><p>{$v.names}&nbsp;预定人数&nbsp;<span style="color:red;">{$v.num}人</span>&nbsp;时间：{$v.time}</p></div>
 					<div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.iphone}</span></div>
+					<button class="agree">同意</button>
+					<button class="notagree">不同意</button>
 				</li>
                 {/foreach}
 			</ul>
@@ -150,7 +154,7 @@
                 {foreach name="list" id="v"}
                 <li>
                     <div class="inform"><h4>预定通知</h4><span>{$v.time}</span></div>
-                    <div class="inform_content"><p>{$v.names}预定人数{$v.num}时间{$v.time}</p></div>
+                    <div class="inform_content"><p>{$v.names}&nbsp;预定人数&nbsp;<span style="color:red;">{$v.num}人</span>&nbsp;时间:{$v.time}</p></div>
                     <div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.iphone}</span></div>
                 </li>
                 {/foreach}
