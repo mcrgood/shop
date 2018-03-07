@@ -83,7 +83,7 @@ class Myhome extends Controller
             'shopinfo' => $shop,
         ]);
     }
-
+    //商家登录
     public function login()
     {
         if (request()->isAjax()) {
@@ -95,6 +95,8 @@ class Myhome extends Controller
             if ($info) {
                 Session::set('business_id', $info['id']);
                 Session::set('mobile', $info['iphone']);
+                cookie('phone',$info['iphone'],3600*24*30);
+                cookie('password',$password,3600*24*30);
                 $url = __URL('wap/myhome/pay?id=' . $info['id']);
                 $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $info['id']);
                 $this->create($url, $shop_qrcode,"1234 4514 2344 5114");
@@ -216,12 +218,13 @@ class Myhome extends Controller
                 $dd['ratio'] = $data['ratio']; //商家营销比例
                 $dd['gold'] = $data['gold']; //平台补顾客旺币
                 $dd['create_time'] = time();
+                $dd['msg_status'] = $data['msg_status'];
                 if($data['ratio'] < $row['first_ratio']){
                     $info = [
                         'status' =>0,
                         'msg' => '您修改的比例不能低于首次设置的比例！'
                     ];
-                }elseif($row['business_status']==$data['business_status'] && $row['ratio']==$data['ratio']&& $row['gold']==$data['gold']){
+                }elseif($row['business_status']==$data['business_status'] && $row['ratio']==$data['ratio']&& $row['gold']==$data['gold'] &&$row['msg_status']==$data['msg_status']){
                     $info = [
                         'status' =>0,
                         'msg' => '您未做任何修改！'
@@ -248,6 +251,7 @@ class Myhome extends Controller
                 $dd['create_time'] = time();
                 $dd['userid'] = $userid;
                 $dd['first_ratio'] = $data['ratio'];
+                $dd['msg_status'] = $data['msg_status'];
                 $res = db('ns_wwb')->insertGetId($dd);
                 if($res){
                      $info = [

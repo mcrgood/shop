@@ -17,24 +17,26 @@
 .middle{width: 65%;height: 50px;font-size: 23px;float: left;display: inline-block;color:#fff;text-align: center;line-height: 45px;}
 .shezhi{width: 25%;height: 50px;font-size: 16px;line-height: 50px;color: #fff;display: inline-block;float: left;text-decoration: none;}
 .content{width: 100%;height: auto;margin: 10px auto;}
-.shangjia{width: 90%;height: 70px;border-top: 1px solid #bdbcbc;border-bottom: 1px solid #bdbcbc; margin: 10px auto;}
-.shangjia span{font-size: 25px;line-height: 70px;color: #060606;font-family: 微软雅黑;display: inline-block;float: left;    letter-spacing: 1px;}
+.shangjia{width: 90%;height: 60px;border-top: 1px solid #bdbcbc;border-bottom: 1px solid #bdbcbc; margin: 10px auto;}
+.shangjia span{font-size: 25px;line-height: 60px;color: #060606;font-family: 微软雅黑;display: inline-block;float: left;    letter-spacing: 1px;}
 .num{display: inline-block;width: 15%;height: 55px;font-size: 25px;float: right;padding-top: 15px;}
 .num select{    
 	font-size: 25px;
     border: none;
     outline: none;
-    width: 100%;
+    width: 105%;
     display: inline;
     float: right;
 }
-.guke{width: 90%;height: 70px;border-top: 1px solid #bdbcbc; border-bottom: 1px solid #bdbcbc; margin: 10px auto;}
-.guke span{font-size: 25px;line-height: 70px;color: #060606;display: inline-block;float: left;letter-spacing: 1px;}
-.num_right{display: inline-block;width: 15%;float: right;height: 70px;font-size: 25px;line-height: 70px;text-align: center;}
-.num_right2{display: inline-block;width: 15%;height: 70px;font-size: 25px;float: right;line-height: 70px;}
-.zhuantai{width: 90%;height: 70px;border-top: 1px solid #bdbcbc; border-bottom: 1px solid #bdbcbc; margin: 10px auto;}
-.yinye{display: inline-block;height: 70px;width: 30%;float: left;color: #ff4949; font-size: 25px;line-height: 70px;text-align: center;}
-.xiuxi{display: inline-block;height: 70px;width: 30%;float: right;font-size: 25px;line-height: 70px;text-align: center;}
+.guke{width: 90%;height: 60px;border-top: 1px solid #bdbcbc; border-bottom: 1px solid #bdbcbc; margin: 10px auto;}
+.guke span{font-size: 25px;line-height: 60px;color: #060606;display: inline-block;float: left;letter-spacing: 1px;}
+.num_right{display: inline-block;float: right;font-size: 25px;line-height: 60px;text-align: center;}
+.num_right2{display: inline-block;width: 15%;font-size: 25px;float: right;line-height: 60px;}
+.zhuantai{width: 90%;height: 60px;border-top: 1px solid #bdbcbc; border-bottom: 1px solid #bdbcbc; margin: 10px auto;}
+.yinye{display: inline-block;height: 60px;float: left;color: #ff4949; font-size: 25px;line-height: 60px;text-align: center;}
+.xiuxi{display: inline-block;height: 60px;float: right;font-size: 25px;line-height: 60px;text-align: center;}
+.zidong{display: inline-block;height: 60px;float: left;color: #ff4949; font-size: 25px;line-height: 60px;text-align: center;}
+.shoudong{display: inline-block;height: 60px;float: right;font-size: 25px;line-height: 60px;text-align: center;}
 .last{width: 90%;height: 70px; margin: 10px auto;padding-left: 10%;}
 .last input{display: inline-block;float: left;height: 75px;outline: none;}
 .shuoming{height: 70px;display: inline-block;float: left;line-height: 70px;margin-left: 3%;font-size: 16px;}
@@ -141,6 +143,15 @@ font-size: 16px;
 			<span class="xiuxi" style="color:#060606">休息中</span>
 		{/if}
 		</div>
+		<div class="zhuantai" id="message">
+		{if $row.msg_status eq 2}
+			<span class="zidong" style="color:#060606;font-size:1.2rem;">自动推送消息</span>
+			<span class="shoudong" style="color:#ff4949;font-size:1.2rem;">手动推送消息</span>
+		{else/}
+			<span class="zidong" style="color:#ff4949;font-size:1.2rem;">自动推送消息</span>
+			<span class="shoudong" style="color:#060606;font-size:1.2rem;">手动推送消息</span>
+		{/if}
+		</div>
 <script type="text/javascript">
 function changeValue(){
     	var obj = document.getElementById('xuanze'); //定位id
@@ -165,6 +176,14 @@ function changeValue(){
             }
         }
     }
+    $(function(){
+    	$('#message').find('span').each(function(i,v){
+    		$(v).click(function(){
+				$(this).css({"color":"#ff4949"});
+				$(this).siblings('span').css({"color":"#060606"});
+    		})
+    	})
+    })
 </script>
 </div>
 <div class="last">
@@ -233,6 +252,11 @@ $("#fullbg,#dialog").hide();
             	}else{
             		var business_status = 2;
             	}
+            	if($('.zidong').css('color')=="rgb(255, 73, 73)"){
+            		var msg_status = 1;
+            	}else{
+            		var msg_status = 2;
+            	}
             	var ratio = $('#xuanze').val();
             	var gold = $('#num_right').text();
 	            $.ajax({  
@@ -242,7 +266,8 @@ $("#fullbg,#dialog").hide();
 	                data:{
 	                	business_status:business_status,
 	                	ratio:ratio,
-	                	gold:gold
+	                	gold:gold,
+	                	msg_status:msg_status
 
 	                },
 	                dataType:'json',

@@ -33,6 +33,7 @@
 			<th>平台补旺币</th>
 			<th>营业状态</th>
 			<th>首次比例</th>
+			<th>短信状态</th>
 			<th>修改时间</th>
 			<th>操作</th>
 		</tr>
@@ -110,6 +111,11 @@
 					html += '<td>'+ data["data"][i]["gold"] +'</td>';
 					html += '<td>'+ data["data"][i]["business_status"] +'</td>';
 					html += '<td>'+ data["data"][i]["first_ratio"] +'%</td>';
+					if(data["data"][i]["msg_status"]==1){
+						html += '<td >自动推送</td>';
+					}else if(data["data"][i]["msg_status"]==2){
+						html += '<td style="color:red;">手动推送</td>';
+					}
 					html += '<td>'+ data["data"][i]["create_time"] +'</td>';
 					html += '<td>';
 					html += '<a onclick="editWwb('+ data["data"][i]["userid"] +','+ data["data"][i]["tel"] +','+data["data"][i]["ratio"]+','+ data["data"][i]["gold"] +','+ data["data"][i]["first_ratio"] +')">修改比例</a>';

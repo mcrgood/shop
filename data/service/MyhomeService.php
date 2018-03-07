@@ -111,7 +111,7 @@ class MyhomeService extends BaseService{
                 $v['business_status'] = '营业中';
             }else{
                 $v['business_status'] = '休息中';
-            }   
+            }
             $result['data'][$k]['create_time'] = date('Y-m-d H:i',$v['create_time']);
         }
         return $result;
