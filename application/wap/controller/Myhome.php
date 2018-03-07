@@ -10,6 +10,8 @@ use think\Session;
 use data\extend\org\wechat\Jssdk;
 use data\extend\chuanglan\ChuanglanSmsApi;
 use \data\extend\QRcode as QRcode;
+use think\captcha\Captcha;
+
 class Myhome extends Controller
 {
 
@@ -132,6 +134,22 @@ class Myhome extends Controller
         }
         return view($this->style . 'Myhome/login');
     }
+    //通过银行卡找到所属银行名称
+    public function findbackname(){
+
+
+       $a = 95595;
+       $bankinfo = config('bankinfo');
+       if(in_array($a,$bankinfo['jiansheyh'])){
+            echo '建行';   //中国
+       }elseif(in_array($a,$bankinfo['zhongguoyh'])){
+            echo '中行';
+       }elseif(in_array($a,$bankinfo['nongyeyh'])){
+            echo '农业';
+       }
+    }
+
+
 
     /*
      * 支付
@@ -281,6 +299,7 @@ class Myhome extends Controller
         }
        
     }
+
     public function register(){
        /* if(request()->isPost()){
             $iphone = input('post.iphone');
