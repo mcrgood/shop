@@ -118,6 +118,9 @@ class Myhome extends Controller
             }
             return $retval;
         }
+        if(session('mobile') && session('mobile') == cookie('phone')){
+            $this->redirect(__URL__ . "/wap/myhome/yingshou");
+        }
         $pre_url = '';
         $_SESSION['bund_pre_url'] = '';
         if (!empty($_SERVER['HTTP_REFERER'])) {
@@ -208,6 +211,7 @@ class Myhome extends Controller
     }
     //旺旺币设置页面
     public function wwb(){
+        $this->check_login();
         $userid = $this->business_id;
         if(request()->isAjax()){
             $data = input('post.');
@@ -393,6 +397,7 @@ class Myhome extends Controller
     //退出登录
 	public function out(){
         Session::set('business_id', "");
+        Session::set('mobile', "");
         $redirect = __URL(__URL__ . "/wap/myhome/login");
 		return $this->redirect($redirect);
 	}
