@@ -1011,10 +1011,10 @@ output {
 }
 .form-control {
   display: block;
-  width: 70%;
-  height: 50px;
+  width: 90%;
+  height: 30px;
   padding: 6px 12px;
-  line-height:;
+  line-height:30px;
   outline:none;
   color: #555;
   background-color: #fff;
