@@ -181,9 +181,13 @@ class Login extends Controller
             }
         }
     }
-
+    //登录
     public function index()
     {
+        if(session('user_name') && session('user_name') == cookie('user_name')){
+            $redirect = __URL(__URL__ . "/wap");
+            $this->redirect($redirect);
+        }
         $this->determineWapWhetherToOpen();
         if (request()->isAjax()) {
             $bind_message_info = json_decode(Session::get("bind_message_info"), true);
@@ -204,6 +208,7 @@ class Login extends Controller
                 }
             }
             if ($retval == 1) {
+
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,
@@ -224,6 +229,9 @@ class Login extends Controller
             } else {
                 $retval = AjaxReturn($retval);
             }
+                session('user_name',$user_name);
+                cookie('user_name',$user_name,3600*24*30);
+                cookie('password',$password,3600*24*30);
             return $retval;
         }
         $this->getWchatBindMemberInfo();
@@ -624,6 +632,22 @@ class Login extends Controller
          * return view($this->style . 'Login/register');
          */
     }
+
+    //密码找回
+    public function findpasswd(){
+
+        if (request()->isAjax()) {
+            $password = request()->post('password', '');
+            $mobile = request()->post('mobile', '');
+            $data['iphone'] = $mobile;
+            $data['password'] = MD5($password);
+            $retval = db('ns_goods_login')->where('iphone',$data['iphone'])->update(['password' => $data['password']]);
+            return AjaxReturn($retval);
+        }
+        return view($this->style . 'Login/findpasswd');
+    }
+
+
     // 判断手机号存在不
     public function mobile()
     {

@@ -670,6 +670,7 @@ return [
     
 //login
     'mailbox_has_been_registered'    => '该邮箱已被注册',
+    'business_register'               =>  '商家注册',       
     'two_input_is_inconsistent'      => '两次输入不一致',
     'mailbox_checksum_error'         => '邮箱校验码错误',
     'agreement_registration_agreement'=> '需同意用户注册协议',
