@@ -479,10 +479,10 @@ class Myhome extends Controller
             $data['weidu'] = $weidu;
             $data['business_hours'] = $business_hours;
             $id = db('ns_shop_message')->insert($data);
-            $url = __URL('wap/myhome/pay?id='.$id);
-            $shop_qrcode = getQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $id);
+            //$url = __URL('wap/myhome/pay?id='.$id);
+            //$shop_qrcode = getQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $id);
             if($id){
-                db('ns_shop_message')->where(array("id"=>$id))->update(array("shop_qrcode"=>$shop_qrcode));
+              //  db('ns_shop_message')->where(array("id"=>$id))->update(array("shop_qrcode"=>$shop_qrcode));
                 $this->success('申请成功，请等待审核！',__URL('wap/myhome/yingshou'));
             }else{
                 $this->error('申请失败！');
