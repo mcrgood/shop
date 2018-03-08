@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <style>
 	#up-file1{margin-left:20px; }
 	#up-file1 input{border:1px #4d4d4d solid;}
@@ -12,8 +13,7 @@
 <title>商家入驻-{$confres.sitename}</title>
 <link href="__INDEX__/css/main.css" rel="stylesheet" />
 <link href="__INDEX__/css/reset.css" rel="stylesheet" />
-<link href="__INDEX__/css/bs.css" rel="stylesheet">
-<link href="__INDEX__/css/index.css" rel="stylesheet">
+<link href="__INDEX__/css/xiala.css" rel="stylesheet">
 <link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
 <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
 <script src="__INDEX__/js/swiper.min.js"></script>
@@ -91,21 +91,21 @@
 	</div>
 	<div class="intake-title" id="up-file1">银行卡信息</div>
 	<div class="up-file f-fl" id="up-file1">
-		<div class="container-fluid" id="con">
-<div class="row bg-fff  par-top-40 pad-right-15" id="bank_show1"  >
+	<div class="container-fluid" id="con">
+        <div class="row bg-fff  par-top-40 pad-right-15" id="bank_show1"  >
     <table class="table">
         <tr>
-            <td class="form_td border-none td_bot" >姓名</td><td class="border-none td_bot"><input type="text" class="form-control" id="uname" placeholder="输入姓名" style="font-size:18px" onfocus="if (placeholder =='输入姓名'){placeholder =''}" onblur="if (placeholder ==''){placeholder='输入姓名'}"/></td>
+            <td class="form_td border-none td_bot" >姓名</td><td class="border-none td_bot"><input type="text" class="form-control" id="uname" placeholder="请输入姓名" onfocus="if(this.placeholder=='请输入姓名'){this.placeholder='';}" onblur="if(this.placeholder==''){this.placeholder='请输入姓名';}"/></td>
         </tr>
         <tr>
-            <td class="form_td border-none td_bot">银行卡号</td><td class="border-none td_bot"><input type="text" class="form-control" id="kahao" placeholder="输入银行卡号" style="font-size:18px" onfocus="if (placeholder =='输入银行卡号'){placeholder =''}" onblur="if (placeholder ==''){placeholder='输入银行卡号'}"/></td>
+            <td class="form_td border-none td_bot">银行卡号</td><td class="border-none td_bot"><input type="text" id="kahao" class="form-control" placeholder="请输入银行卡号" onfocus="if(this.placeholder=='请输入银行卡号'){this.placeholder='';}" onblur="if(this.placeholder==''){this.placeholder='请输入银行卡号';}"/></td>
         </tr>
         <tr>
             <td class="form_td border-none td_bot">选择银行</td>
             <td class="border-none td_bot">
                 <div class="position-rel">
                     <div class="position-rel">
-                        <input type="text" style="font-size:18px" id="chose_input"   class="form-control" id="bank" placeholder="--银行--"/>
+                        <input type="text" id="chose_input"   class="form-control" id="bank" placeholder="--银行--"/>
                         <div class="bank_xljt"><img class="jt_xz" width="20" src="__INDEX__/images/jtx.png" alt=""/></div>
                         <div id="chose_bank" class="bank_xljt1"></div>
                     </div>
@@ -208,8 +208,26 @@
         </tr>
     </table>
 </div>
+<script>
+$(function(){
+
+//        下拉银行卡
+
+    $(".hotBank-list-ico").bind('click',function(){
+       $('#chose_input').val($(this).attr('title'));
+        $('.bank_xl').hide();
+        $("#chose_bank").parent('div').find('a').addClass('jt_xz');
+    });
+    $("#chose_bank").click(function(){
+        $('.bank_xl').show();
+        $("#chose_bank").parent('div').find('a').removeClass('jt_xz');
+    });
+//        下拉银行卡
+
+})
+</script>
 </div>
-<div style="width:100%;margin-bottom:20px;">银行卡</div>
+<div style="width:100%;margin: 10px auto;font-size: .45rem;">银行卡</div>
 		<label>
 			<img src="__INDEX__/images/upload1.png" id="thumb_yhk1_img">
 			<input class="up-fileh error" name="thumb_yhk1" onchange="" type="text" id="thumb_yhk1" onclick="wximg('thumb_yhk1')">
