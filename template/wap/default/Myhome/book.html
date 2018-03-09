@@ -10,39 +10,39 @@
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" type="text/css" href="__INDEX__/css/laydate.css">
 	<script src="__INDEX__/js/jquery-1.7.2.min.js"></script>
+    <script src="__PUBLIC__/static/layui/layui.all.js"></script>
 	<script type="text/javascript">
         $(document).ready(function () {
             $("#login").click(function () {
                 var username = $('#username').val();
                 var phone = $('#phone').val();
                 var num = $('#num').val();
-                var sj = $('#date').val();
-                var date = $('#test1').val();
-                var isMobile=/^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
-                var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+                var date = $('#jHsDateInput').val();
+                var isMobile = /^1[3456789]{1}\d{9}$/;
+                var isPhone = /^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
                 if (username == '') {
-                    alert("请输入姓名");
+                    layer.msg("请输入姓名",{time:1000});
                     return false;
                 }
                 else {
                     if (phone == '') {
-                        alert("请输入电话");
+                        layer.msg("请输入电话",{time:1000});
                         return false;
-                    }else
+                    }else if(!isMobile.test(phone)){
+                        layer.msg("手机号码有误",{time:1000});
+                        return false;
+                    }
+                    else
                     if (num == '') {
-                        alert("请输入人数");
+                        layer.msg("请输入人数",{time:1000});
                         return false;
                     }else
-                    if (date == '') {
-                        alert("请输入日期");
-                        return false;
-                    }else
-                    if (sj == '') {
-                        alert("请输入具体时间");
+                    if (!date) {
+                        layer.msg("请输入具体时间",{time:1000});
                         return false;
                     }else
                     if(!isNaN(username)){
-                        alert("请填写正确的姓名");
+                        layer.msg("请填写正确的姓名",{time:1000});
                         return false;
                     }else
                         $.ajax({
@@ -51,16 +51,29 @@
                             data:$('#form1').serialize(),// 序列化表单值 表单id
                             async: false,
                             error: function(request) {  //失败的话
-                                alert("Connection error");
+                                layer.msg("Connection error",{time:1000});
                             },
                             success: function(data) {  //成功
                                 if (data.error == 0) {
-                                    alert(data.message);
-                                    window.location.href = '{:url(\'wap/index\')}'
+                                      //预定成功后推送短信给用户
+                                    var datas = {iphone:data.iphone,id:data.id};
+                                    var url = "{:url('Myhome/send_yuding_msg_auto')}";
+                                    $.post(url,datas,function(res){
+                                        if(res.code == 0){
+                                            layer.msg(res.msg,{time:1200});
+                                             setTimeout(function(){     //最后跳转页面
+                                                window.location.href = "{:url('dingwei/index')}";
+                                            },1200)
+                                        }else{
+                                            layer.msg(res.msg,{time:1200});
+                                        }
+                                    },'json')
+                                   
+                                   
                                 }
                                 else
                                 {
-                                    alert(data.message);
+                                    layer.msg(data.message,{time:1000});
                                 }
                             }
                         });
