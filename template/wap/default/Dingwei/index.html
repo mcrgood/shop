@@ -84,7 +84,7 @@
                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["id"]+'">';
                             html +='<img src="'+data["message"][i]["thumb"]+'"/>';
                             html +='</a>';
-                            html +='<span style="float:right;font-size:0.72rem;color:red;">'+data["message"][i]["ratio"]+'%</span>';
+                            html +='<span style="float:right;font-size:0.72rem;color:red;">'+data["message"][i]["gold"]+'%</span>';
                             html += '店名：' +data["message"][i]["names"]+  '<br/>';
                             html += '地址：' +data["message"][i]["address"]+ '<br />';
                             html += '距离：'+data["message"][i]["distance"]+' km <br />';
@@ -106,7 +106,7 @@
                         $('.merchant-ul').append(html);
                         // 每次数据插入，必须重置
                         me.resetload();
-                    },500);
+                    },300);
                 },
                 error: function(xhr, type){
                     alert('Ajax error!');
