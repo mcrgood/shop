@@ -299,7 +299,14 @@ class Myhome extends Controller
         }
        
     }
-
+    /*
+     * 店铺设置
+     */
+    public function shop_config()
+    {
+        $this->check_login();
+        return view($this->style . 'Myhome/dianpushezhi');
+    }
     public function register(){
        /* if(request()->isPost()){
             $iphone = input('post.iphone');
