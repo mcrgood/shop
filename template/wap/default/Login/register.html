@@ -120,22 +120,22 @@
             var mobile_is_has = $("#mobile_is_has").val();
 
             if(mobile == ''){
-                layer.msg("{:lang('phone_number_cannot_empty')}");
+                layer.msg("{:lang('phone_number_cannot_empty')}",{time:1000});
                 return false;
-            } else if(!(/^1[34578]\d{9}$/.test(mobile))){
-                layer.msg("{:lang('mobile_phone_number_is_wrong')}");
+            } else if(!(/^1[3456789]\d{9}$/.test(mobile))){
+                layer.msg("{:lang('mobile_phone_number_is_wrong')}",{time:1000});
                 return false;
             } else if(mobile_is_has == 0){
-                layer.msg("{:lang('mobile_phone_is_registered')}");
+                layer.msg("{:lang('mobile_phone_is_registered')}",{time:1000});
                 return false;
             }
             if(vertification == ''){
-                layer.msg("{:lang('verification_code_cannot_be_null')}");
+                layer.msg("{:lang('verification_code_cannot_be_null')}",{time:1000});
                 return false;
             }
             if(mobile_config==1){
                 if(verify_code == ''){
-                    layer.msg("{:lang('mobile_phone_dynamic_password_can_not_be_empty')}");
+                    layer.msg("{:lang('mobile_phone_dynamic_password_can_not_be_empty')}",{time:1000});
                     return false;
                 }
             }
@@ -149,7 +149,7 @@
                     success:function(data){
                         if (data['code'] == 0) {
                             if(password_mobile == ''){
-                                layer.msg("{:lang('password_cannot_empty')}");
+                                layer.msg("{:lang('password_cannot_empty')}",{time:1000});
                                 return false;
                             }
                             //密码验证
@@ -159,12 +159,12 @@
                             }
 
                             if(cfpassword_mobile == ''){
-                                layer.msg("{:lang('confirm_password_can_not_be_empty')}");
+                                layer.msg("{:lang('confirm_password_can_not_be_empty')}",{time:1000});
                                 return false;
                             }
 
                             if(password_mobile != cfpassword_mobile){
-                                layer.msg("{:lang('two_password_input_is_inconsistent')}");
+                                layer.msg("{:lang('two_password_input_is_inconsistent')}",{time:1000});
                                 $("#cfpassword_mobile").focus();
                                 return false;
                             }
@@ -178,23 +178,23 @@
                                 },
                                 success : function(data) {
                                     if(data["code"] > 0 ){
-                                        layer.msg(data["message"]);
+                                        layer.msg(data["message"],{time:1000});
                                         login_mobile(mobile,password_mobile);
                                     }else{
-                                        layer.msg(data["message"]);
+                                        layer.msg(data["message"],{time:1000});
                                     }
                                 }
                             });
 
                         }else {
-                            layer.msg("{:lang('mobile_phone_dynamic_code_error')}");
+                            layer.msg("{:lang('mobile_phone_dynamic_code_error')}",{time:1000});
                             return false;
                         }
                     }
                 });
             }else{
                 if(password_mobile == ''){
-                    layer.msg("{:lang('password_cannot_empty')}");
+                    layer.msg("{:lang('password_cannot_empty')}",{time:1000});
                     return false;
                 }
                 //密码验证
@@ -204,12 +204,12 @@
                 }
 
                 if(cfpassword_mobile == ''){
-                    layer.msg("{:lang('confirm_password_can_not_be_empty')}");
+                    layer.msg("{:lang('confirm_password_can_not_be_empty')}",{time:1000});
                     return false;
                 }
 
                 if(password_mobile != cfpassword_mobile){
-                    layer.msg("{:lang('two_password_input_is_inconsistent')}");
+                    layer.msg("{:lang('two_password_input_is_inconsistent')}",{time:1000});
                     $("#cfpassword_mobile").focus();
                     return false;
                 }
@@ -223,10 +223,10 @@
                     },
                     success : function(data) {
                         if(data["code"] > 0 ){
-                            layer.msg("操作成功");
+                            layer.msg("操作成功",{time:1000});
                             login_mobile(mobile,password_mobile);
                         }else{
-                            layer.msg("操作失败");
+                            layer.msg("操作失败",{time:1000});
                         }
                     }
                 });
@@ -243,7 +243,7 @@
                 var mobile = $("#mobile").val();
                 var vertification = $("#captcha").val();
                 //验证手机号格式是否正确
-                if(mobile.search(/^1[34578]\d{9}$/) == -1){
+                if(mobile.search(/^1[3456789]\d{9}$/) == -1){
                     $("#mobile").trigger("focus");
                     layer.msg("{:lang('mobile_phone_number_is_wrong')}");
                     return false;

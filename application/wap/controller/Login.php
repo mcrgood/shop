@@ -208,6 +208,9 @@ class Login extends Controller
                 }
             }
             if ($retval == 1) {
+                session('user_name',$user_name);
+                cookie('user_name',$user_name,3600*24*30);
+                cookie('password',$password,3600*24*30);
 
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [
@@ -229,9 +232,7 @@ class Login extends Controller
             } else {
                 $retval = AjaxReturn($retval);
             }
-                session('user_name',$user_name);
-                cookie('user_name',$user_name,3600*24*30);
-                cookie('password',$password,3600*24*30);
+               
             return $retval;
         }
         $this->getWchatBindMemberInfo();
@@ -635,13 +636,12 @@ class Login extends Controller
 
     //密码找回
     public function findpasswd(){
-
         if (request()->isAjax()) {
             $password = request()->post('password', '');
             $mobile = request()->post('mobile', '');
             $data['iphone'] = $mobile;
             $data['password'] = MD5($password);
-            $retval = db('ns_goods_login')->where('iphone',$data['iphone'])->update(['password' => $data['password']]);
+            $retval = db('sys_user')->where('user_tel',$data['iphone'])->update(['user_password' => $data['password']]);
             return AjaxReturn($retval);
         }
         return view($this->style . 'Login/findpasswd');
@@ -654,8 +654,7 @@ class Login extends Controller
         if (request()->isAjax()) {
             // 获取数据库中的用户列表
             $user_mobile = request()->post('mobile', '');
-            $member = new Member();
-            $exist = $member->memberIsMobile($user_mobile);
+            $exist = db('sys_user')->where('user_tel',$user_mobile)->find();
             return $exist;
         }
     }
