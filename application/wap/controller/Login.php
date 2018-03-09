@@ -185,7 +185,7 @@ class Login extends Controller
     public function index()
     {
         if(session('user_name') && session('user_name') == cookie('user_name')){
-            $redirect = __URL(__URL__ . "/wap");
+            $redirect = __URL(__URL__ . "/wap/member/index");
             $this->redirect($redirect);
         }
         $this->determineWapWhetherToOpen();
