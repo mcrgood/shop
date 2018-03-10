@@ -505,6 +505,7 @@ class Goods extends BaseController
                 $condition['ng.brand_id'] = $brand_id;
             }
             $condition['ng.state'] = 1;
+            $condition['ng.point_exchange'] = 0;
             $list = $goods->getGoodsList($page_index, PAGESIZE, $condition, "ng.sort asc,ng.create_time desc");
             return $list;
         } else {
@@ -790,6 +791,7 @@ class Goods extends BaseController
         }
         
         $condition['ng.state'] = 1;
+        $condition['ng.point_exchange'] = ['neq',0];
         
         $list = $goods->getGoodsList($page, $page_size, $condition, $order);
         
