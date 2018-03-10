@@ -185,7 +185,7 @@ class Login extends Controller
     public function index()
     {
         if(session('user_name') && session('user_name') == cookie('user_name')){
-            $redirect = __URL(__URL__ . "/wap");
+            $redirect = __URL(__URL__ . "/wap/member/index");
             $this->redirect($redirect);
         }
         $this->determineWapWhetherToOpen();
@@ -208,7 +208,9 @@ class Login extends Controller
                 }
             }
             if ($retval == 1) {
-
+                session('user_name',$user_name);
+                cookie('user_name',$user_name,3600*24*30);
+                cookie('password',$password,3600*24*30);
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,
@@ -229,9 +231,7 @@ class Login extends Controller
             } else {
                 $retval = AjaxReturn($retval);
             }
-                session('user_name',$user_name);
-                cookie('user_name',$user_name,3600*24*30);
-                cookie('password',$password,3600*24*30);
+               
             return $retval;
         }
         $this->getWchatBindMemberInfo();
