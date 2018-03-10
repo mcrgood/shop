@@ -78,7 +78,7 @@
         function login_mobile(mobile,password){
             $.ajax({
                 type : "post",
-                url : "{:__URL('APP_MAIN/Myhome/mobile_login')}",
+                url : "{:__URL('APP_MAIN/Login/mobile_login')}",
                 async : true,
                 data : {
                     "mobile" : mobile,
@@ -119,7 +119,7 @@
             if(mobile_config ==1){
                 $.ajax({
                     type:"post",
-                    url:"{:__URL('APP_MAIN/Myhome/register_check_code')}",
+                    url:"{:__URL('APP_MAIN/Login/register_check_code')}",
                     data:{'send_param':verify_code},
                     async : true,
                     dataType:'json',
@@ -147,7 +147,7 @@
                             }
                             $.ajax({
                                 type : "post",
-                                url : "{:__URL('APP_MAIN/Myhome/findpasswd')}",
+                                url : "{:__URL('APP_MAIN/Login/findpasswd')}",
                                 async : true,
                                 data : {
                                     "mobile" : mobile,
@@ -155,10 +155,10 @@
                                 },
                                 success : function(data) {
                                     if(data["code"] > 0 ){
-                                        layer.msg(data["message"]);
-                                        setTimeout(function(){location.href="{:__URL('APP_MAIN/Myhome/login')}"},1000);
+                                        layer.msg(data["message"],{time:1000});
+                                        setTimeout(function(){location.href="{:__URL('APP_MAIN/Login/index')}"},1000);
                                     }else{
-                                        layer.msg(data["message"]);
+                                        layer.msg(data["message"],{time:1000});
                                     }
                                 }
                             });
@@ -216,7 +216,7 @@
                 var mobile = $("#mobile").val();
                 var vertification = $("#captcha").val();
                 //验证手机号格式是否正确
-                if(mobile.search(/^1[34578]\d{9}$/) == -1){
+                if(mobile.search(/^1[3456789]{1}\d{9}$/) == -1){
                     $("#mobile").trigger("focus");
                     layer.msg("{:lang('mobile_phone_number_is_wrong')}");
                     return false;
@@ -224,7 +224,7 @@
                 //验证手机号是否已经注册
                 $.ajax({
                     type: "post",
-                    url: "{:__URL('APP_MAIN/Myhome/mobile')}",
+                    url: "{:__URL('APP_MAIN/Login/mobile')}",
                     data: {"mobile":mobile},
                     async: false,
                     success: function(data){
@@ -235,7 +235,7 @@
                             //判断输入的验证码是否正确
                             $.ajax({
                                 type: "post",
-                                url: "{:__URL('APP_MAIN/Myhome/sendSmsRegisterCode')}",
+                                url: "{:__URL('APP_MAIN/Login/sendSmsRegisterCode')}",
                                 data: {"mobile":mobile,"vertification":vertification},
                                 success: function(data){
                                     if(data['code']==0){
@@ -370,7 +370,7 @@
                     </label>
                 </div>
                 <button id="login-button-mobile" class="lang-btn" onclick="register_mobile()">提交</button>
-                <div class="nk_loginlogin" style="margin-top:15px;"><a href="{:__URL('APP_MAIN/Myhome/login')}">{:lang('existing_account')},{:lang('logon_immediately')}</a></div>
+                <div class="nk_loginlogin" style="margin-top:15px;"><a href="{:__URL('APP_MAIN/Login/index')}">{:lang('existing_account')},{:lang('logon_immediately')}</a></div>
             </div>
 
             <!-- </form> -->
