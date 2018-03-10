@@ -184,9 +184,10 @@ class Login extends Controller
     //登录
     public function index()
     {
-        if(session('user_name') && session('user_name') == cookie('user_name')){
-            $redirect = __URL(__URL__ . "/wap/member/index");
-            $this->redirect($redirect);
+        if(session('user_name') && $_SESSION['login_pre_url']){
+            $this->redirect($_SESSION['login_pre_url']);
+        }elseif(session('user_name') && !$_SESSION['login_pre_url']){
+            $this->redirect('Member/index');
         }
         $this->determineWapWhetherToOpen();
         if (request()->isAjax()) {
@@ -639,9 +640,8 @@ class Login extends Controller
         if (request()->isAjax()) {
             $password = request()->post('password', '');
             $mobile = request()->post('mobile', '');
-            $data['iphone'] = $mobile;
-            $data['password'] = MD5($password);
-            $retval = db('ns_goods_login')->where('iphone',$data['iphone'])->update(['password' => $data['password']]);
+            $pwd = md5($password);
+            $retval = db('sys_user')->where('user_tel',$mobile)->update(['user_password' => $pwd]);
             return AjaxReturn($retval);
         }
         return view($this->style . 'Login/findpasswd');
@@ -654,8 +654,7 @@ class Login extends Controller
         if (request()->isAjax()) {
             // 获取数据库中的用户列表
             $user_mobile = request()->post('mobile', '');
-            $member = new Member();
-            $exist = $member->memberIsMobile($user_mobile);
+            $exist = db('sys_user')->where('user_tel',$user_mobile)->find();
             return $exist;
         }
     }

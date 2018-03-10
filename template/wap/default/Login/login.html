@@ -43,6 +43,11 @@
 	<script type="text/javascript" src="__TEMP__/{$style}/public/js/layer.js"></script>
 	<script src="__STATIC__/js/load_bottom.js" type="text/javascript"></script>
 	<script type="text/javascript">
+
+			// var user_name = "{$user_name}";
+			// if(user_name){
+			// 	window.location.href = "{:url('Member/index')}";
+			// }
         var APPMAIN='APP_MAIN';
         var STATIC = "__STATIC__";
 
@@ -139,7 +144,7 @@
 				</div>
 				<div class="log-cont">
 					<label for="password">{:lang("password")}&nbsp;&nbsp;&nbsp;&nbsp;<input
-							class="" type="password" name="password" id="password"
+							class="" type="password" name="password" id="password" value="{$Think.cookie.password}"
 							placeholder="{:lang("please_input_password")}"> <i class="right_login_pass"> </i>
 					</label>
 				</div>
