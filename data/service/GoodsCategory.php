@@ -690,8 +690,8 @@ class GoodsCategory extends BaseService implements IGoodsCategory
         // TODO Auto-generated method stub
         $goods_category_block = new NsGoodsCategoryBlockModel();
         $goods = new NsGoodsViewModel();
-        $goods_brand = new NsGoodsBrandModel();
-        $goods_category = new NsGoodsCategoryModel();
+        // $goods_brand = new NsGoodsBrandModel();
+        // $goods_category = new NsGoodsCategoryModel();
         $goods_category_block_list = $goods_category_block->getQuery([
             "shop_id" => $shop_id,
             "is_show" => 1
