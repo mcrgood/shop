@@ -10,39 +10,39 @@
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" type="text/css" href="__INDEX__/css/laydate.css">
 	<script src="__INDEX__/js/jquery-1.7.2.min.js"></script>
-    
 	<script type="text/javascript">
         $(document).ready(function () {
             $("#login").click(function () {
                 var username = $('#username').val();
                 var phone = $('#phone').val();
                 var num = $('#num').val();
-                var date = $('#jHsDateInput').val();
-                var isMobile = /^1[3456789]{1}\d{9}$/;
-                var isPhone = /^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+                var sj = $('#date').val();
+                var date = $('#test1').val();
+                var isMobile=/^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
+                var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
                 if (username == '') {
-                    layer.msg("请输入姓名",{time:1000});
+                    alert("请输入姓名");
                     return false;
                 }
                 else {
                     if (phone == '') {
-                        layer.msg("请输入电话",{time:1000});
-                        return false;
-                    }else if(!isMobile.test(phone)){
-                        layer.msg("手机号码有误",{time:1000});
-                        return false;
-                    }
-                    else
-                    if (num == '') {
-                        layer.msg("请输入人数",{time:1000});
+                        alert("请输入电话");
                         return false;
                     }else
-                    if (!date) {
-                        layer.msg("请输入具体时间",{time:1000});
+                    if (num == '') {
+                        alert("请输入人数");
+                        return false;
+                    }else
+                    if (date == '') {
+                        alert("请输入日期");
+                        return false;
+                    }else
+                    if (sj == '') {
+                        alert("请输入具体时间");
                         return false;
                     }else
                     if(!isNaN(username)){
-                        layer.msg("请填写正确的姓名",{time:1000});
+                        alert("请填写正确的姓名");
                         return false;
                     }else
                         $.ajax({
@@ -51,29 +51,16 @@
                             data:$('#form1').serialize(),// 序列化表单值 表单id
                             async: false,
                             error: function(request) {  //失败的话
-                                layer.msg("Connection error",{time:1000});
+                                alert("Connection error");
                             },
                             success: function(data) {  //成功
                                 if (data.error == 0) {
-                                      //预定成功后推送短信给用户
-                                    var datas = {iphone:data.iphone,id:data.id};
-                                    var url = "{:url('Myhome/send_yuding_msg_auto')}";
-                                    $.post(url,datas,function(res){
-                                        if(res.code == 0){
-                                            layer.msg(res.msg,{time:1200});
-                                             setTimeout(function(){     //最后跳转页面
-                                                window.location.href = "{:url('dingwei/index')}";
-                                            },1200)
-                                        }else{
-                                            layer.msg(res.msg,{time:1200});
-                                        }
-                                    },'json')
-                                   
-                                   
+                                    alert(data.message);
+                                    window.location.href = '{:url(\'wap/index\')}'
                                 }
                                 else
                                 {
-                                    layer.msg(data.message,{time:1000});
+                                    alert(data.message);
                                 }
                             }
                         });
@@ -96,9 +83,9 @@
 <div id="form-div">
 	<form id="form1"><!--将form元素的属性action和method去掉，添加id=”form1”,form元素就变为<form id="form1">-->
 		<h2>预定</h2>
-		<p>姓名：<input name="username" type="text" id="username" value="" placeholder="请输入姓名"/></p>
-		<p>电话：<input name="telphone" type="tel" id="phone" value="" placeholder="请输入联系电话"/></p>
-		<p>人数：<input name="renshu" type="num" id="num"  value="" placeholder="请输入预定人数"/></p>
+		<p>姓名：<input name="username" type="text" id="username" value=""/></p>
+		<p>电话：<input name="telphone" type="tel" id="phone" value=""/></p>
+		<p>人数：<input name="renshu" type="num" id="num"  value=""/></p>
 		<p>日期：<input type="text" class="demo-input" placeholder="请选择日期" name="jHsDateInput" id="jHsDateInput"/></p>
 		<textarea rows="3" name="message" id="message" cols="40" placeholder="留言信息" style="font-size:18px;border:1px solid gray;width:80%;margin:0 10%;outline:none;"></textarea>
 		<input type="hidden" name="userid" id="userid" value="{$userid}" />
@@ -106,7 +93,6 @@
 	</form>
 </div>
 <script src="__INDEX__/js/laydate.js"></script>
-<script src="__PUBLIC__/static/layui/layui.all.js"></script>
 <script>
     lay('#version').html('-v'+ laydate.v);
 
