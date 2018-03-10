@@ -299,14 +299,7 @@ class Myhome extends Controller
         }
        
     }
-    /*
-     * 店铺设置
-     */
-    public function shop_config()
-    {
-        $this->check_login();
-        return view($this->style . 'Myhome/dianpushezhi');
-    }
+
     public function register(){
        /* if(request()->isPost()){
             $iphone = input('post.iphone');
@@ -402,25 +395,22 @@ class Myhome extends Controller
         $this->check_login();
         return view($this->style . 'Myhome/member');
     }
-    //预定消息页面
     public function message(){
         $this->check_login();
         db("ns_goods_reserve")->where("shop_id",$this->business_id)->update(["state"=>1]);
         $where['shop_id'] = $this->business_id;
-        $list = db('ns_goods_reserve')->field('a.*,m.names,b.msg_status')
+        $list = db('ns_goods_reserve')->field('a.*,m.names')
             ->alias('a')
             ->join('ns_shop_message m','a.shop_id=m.userid','left')
-            ->join('ns_wwb b','b.userid = a.shop_id','left')
             ->where($where)
-            ->order('add_time desc')
             ->select();
-            foreach($list as $k => $v){
-                $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
-                $list[$k]['time'] = date('Y-m-d H:i',strtotime($v['time']));
-
-            }
-             // dump($list);die;
+//        $count = db('ns_goods_reserve')->field('a.*,m.names')
+//            ->alias('a')
+//            ->join('ns_shop_message m','a.shop_id=m.userid','left')
+//            ->where($where)
+//            ->count();
         $this->assign('list', $list);
+       // $this->assign('count', $count);
         return view($this->style . 'Myhome/message');
     }
     //退出登录
@@ -489,10 +479,10 @@ class Myhome extends Controller
             $data['weidu'] = $weidu;
             $data['business_hours'] = $business_hours;
             $id = db('ns_shop_message')->insert($data);
-            //$url = __URL('wap/myhome/pay?id='.$id);
-            //$shop_qrcode = getQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $id);
+            $url = __URL('wap/myhome/pay?id='.$id);
+            $shop_qrcode = getQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $id);
             if($id){
-              //  db('ns_shop_message')->where(array("id"=>$id))->update(array("shop_qrcode"=>$shop_qrcode));
+                db('ns_shop_message')->where(array("id"=>$id))->update(array("shop_qrcode"=>$shop_qrcode));
                 $this->success('申请成功，请等待审核！',__URL('wap/myhome/yingshou'));
             }else{
                 $this->error('申请失败！');
@@ -504,95 +494,6 @@ class Myhome extends Controller
 
         return view($this->style . 'Myhome/shenqing');
     }
-
-     //商家自动推送预定消息
-    public function send_yuding_msg_auto(){
-        $iphone = input('post.iphone');
-        $id = input('post.id');
-        $msg_status = db('ns_goods_reserve')
-        ->alias('a')
-        ->join('ns_wwb b','a.shop_id = b.userid','left')
-        ->where('a.id',$id)->value('msg_status');
-        if($iphone && $msg_status == 1){    //msg_status ==1 为自动推送
-            $clapi  = new ChuanglanSmsApi();
-            $result = $clapi->sendSMS($iphone, '恭喜您，预定成功，祝您生活愉快！(这是自动推送短信)');
-            if(!is_null(json_decode($result))){
-                $output=json_decode($result,true);
-                if(isset($output['code'])  && $output['code']=='0'){
-                    //推送消息成功！
-                    $result = [
-                        'code' => 0,
-                        'msg' => " 恭喜您，操作成功！"
-                    ];
-                    db('ns_goods_reserve')->where('id',$id)->update(['is_msg_send'=>1]);
-                }else{
-                    $result = [
-                        'code' => $output['code'],
-                        'msg' => $output["errorMsg"]
-                    ];
-                }
-            }else{
-                 $result = [
-                    'code' => 2,
-                    'msg' => "很抱歉，操作失败，请刷新重试！"
-                ];
-            }
-        }elseif($msg_status == 2){   //msg_status ==2 为手动推送   稍后等商家点确定再推送短信
-            $result = [
-                'code' => 0,
-                'msg' => "恭喜您，操作成功！"
-            ];
-        }else{
-            $result = [
-                'code' => 2,
-                'msg' => "很抱歉，操作失败，请刷新重试！"
-            ];
-        }
-        return json($result);
-    }
-
-    //商家点击确定后推送短信(手动推送短信)
-    public function send_yuding_msg_manual(){
-        $iphone = input('post.iphone');
-        $id = input('post.id');
-        $msg_status = db('ns_goods_reserve')
-        ->alias('a')
-        ->join('ns_wwb b','a.shop_id = b.userid','left')
-        ->where('a.id',$id)->value('msg_status');
-        if($iphone && $msg_status == 2){    //msg_status ==2   为手动推送
-            $clapi  = new ChuanglanSmsApi();
-            $result = $clapi->sendSMS($iphone, '恭喜您，预定成功，祝您生活愉快！(这是手动推送短信)');
-            if(!is_null(json_decode($result))){
-                $output=json_decode($result,true);
-                if(isset($output['code'])  && $output['code']=='0'){
-                    //推送消息成功！
-                    $result = [
-                        'code' => 0,
-                        'msg' => " 恭喜您，操作成功！"
-                    ];
-                    db('ns_goods_reserve')->where('id',$id)->update(['is_msg_send'=>1]);
-                }else{
-                    $result = [
-                        'code' => $output['code'],
-                        'msg' => $output["errorMsg"]
-                    ];
-                }
-            }else{
-                 $result = [
-                    'code' => 2,
-                    'msg' => "很抱歉，操作失败，请刷新重试！"
-                ];
-            }
-        }else{
-            $result = [
-                'code' => 2,
-                'msg' => "很抱歉，操作失败，请刷新重试！"
-            ];
-        }
-        return json($result);
-    }
-
-
 
     /**
      * 发送注册短信验证码
@@ -812,6 +713,21 @@ class Myhome extends Controller
 
 
     }
+    //通过银行卡号查询出所属银行名称    
+    public function checkCards(){
+
+        if(request()->isAjax()){
+             $cardNum = input('post.cardNum');
+             $info =find_bank_card($cardNum);
+             return $info;
+        }else{
+
+            return view($this->style . 'Myhome/yinghangka');
+        }
+       
+    }
+
+
     /*
      * 预订
      */
@@ -828,12 +744,11 @@ class Myhome extends Controller
             $add_time = time();
             $shop_id = request()->post('userid', 0);
             if (!$shop_id)
-                return $result = ['error' => 3, 'message' => '页面过期，请重新提交'];
+                return $result = ['error' => 3, 'message' => 页面过期，请重新提交];
             $where['iphone'] = $iphone;
-            $where['time'] = $time;
             $result = db("ns_goods_reserve")->where($where)->find();
             if($result){
-                return $result = ['error' => 2, 'message' => "您已经提交过了！"];
+                return $result = ['error' => 2, 'message' => "你已提交"];
             }
             $data['name'] = $name;
             $data['iphone'] = $iphone;
@@ -842,10 +757,9 @@ class Myhome extends Controller
             $data['message'] = $message;
             $data['add_time'] = $add_time;
             $data['shop_id'] = $shop_id;
-            $data['is_msg_send'] = 2;
-            $id = db('ns_goods_reserve')->insertGetId($data);
+            $id = db('ns_goods_reserve')->insert($data);
             if ($id)
-                return $result = ['error' => 0, 'message' => "提交成功",'iphone' => $iphone,'id'=>$id];
+                return $result = ['error' => 0, 'message' => "提交成功"];
             else
 
                 return $result = ['error' => 1, 'message' => "提交失败"];
@@ -855,9 +769,6 @@ class Myhome extends Controller
         $this->assign('userid', $userid);
         return view($this->style . 'Myhome/book');
     }
-
-
-
     /**
 
      * [lingquan 前台领券]
