@@ -204,6 +204,7 @@
 		<section class="members_goodspic">
 			<ul>
 				{foreach name="class.goods_list" item="list" key='k'}
+					{if $list['point_exchange'] neq 0}
 					<li class="gooditem">
 						<div class="imgs">
 							<a href="{:__URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id'])}">
@@ -217,6 +218,7 @@
 							<a href="{:__URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id'])}"></a>
 						</div>
 					</li>
+					{/if}
 				{/foreach}
 			</ul>
 		</section>

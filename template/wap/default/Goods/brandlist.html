@@ -13,6 +13,7 @@
 .brand{width: 100%;height: 280px;overflow: hidden;position: relative;margin-top: 10px;}
 .brand_img{display: inline-block;vertical-align: middle;width: 100%;height: auto;}
 .goods-list-grid{margin-top: 5px;}
+.product li{list-style: none;}
 </style>
 {/block}
 {block name="goodsHead"}
@@ -83,9 +84,10 @@ function showCategorySecond(brand_id,obj,page){
 			hiddenLoadMaskLayer();
 			$("#page_count").val(data['page_count']);//总页数
 			is_load = false;
-			if(data['data'].length==0){
+			if(data['data'].length == 0 ){
 				$('.tablelist-append').html('<div class="nothing-data" align="center"><img src="__TEMP__/{$style}/public/images/wap_nodata.png"/><div>{:lang("not_find_the_goods_you_wanted")}…</div></div>');
 			}else{
+				console.log(data['data'][0]['point_exchange']);
 				if(page == 1){
 					var html = '';
 				}else if(page > 1){
@@ -93,6 +95,7 @@ function showCategorySecond(brand_id,obj,page){
 				}
 				for(var i=0;i<data['data'].length;i++){
 					var item = data['data'][i];
+					if(item['point_exchange'] == 0){
 					html+='<div class="product single_item info">'
 						+'<li>'
 							+'<div class="item">'
@@ -125,8 +128,15 @@ function showCategorySecond(brand_id,obj,page){
 							+'</div>'
 						+'</li>'
 					+'</div>';
+					}
+
 				}
-				$('.tablelist-append').html(html);
+				if(html){
+					$('.tablelist-append').html(html);
+				}else{
+				$('.tablelist-append').html('<div class="nothing-data" align="center"><img src="__TEMP__/{$style}/public/images/wap_nodata.png"/><div>{:lang("not_find_the_goods_you_wanted")}…</div></div>');
+					
+				}
 			}
 		}
 	});
