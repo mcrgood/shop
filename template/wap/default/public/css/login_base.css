@@ -31,7 +31,6 @@ textarea {resize: none;}
 
 /* 浮动 */
 .z { float: left !important; }
-.y { float: right !important; }
 
 /* 鼠标样式，可以根据需要按序添加 */
 .cur1 { cursor: pointer; }
