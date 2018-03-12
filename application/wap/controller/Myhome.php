@@ -399,11 +399,17 @@ class Myhome extends Controller
         $this->check_login();
         db("ns_goods_reserve")->where("shop_id",$this->business_id)->update(["state"=>1]);
         $where['shop_id'] = $this->business_id;
-        $list = db('ns_goods_reserve')->field('a.*,m.names')
+        $list = db('ns_goods_reserve')->field('a.*,m.names,w.msg_status')
             ->alias('a')
             ->join('ns_shop_message m','a.shop_id=m.userid','left')
+            ->join('ns_wwb w','w.userid = a.shop_id','left')
             ->where($where)
             ->select();
+        foreach($list as $k => $v){
+            $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
+        }    
+        // dump($list);die;
+
 //        $count = db('ns_goods_reserve')->field('a.*,m.names')
 //            ->alias('a')
 //            ->join('ns_shop_message m','a.shop_id=m.userid','left')
@@ -728,6 +734,96 @@ class Myhome extends Controller
     }
 
 
+    //自动发送预定消息
+    public function send_yuding_msg_auto(){
+        if(request()->isAjax()){
+            $iphone = input('post.iphone');
+            $id = input('post.id');
+            $msg_status = db('ns_goods_reserve')->alias('a')
+            ->join('ns_wwb w','a.shop_id = w.userid','left')
+            ->where('a.id',$id)
+            ->value('msg_status');
+            if($iphone && $msg_status == 1){     //msg_status=1   为自动发送短信
+                $clapi  = new ChuanglanSmsApi();
+                $result = $clapi->sendSMS($iphone, '【花儿盛开】您好,这是[自动]发送预定的短信');
+                if(!is_null(json_decode($result))){
+                    $output=json_decode($result,true);
+                    if(isset($output['code'])  && $output['code']=='0'){
+                        db('ns_goods_reserve')->where('id',$id)->update(['is_msg_send'=>1]);
+                        return $result = [
+                            'status' => 0,
+                            'message' => "恭喜您，操作成功！"
+                        ];
+                    }else{
+                        return $result = [
+                            'status' => $output['code'],
+                            'message' => $output["errorMsg"]
+                        ];
+                    }
+                }else{
+                    return $result = [
+                        'status' => - 1,
+                        'message' => "对不起，操作失败，请刷新重试！"
+                    ];
+                }
+            }elseif($iphone && $msg_status == 2){
+                return $result = [
+                    'status' => 0,
+                    'message' => "恭喜您，操作成功！"
+                ];
+            }else{
+                return $result = [
+                    'status' => -2,
+                    'message' => "对不起，操作失败，请刷新重试！"
+                ];
+            }
+        }
+    }
+
+    //商家点击确定后发送预定消息
+    public function send_yuding_msg_manual(){
+        if(request()->isAjax()){
+            $iphone = input('post.iphone');
+            $id = input('post.id');
+            $msg_status = db('ns_goods_reserve')->alias('a')
+            ->join('ns_wwb w','a.shop_id = w.userid','left')
+            ->where('a.id',$id)
+            ->value('msg_status');
+            if($iphone && $msg_status == 2){     //msg_status=1   为自动发送短信
+                $clapi  = new ChuanglanSmsApi();
+                $result = $clapi->sendSMS($iphone, '【花儿盛开】您好,这是[手动]发送预定的短信');
+                if(!is_null(json_decode($result))){
+                    $output=json_decode($result,true);
+                    if(isset($output['code'])  && $output['code']=='0'){
+                        db('ns_goods_reserve')->where('id',$id)->update(['is_msg_send'=>1]);
+                        return $result = [
+                            'status' => 0,
+                            'message' => "恭喜您，操作成功！"
+                        ];
+                    }else{
+                        return $result = [
+                            'status' => $output['code'],
+                            'message' => $output["errorMsg"]
+                        ];
+                    }
+                }else{
+                    return $result = [
+                        'status' => - 1,
+                        'message' => "对不起，操作失败，请刷新重试！"
+                    ];
+                }
+            }else{
+                return $result = [
+                    'status' => -2,
+                    'message' => "对不起，操作失败，请刷新重试！"
+                ];
+            }
+        }
+    }
+
+
+
+
     /*
      * 预订
      */
@@ -737,16 +833,18 @@ class Myhome extends Controller
 
         if (request()->isAjax()) {
             $name = request()->post('username', '');
-            $iphone = request()->post('telphone', '');
-            $num = request()->post('renshu', '');
-            $time = request()->post('jHsDateInput', '');
+            $iphone = request()->post('phone', '');
+            $num = request()->post('num', '');
+            $time = request()->post('sj', '');
             $message = request()->post('message', '');
             $add_time = time();
             $shop_id = request()->post('userid', 0);
             if (!$shop_id)
                 return $result = ['error' => 3, 'message' => 页面过期，请重新提交];
             $where['iphone'] = $iphone;
+            $where['time'] = $time;
             $result = db("ns_goods_reserve")->where($where)->find();
+
             if($result){
                 return $result = ['error' => 2, 'message' => "你已提交"];
             }
@@ -757,9 +855,10 @@ class Myhome extends Controller
             $data['message'] = $message;
             $data['add_time'] = $add_time;
             $data['shop_id'] = $shop_id;
-            $id = db('ns_goods_reserve')->insert($data);
+            $data['is_msg_send'] = 2;
+            $id = db('ns_goods_reserve')->insertGetId($data);
             if ($id)
-                return $result = ['error' => 0, 'message' => "提交成功"];
+                return $result = ['error' => 0, 'message' => "提交成功",'iphone' => $iphone,'id' => $id];
             else
 
                 return $result = ['error' => 1, 'message' => "提交失败"];

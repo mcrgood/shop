@@ -56,9 +56,9 @@ class Dingwei extends BaseController{
                 }elseif($list[$k]['business_status'] == 2){
                     $list[$k]['business_status'] = '休息中';
                 }
-                $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
+                // $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
             }
-            array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
+            // array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
             return ["message" => $list, "state" => 1,'pages' => $pages];
         }else{
             return ["message" => "没有数据", "state" => 0];

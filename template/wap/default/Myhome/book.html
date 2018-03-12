@@ -13,54 +13,80 @@
 	<script type="text/javascript">
         $(document).ready(function () {
             $("#login").click(function () {
+                var userid = "{$Request.param.userid}";
                 var username = $('#username').val();
                 var phone = $('#phone').val();
                 var num = $('#num').val();
-                var sj = $('#date').val();
-                var date = $('#test1').val();
-                var isMobile=/^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;
+                var sj = $('#jHsDateInput').val();
+                var message = $('#message').val();
+                var isMobile=/^1[3|4|5|6|7|8|9]{1}\d{9}$/;
                 var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
                 if (username == '') {
-                    alert("请输入姓名");
+                    layer.msg("请输入姓名",{time:1000});
                     return false;
                 }
                 else {
                     if (phone == '') {
-                        alert("请输入电话");
+                        layer.msg("请输入电话",{time:1000});
                         return false;
-                    }else
+                    }else if(!isMobile.test(phone)){
+                        layer.msg("电话号码有误",{time:1000});
+                        return false;
+                    }
+                    else
                     if (num == '') {
-                        alert("请输入人数");
-                        return false;
-                    }else
-                    if (date == '') {
-                        alert("请输入日期");
+                        layer.msg("请输入人数",{time:1000});
                         return false;
                     }else
                     if (sj == '') {
-                        alert("请输入具体时间");
+                        layer.msg("请输入具体时间",{time:1000});
                         return false;
                     }else
                     if(!isNaN(username)){
-                        alert("请填写正确的姓名");
+                        layer.msg("请填写正确的姓名",{time:1000});
                         return false;
                     }else
                         $.ajax({
                             type: "POST",   //提交的方法
                             url:"{:__URL('APP_MAIN/Myhome/book')}", //提交的地址  url
-                            data:$('#form1').serialize(),// 序列化表单值 表单id
+                            data:{
+                                userid:userid,
+                                username:username,
+                                phone:phone,
+                                num:num,
+                                sj:sj,
+                                message:message
+
+                            },
                             async: false,
                             error: function(request) {  //失败的话
-                                alert("Connection error");
+                                layer.msg("Connection error");
                             },
                             success: function(data) {  //成功
                                 if (data.error == 0) {
-                                    alert(data.message);
-                                    window.location.href = '{:url(\'wap/index\')}'
+                                    var iphone = data.iphone;
+                                    var id = data.id;
+                                    console.log(iphone);
+                                    console.log(id);
+                                    var url = "{:url('Myhome/send_yuding_msg_auto')}";
+                                    var datas = {
+                                        iphone:iphone,
+                                        id:id
+                                    };
+                                    $.post(url,datas,function(res){
+                                        if(res.status == 0){
+                                            layer.msg(res.message);
+                                            setTimeout(function(){
+                                                location.href = "{:url('Dingwei/index')}?cat=1";
+                                            },1000)
+                                        }else{
+                                            layer.msg(res.message);
+                                        }
+                                    },'json')
                                 }
                                 else
                                 {
-                                    alert(data.message);
+                                    layer.msg(data.message);
                                 }
                             }
                         });
@@ -93,6 +119,7 @@
 	</form>
 </div>
 <script src="__INDEX__/js/laydate.js"></script>
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
 <script>
     lay('#version').html('-v'+ laydate.v);
 

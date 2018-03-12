@@ -184,11 +184,15 @@ class Login extends Controller
     //登录
     public function index()
     {
-        if(session('user_name') && $_SESSION['login_pre_url']){
-            $this->redirect($_SESSION['login_pre_url']);
-        }elseif(session('user_name') && !$_SESSION['login_pre_url']){
-            $this->redirect('Member/index');
+        if($_SESSION['login_pre_url']){
+            $pre_type = strpos($_SESSION['login_pre_url'],'login');
+            if(!$pre_type && session('user_name')){
+                $this->redirect($_SESSION['login_pre_url']);
+            }elseif(session('user_name') && $pre_type){
+                $this->redirect('Member/index');
+            }
         }
+
         $this->determineWapWhetherToOpen();
         if (request()->isAjax()) {
             $bind_message_info = json_decode(Session::get("bind_message_info"), true);
