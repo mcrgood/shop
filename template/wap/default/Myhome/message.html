@@ -115,8 +115,8 @@
 	.first-content.active, .second-content.active {
 		display: block;
 	}
-	.agree{width:25%;margin: 0 auto; margin-left: 4%; background-color: #ff6363;color: #ffffff;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
-	.notagree{width:33%;margin: 0 auto;float:right; margin-right: 4%; background-color: #488de3;color: #ffffff;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
+	.agree{width:21%;margin-left:73%;  background-color: #488de3;color: #ffffff;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
+	.is_agree{width:33%; margin-left:73%; color: red;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
 </style>
 <body>
 <!--列表切换的选项卡-->
@@ -135,11 +135,18 @@
 			<ul>
                 {foreach name="list" id="v"}
 				<li>
-					<div class="inform"><h4>预定通知</h4><span>{$v.time}</span></div>
-					<div class="inform_content"><p>{$v.names}&nbsp;预定人数&nbsp;<span style="color:red;">{$v.num}人</span>&nbsp;时间：{$v.time}</p></div>
+					<div class="inform"><h4>预定通知</h4><span>{$v.add_time}</span></div>
+					<div class="inform_content"><p>{$v.names}&nbsp;预定人数&nbsp;<span style="color:red;">{$v.num}人</span><br />时间：{$v.time}</p></div>
 					<div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.iphone}</span></div>
-					<button class="agree">同意</button>
-					<button class="notagree">不同意</button>
+					{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
+					<input type="hidden" value="{$v.iphone}" class="iphone"/>
+						<button class="agree">确定</button>
+					<input type="hidden" value="{$v.id}" class="id"/>
+					{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
+						<span class="is_agree">已发送</span>
+					{elseif $v.msg_status eq 2 AND $v.is_msg_send eq 1 /}
+						<span class="is_agree">已发送</span>
+					{/if}
 				</li>
                 {/foreach}
 			</ul>
@@ -153,8 +160,8 @@
 			<ul id="content_news_list">
                 {foreach name="list" id="v"}
                 <li>
-                    <div class="inform"><h4>预定通知</h4><span>{$v.time}</span></div>
-                    <div class="inform_content"><p>{$v.names}&nbsp;预定人数&nbsp;<span style="color:red;">{$v.num}人</span>&nbsp;时间:{$v.time}</p></div>
+                    <div class="inform"><h4>预定通知</h4><span>{$v.add_time}</span></div>
+                    <div class="inform_content"><p>{$v.names}&nbsp;预定人数&nbsp;<span style="color:red;">{$v.num}人</span><br />时间:{$v.time}</p></div>
                     <div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.iphone}</span></div>
                 </li>
                 {/foreach}
@@ -192,6 +199,7 @@
 	</script>
 </div>
 </body>
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
 <script type="text/javascript">
     //tab切换效果
     $(document).ready(function () {
@@ -202,6 +210,27 @@
                 $(".content .m-box").removeClass("active").eq(i).addClass("active")
         });
     });
+
+    $('.agree').click(function(){
+    	var iphone = $(this).siblings('.iphone').val();
+    	var id = $(this).siblings('.id').val();
+    	var url = "{:url('Myhome/send_yuding_msg_manual')}";
+    	var data = {
+    		iphone:iphone,
+    		id:id
+    	};
+    	$.post(url,data,function(res){
+    		if(res.status == 0){
+    			layer.msg(res.message,{time:1000});
+    			setTimeout(function(){
+    				window.location.reload();
+    			},1000)
+    		}else{
+    			layer.msg(res.message,{time:1000});
+
+    		}
+    	},'json')
+    })
 </script>
 </script>
 </html>

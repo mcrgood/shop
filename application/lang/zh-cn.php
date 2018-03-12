@@ -736,6 +736,8 @@ return [
     'have_not_agreed_registration_agreement' => '您还没有同意注册协议',
     'user_name'                      => '用户名',
     'please_enter_your_user_name'    => '请输入用户名，必须在3到16个字符范围内',
+    'referee_phone'                  =>  '推荐人手机',
+    'please_enter_referee_phone'     =>  '请输入推荐人手机号码',
     'strip'                          => '条',
     'shadowe'                        => '尾页',
     'record'                         => '记录',
