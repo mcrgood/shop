@@ -71,12 +71,12 @@ class Member extends BaseController
         $uid = $this->uid;
         if (empty($uid)) {
             $redirect = __URL(__URL__ . "/wap/login");
-            $this->redirect($redirect); // 用户未登录
+            $this->redirect($redirect);exit; // 用户未登录
         }
         $is_member = $this->user->getSessionUserIsMember();
         if (empty($is_member)) {
             $redirect = __URL(__URL__ . "/wap/login");
-            $this->redirect($redirect); // 用户未登录
+            $this->redirect($redirect);exit; // 用户未登录
         }
     }
 
@@ -132,6 +132,18 @@ class Member extends BaseController
                 'member/myCollection'
             )
         );
+        $uid = $this->uid;  //用户uid
+        $point = db('ns_member_account')->where('uid',$uid)->value('point');  //查询该用户积分(旺旺币)
+        if($point >=1000){
+            db('ns_member_account')->where('uid',$uid)->update(['is_vip'=>1]);  //旺旺币大于1000自动变成VIP会员
+        }
+        $is_vip = db('ns_member_account')->where('uid',$uid)->value('is_vip');
+        if($is_vip==1){
+            $is_vip = 'VIP会员';
+        }else{
+            $is_vip = '普通会员';
+        }
+        $this->assign('is_vip',$is_vip);
         $member_info = $member->getMemberDetail($this->instance_id);
         // 头像
         if (! empty($member_info['user_info']['user_headimg'])) {
@@ -751,7 +763,7 @@ class Member extends BaseController
      */
     public function logOut()
     {
-        cookie('password',null);
+        session('user_name',null);
         $member = new MemberService();
         $member->Logout();
         return AjaxReturn(1);

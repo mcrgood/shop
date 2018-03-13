@@ -206,10 +206,9 @@ class Login extends Controller
                 }
             }
             if ($retval == 1) {
-                if(!cookie('password')){
+                    session('user_name',$user_name);
                     cookie('user_name',$user_name,3600*24*30);
                     cookie('password',$password,3600*24*30);
-                }
                 
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [
@@ -235,21 +234,24 @@ class Login extends Controller
             return $retval;
         }
         $this->getWchatBindMemberInfo();
-        if(cookie('password') && $_SESSION['login_pre_url']){
-            $this->redirect($_SESSION['login_pre_url']);exit;
-        }elseif(cookie('password') && !$_SESSION['login_pre_url']){
-            $this->redirect('Member/index');exit;
-        }
+
         // 没有登录首先要获取上一页
         $pre_url = '';
         $_SESSION['bund_pre_url'] = '';
-        if (! empty($_SERVER['HTTP_REFERER'])) {
+        if (! empty($_SERVER['HTTP_REFERER'])) {    
             $pre_url = $_SERVER['HTTP_REFERER'];
             if (strpos($pre_url, 'login')) {
                 $pre_url = '';
             }
-            $_SESSION['login_pre_url'] = $pre_url;
+            $_SESSION['login_pre_url'] = $pre_url;  //上一次浏览的页面
         }
+        if(session('user_name') && !$_SESSION['login_pre_url']){  //有session直接跳转
+            $redirect = __URL(__URL__ . "/wap/member/index");
+            $this->redirect($redirect);exit;
+        }elseif(session('user_name') && $_SESSION['login_pre_url']){
+            header("Location: ".$_SESSION['login_pre_url']);exit;  //跳转到上一次记录的页面
+        }
+
         $config = new WebConfig();
         $instanceid = 0;
         // 登录配置
