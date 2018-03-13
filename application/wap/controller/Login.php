@@ -186,9 +186,9 @@ class Login extends Controller
     {
         if($_SESSION['login_pre_url']){
             $pre_type = strpos($_SESSION['login_pre_url'],'login');
-            if(!$pre_type && session('user_name')){
+            if(!$pre_type && cookie('user_name')){
                 $this->redirect($_SESSION['login_pre_url']);
-            }elseif(session('user_name') && $pre_type){
+            }elseif(cookie('user_name') && $pre_type){
                 $this->redirect('Member/index');
             }
         }
@@ -213,9 +213,11 @@ class Login extends Controller
                 }
             }
             if ($retval == 1) {
-                session('user_name',$user_name);
-                cookie('user_name',$user_name,3600*24*30);
-                cookie('password',$password,3600*24*30);
+                if(!cookie('user_name')){
+                    cookie('user_name',$user_name,3600*24*30);
+                    cookie('password',$password,3600*24*30);
+                }
+                
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,

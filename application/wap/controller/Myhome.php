@@ -329,13 +329,49 @@ class Myhome extends Controller
                 }
             }*/
         if (request()->isAjax()) {
-            $password = request()->post('password', '');
-            $mobile = request()->post('mobile', '');
+            $mobile = request()->post('mobile', '');  //手机号
+            $password = request()->post('password', '');  // 密码
+            $referee_phone = request()->post('referee_phone', '');  //  介绍人手机
+            if($referee_phone){
+                 $res = db('sys_user')->where('user_tel',$referee_phone)->find();
+                    if(!$res){
+                       return $info = [
+                            'status' =>0,
+                            'msg' =>'推荐人手机未注册！'
+                        ];
+                    }
+            }
+           
            // $sendMobile = Session::get('sendMobile');
             $data['iphone'] = $mobile;
+            $data['create_time'] = time();
             $data['password'] = MD5($password);
-            $retval = db('ns_goods_login')->insert($data);
-            return AjaxReturn($retval);
+            $data['referee_phone'] = $referee_phone;
+            $retval = db('ns_goods_login')->insert($data);  //商家注册成功
+            if($retval){
+                $row = db('sys_user')->where('user_tel',$mobile)->find();
+                if(!$row){
+                    $info['reg_time'] = time();
+                    $info['user_name'] = $mobile;
+                    $info['user_tel'] = $mobile;
+                    $info['user_password'] = MD5($password);
+                    $info['referee_phone'] = $referee_phone;
+                    $info['nick_name'] = $mobile;
+                    $info['is_member'] = 1;     // 1 是前台会员，必须添加，否则无法正常登录
+                    $result = db('sys_user')->insertGetId($info);
+                    if($result && $referee_phone){
+                        db('ns_member_account')
+                        ->alias('m')
+                        ->join('sys_user u','u.uid = m.uid','left')
+                        ->where('u.user_tel',$referee_phone)
+                        ->setInc('point',40);
+                    }
+                }
+                return $info = [
+                    'status' => 1,
+                    'msg' => '操作成功'
+                ];
+            }
         }
         return view($this->style . 'Myhome/register');
     }

@@ -49,7 +49,7 @@ class Index extends BaseController
      * @return Ambigous <\think\response\View, \think\response\$this, \think\response\View>
      */
     public function index()
-    {
+    {   
        /*  $default_client = request()->cookie("default_client", "");
         if(!request()->isMobile()&&$default_client == "")
         {
