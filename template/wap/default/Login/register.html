@@ -110,6 +110,7 @@
         }
 
         function register_mobile(){
+            var referee_phone = $('#referee_phone').val();
             var mobile = $("#mobile").val();
             var vertification = $("#captcha").val();
             var password_mobile = $("#password_mobile").val();
@@ -127,6 +128,10 @@
                 return false;
             } else if(mobile_is_has == 0){
                 layer.msg("{:lang('mobile_phone_is_registered')}");
+                return false;
+            }
+            if(referee_phone && !(/^1[3456789]\d{9}$/.test(referee_phone))){
+                layer.msg('推荐人手机号格式有误');
                 return false;
             }
             if(vertification == ''){
@@ -174,14 +179,15 @@
                                 async : true,
                                 data : {
                                     "mobile" : mobile,
-                                    "password" : password_mobile
+                                    "password" : password_mobile,
+                                    "referee_phone" : referee_phone
                                 },
                                 success : function(data) {
                                     if(data["code"] > 0 ){
-                                        layer.msg(data["message"]);
+                                        layer.msg(data["message"],{time:1200});
                                         login_mobile(mobile,password_mobile);
                                     }else{
-                                        layer.msg(data["message"]);
+                                        layer.msg(data["message"],{time:1200});
                                     }
                                 }
                             });

@@ -191,6 +191,8 @@ class Login extends Controller
             }elseif(cookie('user_name') && $pre_type){
                 $this->redirect('Member/index');
             }
+        }elseif(!$_SESSION['login_pre_url'] && cookie('user_name')){
+            $this->redirect('Member/index');
         }
 
         $this->determineWapWhetherToOpen();
@@ -566,6 +568,22 @@ class Login extends Controller
             $password = request()->post('password', '');
             $email = request()->post('email', '');
             $mobile = request()->post('mobile', '');
+            $referee_phone = request()->post('referee_phone', '');
+            if($referee_phone){
+                if($mobile == $referee_phone){
+                    return $info = [
+                        'code' => -1,
+                        'message' => '推荐人不可以是自己！'
+                    ];
+                }
+                $row = db('sys_user')->where('user_tel',$referee_phone)->find();
+                if(!$row){
+                    return $info = [
+                        'code' => -1,
+                        'message' => '推荐人手机号未注册！'
+                    ];
+                }
+            }
             $sendMobile = Session::get('sendMobile');
             if (empty($mobile)) {
                 $retval = $member->registerMember($user_name, $password, $email, $mobile, '', '', '', '', '');
@@ -578,6 +596,9 @@ class Login extends Controller
                     }
             }
             if ($retval > 0) {
+                if($referee_phone && $mobile){
+                    db('sys_user')->where('user_tel',$mobile)->update(['referee_phone'=>$referee_phone]);
+                }
                 // 微信的会员绑定
                 if (empty($user_name)) {
                     $user_name = $mobile;
