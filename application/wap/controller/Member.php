@@ -751,7 +751,6 @@ class Member extends BaseController
      */
     public function logOut()
     {
-        cookie('user_name',null);    
         cookie('password',null);
         $member = new MemberService();
         $member->Logout();

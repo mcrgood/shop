@@ -1,3 +1,12 @@
+<script>
+	var user_name = "{$user_name}";
+	var login_pre_url = "{$Think.session.login_pre_url}";
+	if(user_name && !login_pre_url){
+		window.location.href = "{:url('Member/index')}";
+	}else if(user_name && login_pre_url){
+		window.location.href = login_pre_url;
+	}
+</script>
 <!DOCTYPE html>
 <html>
 <head>

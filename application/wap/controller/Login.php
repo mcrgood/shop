@@ -184,16 +184,7 @@ class Login extends Controller
     //登录
     public function index()
     {
-        if($_SESSION['login_pre_url']){
-            $pre_type = strpos($_SESSION['login_pre_url'],'login');
-            if(!$pre_type && cookie('user_name')){
-                $this->redirect($_SESSION['login_pre_url']);
-            }elseif(cookie('user_name') && $pre_type){
-                $this->redirect('Member/index');
-            }
-        }elseif(!$_SESSION['login_pre_url'] && cookie('user_name')){
-            $this->redirect('Member/index');
-        }
+        
 
         $this->determineWapWhetherToOpen();
         if (request()->isAjax()) {
@@ -215,7 +206,7 @@ class Login extends Controller
                 }
             }
             if ($retval == 1) {
-                if(!cookie('user_name')){
+                if(!cookie('password')){
                     cookie('user_name',$user_name,3600*24*30);
                     cookie('password',$password,3600*24*30);
                 }
@@ -244,6 +235,11 @@ class Login extends Controller
             return $retval;
         }
         $this->getWchatBindMemberInfo();
+        if(cookie('password') && $_SESSION['login_pre_url']){
+            $this->redirect($_SESSION['login_pre_url']);exit;
+        }elseif(cookie('password') && !$_SESSION['login_pre_url']){
+            $this->redirect('Member/index');exit;
+        }
         // 没有登录首先要获取上一页
         $pre_url = '';
         $_SESSION['bund_pre_url'] = '';
