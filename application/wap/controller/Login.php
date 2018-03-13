@@ -206,10 +206,9 @@ class Login extends Controller
                 }
             }
             if ($retval == 1) {
-                if(!cookie('password')){
+                    session('user_name',$user_name);
                     cookie('user_name',$user_name,3600*24*30);
                     cookie('password',$password,3600*24*30);
-                }
                 
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [
@@ -235,9 +234,7 @@ class Login extends Controller
             return $retval;
         }
         $this->getWchatBindMemberInfo();
-        if(cookie('password') && $_SESSION['login_pre_url']){
-            $this->redirect($_SESSION['login_pre_url']);exit;
-        }elseif(cookie('password') && !$_SESSION['login_pre_url']){
+        if(session('user_name') ){
             $this->redirect('Member/index');exit;
         }
         // 没有登录首先要获取上一页
