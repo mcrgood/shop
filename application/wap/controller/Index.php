@@ -50,6 +50,9 @@ class Index extends BaseController
      */
     public function index()
     {   
+        if(session('user_name')){
+            session('user_name',null);
+        }
        /*  $default_client = request()->cookie("default_client", "");
         if(!request()->isMobile()&&$default_client == "")
         {
