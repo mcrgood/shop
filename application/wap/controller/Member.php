@@ -88,10 +88,10 @@ class Member extends BaseController
     public function index()
     {
         switch (NS_VERSION) {
-            case NS_VER_B2C:
+            case 'NS_VER_B2C':
                 $retval = $this->memberIndex(); // 单店B2C版
                 break;
-            case NS_VER_B2C_FX:
+            case 'NS_VER_B2C_FX':
                 $retval = $this->memberIndexFx(); // 单店B2C分销版
                 break;
         }
@@ -751,7 +751,8 @@ class Member extends BaseController
      */
     public function logOut()
     {
-        session('user_name',null);    
+        cookie('user_name',null);    
+        cookie('password',null);
         $member = new MemberService();
         $member->Logout();
         return AjaxReturn(1);

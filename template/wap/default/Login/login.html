@@ -68,7 +68,7 @@
             }
             $.ajax({
                 type : "post",
-                url : "{:__URL('APP_MAIN/login/index')}",
+                url : "{:url('Login/index')}",
                 async : true,
                 data : {
                     "username" : mobile,
@@ -79,7 +79,9 @@
                         if(data["code"] == 1){
                             setTimeout(function(){location.href = data['url']},1000);
                         }else{
-                            setTimeout(function(){location.href="{:__URL('APP_MAIN/member/index')}"},1000);
+                            setTimeout(function(){
+                            	window.location.href = "{:url('Member/index')}";
+                            },1000);
                         }
                     }else{
                         layer.msg(data["message"]);
