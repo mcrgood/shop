@@ -234,19 +234,24 @@ class Login extends Controller
             return $retval;
         }
         $this->getWchatBindMemberInfo();
-        if(session('user_name') ){
-            $this->redirect('Member/index');exit;
-        }
+
         // 没有登录首先要获取上一页
         $pre_url = '';
         $_SESSION['bund_pre_url'] = '';
-        if (! empty($_SERVER['HTTP_REFERER'])) {
+        if (! empty($_SERVER['HTTP_REFERER'])) {    
             $pre_url = $_SERVER['HTTP_REFERER'];
             if (strpos($pre_url, 'login')) {
                 $pre_url = '';
             }
-            $_SESSION['login_pre_url'] = $pre_url;
+            $_SESSION['login_pre_url'] = $pre_url;  //上一次浏览的页面
         }
+        if(session('user_name') && !$_SESSION['login_pre_url']){  //有session直接跳转
+            $redirect = __URL(__URL__ . "/wap/member/index");
+            $this->redirect($redirect);exit;
+        }elseif(session('user_name') && $_SESSION['login_pre_url']){
+            header("Location: ".$_SESSION['login_pre_url']);exit;  //跳转到上一次记录的页面
+        }
+
         $config = new WebConfig();
         $instanceid = 0;
         // 登录配置
