@@ -120,35 +120,20 @@ class Myhome extends Controller
             }
             return $retval;
         }
-        if(session('mobile') && session('mobile') == cookie('phone')){
-            $this->redirect(__URL__ . "/wap/myhome/yingshou");
+        if(session('mobile') ){
+            $this->redirect(__URL__ . "/wap/myhome/yingshou");exit;
         }
         $pre_url = '';
         $_SESSION['bund_pre_url'] = '';
         if (!empty($_SERVER['HTTP_REFERER'])) {
             $pre_url = $_SERVER['HTTP_REFERER'];
-            if (strpos($pre_url, 'register') || strpos($pre_url, 'findpasswd')) {
+            if (strpos($pre_url, 'register') || strpos($pre_url, 'findpasswd') || strpos($pre_url, 'login')) {
                 $pre_url = '';
             }
             $_SESSION['login_pre_url'] = $pre_url;
         }
         return view($this->style . 'Myhome/login');
     }
-    //通过银行卡找到所属银行名称
-    public function findbackname(){
-
-
-       $a = 95595;
-       $bankinfo = config('bankinfo');
-       if(in_array($a,$bankinfo['jiansheyh'])){
-            echo '建行';   //中国
-       }elseif(in_array($a,$bankinfo['zhongguoyh'])){
-            echo '中行';
-       }elseif(in_array($a,$bankinfo['nongyeyh'])){
-            echo '农业';
-       }
-    }
-
 
 
     /*
