@@ -7,6 +7,22 @@
 	#up-file1 p{line-height: 20px;}
 	#up-file1 span{color: #323232;font-size: 0.45rem;}
 	#up-file1 input::-webkit-input-placeholder { font-size:0.25rem;}
+    .form_1{width: 100%;height: auto;margin: auto;}
+    .form_1 p{height: 45px;line-height: 35px;display: block;width: 95%;border-bottom: 1px solid #dbdbdb;margin: 10px 0;font-size: .45rem;}
+    .form_1 input{
+        overflow: hidden;
+        white-space: nowrap;text-overflow: ellipsis;
+        outline: none;height: 30px;
+        line-height: 30px;
+        display:inline-block;font-size: 0.6rem;
+        width: 60%;
+        border:none !important;
+        padding-left: 10px;color: #a8a8a8;
+    }
+    #takepicture_1{width: 15%;height: 32px; margin-right: 5%;border:none; background: url(__INDEX__/images/camera_03.png) no-repeat;display: inline-block;float: right;outline: none;padding-left: 0px;}
+    #takepicture{width: 100% !important;height: 32px !important;border:none !important; background: url(__INDEX__/images/camera_03.png) no-repeat !important;display: inline-block !important;float: right !important;outline: none !important;padding-left: 0px !important;opacity: 0;}
+    .images{width: 100%;height: auto;text-align: center;}
+    #preview{max-width: 100%;height: auto;display: inline-block;margin:auto;}
 </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -93,139 +109,98 @@
 	<div class="up-file f-fl" id="up-file1">
 	<div class="container-fluid" id="con">
         <div class="row bg-fff  par-top-40 pad-right-15" id="bank_show1"  >
-    <table class="table">
-        <tr>
-            <td class="form_td border-none td_bot" >姓名</td><td class="border-none td_bot"><input type="text" class="form-control" id="uname" placeholder="请输入姓名" onfocus="if(this.placeholder=='请输入姓名'){this.placeholder='';}" onblur="if(this.placeholder==''){this.placeholder='请输入姓名';}"/></td>
-        </tr>
-        <tr>
-            <td class="form_td border-none td_bot">银行卡号</td><td class="border-none td_bot"><input type="text" id="kahao" class="form-control" placeholder="请输入银行卡号" onfocus="if(this.placeholder=='请输入银行卡号'){this.placeholder='';}" onblur="if(this.placeholder==''){this.placeholder='请输入银行卡号';}"/></td>
-        </tr>
-        <tr>
-            <td class="form_td border-none td_bot">选择银行</td>
-            <td class="border-none td_bot">
-                <div class="position-rel">
-                    <div class="position-rel">
-                        <input type="text" id="chose_input"   class="form-control" id="bank" placeholder="--银行--"/>
-                        <div class="bank_xljt"><img class="jt_xz" width="20" src="__INDEX__/images/jtx.png" alt=""/></div>
-                        <div id="chose_bank" class="bank_xljt1"></div>
-                    </div>
-                    <div class="bank_xl" style="display: none">
-                        <ul>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="中国农业银行">
-                                    中国农业银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="中国建设银行">
-                                    中国建设银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="中国工商银行">
-                                    中国工商银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="交通银行">
-                                    交通银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="中国邮政储蓄银行">
-                                    中国邮政储蓄银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="中国银行">
-                                    中国银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="中国光大银行">
-                                    中国光大银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="招商银行">
-                                    招商银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="浦发银行">
-                                    浦发银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="中信银行">
-                                    中信银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="华夏银行">
-                                    华夏银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="中国民生银行">
-                                    中国民生银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="广发银行">
-                                    广发银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="平安银行">
-                                    平安银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="兴业银行">
-                                    兴业银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="恒丰银行">
-                                    恒丰银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="浙商银行">
-                                    浙商银行
-                                </a>
-                            </li>
-                            <li class="hotBank-list">
-                                <a href="javascript:" class="hotBank-list-ico "  title="渤海银行">
-                                    渤海银行
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-           </td>
-        </tr>
-    </table>
+    <div class="form_1">
+        <p>持卡人：<input name="userName" type="text" id="txtUserName"size="15" placeholder="持卡人姓名"  placeholder="持卡人姓名" onfocus="if (placeholder =='持卡人'){placeholder =''}" onblur="if (placeholder ==''){placeholder='持卡人姓名'}"/></p>
+        <p>卡 &nbsp 号：<input name="kahao" type="number"  id="cardnum"   size="15" placeholder="请输入银行卡号" onfocus="if (placeholder =='请输入银行卡号'){placeholder =''}" onblur="checkCard()"/>
+        <span id="takepicture_1">
+        <input class="btn" id="takepicture" type="file" onchange="javascript:setImagePreview();"/></span>
+        </p>
+        <div class="images" id="localImag">
+            <img id="preview" width="-1" height="-1" style="display: none" />
+        </div>
+        <p>卡类型：<input name="type" style="font-size:0.5rem;width:68%;" type="text" id="cardtype" size="15" placeholder="银行卡类型" onfocus="if (placeholder =='银行卡类型'){placeholder =''}" onblur="if (placeholder ==''){placeholder='银行卡类型'}"/></p>
+        <p>手机号：<input name="telnumber" type="number" id="tel"size="15" placeholder="请输入预留手机号码" onfocus="if (placeholder =='请输入预留手机号码'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入预留手机号码'}"/></p>
+    </div>
 </div>
-<script>
-$(function(){
-
-//        下拉银行卡
-
-    $(".hotBank-list-ico").bind('click',function(){
-       $('#chose_input').val($(this).attr('title'));
-        $('.bank_xl').hide();
-        $("#chose_bank").parent('div').find('a').addClass('jt_xz');
-    });
-    $("#chose_bank").click(function(){
-        $('.bank_xl').show();
-        $("#chose_bank").parent('div').find('a').removeClass('jt_xz');
-    });
-//        下拉银行卡
-
-})
+ <script type="text/javascript">
+         function setImagePreview() {  
+            var preview, img_txt, localImag, takepicture = document.getElementById("takepicture"),  
+            picture = takepicture.value;  
+            if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return alert("您上传的图片格式不正确，请重新选择！"),  
+            !1;  
+            if (preview = document.getElementById("preview"), takepicture.files && takepicture.files[0]) preview.style.display = "block",  
+                preview.style.width = "200px",  
+                preview.style.height = "150px",  
+                preview.src = window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1 ? window.URL.createObjectURL(takepicture.files[0]) : window.URL.createObjectURL(takepicture.files[0]);  
+            else {  
+                takepicture.select(),  
+                takepicture.blur(),  
+                img_txt = document.selection.createRange().text,  
+                localImag = document.getElementById("localImag"),  
+                localImag.style.width = "200px",  
+                localImag.style.height = "150px";  
+                try {  
+                    localImag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",  
+                    localImag.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt  
+                } catch(f) {  
+                    return alert("您上传的图片格式不正确，请重新选择！"),  
+                    !1  
+                }  
+                preview.style.display = "none",  
+                document.selection.empty()  
+            }  
+             
+        }  
 </script>
+   <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit_1").click(function () {
+                var username = $('#txtUserName').val();
+                var kahao = $('#cardnum').val();
+                var phone = $('#tel').val();
+                var strBin="10,18,30,35,37,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,58,60,62,65,68,69,84,87,88,94,95,98,99";   
+                var Mobile = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+                var pic = $("#preview")[0].src;
+                if(username === ''){
+                    alert("请输入持卡人姓名");
+                    return false;
+                }else if(kahao === '' && pic === ''){
+                    alert("请输入银行卡号");
+                    return false;
+                }else if(phone === ''){
+                    alert("预留手机号码不能为空");
+                    return false;
+                }else if(!username.match( /^[\u4E00-\u9FA5]{1,}$/)){
+                    alert("请填写正确的姓名");
+                    return false;
+                }else if(kahao =="" || kahao.length < 16 || kahao.length > 19){
+                    alert("银行卡号数必须在16到19之间");
+                    return false;
+                }else if(strBin.indexOf(kahao.substring(0, 2))== -1){
+                    alert("银行卡号开头6位不符合规范");
+                    return false;
+                }else if(!Mobile.test(phone)){
+                    alert("请输入有效的手机号码!");
+                }else{
+                    return true;
+          }
+       });  
+});
+
+    function checkCard(){
+        var cardNum = $('#cardnum').val();
+        var url = "{:url('Myhome/checkCards')}";
+    var datas = {cardNum:cardNum};
+        $.post(url,datas,function(res){
+            if(res){
+              $('#cardtype').empty().val(res);
+            }
+        },'json')
+
+
+    }
+
+    </script>
 </div>
 <div style="width:100%;margin: 10px auto;font-size: .45rem;">银行卡</div>
 		<label>
@@ -237,20 +212,6 @@ $(function(){
 			<input class="up-fileh error" name="thumb_yhk2" onchange="" type="text" id="thumb_yhk2" onclick="wximg('thumb_yhk2')">
 		</label>
 	</div>
-    <script>
-$(function(){
-//        下拉银行卡
-    $(".hotBank-list-ico").bind('click',function(){
-       $('#chose_input').val($(this).attr('title'));
-        $('.bank_xl').hide();
-        $("#chose_bank").parent('div').find('a').addClass('jt_xz');
-    });
-    $("#chose_bank").click(function(){
-        $('.bank_xl').show();
-        $("#chose_bank").parent('div').find('a').removeClass('jt_xz');
-    });
-})
-</script>
 	<div class="kong"></div>
 	<div class="intake-img">
 		<div class="intake-title1">商家介绍</div>
@@ -264,7 +225,7 @@ $(function(){
 		<input type="hidden" name="shi" id="shi">
 		<input type="hidden" name="jingdu" id="jingdu">
 		<input type="hidden" name="weidu" id="weidu">
-		<input type="submit" value="提交申请" class="shops-center_a" style="margin-top:.2rem" />
+		<input type="submit" value="提交申请" id="submit_1" class="shops-center_a" style="margin-top:.2rem" />
 	</div>
 	<div class="shangjia">
 		<span class="shangjia-close">x</span>
@@ -568,33 +529,6 @@ $(function(){
             alert('请上法人反面照片');
 
             $("#thumb_fanmian").focus();
-
-            return false;
-
-        }
-        if ($("#uname").val()=='') {
-
-            alert('请银行卡姓名');
-
-            $("#uname").focus();
-
-            return false;
-
-        }
-        if ($("#kahao").val()=='') {
-
-            alert('请输入银行卡号');
-
-            $("#kahao").focus();
-
-            return false;
-
-        }
-        if ($("#bank").val()=='') {
-
-            alert('请选择银行');
-
-            $("#bank").focus();
 
             return false;
 

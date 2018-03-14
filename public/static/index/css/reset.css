@@ -97,3 +97,4 @@ a:active {star:expression(this.onFocus=this.blur());}
 .chk_1:checked+label {background:url(../images/check2.png) center no-repeat; background-size:100% 100%;}
 
 .chk_1:radio+label {background:url(../images/check1.png) center no-repeat; background-size:100% 100%;}
+
