@@ -12,7 +12,20 @@
 </head>
 
 <body>
-<style type="text/css">iframe{display: block}</style>
+<style type="text/css">iframe{display: block}
+    #mylabel{
+    display: block;
+    background-color: #f4f4f4;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 15px;
+    right: 120px;
+    border-radius: 35px;
+    text-align: center;
+    color: #fff;
+    }
+</style>
 <div class="top-kong"></div>
 <div class="top">
 
@@ -161,8 +174,17 @@
 <div class="foot">
     <a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Indexx') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
     <a href="{:url('myhome/gonggao')}" {if condition="($Request.action eq 'gonggao') and ($Request.controller eq 'Myhome')"}class="foot_a1 on"{else}class="foot_a1 "{/if}>公告</a>
-    <a href="{:url('myhome/login')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>商家登录</a>
+    <a href="{:url('myhome/login')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>商家登录{if $count neq 0}<label id="mylabel"></label>{/if}</a>
 </div>
+    <!--jq接到消息时在我的上面加标记-->
+    <script type="text/javascript">
+    $(document).ready(function(){
+    var mylaebl = $('#mylabel');
+    if(mylaebl.html().length > 0) { //判断DIV下的html文本长度，如果大于0则表示有内容
+        mylaebl.css({'background-color':'#ec4d4d'});//设置div背景色为红色
+    }
+});
+    </script>
 <div class="foot_kong"></div>
 <script src="__INDEX__/js/js.js"></script>
 </body>
