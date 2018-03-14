@@ -38,7 +38,7 @@ class Articlecenter extends BaseController
         $document_id = request()->post('id', '');
         $article = new Article();
         $platform_help_class = $article->getArticleClassQuery();
-        $this->assign('platform_help_class', $platform_help_class); // 文章一级分类列表
+        $this->assign('platform_help_class', $platform_help_class['data']); // 文章一级分类列表
         
 //         if (empty($document_id)) {
 //             $help_document_info = array(
