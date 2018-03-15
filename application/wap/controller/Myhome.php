@@ -88,6 +88,9 @@ class Myhome extends Controller
     //商家登录
     public function login()
     {
+        $city_id = '124';  //城市ID
+        $city_num = db('sys_city')->where('city_id',$city_id)->value('city_num');  //通过城市ID查询出区号
+        $rand = getRandNum();    //获取随机12位数字
         if (request()->isAjax()) {
             $password = request()->post('password', '');
             $mobile = request()->post('mobile', '');
@@ -99,10 +102,15 @@ class Myhome extends Controller
                 Session::set('mobile', $info['iphone']);
                 cookie('phone',$info['iphone'],3600*24*30);
                 cookie('password',$password,3600*24*30);
-                $url = __URL('wap/myhome/pay?id=' . $info['id']);
-                $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $info['id']);
-                $this->create($url, $shop_qrcode,"1234 4514 2344 5114");
-                db('ns_shop_message')->where(array("userid" => $info['id']))->update(array("shop_qrcode" => $shop_qrcode));
+
+                //查询该商户是否有二维码，如果没有就自动生成
+                $qrcode = db('ns_shop_message')->where(array("userid" => $info['id']))->value('shop_qrcode');
+                if(!$qrcode){
+                    $url = __URL('wap/myhome/pay?id=' . $info['id']);
+                    $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $info['id']);
+                    $this->create($url, $shop_qrcode, "   NO.0791".$rand);
+                    db('ns_shop_message')->where(array("userid" => $info['id']))->update(array("shop_qrcode" => $shop_qrcode));
+                }
                 if (!empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,
@@ -145,6 +153,7 @@ class Myhome extends Controller
         echo "支付接入";
 
     }
+    //生成二维码
     public function create($string='',$filename='',$extinfo='')
     {
         if(!$string || !$filename){

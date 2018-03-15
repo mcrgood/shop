@@ -10,7 +10,7 @@
     <style>
         *{margin: 0;padding: 0;}
         .test{width: 100%;height: auto;margin: auto;position: fixed;}
-        .test img{max-width: 100%;height: auto;}
+        .test .images{max-width: 100%;height: auto;}
         .erweimabox{width: 100%;height: auto;position: absolute;z-index: 3;top: 35%;}
         .erweima{width: 65%;margin: 0 auto;height: 15rem;}
         .erweima img{width: 100%;max-height: 100%;display: block;}
@@ -36,10 +36,10 @@
 </head>
 <body>
 <div class="test">
-    <img src="__INDEX__/images/beijing.png?version=1.0" />
+    <img src="__INDEX__/images/beijing.png?version=1.0" class="images"/>
     <div class="erweimabox">
         <div class="erweima">
-            <img src="/{$qrcode}" id="DemoImg" border="0">
+            <img src="/{$qrcode}" id="DemoImg" border="0" />
         </div>
         <div class="pic">
             <button onclick="SaveAs5(this.src)">保存图片</button>

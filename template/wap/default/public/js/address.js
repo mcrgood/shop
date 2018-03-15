@@ -43,7 +43,7 @@
 }
 
 function Check_Consignee() {
-	var reg = /^1[34578]\d{9}$/;
+	var reg = /^1[3456789]\d{9}$/;
 	if ($("#Name").val() == "") {
 		showBox("姓名不能为空");
 		$("#Name").focus();
