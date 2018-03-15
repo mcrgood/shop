@@ -26,7 +26,9 @@
 </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <title>商家入驻-{$confres.sitename}</title>
+<link rel="stylesheet" type="text/css" href="__TEMP__/{$style}/public/css/member_address.css">
 <link href="__INDEX__/css/main.css" rel="stylesheet" />
 <link href="__INDEX__/css/reset.css" rel="stylesheet" />
 <link href="__INDEX__/css/xiala.css" rel="stylesheet">
@@ -82,7 +84,7 @@
         </tr>
 
 		<tr>
-			<td><span>*</span>详细地址</td><td><input type="text" placeholder="请输入详细店铺地址" name="address" id="address"/></td>
+			<td><span>*</span>详细地址</td><td><input type="text" placeholder="请输入店铺详细街道门牌号" name="address" id="address"/></td>
 		</tr>
     		<tr>
     			<td colspan="2"><div style=" width:100%; height:6rem;" id="allmap"></div></td>
@@ -174,6 +176,105 @@
         }  
 </script>
    <script type="text/javascript">
+          // 选择省份弹出市区
+        function GetProvince() {
+            var id = $("#seleAreaNext").find("option:selected").val();
+            var selCity = $("#seleAreaThird")[0];
+            for (var i = selCity.length - 1; i >= 0; i--) {
+                selCity.options[i] = null;
+            }
+            
+            var opt = new Option("请选择市", "-1");
+            selCity.options.add(opt);
+            $.ajax({
+                type : "post",
+                url : "{:__URL('APP_MAIN/index/getcity')}",
+                dataType : "json",
+                data : {
+                    "province_id" : id
+                },
+                success : function(data) {
+                    if (data != null && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var opt = new Option(data[i].city_name,data[i].city_id);
+                            selCity.options.add(opt);
+                        }
+                        if(typeof($("#cityid").val())!='undefined'){
+                            $("#seleAreaThird").val($("#cityid").val());
+                            getSelCity();
+                            $("#cityid").val('-1');
+                        }
+                    }
+                }
+            });
+        };  
+
+
+          // 选择市区弹出区域
+        function getSelCity() {
+            var id = $("#seleAreaThird").find("option:selected").val();
+            var selArea = $("#seleAreaFouth")[0];
+            for (var i = selArea.length - 1; i >= 0; i--) {
+                selArea.options[i] = null;
+            }
+            var opt = new Option("请选择区/县", "-1");
+            selArea.options.add(opt);
+            $.ajax({
+                type : "post",
+                url : "{:__URL('APP_MAIN/index/getDistrict')}",
+                dataType : "json",
+                data : {
+                    "city_id" : id
+                },
+                success : function(data) {
+                    if (data != null && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var opt = new Option(data[i].district_name,data[i].district_id);
+                            selArea.options.add(opt);
+                        }
+                        if(typeof($("#districtid").val())!='undefined'){
+                            $("#seleAreaFouth").val($("#districtid").val());
+                            $("#districtid").val('-1');
+                        }
+                        
+                    }
+                }
+            });
+        }
+
+
+
+        $(function() {
+            var selCity = $("#seleAreaNext")[0];
+            for (var i = selCity.length - 1; i >= 0; i--) {
+                selCity.options[i] = null;
+            }
+            var opt = new Option("请选择省", "-1");
+            selCity.options.add(opt);
+            // 添加省
+            $.ajax({
+                type : "post",
+                url : "{:__URL('APP_MAIN/index/getprovince')}",
+                dataType : "json",
+                success : function(data) {
+                    if (data != null && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var opt = new Option(data[i].province_name,
+                                    data[i].province_id);
+                            selCity.options.add(opt);
+                        }
+                        if(typeof($("#provinceid").val())!='undefined'){
+                            $("#seleAreaNext").val($("#provinceid").val());
+                            GetProvince();
+                            $("#provinceid").val('-1');
+                        }
+                    }
+                }
+            });
+        });
+
+
+
         $(document).ready(function () {
             $("#submit_1").click(function () {
                 var username = $('#txtUserName').val();

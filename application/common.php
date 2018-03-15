@@ -301,7 +301,7 @@ function getQRcode($url, $path, $qrcode_name)
     return $path;
 }
 /**
- * 获取商铺式
+ * 获取商铺式(生成二维码)
  *
  * @param unknown $url
  * @param unknown $path
@@ -4165,4 +4165,49 @@ function find_bank_card($cardNum = '')
     }
     return $info;
 }
+
+/**
+ * 
+ * 生成12位数字随机码
+ * @param $num
+ * @return $tempStr
+ */
+function getRandNum($num = 12){
+    $arr = [0,1,2,3,4,5,6,7,8,9];
+    $tempStr = '';
+    for($i = 0;$i < $num;$i++){
+        $key = rand(0,9);
+        $tempStr .= $arr[$key];
+    }
+    return $tempStr;
+}
+
+
+/**
+ * 根据城市名称获取对应区号
+ * @param $city
+ */
+function getAreaNum($cityName){
+    $cityArr = [
+        '新余市' =>0790,
+        '南昌市' =>0791,
+        '九江市' =>0792,
+        '上饶市' =>0793,
+        '临川市' =>0794,
+        '宜春市' =>0795,
+        '吉安市' =>0796,
+        '赣州市' =>0797,
+        '景德镇' =>0798,
+        '萍乡市' =>0799,
+        '鹰潭市' =>0701
+    ];
+    if(isset($cityArr[$cityName])){
+        return $cityArr[$cityName];
+    }else{
+        return '9999';
+    }
+}
+
+
+
 
