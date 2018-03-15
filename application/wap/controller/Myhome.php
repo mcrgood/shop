@@ -106,10 +106,13 @@ class Myhome extends Controller
                 //查询该商户是否有二维码，如果没有就自动生成
                 $qrcode = db('ns_shop_message')->where(array("userid" => $info['id']))->value('shop_qrcode');
                 if(!$qrcode){
+                    $shop_qrcode_num = '0791'.$rand;
                     $url = __URL('wap/myhome/pay?id=' . $info['id']);
                     $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $info['id']);
-                    $this->create($url, $shop_qrcode, "   NO.0791".$rand);
-                    db('ns_shop_message')->where(array("userid" => $info['id']))->update(array("shop_qrcode" => $shop_qrcode));
+                    $this->create($url, $shop_qrcode,"    NO.".$shop_qrcode_num);
+                    $data['shop_qrcode'] = $shop_qrcode;
+                    $data['shop_qrcode_num'] = $shop_qrcode_num;
+                    db('ns_shop_message')->where(array("userid" => $info['id']))->update($data);
                 }
                 if (!empty($_SESSION['login_pre_url'])) {
                     $retval = [
@@ -466,8 +469,8 @@ class Myhome extends Controller
     //商家申请
 	public function shenqing(){
 
-        if(request()->isPost()){
             $business_id = Session::get('business_id');
+        if(request()->isPost()){
             //检测商户
             $where['userid'] = array('eq',$business_id);
             $result = db("ns_shop_message")->where($where)->find();
@@ -484,14 +487,16 @@ class Myhome extends Controller
             $thumb_fanmian = input('post.thumb_fanmian');
             $yhk_name = input('post.yhk_name');
             $yhk_num = input('post.yhk_num');
-            $yhk_address = input('post.yhk_address');
-            $bank = input('post.bank');
+            $sheng = input('post.sheng');
+            $shi = input('post.shi');
+            $area = input('post.area');
+            $yhk_type = input('post.yhk_type');
+            $bank_phone = input('post.bank_phone');
             $thumb_yhk1 = input('post.thumb_yhk1');
             $thumb_yhk2 = input('post.thumb_yhk2');
-            $sheng = input('sheng');
-            $shi = input('shi');
             $jingdu = input('jingdu');
             $weidu = input('weidu');
+            $business_hours = input('post.business_hours');
             $content = input('post.content');
             $data['userid'] = $business_id;
             $data['leixing'] = $leixing;
@@ -504,8 +509,12 @@ class Myhome extends Controller
             $data['thumb_fanmian'] = $thumb_fanmian;
             $data['yhk_name'] = $yhk_name;
             $data['yhk_num'] = $yhk_num;
+            $data['sheng'] = $sheng;
+            $data['shi'] = $shi;
+            $data['area'] = $area;
+            $data['yhk_type'] = $yhk_type;
             $data['yhk_address'] = $yhk_address;
-            $data['bank'] = $bank;
+            $data['bank_phone'] = $bank_phone;
             $data['thumb_yhk1'] = $thumb_yhk1;
             $data['thumb_yhk2'] = $thumb_yhk2;
             $data['content'] = $content;
@@ -513,12 +522,20 @@ class Myhome extends Controller
             $data['shi'] = $shi;
             $data['jingdu'] = $jingdu;
             $data['weidu'] = $weidu;
+            $data['state'] = 0;
             $data['business_hours'] = $business_hours;
-            $id = db('ns_shop_message')->insert($data);
-            $url = __URL('wap/myhome/pay?id='.$id);
-            $shop_qrcode = getQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $id);
+            $id = db('ns_shop_message')->insertGetId($data);
+            
+            //当商家新增成功后，自动生成唯一的二维码
             if($id){
-                db('ns_shop_message')->where(array("id"=>$id))->update(array("shop_qrcode"=>$shop_qrcode));
+                $rand = getRandNum();    //获取随机12位数字
+                $url = __URL('wap/myhome/pay?id='.$business_id);
+                $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $business_id);
+                $shop_qrcode_num = '0791'.$rand;
+                $this->create($url, $shop_qrcode,"    NO.".$shop_qrcode_num);
+                $infos['shop_qrcode'] = $shop_qrcode;
+                $infos['shop_qrcode_num'] = $shop_qrcode_num;
+                db('ns_shop_message')->where(array("id"=>$id))->update($infos);
                 $this->success('申请成功，请等待审核！',__URL('wap/myhome/yingshou'));
             }else{
                 $this->error('申请失败！');
@@ -676,9 +693,9 @@ class Myhome extends Controller
         $id = request()->get('id', 0);
         if(!$id)
             $this->error('参数错误');
-        $condition['id'] = $id;
-        $condition['userid'] = $this->business_id;
-        if(request()->isPost()){
+            $condition['id'] = $id;
+            $condition['userid'] = $this->business_id;
+            if(request()->isPost()){
             //检测商户
             $result = db("ns_shop_message")->where($condition)->find();
             if(!$result){
@@ -694,16 +711,17 @@ class Myhome extends Controller
             $thumb_fanmian = input('post.thumb_fanmian');
             $yhk_name = input('post.yhk_name');
             $yhk_num = input('post.yhk_num');
-            $yhk_address = input('post.yhk_address');
-            $bank = input('post.bank');
+            $sheng = input('post.sheng');
+            $shi = input('post.shi');
+            $area = input('post.area');
+            $yhk_type = input('post.yhk_type');
+            $bank_phone = input('post.bank_phone');
             $thumb_yhk1 = input('post.thumb_yhk1');
             $thumb_yhk2 = input('post.thumb_yhk2');
-            $sheng = input('sheng');
-            $shi = input('shi');
             $jingdu = input('jingdu');
             $weidu = input('weidu');
-            $content = input('post.content');
             $business_hours = input('post.business_hours');
+            $content = input('post.content');
             $data['leixing'] = $leixing;
             $data['names'] = $names;
             $data['address'] = $address;
@@ -714,8 +732,12 @@ class Myhome extends Controller
             $data['thumb_fanmian'] = $thumb_fanmian;
             $data['yhk_name'] = $yhk_name;
             $data['yhk_num'] = $yhk_num;
+            $data['sheng'] = $sheng;
+            $data['shi'] = $shi;
+            $data['area'] = $area;
+            $data['yhk_type'] = $yhk_type;
             $data['yhk_address'] = $yhk_address;
-            $data['bank'] = $bank;
+            $data['bank_phone'] = $bank_phone;
             $data['thumb_yhk1'] = $thumb_yhk1;
             $data['thumb_yhk2'] = $thumb_yhk2;
             $data['content'] = $content;
@@ -734,7 +756,14 @@ class Myhome extends Controller
             }
         }
 
-        $shopinfo = db("ns_shop_message")->where($condition)->find();
+        $shopinfo = db("ns_shop_message")
+        ->alias('s')
+        ->field('p.province_name,c.city_name,d.district_name,s.*')
+        ->join('sys_province p','p.province_id=s.sheng','left')
+        ->join('sys_city c','c.city_id=s.shi','left')
+        ->join('sys_district d','d.district_id=s.area','left')
+        ->where($condition)->find();
+        // dump($shopinfo);die;
         if(!$shopinfo)
             $this->error('没有查找到相关信息！');
         $this->assign('shopinfo', $shopinfo);

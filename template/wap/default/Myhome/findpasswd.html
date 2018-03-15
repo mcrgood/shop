@@ -102,7 +102,7 @@
             if(mobile == ''){
                 layer.msg("{:lang('phone_number_cannot_empty')}");
                 return false;
-            } else if(!(/^1[34578]\d{9}$/.test(mobile))){
+            } else if(!(/^1[3456789]\d{9}$/.test(mobile))){
                 layer.msg("{:lang('mobile_phone_number_is_wrong')}");
                 return false;
             }
@@ -218,7 +218,7 @@
                 var mobile = $("#mobile").val();
                 var vertification = $("#captcha").val();
                 //验证手机号格式是否正确
-                if(mobile.search(/^1[34578]\d{9}$/) == -1){
+                if(mobile.search(/^1[3456789]\d{9}$/) == -1){
                     $("#mobile").trigger("focus");
                     layer.msg("{:lang('mobile_phone_number_is_wrong')}");
                     return false;
