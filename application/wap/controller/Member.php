@@ -31,7 +31,7 @@ use data\service\Weixin;
 use think\Request;
 use think;
 use think\Session;
-
+header("content-type:text/html; charset=utf-8");
 /**
  * 会员
  *
@@ -44,6 +44,9 @@ class Member extends BaseController
     public $notice;
 
     public $login_verify_code;
+
+    private  $font = "data/font/simhei.ttf";
+    private $fontsize = 16;
 
     public function __construct()
     {
@@ -87,6 +90,14 @@ class Member extends BaseController
      */
     public function index()
     {
+        $user_name = session('user_name');
+        $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode');
+        if(!$user_qrcode){
+            $url = __URL('wap/login/index?referee_phone=' . $user_name);
+            $user_qrcode_img = getShopQRcode($url, 'upload/user_qrcode', 'user_qrcode_' . $user_name);
+            $this->create($url, $user_qrcode_img, '       客旺旺会员推广码');
+            db('sys_user')->where('user_name',$user_name)->update(['user_qrcode' => $user_qrcode_img]);
+        }
         switch (NS_VERSION) {
             case 'NS_VER_B2C':
                 $retval = $this->memberIndex(); // 单店B2C版
@@ -916,21 +927,24 @@ class Member extends BaseController
     }
 
     /**
-     * 获取微信推广二维码
+     * 获取客旺旺会员推广二维码
      */
     public function getWchatQrcode()
     {
         // 获取微信配置
-        $config = new Config();
-        $auth_info = $config->getInstanceWchatConfig($this->instance_id);
-        if (! isWeixin()) {
-            $this->assign("is_weixin", - 1);
-        } else 
-            if ($auth_info['value']['appid'] == '') {
-                $this->assign("is_weixin", 0);
-            } else {
-                $this->assign("is_weixin", 1);
-            }
+        // $config = new Config();
+        // $auth_info = $config->getInstanceWchatConfig($this->instance_id);
+        // if (! isWeixin()) {
+        //     $this->assign("is_weixin", - 1);
+        // } else 
+        //     if ($auth_info['value']['appid'] == '') {
+        //         $this->assign("is_weixin", 0);
+        //     } else {
+        //     }
+        $user_name = session('user_name');
+        $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode');
+        $this->assign("is_weixin", 1);
+        $this->assign("user_qrcode", $user_qrcode);
         $uid = $this->user->getSessionUid();
         $instance_id = $this->instance_id;
         $this->assign("shop_id", $instance_id);
@@ -1461,4 +1475,44 @@ class Member extends BaseController
             return AjaxReturn($result);
         }
     }
+
+       //生成二维码
+    public function create($string='',$filename='',$extinfo='')
+    {
+        if(!$string || !$filename){
+            return false;
+        }
+        $tmpfile = $filename;
+        if(!file_exists($tmpfile)){
+            return false;
+        }
+        $QR = imagecreatefromstring(file_get_contents($tmpfile));
+        $QR_width = imagesx($QR);
+        $QR_height = imagesy($QR);
+        if(!$extinfo){
+            imagepng($QR,$filename);
+            @unlink($tmpfile);
+            return true;
+        }
+        @unlink($tmpfile);
+        imagepng($QR,$tmpfile);
+        unset($QR);
+        $QR = imagecreate($QR_width,($QR_height + 30));
+        $white = imagecolorallocate($QR, 255, 255, 255);
+        $black = imagecolorallocate($QR,0,0,0);
+        imagefilledrectangle($QR, 0, 0,$QR_width,($QR_height + 30), $white);
+
+        $qrimg = imagecreatefromstring(file_get_contents($tmpfile));
+        imagecopyresampled($QR,$qrimg,0,0,0,0,$QR_width,$QR_height,$QR_width,$QR_height);
+        if($this->font && function_exists('imagettftext')){
+            imagettftext($QR, $this->fontsize, 0, 21, ($QR_height+10), $black, $this->font, $extinfo);
+        }else{
+            imagestring($QR,5,21,($QR_height + 10),$extinfo,$black);
+        }
+        imagepng($QR,$filename);
+        //@unlink($tmpfile);
+        return true;
+    }
+
+
 }
