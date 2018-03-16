@@ -403,6 +403,7 @@
                 
                 if(username === ''){
                     alert("请输入持卡人姓名");
+                    $('#txtUserName').focus();
                     return false;
                 }else if(kahao === '' && pic === ''){
                     alert("请输入银行卡号");
@@ -422,6 +423,15 @@
                 }else if(!regs.test(telephone)){
                     alert("请输入有效的手机号码!");
                 }
+                // if($('#thumb_yhk1').val() == ''){
+                //     alert("请上传银行卡正面照片");
+                //     return false;
+                // }
+                if($('#thumb_yhk2').val() == ''){
+                    alert("请上传银行卡反面照片");
+                    return false;
+                }
+
                 if($("input[type='checkbox']").is(':checked')) {
                     return true;
                 }else{

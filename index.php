@@ -18,6 +18,8 @@
 if (version_compare(PHP_VERSION, '5.4.0', '<'))
     die('require PHP > 5.4.0 !');
 
+header("content-type:text/html; charset=utf-8");
+
 // 发布代码的时候把下面的代码放开 2017年5月12日 09:29:16
  if (! file_exists('./install.lock')) {
      header('location: ./install.php');

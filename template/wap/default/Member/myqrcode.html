@@ -24,10 +24,10 @@
 <section class="head">
 	<a  id="backoutapp" class="head_back" href="javascript:window.history.go(-1)"><i class="icon-back"></i></a>
 	<div class="head-title">{:lang('extended_two_dimensional_code')}</div>
-	<a class="head_right"  style="right:0;" href="{:__URL('APP_MAIN/member/updateuserqrcodetemplate?shop_id='.$shop_id)}">
+	<!-- <a class="head_right"  style="right:0;" href="{:__URL('APP_MAIN/member/updateuserqrcodetemplate?shop_id='.$shop_id)}">
 		<img src="__TEMP__/{$style}/public/images/change.png"/>
 		{:lang('replace')}
-		</a>
+		</a> -->
 </section>
 {/block} {block name="main"}
 {if condition="$is_weixin == -1"}
@@ -35,7 +35,7 @@
 {elseif condition="$is_weixin == 0"/}
 <div class="is_weiin"> <img src="__TEMP__/{$style}/public/images/is_weixin.png"/><p>{:lang('public_number_is_not_set_at_this_time')}</p></div>
 {else /}
-<image class="shop-qrcode"src="{:__URL('APP_MAIN/Member/showUserQrcode?shop_id='.$shop_id)}" style="display:block;width:100%;margin-top:45px;">
+<image class="shop-qrcode"src="{$user_qrcode}" style="display:block;width:100%;margin-top:45px;">
 {/if}  
 {include file='wap/default/share'/}
 {/block}
@@ -44,21 +44,21 @@
 <script type="text/javascript">
 $(function(){
 	//$(".shop-qrcode").height($(window).height()-45);
-	$.ajax({
-		type:"post",
-		data : {"shop_id" : "{$shop_id}" , "flag" : "qrcode_my"},
-		url : "{:__URL('APP_MAIN/member/getShareContents')}",
-		success : function(data){
-			//alert(JSON.stringify(data));
-			//document.write(data.share_img);
-			$("#share_title").val(data['share_title']);
-			$("#share_desc").val(data['share_contents']);
-			$("#share_url").val(data['share_url']);
-			$("#share_img_url").val(data['share_img']);
-			{include file='wap/default/shareContents'/}
+	// $.ajax({
+	// 	type:"post",
+	// 	data : {"shop_id" : "{$shop_id}" , "flag" : "qrcode_my"},
+	// 	url : "{:__URL('APP_MAIN/member/getShareContents')}",
+	// 	success : function(data){
+	// 		//alert(JSON.stringify(data));
+	// 		//document.write(data.share_img);
+	// 		$("#share_title").val(data['share_title']);
+	// 		$("#share_desc").val(data['share_contents']);
+	// 		$("#share_url").val(data['share_url']);
+	// 		$("#share_img_url").val(data['share_img']);
+	// 		{include file='wap/default/shareContents'/}
 
-		}
-	});
+	// 	}
+	// });
 })
 //app端返回值
 $("#backoutapp").click(function(){
