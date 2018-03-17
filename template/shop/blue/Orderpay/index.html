@@ -1,14 +1,10 @@
-<?php
-require_once ("IpsPay.Config.php");
- 
-?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>订单支付</title>
-<link href="source/demostyle.css" rel="stylesheet" />
+<link href="__TEMP__/{$style}/public/css/demostyle.css" rel="stylesheet" />
 </head>
 <body>
 	<div class="header">
@@ -25,14 +21,14 @@ require_once ("IpsPay.Config.php");
 		<div class="nav_box">
 			<div class="nav_main">
 				<div class="logo">
-					<a href="http://www.ips.com/"> <img src="source/logo2.jpg"
+					<a href="http://www.ips.com/"> <img src="__TEMP__/{$style}/public/images/logo2.jpg"
 						style="margin-top: -3px;" height="62" width="238">
 					</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<form action="ipspayapi.php" method="post" target="_blank">
+	<form action="{:url('Orderpay/IpsPayApi')}" method="post" target="_blank">
 		<div class="warp main1"></div>
 		<div class="pay-demo">
 			<span style="font-size: 22px; font-weight: bold;">订单支付</span>
@@ -42,13 +38,13 @@ require_once ("IpsPay.Config.php");
 						<tr>
 							<td style="text-align: right;"><span>商户号:</span></td>
 							<td style="text-align: left;"><input type="text" name="InMerCode"
-								id="InMerCode" value="<?php echo $ipspay_config['MerCode'];?>">
+								id="InMerCode" value="{$order_pay_data['MerCode']}">
 								<span style="color: red">*</span></td>
 						</tr>
 						<tr>
 							<td style="text-align: right;"><span>交易账户号:</span></td>
 							<td style="text-align: left;"><input type="text" name="InAccount"
-								id="InAccount" value="<?php echo $ipspay_config['Account'];?>">
+								id="InAccount" value="{$order_pay_data['Account']}">
 								<span style="color: red">*</span></td>
 						</tr>
 						<tr>
@@ -59,7 +55,7 @@ require_once ("IpsPay.Config.php");
 						<tr>
 							<td style="text-align: right;"><span>版本号:</span></td>
 							<td style="text-align: left;"><input type="text" name="InVersion"
-								id="InVersion" value="<?php echo $ipspay_config['Version'];?>"></td>
+								id="InVersion" value="{$order_pay_data['Version']}"></td>
 						</tr>
 						<tr>
 							<td style="text-align: right;"><span>商户订单号:</span></td>
@@ -90,7 +86,7 @@ require_once ("IpsPay.Config.php");
 							<td style="text-align: right;"><span>支付结果成功返回的商户URL:</span></td>
 							<td style="text-align: left;"><input type="text"
 								name="InReturnUrl" id="InReturnUrl"
-								value="<?php echo $ipspay_config['return_url'];?>" style="width:260px"> <span
+								value="{$order_pay_data['return_url']}" style="width:260px"> <span
 								style="color: red">*</span></td>
 						</tr>
 						<tr>
@@ -114,7 +110,7 @@ require_once ("IpsPay.Config.php");
 							<td style="text-align: right;"><span>异步S2S返回:</span></td>
 							<td style="text-align: left;"><input type="text" 
 								name="InServerUrl" id="InServerUrl"
-								value="<?php echo $ipspay_config['S2Snotify_url'];?>" style="width:260px"> <span
+								value="{$order_pay_data['S2Snotify_url']}" style="width:260px"> <span
 								style="color: red">*</span></td>
 						</tr>
 						<tr>

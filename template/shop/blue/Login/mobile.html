@@ -5,7 +5,7 @@ $(document).ready(function(){
 	$("#mobile").keyup(function(){
 		var mobile = $("#mobile").val();
 		var isset_mobile = $("#isset_mobile").attr("value");
-		if(mobile.search(/^1(3|4|5|7|8)\d{9}$/) == -1){
+		if(mobile.search(/^1(3|4|5|6|7|8|9)\d{9}$/) == -1){
 			$("#mobile").trigger("focus");
 			$('#mobile').css("border","1px solid red");
 			$("#mobileyz").css("color","red").text("{:lang('member_enter_correct_phone_format')}");
@@ -59,7 +59,7 @@ $(document).ready(function(){
 		var vertification = $("#captcha").val();
 		var code = $("#mobileregistermodel-sms_captcha").val();
 		var agree=$('#agree').is(':checked')?'1':'0';
-		if(mobile.search(/^1(3|4|5|7|8)\d{9}$/) == -1){
+		if(mobile.search(/^1(3|4|5|6|7|8|9)\d{9}$/) == -1){
 			$("#mobile").trigger("focus");
 			$('#mobile').css("border","1px solid red");
 			$("#mobileyz").css("color","red").text("{:lang('member_enter_correct_phone_format')}");

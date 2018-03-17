@@ -1,42 +1,9 @@
-﻿<?php
-require_once ("IpsPay.Config.php");
-require_once ("lib/IpsPayNotify.class.php");
-?>
 <!DOCTYPE HTML>
 <html>
 <head>
-<link href="source/demostyle.css" rel="stylesheet" />
+<link href="__TEMP__/{$style}/public/css/demostyle.css" rel="stylesheet" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<?php
-$ipspayNotify = new IpsPayNotify($ipspay_config);
-$verify_result = $ipspayNotify->verifyReturn();
-        /***
-         商户在处理数据时一定要按照文档中’交易返回接口验证事项‘进行判断处理
-         1：先判断签名是否正确
-         2：判断交易状态
-         3：判断订单交易时间，订单号，金额，订单状态，和订单防重处理
-    	**/
-if ($verify_result) { // 验证成功
-    $paymentResult = $_REQUEST['paymentResult'];
-    $xmlResult = new SimpleXMLElement($paymentResult);
-    $status = $xmlResult->GateWayRsp->body->Status;
-    if ($status == "Y") {
-        $merBillNo = $xmlResult->GateWayRsp->body->MerBillNo;
-        $ipsBillNo = $xmlResult->GateWayRsp->body->IpsBillNo;
-        $ipsTradeNo = $xmlResult->GateWayRsp->body->IpsTradeNo;
-        $bankBillNo = $xmlResult->GateWayRsp->body->BankBillNo;
-        $message = "交易成功";
-    }elseif($status == "N")
-    {
-        $message = "交易失败";
-    }else {
-        $message = "交易处理中";
-    }
-} else {
-    $message = "验证失败";
-}
 
-?>
  
 <title>IPS訂單支付接口返回</title>
 </head>
@@ -55,7 +22,7 @@ if ($verify_result) { // 验证成功
 		<div class="nav_box">
 			<div class="nav_main">
 				<div class="logo">
-					<a href="http://www.ips.com/"> <img src="source/logo2.jpg"
+					<a href="http://www.ips.com/"> <img src="__TEMP__/{$style}/public/images/logo2.jpg"
 						style="margin-top: -3px;" height="62" width="238">
 					</a>
 				</div>
@@ -67,7 +34,7 @@ if ($verify_result) { // 验证成功
 
 		<div class="pay-demo">
 			<span style="font-size: 22px; font-weight: bold;"><label
-				id="lblResult"><?php echo $message?></label></span>
+				id="lblResult">{$message}</label></span>
 			<div class="demo">
 				<div class="demo-text">
 					<table>
