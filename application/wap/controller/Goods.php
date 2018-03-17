@@ -799,17 +799,17 @@ class Goods extends BaseController
     }
 
     /**
-     * 积分中心
+     * 零元兑换
      *
      * @return \think\response\View
      */
     public function integralCenter()
     {
         $platform = new Platform();
-        // 积分中心广告位
+        // 零元兑换广告位
         $discount_adv = $platform->getPlatformAdvPositionDetail(1165);
         $this->assign('discount_adv', $discount_adv);
-        // 积分中心商品
+        // 零元兑换商品
         $this->goods = new GoodsService();
         $order = "";
         // 排序
@@ -840,7 +840,8 @@ class Goods extends BaseController
             "ng.point_exchange_type" => array(
                 'NEQ',
                 0
-            )
+            ),
+            "price" =>0
         );
         $page_count = 25;
         $hotGoods = $this->goods->getGoodsList(1, 4, $condition, $order);
@@ -860,7 +861,7 @@ class Goods extends BaseController
     }
 
     /**
-     * 积分中心 全部积分商品
+     * 零元兑换 全部积分商品
      *
      * @return \think\response\View
      */
@@ -870,13 +871,13 @@ class Goods extends BaseController
     }
 
     /**
-     * 积分中心全部商品Ajax
+     * 零元兑换全部商品Ajax
      */
     public function integralCenterListAjax()
     {
         $platform = new Platform();
         if (request()->isAjax()) {
-            // 积分中心商品
+            // 零元兑换商品
             $this->goods = new GoodsService();
             $order = "";
             // 排序
@@ -907,7 +908,8 @@ class Goods extends BaseController
                 "ng.point_exchange_type" => array(
                     'NEQ',
                     0
-                )
+                ),
+                "price" =>0
             );
             $page_count = 25;
             $allGoods = $this->goods->getGoodsList($page_index, $page_count, $condition, $order);

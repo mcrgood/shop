@@ -1097,7 +1097,7 @@ return [
     'position_is'                      => '位置为',
     'competitive_products'             => '精品',
     'search_results'                   => '的搜索结果',    
-    'integral_center'                  => '旺币兑换',
+    'integral_center'                  => '零元兑换',
     'more_exchange'                    => '更多兑换',
     'collect_quantity'                 => '收藏量', 
     'rating_scale'                     => '评价量',
