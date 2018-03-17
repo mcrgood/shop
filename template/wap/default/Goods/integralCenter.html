@@ -80,7 +80,9 @@
 					<a href="{:__URL('APP_MAIN/goods/goodsdetail?id='.$good['goods_id'])}">{$good.goods_name}</a>
 				</p>
 				<p class="goods-price">
+					{if $good.price neq 0}
 					<em>￥:{$good.promotion_price} +</em>
+               		{/if}
 					<em>{$good.point_exchange}{:lang("goods_integral")}</em>
 				</p>
 				<a href="{:__URL('APP_MAIN/goods/goodsdetail?id='.$good['goods_id'])}"></a>
