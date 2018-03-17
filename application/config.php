@@ -56,7 +56,7 @@ return [
     // 应用命名空间
     'app_namespace' => 'app',
     // 应用调试模式，正式发布版本时改为false
-    'app_debug' => false,
+    'app_debug' => true,
     // 应用Trace
     'app_trace' => false,
     // 应用模式状态
@@ -352,6 +352,32 @@ return [
     ],
     //商家比例数组
     "business_arr" =>[10,15,20,25,30,35,40],
+    //网银支付接入配置数据
+    'order_pay_data' =>[
+        'Version' =>'v1.0.0',   
+        //商戶號
+        'MerCode' =>'205754',
+        //交易賬戶號
+        'Account' =>'2057540011',
+        //商戶證書
+        'MerCert' =>'z6r9z84rodeEX80pzVRNLj4ECzjDYtQRuvYO6ArFye5clC6HnUNxu7QEluSrmjcAXQ1AEh6ffErNf3KKGTXCyzDUPr9BbWx3UxHgf3ORlC5C8M7aHRyMqWXkULs4HP50',
+        //請求地址
+        'PostUrl' =>'https://newpay.ips.com.cn/psfp-entry/gateway/payment.do',
+        //服务器S2S通知页面路径
+        'S2Snotify_url' => "http://mall.jxqkw8.com/index.php?s=/shop/orderpay/s2snotify_url",
+        //页面跳转同步通知页面路径 
+        'return_url' => "http://mall.jxqkw8.com/index.php?s=/shop/orderpay/return_url",
+        //156#人民币
+        'Ccy' => "156",
+        //GB中文
+        'Lang' => "GB",
+        //订单支付接口加密方式 5#订单支付采用Md5的摘要认证方式
+        'OrderEncodeType' => "5",
+        //返回方式 1#S2S返回
+        'RetType' => "1",
+        'MsgId' => ""
+
+    ],
   
 ];
 
