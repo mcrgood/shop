@@ -16,7 +16,7 @@
  */
 namespace data\service;
 use data\service\Log as Log;
-
+use data\service\CLogFileHandler as CLogFileHandler;
 
 class IpsPayNotify extends Log
 {
