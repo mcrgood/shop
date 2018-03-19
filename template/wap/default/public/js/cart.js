@@ -64,6 +64,19 @@ $(function() {
 			}
 		});
 	});
+	
+	//总计旺旺币
+	$(function(){
+		var total = 0;
+		$('.number').each(function(i,v){
+			var wwb = $(v).find('.goods_integral').attr('data-point');
+			var num = $(v).find('.succ_amount').text();
+			var xiaoji = (wwb*num-0);
+			total += xiaoji;
+		})
+		$('#wangwangbi').text(total);
+	})
+
 
 	// 选择按钮触发事件
 	$(".checkbox").click(function() {
@@ -248,6 +261,14 @@ function getHeavyArray(arr){
 	return result;
 }
 
+//当没有金额的时候隐藏0.00
+$(function(){
+	var orderprice = $('#orderprice').text();
+	if(orderprice == 0){
+		$('.moneys').css({'display':'none'});
+	}
+})
+
 
 // 点击结算或者删除触发事件
 function settlement() {
@@ -397,6 +418,19 @@ function cart_succ(obj, shop_id) {
 		$(this).css("background-image", "url(" + cart2 + ")");
 	})
 	updateMoney(true);
+	var total = 0;
+	$('.number').each(function(i,v){
+		var wwb = $(v).find('.goods_integral').attr('data-point');
+		var num = $(v).find('.succ_amount').text();
+		var xiaoji = (wwb*num-0);
+		total += xiaoji;
+	})
+	$('#wangwangbi').text(total);
+
+	var orderprice = $('#orderprice').text();
+	if(orderprice == 0){
+		$('.moneys').css({'display':'none'});
+	}
 }
 
 // 更新价格,flag：true，编辑操作，显示价格信息，false：删除操作，隐藏价格信息

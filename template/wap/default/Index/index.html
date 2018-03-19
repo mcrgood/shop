@@ -196,11 +196,13 @@
 
 <!-- 楼层版块 -->
 {foreach name="block_list" item="class"}
-	{if condition="!empty($class['goods_list']) "}
+	{if condition="!empty($class['goods_list'])"}
 	<div class="floor">
-		<div class="category_name">
-			<span class="floor-left-nav">{$class.category_alias}</span><a class="floor-right-nav" href="{:__URL('APP_MAIN/goods/goodslist?category_id='.$class['category_id'])}">查看更多</a>
-		</div>
+		{if $class eq true}
+			<div class="category_name">
+				<span class="floor-left-nav">{$class.category_alias}</span><a class="floor-right-nav" href="{:__URL('APP_MAIN/goods/goodslist?category_id='.$class['category_id'])}">查看更多</a>
+			</div>
+		{/if}
 		<section class="members_goodspic">
 			<ul>
 				{foreach name="class.goods_list" item="list" key='k'}

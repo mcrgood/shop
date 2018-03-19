@@ -90,6 +90,7 @@ class Index extends BaseController
         $shop_id = $this->instance_id;
         $block_list = $good_category->getGoodsCategoryBlockQuery($shop_id, $this->category_good_num);
         $this->assign('block_list', $block_list);
+        // dump($block_list);die;
         
         // 首页新品推荐列表
         $goods_platform = new Platform();
@@ -130,7 +131,7 @@ class Index extends BaseController
         // 首页商城推荐
         $val1['is_recommend'] = 1;
         $goods_recommend_list = $goods_platform->getPlatformGoodsList(1, 0, $val1);
-        
+
         $this->assign('goods_recommend_list', $goods_recommend_list['data']);
         
         // 公众号配置查询

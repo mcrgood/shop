@@ -120,10 +120,16 @@ input{appearance:none;-moz-appearance:none;-webkit-appearance:none;outline: none
 	<div class="price_wrap">
 		<span class="tit" id="priceTitle"></span> 
 		<span class="price" price="{$goods_detail.promotion_price}">
-			<span style="font-size:14px;display: inline-block;vertical-align: middle;">¥</span>
-			{if condition="$goods_detail.promotion_price < $goods_detail.member_price"}{$goods_detail.promotion_price}{else/}{$goods_detail.member_price}{/if}
+			<span style="font-size:14px;display: inline-block;vertical-align: middle;">{if $goods_detail.price neq 0}¥{/if}</span>
+			{if condition="$goods_detail.promotion_price < $goods_detail.member_price"}
+				{$goods_detail.promotion_price}
+			{elseif $goods_detail.price neq 0/}
+				{$goods_detail.price}	
+			{elseif $goods_detail.member_price neq 0/}
+				{$goods_detail.member_price}
+			{/if}
 			{if condition="$goods_detail.point_exchange_type==1 && $goods_detail.point_exchange>0"}
-			<span style="font-size:16px;display: inline-block;vertical-align: middle;">+{$goods_detail.point_exchange} {:lang('goods_integral')}</span>
+			<span style="font-size:16px;display: inline-block;vertical-align: middle;">{if $goods_detail.price neq 0}+{/if}{$goods_detail.point_exchange} {:lang('goods_integral')}</span>
 			{/if}
 		</span>
 		<span class="flag" id="priceDis" style="display: none"></span>
@@ -258,9 +264,17 @@ input{appearance:none;-moz-appearance:none;-webkit-appearance:none;outline: none
 			<div class="pro-info">
 				<p class="name" >{$goods_detail.goods_name}</p>
 				<p class="pro-price" >
-					￥{if condition="$goods_detail.promotion_price < $goods_detail.member_price"}{$goods_detail.promotion_price}{else/}{$goods_detail.member_price}{/if}
+					{if $goods_detail.price neq 0}
+						￥
+						{if condition="$goods_detail.promotion_price < $goods_detail.member_price"}{$goods_detail.promotion_price}
+						{else/}
+							{$goods_detail.member_price}
+						{/if}
+					{/if}
+					
 					{if condition="$goods_detail.point_exchange_type==1 && $goods_detail.point_exchange>0"}
-					<span style="font-size:16px;display: inline-block; vertical-align: middle;">+{$goods_detail.point_exchange}{:lang('goods_integral')}</span>
+					<span style="font-size:16px;display: inline-block; vertical-align: middle;">{if $goods_detail.price neq 0}
+						+{/if}{$goods_detail.point_exchange}{:lang('goods_integral')}</span>
 					{/if}
 				</p>
 			</div>

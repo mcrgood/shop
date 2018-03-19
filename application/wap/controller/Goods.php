@@ -792,6 +792,7 @@ class Goods extends BaseController
         
         $condition['ng.state'] = 1;
         $condition['ng.point_exchange'] = ['neq',0];
+        $condition['ng.price'] = ['neq',0];
         
         $list = $goods->getGoodsList($page, $page_size, $condition, $order);
         
@@ -843,7 +844,7 @@ class Goods extends BaseController
             ),
             "price" =>0
         );
-        $page_count = 25;
+        $page_count = $page_counts;
         $hotGoods = $this->goods->getGoodsList(1, 4, $condition, $order);
         $allGoods = $this->goods->getGoodsList($page_index, $page_count, $condition, $order);
         if ($page_index) {
@@ -911,7 +912,9 @@ class Goods extends BaseController
                 ),
                 "price" =>0
             );
-            $page_count = 25;
+            $page_counts = db("ns_goods_sku")->count();
+            
+            $page_count = $page_counts;
             $allGoods = $this->goods->getGoodsList($page_index, $page_count, $condition, $order);
             return $allGoods['data'];
         }

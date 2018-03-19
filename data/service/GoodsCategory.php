@@ -718,6 +718,7 @@ class GoodsCategory extends BaseService implements IGoodsCategory
             $condition['ng.category_id_1'] = $v["category_id"];
             $condition['ng.state'] = 1;
             $condition['ng.point_exchange'] = ['neq',0];
+            $condition['ng.price'] = ['neq',0];
             $goods_list = $goods->getGoodsViewList(1, $show_num, $condition, $order);
             $goods_category_block_list[$k]["goods_list"] = $goods_list["data"];
         }

@@ -49,10 +49,16 @@
 					<div class="right-col">
 						<input type="hidden" name="goods_skuid" value="{$list.sku_id}" />
 						<input type="hidden" name="goods_point_exchange"/>
-						￥<span>{$list.price}
+						{if $list.price neq 0}
+						￥
+						{/if}
+						<span>
+						{if $list.price neq 0}
+						{$list.price}+
+						{/if}
 						{if condition="$list.point_exchange_type==1 "}
 							{if condition=" $list.point_exchange>0"}
-								+{$list.point_exchange}{:lang('goods_integral')}
+								{$list.point_exchange}{:lang('goods_integral')}
 							{/if}
 						{/if}
 						</span>
@@ -188,7 +194,10 @@
 		<h3>{:lang('member_settlement_information')}</h3>
 		<p>
 			<label>{:lang('goods_total')}<b class="orange-bold js-goods-num">1</b>{:lang('member_kinds_of_goods')}&nbsp;{:lang('member_total')}</label>
-			<span>￥<b class="js-total-money">0.00</b></span>
+			<span>
+				￥<b class="js-total-money">0.00</b>
+				<b class="wwb">+{$count_point_exchange}{:lang('goods_integral')}</b>
+			</span>
 		</p>
 		
 		<p>
@@ -233,9 +242,13 @@
 <div class="order-total-pay bottom-fix">
 	<div class="pay-container clearfix">
 		<span class="c-gray-darker font-size-12">{:lang('member_amount_payable')}：</span>
-		<span class="font-size-16 theme-price-color">￥<b id="realprice">0.00</b></span>
+		<!-- {if condition="$count_point_exchange>0"} -->
+		<span class="font-size-16 theme-price-color">
+		￥<b id="realprice">0.00</b>+
+		</span>
+		<!-- {/if} -->
 		{if condition="$count_point_exchange>0"}
-		<span class="font-size-16 theme-price-color" id="count-point">+{$count_point_exchange}{:lang('goods_integral')}</span>
+		<span class="font-size-16 theme-price-color" id="count-point">{$count_point_exchange}{:lang('goods_integral')}</span>
 		{/if}
 		<button class="commit-bill-btn" onclick="submitOrder()">{:lang('member_place_order')}</button>
 		<input type="hidden" id="hidden_count_point_exchange" value="{$count_point_exchange}" />

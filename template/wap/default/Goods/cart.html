@@ -62,7 +62,7 @@
 					</div>
 					<div class="info">
 						<p class="info-name">
-							<a href="{:__URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id'])}">{$list.goods_name}<span><br />{$list.sku_name}</span></a>
+							<a href="{:__URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id'])}">{$list.goods_name}<span><br/>{$list.sku_name}</span></a>
 						</p>
 						<!-- 	<p class="info-price">
 						¥<span name="goods_price">{$list.price}</span>
@@ -77,15 +77,18 @@
 					</div>
 				</div>
 				<div class="number">
+					{if $list.price neq 0}
 					¥<span name="goods_price">{$list.price}</span>
+					{/if}
 					{if condition="$list.point_exchange_type==1 "}
-					<span name="goods_integral" data-point="{$list.point_exchange}">
+					<span name="goods_integral" class="goods_integral" data-point="{$list.point_exchange}">
 						{if condition=" $list.point_exchange>0"}
-							+{$list.point_exchange}{:lang('goods_integral')}
+							{if $list.price neq 0}+{/if}
+							{$list.point_exchange}{:lang('goods_integral')}
 						{/if}
 					</span>
 					{/if}
-					×<span name="succ_amount">{$list.num}</span>
+					×<span name="succ_amount" class="succ_amount">{$list.num}</span>
 					<div name="edit_num{$list.shop_id}" style="display: none;">
 						<span class="ui-number">
 							<button type="button" class="decrease" onclick="Cart.changeBar(&#39;-&#39;,{$list.cart_id},this,{$list.goods_id})" title="{:lang('member_reduce')}">-</button>
@@ -121,7 +124,9 @@
 			<span id="sel_text">{:lang('goods_select_all')}</span>
 		</div>
 		<div id="price_info">
-			{:lang('summation')}： ¥<span id="orderprice" class="price"></span>
+			{:lang('summation')}： <span class="moneys">¥</span><span id="orderprice" class="price moneys"></span>
+			<span class="moneys">+</span>
+			<span class="price"><span id="wangwangbi"></span>{:lang('goods_integral')}</span>
 			<br />
 			<!-- <span style="color: #999;">不含运费</span> -->
 		</div>
@@ -150,5 +155,9 @@ $("#head_back").click(function (){
         }
     window.webkit.messageHandlers.center.postMessage(json);
 })
+
+
+
+
 </script>
 {/block}
