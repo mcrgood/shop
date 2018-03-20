@@ -108,7 +108,7 @@
 						<td rowspan="{$order.order_item_list|count}" align="center" class="other">
 							{if condition="$order.member_operation neq ''"}
 							{volist name="order['member_operation']" id="operation"}
-								<a href="javascript:void(0)" class="on_money" style="background-color:#FF9149;border: 1px solid  #FF9149;" onclick="operation('{$operation.no}',{$order.order_id})">{$operation.name}</a>
+								<a href="javascript:void(0)" class="on_money" style="background-color:#FF9149;border: 1px solid  #FF9149;" onclick="operation('{$operation.no}',{$order.order_id})"></a>
 							{/volist}
 							{/if}
 							{if condition="$order.order_status eq 3 OR $order.order_status eq 4"}

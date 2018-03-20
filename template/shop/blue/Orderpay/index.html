@@ -50,7 +50,7 @@
 						<tr>
 							<td style="text-align: right;"><span>商户名:</span></td>
 							<td style="text-align: left;"><input type="text" name="InMerName"
-								id="InMerName"></td>
+								id="InMerName" value="江西花儿盛开贸易有限公司"></td>
 						</tr>
 						<tr>
 							<td style="text-align: right;"><span>版本号:</span></td>
@@ -80,7 +80,7 @@
 						<tr>
 							<td style="text-align: right;"><span>订单金额:</span></td>
 							<td style="text-align: left;"><input type="text" name="InAmount"
-								id="InAmount" value ="0.01"> <span style="color: red">*</span></td>
+								id="InAmount" value ="{$orderInfo.order_money}"> <span style="color: red">*</span></td>
 						</tr>
 						<tr>
 							<td style="text-align: right;"><span>支付结果成功返回的商户URL:</span></td>
@@ -116,12 +116,12 @@
 						<tr>
 							<td style="text-align: right;"><span>订单有效期:</span></td>
 							<td style="text-align: left;"><input type="text" name="InBillEXP"
-								id="InBillEXP"></td>
+								id="InBillEXP" value="1"></td>
 						</tr>
 						<tr>
 							<td style="text-align: right;"><span>商品名称:</span></td>
 							<td style="text-align: left;"><input type="text"
-								name="InGoodsName" id="InGoodsName" value="商品"> <span style="color: red">*</span>
+								name="InGoodsName" id="InGoodsName" value="{$orderInfo.goods_name}"> <span style="color: red">*</span>
 							</td>
 						</tr>
 						<tr>

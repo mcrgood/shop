@@ -27,6 +27,17 @@ class Orderpay extends BaseController
 {
 	//支付首页
 	public function index(){
+		$out_trade_no = input('param.out_trade_no',0);
+		if($out_trade_no == 0){
+			$this->error('参数错误，请重试！',__url(__URL__ . "/index"));
+		}else{
+			$orderInfo = db('ns_order')
+			->alias('o')
+			->join('ns_order_goods g','g.order_id = o.order_id','left')
+			->field('o.*,g.goods_name,g.order_goods_id')
+			->where('out_trade_no',$out_trade_no)->find();
+			$this->assign('orderInfo',$orderInfo);
+		}
 		$order_pay_data = config('order_pay_data');
 		$this->assign('order_pay_data',$order_pay_data);
 		return view($this->style . 'Orderpay/index');
@@ -117,6 +128,10 @@ class Orderpay extends BaseController
 		        $ipsBillNo = $xmlResult->GateWayRsp->body->IpsBillNo;
 		        $ipsTradeNo = $xmlResult->GateWayRsp->body->IpsTradeNo;
 		        $bankBillNo = $xmlResult->GateWayRsp->body->BankBillNo;
+		        $this->assign('merBillNo',$merBillNo);
+				$this->assign('ipsBillNo',$ipsBillNo);
+				$this->assign('ipsTradeNo',$ipsTradeNo);
+				$this->assign('bankBillNo',$bankBillNo);
 		        $message = "交易成功";
 		    }elseif($status == "N")
 		    {
@@ -128,10 +143,7 @@ class Orderpay extends BaseController
 		    $message = "验证失败";
 		}
 		$this->assign('message',$message);
-		$this->assign('merBillNo',$merBillNo);
-		$this->assign('ipsBillNo',$ipsBillNo);
-		$this->assign('ipsTradeNo',$ipsTradeNo);
-		$this->assign('bankBillNo',$bankBillNo);
+		
 		return view($this->style . 'Orderpay/return_url');
 	}
 
