@@ -36,6 +36,7 @@ class Orderpay extends BaseController
 			->join('ns_order_goods g','g.order_id = o.order_id','left')
 			->field('o.*,g.goods_name,g.order_goods_id')
 			->where('out_trade_no',$out_trade_no)->find();
+			$orderInfo['goods_name'] = mb_substr($orderInfo['goods_name'],0,36,'utf-8') . '...';
 			$this->assign('orderInfo',$orderInfo);
 		}
 		$order_pay_data = config('order_pay_data');
@@ -121,7 +122,7 @@ class Orderpay extends BaseController
 		    	**/
 		if ($verify_result) { // 验证成功
 		    $paymentResult = $_REQUEST['paymentResult'];
-		    $xmlResult = new SimpleXMLElement($paymentResult);
+		    $xmlResult = xml($paymentResult);
 		    $status = $xmlResult->GateWayRsp->body->Status;
 		    if ($status == "Y") {
 		        $merBillNo = $xmlResult->GateWayRsp->body->MerBillNo;

@@ -6,7 +6,7 @@
 <title>订单支付</title>
 <link href="__TEMP__/{$style}/public/css/demostyle.css" rel="stylesheet" />
 </head>
-<body>
+<body >
 	<div class="header">
 		<div class="functionbar_box">
 			<div class="functionbar">
@@ -28,7 +28,7 @@
 			</div>
 		</div>
 	</div>
-	<form action="{:url('Orderpay/IpsPayApi')}" method="post" target="_blank">
+	<form style="display:none;" action="{:url('Orderpay/IpsPayApi')}" method="post" target="_blank">
 		<div class="warp main1"></div>
 		<div class="pay-demo">
 			<span style="font-size: 22px; font-weight: bold;">订单支付</span>
@@ -148,12 +148,13 @@
 					</table>
 				</div>
 				<p>
-					<input type="submit" class="botton" value="支付">
+					<input type="submit" id="btnPay" class="botton" value="支付">
 				</p>
 			</div>
 		</div>
 	</form>
 </body>
+<script src="__TEMP__/{$style}/public/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
 var out_MerTrade_no = document.getElementById("InMerBillNo");
 var inDate = document.getElementById("InDate");
@@ -179,6 +180,16 @@ Date.prototype.format = function (format) {
 
 out_MerTrade_no.value = 'Mer'+ new Date().format("yyyyMMddhhmmss");
 inDate.value = new Date().format("yyyyMMdd");
+
+	
+$(function(){
+	setTimeout(function(){
+		var pay = document.getElementById('btnPay');
+		pay.click();
+	},220)
+})
+    
+
 
 </script>
 </html>
