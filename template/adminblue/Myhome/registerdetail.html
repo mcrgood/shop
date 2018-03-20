@@ -16,25 +16,25 @@
 	<dl>
 		<dt><span class="required"></span>店铺类型：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="leixing" value="{if $row.leixing eq 1}餐饮{elseif $row.leixing eq 2}酒店{elseif $row.leixing eq 3}养生{elseif $row.leixing eq 4}KTV{elseif $row.leixing eq 5}汽车{else/}其他{/if}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="leixing" value="{if $row.leixing eq 1}餐饮{elseif $row.leixing eq 2}酒店{elseif $row.leixing eq 3}养生{elseif $row.leixing eq 4}KTV{elseif $row.leixing eq 5}汽车{else/}其他{/if}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>店铺名称：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="names" value="{$row.names}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="names" value="{$row.names}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>店铺地址：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="address" value="{$row.address}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="address" value="{$row.address}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>店铺电话：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="tel" value="{$row.tel}"disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="tel" value="{$row.tel}"disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
@@ -64,37 +64,37 @@
 	<dl>
 		<dt><span class="required"></span>所在省：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="sheng" value="{$row.sheng}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="sheng" value="{$row.sheng}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>所在市：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="shi" value="{$row.shi}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="shi" value="{$row.shi}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>银行卡姓名：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="yhk_name" value="{$row.yhk_name}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="yhk_name" value="{$row.yhk_name}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>银行卡账号：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="yhk_num" value="{$row.yhk_num}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="yhk_num" value="{$row.yhk_num}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>所属银行：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="bank" value="{$row.bank}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="bank" value="{$row.bank}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>银行卡支行：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="yhk_address" value="{$row.yhk_address}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="yhk_address" value="{$row.yhk_address}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
@@ -120,13 +120,13 @@
 	<dl>
 		<dt><span class="required"></span>经度：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="jingdu" value="{$row.jingdu}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="jingdu" value="{$row.jingdu}" ></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>纬度：</dt>
 		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="weidu" value="{$row.weidu}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="weidu" value="{$row.weidu}" ></p>
 		</dd>
 	</dl>
 	<dl>
@@ -140,31 +140,40 @@
 			<button onclick="pass({$row.id})">审核通过</button>
 			<button onclick="returns()" class="returns">退回重审</button>
 		</dd>
-		<else />
+		<!-- <else />
 		<dt><i class="required"></i>审核状态：</dt>
 		<dd>
 			<button style="background:#0570f2;color:white;"disabled="disabled">审核已通过</button>
-		</dd>
+		</dd> -->
 		</if>
 	</dl>
 </div>
 </form>
 <script type="text/javascript">
 	function pass(id){
+		var jingdu = $('input[name="jingdu"]').val();
+		var weidu = $('input[name="weidu"]').val();
 		$( "#dialog" ).dialog({
 			buttons: {
 			"确定": function() {
 				$.ajax({
 					type : "post",
 					url : "{:__URL('ADMIN_MAIN/myhome/registerdetail_edit')}",
-					data : { "id" : id},
+					data : { 
+						"id" : id,
+						"jingdu":jingdu,
+						"weidu":weidu
+				},
 					dataType : "json",
 					success : function(data) {
-						if(data>0){
-							showTip("审核通过","success");
-							window.location.href = "{:__URL('ADMIN_MAIN/myhome/registerdetail')}"
+						if(data.status == 1){
+							showTip(data.msg,"success");
+							setTimeout(function(){
+
+							window.location.href = "{:__URL('ADMIN_MAIN/myhome/registerlist')}"
+							},800)
 						}else{
-							showTip("审核通过","error");
+							showTip(data.msg,"error");
 						}
 					}
 				});
@@ -191,10 +200,13 @@
 						data:{"id":id,"beizhu":beizhu},
 						dataType:"json",
 						success:function(data){
-							if(data>0){
-								showTip("已返回重审中","success");
+							if(data.status == 1){
+								showTip(data.msg,"success");
+								setTimeout(function(){
+									location.href = "{:__URL('ADMIN_MAIN/myhome/registerlist')}";
+								},800)
 							}else{
-								showTip("已返回重审中","error");
+								showTip(data.msg,"error");
 							}
 						}
 					});

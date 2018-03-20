@@ -356,12 +356,10 @@ class Myhome extends Controller
                     $info['nick_name'] = $mobile;
                     $info['is_member'] = 1;     // 1 是前台会员，必须添加，否则无法正常登录
                     $result = db('sys_user')->insertGetId($info);
-                    if($result && $referee_phone){
-                        db('ns_member_account')
-                        ->alias('m')
-                        ->join('sys_user u','u.uid = m.uid','left')
-                        ->where('u.user_tel',$referee_phone)
-                        ->setInc('point',40);
+                    if($result){
+                        $aa['uid'] = $result;
+                        $aa['point'] = 10;
+                        db('ns_member_account')->insert($aa);
                     }
                 }
                 return $info = [

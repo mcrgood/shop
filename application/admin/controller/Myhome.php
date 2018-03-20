@@ -98,22 +98,61 @@ class Myhome extends BaseController
 	public function registerdetail_edit(){
 		if(request()->isAjax()){
 			$id = input('post.id');
+			$jingdu = input('post.jingdu','');
+			$weidu = input('post.weidu','');
 			$row = db("ns_shop_message")->find($id);
-			$date['state'] = 1;
-			$data = db('ns_shop_message')->where('id',$id)->update($date);
+			$info['state'] = 1;
+			$info['weidu'] = $weidu;
+			$info['jingdu'] = $jingdu;
+			$data = db('ns_shop_message')->where('id',$id)->update($info);
+			if($data){
+				//审核通过后给推荐人发放40个旺旺币奖励(只奖励一次)
+				$userid = db('ns_shop_message')->where('id',$id)->value('userid'); 
+				$iphone = db('ns_goods_login')->where('id',$userid)->value('iphone');
+				$thisRow = db('sys_user')->where('user_tel',$iphone)->find();
+				if($thisRow['referee_phone'] && $thisRow['is_get_referee'] == 0){
+					db('ns_member_account')
+                    ->alias('m')
+                    ->join('sys_user u','u.uid = m.uid','left')
+                    ->where('u.user_tel',$thisRow['referee_phone'])
+                    ->setInc('point',40);
+                    db('sys_user')->where('user_tel',$iphone)->update(['is_get_referee'=>1]);
+				}
+					
+				$res = [
+					'status' => 1,
+					'msg' =>'审核通过!'
+				];
+			}else{
+				$res = [
+					'status' => 0,
+					'msg' =>'审核不通过,请重试！'
+				];
+			}
 		}
+		return $res;
 	}
 
 	public function registerdetail_returns(){
 		if(request()->isAjax()){
 			$id = input('post.id');
 			$beizhu = input('post.beizhu');
-			//$row = db("ns_shop_message")->find($id);
 			$date['beizhu'] = $beizhu;
 			$date['state'] = 2;
 			$data = db('ns_shop_message')->where('id',$id)->update($date);
-			//dump($data);die;
+			if($data){
+				$res = [
+					'status' => 1,
+					'msg' =>'已返回重审中'
+				];
+			}else{
+				$res = [
+					'status' => 0,
+					'msg' =>'操作失败，请重试！'
+				];
+			}
 		}
+		return $res;
 	}
 	//预定列表
 	public function yuding(){

@@ -208,7 +208,6 @@ class Login extends Controller
                     session('user_name',$user_name);
                     cookie('user_name',$user_name,3600*24*30);
                     cookie('password',$password,3600*24*30);
-                    
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,
@@ -594,7 +593,12 @@ class Login extends Controller
             }
             if ($retval > 0) {
                 if($referee_phone && $mobile){
+                    //假如填写了推荐人手机号，就插入推荐人手机号到数据表中。
                     db('sys_user')->where('user_tel',$mobile)->update(['referee_phone'=>$referee_phone]);
+                    $uid = db('sys_user')->where('user_tel',$mobile)->value('uid');
+                    $infos['uid'] = $uid;
+                    $infos['point'] = 10;
+                    db('ns_member_account')->insert($infos);
                 }
                 // 微信的会员绑定
                 if (empty($user_name)) {
