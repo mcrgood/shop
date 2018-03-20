@@ -128,6 +128,10 @@ class Orderpay extends BaseController
 		        $ipsBillNo = $xmlResult->GateWayRsp->body->IpsBillNo;
 		        $ipsTradeNo = $xmlResult->GateWayRsp->body->IpsTradeNo;
 		        $bankBillNo = $xmlResult->GateWayRsp->body->BankBillNo;
+		        $this->assign('merBillNo',$merBillNo);
+				$this->assign('ipsBillNo',$ipsBillNo);
+				$this->assign('ipsTradeNo',$ipsTradeNo);
+				$this->assign('bankBillNo',$bankBillNo);
 		        $message = "交易成功";
 		    }elseif($status == "N")
 		    {
@@ -139,10 +143,7 @@ class Orderpay extends BaseController
 		    $message = "验证失败";
 		}
 		$this->assign('message',$message);
-		$this->assign('merBillNo',$merBillNo);
-		$this->assign('ipsBillNo',$ipsBillNo);
-		$this->assign('ipsTradeNo',$ipsTradeNo);
-		$this->assign('bankBillNo',$bankBillNo);
+		
 		return view($this->style . 'Orderpay/return_url');
 	}
 
