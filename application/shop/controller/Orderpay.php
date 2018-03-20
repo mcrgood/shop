@@ -122,7 +122,7 @@ class Orderpay extends BaseController
 		    	**/
 		if ($verify_result) { // 验证成功
 		    $paymentResult = $_REQUEST['paymentResult'];
-		    $xmlResult = xml($paymentResult);
+		    $xmlResult = simplexml_load_string($paymentResult);
 		    $status = $xmlResult->GateWayRsp->body->Status;
 		    if ($status == "Y") {
 		        $merBillNo = $xmlResult->GateWayRsp->body->MerBillNo;

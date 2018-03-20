@@ -185,7 +185,6 @@ class Login extends Controller
     public function index()
     {
         
-
         $this->determineWapWhetherToOpen();
         if (request()->isAjax()) {
             $bind_message_info = json_decode(Session::get("bind_message_info"), true);
@@ -209,7 +208,7 @@ class Login extends Controller
                     session('user_name',$user_name);
                     cookie('user_name',$user_name,3600*24*30);
                     cookie('password',$password,3600*24*30);
-                
+                    
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,
