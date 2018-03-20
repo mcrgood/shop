@@ -680,6 +680,11 @@ class Goods extends BaseController
         }
     }
 
+    //价格区间查询(张行飞)
+    // public function getgoods_in(){
+    //     $goods = db("ns_goods_sku")->select();
+    // } 
+
     /**
      * 根据条件查询商品列表：商品分类查询，关键词查询，价格区间查询，品牌查询
      * 创建人：王永杰
@@ -835,7 +840,7 @@ class Goods extends BaseController
             $id = 0;
         }
         
-        $page_index = request()->get('page', 1);
+        $page_index = request()->get('page', 5);
         $condition = array(
             "ng.state" => 1,
             "ng.point_exchange_type" => array(
@@ -893,27 +898,41 @@ class Goods extends BaseController
                         if ($id == 3) {
                             $order = "evaluates desc";
                         } else 
-                            if ($id == 4) {
-                                $order = "shares desc";
+                            if ($id == 5) {
+                                $order = "point_exchange";
+                                $condition['ng.point_exchange'] = ['between',[1,99]];
                             } else {
-                                $id = 0;
-                                $order = "";
+                                if($id == 6){
+                                    $order = "point_exchange";
+                                    $condition['ng.point_exchange'] = ['between',[100,499]];
+                                }else{
+                                    if($id == 7){
+                                        $order = "point_exchange";
+                                        $condition['ng.point_exchange'] = ['between',[500,999]];
+                                    }else{
+                                        if($id == 8){
+                                            $order = "point_exchange";
+                                            $condition['ng.point_exchange'] = ['between',[1000,9999]];
+                                        }else{
+                                            if($id == 9){
+                                                $order = "point_exchange";
+                                                $condition['ng.point_exchange'] = ['>',10000];
+                                            }else{
+                                                $id = 0;
+                                                $order = "";  
+                                            }
+                                        }
+                                    }
+                                }
                             }
             } else {
                 $id = 0;
             }
-            
             $page_index = request()->post('page', '1');
-            $condition = array(
-                "ng.state" => 1,
-                "ng.point_exchange_type" => array(
-                    'NEQ',
-                    0
-                ),
-                "price" =>0
-            );
+            $condition['ng.state'] = 1;
+            $condition['ng.point_exchange_type'] = ['<>',0];
+            $condition['price'] = 0;
             $page_counts = db("ns_goods_sku")->count();
-            
             $page_count = $page_counts;
             $allGoods = $this->goods->getGoodsList($page_index, $page_count, $condition, $order);
             return $allGoods['data'];

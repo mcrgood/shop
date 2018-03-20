@@ -1,4 +1,4 @@
-{extend name="wap/default/base" /} {block name="goodsHead"}
+share_number{extend name="wap/default/base" /} {block name="goodsHead"}
 <link rel="stylesheet" type="text/css" href="__TEMP__/{$style}/public/css/goods_list.css">
 <section class="head">
 	<a class="head_back" href="javascript:window.history.go(-1);"><i
@@ -23,6 +23,21 @@
 	background-color: #f7f7f7;
 }
 
+.price_qj{
+	right: 0.6rem;
+	top: 5.5rem;
+	width:18%;
+	text-align: center;
+	display:none;
+	float:right;
+	width: 6rem;
+	position: fixed;
+	z-index: 999;
+}
+.price_qj>li{
+	border-bottom: 1px solid #e5e5e5;
+}
+
 .custom-search form {
 	margin: 0;
 	position: relative;
@@ -35,16 +50,30 @@
 .custom-search-button {
 	top: 6px;
 }
-
+.jgqj{
+	width: 25%;
+    display: block;
+    float: left;
+    text-align: center;
+    line-height: 35px;
+    color: #999;
+    font-weight: normal;
+}
 .members_goodspic {
 	margin-top: 85px;
 }
+
+
 .members_goodspic>ul>li.gooditem>div.img img{
     max-width: 100%;
     display: inline;
 }
 .order_div{
 	height:35px;
+
+}
+.order_div>.ff{
+	color:#ff4444;
 }
 </style>
 <script type="text/javascript">
@@ -52,15 +81,24 @@
 </script>
 {/block} {block name="main"}
 <div class="order_div">
-	<span class="select" value='1'>{:lang("goods_sales_volume")}</span> <span value='2'>{:lang("collect_quantity")}</span> <span
-		value='3'>{:lang("rating_scale")}<i class='ico_order_state'></i></span> <span value='4'>{:lang("share_number")}</span>
+	<span class="select" value='1'>{:lang("goods_sales_volume")}</span>
+	<span value='2'>{:lang("collect_quantity")}</span>
+	<span value='3'>{:lang("rating_scale")}<i class='ico_order_state'></i></span>
+	<!-- <span value='4'>{:lang("share_number")}</span> -->
+	<!-- <span value ='4'  id="jgqj">{:lang("price_range")}</span> -->
+	<b  class="jgqj">{:lang("price_range")}</b>
 </div>
 <section class="members_goodspic" id="main_list">
+	
+	
 </section>
 <script>
+
+
 	$(function() {
 		 	GetgoodsList(1,0);
 		$('.order_div span').click(function() {
+			$('.order_div b').removeClass('ff');
 			$('.order_div span').removeClass('select');
 			$(this).addClass('select');
 			GetgoodsList($(this).attr('value'));
@@ -91,7 +129,14 @@
 			success : function(data) {
 				if (data != null) {
 					 					var html = '';
-					 					 html +='<ul>';
+					 		      		html +='<ul class="price_qj">';
+					 		      		html +='<li value="5">1-99</li>';
+					 		      		html +='<li value="6">100-499</li>';
+					 		      		html +='<li value="7">500-999</li>';
+					 		      		html +='<li value="8">1000-9999</li>';
+					 		      		html +='<li value="9">10000以上</li>';
+					 		      		html +='</ul>';
+					 					html +='<ul>';
 					 					 	for(i=0; i<data.length;i++)
 					 					 		{
 					 					 			html+='<li class="gooditem"><div class="img"> <a href="'+__URL('APP_MAIN/goods/goodsdetail?id='+data[i]['goods_id'])+'">';
@@ -108,12 +153,34 @@
 
 					 		      		html +='</ul>';
 					 		      		html += '<div class="h50"></div>';
-					 		      		$("#main_list").html(html);
+					 		      		$("#main_list").empty().append(html);
 
 					hiddenLoadMaskLayer();
 				}
 			}
 		})
 	}
+</script>
+<script>
+	$(function(){
+		var aa = 0;
+		$(".jgqj").click(function(){
+			if(aa == 0){
+				$('.price_qj').css({"display":"block"});
+				$('.order_div span').removeClass('select');
+				$('.order_div b').addClass('ff');
+				aa = 1;
+				$('.price_qj').find('li').on('click',function(){
+					var num = $(this).attr('value');
+					aa = 0;
+					GetgoodsList(num);
+				})
+			}else{
+				$('.price_qj').css({"display":"none"});
+				
+				aa = 0;
+			}
+		})
+	})
 </script>
 {/block} {block name="bottom"} {/block}
