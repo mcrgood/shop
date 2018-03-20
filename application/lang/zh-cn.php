@@ -99,7 +99,7 @@ return [
     //cms
      'no_article'                     => '暂无文章',
      'home_page'                      => '首页',
-     'article_center'                 => '文章中心',
+     'article_center'                 => '名特新优',
     //index
      'friendship_link'                => '友情链接',
      'welcome_login'                  => '欢迎登录',

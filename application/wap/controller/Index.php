@@ -258,7 +258,7 @@ class Index extends BaseController
             $current_time = $this->getCurrentTime();
             $this->assign('ms_time', $current_time);
             $this->assign('goods_category_list_1', $goods_category_list_1['data']);
-            $this->assign("title_before","限时折扣");
+            $this->assign("title_before","限时抢购");
             return view($this->style . 'Index/discount');
         }
     }

@@ -50,7 +50,7 @@ class Articlecenter extends BaseController
 //             $help_document_info = $article->getArticleDetail($document_id);
 //             return $help_document_info;
 //         }
-        $this->assign("title_before","文章中心");
+        $this->assign("title_before","名特新优");
         return view($this->style . 'Articlecenter/index');
     }
 

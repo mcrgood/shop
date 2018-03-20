@@ -521,7 +521,7 @@ class Goods extends BaseController
             // var_dump($goods_brand_list);
             $this->assign("goods_brand_list", $goods_brand_list['data']);
             $this->assign("goods_category_list_1", $goods_category_list_1["data"]);
-            $this->assign("title_before", "品牌专区");
+            $this->assign("title_before", "购物商城");
             return view($this->style . 'Goods/brandlist');
         }
     }
@@ -638,7 +638,7 @@ class Goods extends BaseController
                 $this->assign("category_price_grades", $category_price_grades);
                 $this->assign("category_price_grades_count", count($category_price_grades));
                 $this->assign("goods_spec_array", $goods_spec_array); // 分类下的规格
-                $this->assign("title_before", $goods_category_info['category_name']);
+                $this->assign("title_before", '1232454');
             }
             // 获取分类列表
             $goodsCategory = new GoodsCategory();
@@ -863,6 +863,7 @@ class Goods extends BaseController
         $this->assign("hotGoods", $hotGoods);
         $this->assign('page_count', $allGoods['page_count']);
         $this->assign('total_count', $allGoods['total_count']);
+        $this->assign("title_before","零元兑换");
         return view($this->style . 'Goods/integralCenter');
     }
 
