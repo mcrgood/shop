@@ -229,12 +229,9 @@
 </ul>
 
 <ul class="supermarket-main">
-	<li data-cat="1"><a href="{:url('dingwei/index',['cat'=>1])}">餐饮</a></li>
-	<li data-cat="2"><a href="{:url('dingwei/index',['cat'=>2])}">酒店</a></li>
-	<li data-cat="3"><a href="{:url('dingwei/index',['cat'=>3])}">养生</a></li>
-	<li data-cat="4"><a href="{:url('dingwei/index',['cat'=>4])}">KTV</a></li>
-	<li data-cat="5"><a href="{:url('dingwei/index',['cat'=>5])}">汽车</a></li>
-	<li data-cat="6"><a href="{:url('dingwei/index',['cat'=>6])}">其他</a></li>
+{volist name="cate_list" id="v"}
+	<li style="width:145%;letter-spacing: 1px;padding:0;"><a href="{:url('dingwei/index',['cat'=>$v['con_cateid']])}">{$v.con_cate_name}</a></li>
+{/volist}
 </ul>
 
 <ul class="supermarket-main1">

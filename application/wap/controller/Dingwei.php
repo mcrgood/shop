@@ -27,6 +27,8 @@ class Dingwei extends BaseController{
         $package = $jssdk->getSignPackage();
         $this->assign('signPackage', $package);
         $this->assign('leixing_id', $leixing_id);
+        $cate_list = db('ns_consumption')->where('con_pid',$leixing_id)->select();
+        $this->assign('cate_list', $cate_list);
         return view($this->style . 'Dingwei/index');
 	}
 	public function  getData()

@@ -120,7 +120,7 @@
 
 .supermarket-main,.supermarket-main1{ width:15%; background:#fff; position: absolute; left:18%; top:103%; overflow:hidden; display:none; z-index:99;}
 
-.supermarket-main li,.supermarket-main1 li{ width:142%; height:1rem; line-height:1.01rem; font-size:.45rem;padding:0 .38rem; border-bottom:2px solid #dcdcdc;margin-left: -21%;}
+.supermarket-main li,.supermarket-main1 li{ width:145%; letter-spacing: 1px;height:1rem; line-height:1.01rem; font-size:.45rem;padding:0 .38rem; border-bottom:2px solid #dcdcdc;margin-left: -21%;}
 
 .supermarket-main li a,.supermarket-main1 li a{ display:block; text-align: center;}
 
