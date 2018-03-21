@@ -18,15 +18,16 @@ class Dingwei extends BaseController{
 	public function index(){
 
 		ob_clean();//清除缓存
-		//查出当前分类的东东(判断审核状态)
-		$leixing_id = input("param.cat",'1');
-		$where['leixing'] = array('eq',$leixing_id);
-		$list = db("ns_shop_message")->where($where)->where('state','0')->select();
-		$this->assign('list',$list);
+        //查出当前分类的东东(判断审核状态)
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
         $package = $jssdk->getSignPackage();
         $this->assign('signPackage', $package);
+
+        $leixing_id = input("param.cat",1);  //一级分类ID
+        $con_cateid = input("param.con_cateid",0);  //二级分类ID
+        $where['leixing'] = array('eq',$leixing_id);
         $this->assign('leixing_id', $leixing_id);
+        $this->assign('con_cateid', $con_cateid);
         $cate_list = db('ns_consumption')->where('con_pid',$leixing_id)->select();
         $this->assign('cate_list', $cate_list);
         return view($this->style . 'Dingwei/index');
@@ -36,11 +37,18 @@ class Dingwei extends BaseController{
         ob_clean();//清除缓存
         $jingdu = input('param.jingdu');
         $weidu = input('param.weidu');
-        $leixing_id = input('param.leixing_id');
+        $leixing_id = input('param.leixing_id'); //一级分类ID
+        $con_cateid = input('param.con_cateid',0); //二级分类ID
         $page = input('param.page');   //第几页
         $size = input('param.size');   //每页的数据个数
-        $where['leixing'] = $leixing_id;
-        $where['state'] = 1;
+        if($leixing_id && $con_cateid){
+            $where['leixing'] = $leixing_id;
+            $where['state'] = 1;
+            $where['business_scope'] = $con_cateid;
+        }elseif($leixing_id && $con_cateid == 0){
+            $where['leixing'] = $leixing_id;
+            $where['state'] = 1;
+        }
         $count = db("ns_shop_message")
         ->alias('s')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
@@ -58,9 +66,9 @@ class Dingwei extends BaseController{
                 }elseif($list[$k]['business_status'] == 2){
                     $list[$k]['business_status'] = '休息中';
                 }
-                $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
+                // $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
             }
-            array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
+            // array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
             return ["message" => $list, "state" => 1,'pages' => $pages];
         }else{
             return ["message" => "没有数据", "state" => 0];

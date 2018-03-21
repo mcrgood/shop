@@ -298,33 +298,6 @@ class Myhome extends Controller
     }
 
     public function register(){
-       /* if(request()->isPost()){
-            $iphone = input('post.iphone');
-            $password = input('post.password');
-            $repassword = input('post.repassword');
-
-                $dh ="/^1[3|4|5|7|8][0-9]{9}$/";
-                $iph = preg_match($dh, $iphone);
-                if(!$iph){
-                    $this->error('输入正确手机号码');
-                }
-                if($password!==$repassword){
-                    $this->error('密码不一致');
-                }
-            //查询是否存在
-                 $xx = db("ns_goods_login")->where("iphone='$iphone'")->find();
-                if($xx){
-                    $this->error('用户已存在，请登录','Myhome/login');
-                }
-                $data['iphone'] = $iphone;
-                $data['password'] = MD5('MD5_PRE'.$password);
-                $id = db('ns_goods_login')->insert($data);
-                if ($id) {
-                    $this->success('注册成功！','shenqing');
-                } else {
-                    $this->error('注册失败');
-                }
-            }*/
         if (request()->isAjax()) {
             $mobile = request()->post('mobile', '');  //手机号
             $password = request()->post('password', '');  // 密码
@@ -464,10 +437,19 @@ class Myhome extends Controller
             $this->redirect($redirect); // 用户未登录
         }
     }
+    //查询二级分类
+    public function findSecondCate(){
+        $con_cateid = input('post.values');
+        $cate_list = db('ns_consumption')->where('con_pid',$con_cateid)->select();
+        return json($cate_list);
+    }
+
+
     //商家申请
 	public function shenqing(){
-
-            $business_id = Session::get('business_id');
+        $scope = db("ns_consumption")->where('con_pid',0)->select();
+        $this->assign('scope',$scope);
+        $business_id = Session::get('business_id');
         if(request()->isPost()){
             //检测商户
             $where['userid'] = array('eq',$business_id);
@@ -479,6 +461,8 @@ class Myhome extends Controller
             $names = input('post.names');
             $address = input('post.address');
             $tel = input('post.tel');
+            $business_scope = input('post.business_scope');
+            // dump($business_scope);die;
             $thumb = input('post.thumb');
             $thumb_zhizhao = input('post.thumb_zhizhao');
             $thumb_zhengmian = input('post.thumb_zhengmian');
@@ -501,6 +485,7 @@ class Myhome extends Controller
             $data['names'] = $names;
             $data['address'] = $address;
             $data['tel'] = $tel;
+            $dtat['business_scope'] = $business_scope;
             $data['thumb'] = $thumb;
             $data['thumb_zhizhao'] = $thumb_zhizhao;
             $data['thumb_zhengmian'] = $thumb_zhengmian;
@@ -521,7 +506,7 @@ class Myhome extends Controller
             $data['jingdu'] = $jingdu;
             $data['weidu'] = $weidu;
             $data['state'] = 0;
-            $data['business_hours'] = $business_hours;
+            $data['business_scope'] = $business_scope;
             $id = db('ns_shop_message')->insertGetId($data);
             
             //当商家新增成功后，自动生成唯一的二维码

@@ -86,9 +86,10 @@ class Myhome extends BaseController
 			if ($id == 0) {
                 $this->error("没有获取到用户信息");
             }
-            $row = db("ns_shop_message")->field('a.*,m.iphone')
+            $row = db("ns_shop_message")->field('a.*,m.iphone,n.con_cate_name')
             	->alias('a')
             	->join('ns_goods_login m','a.userid=m.id','LEFT')
+            	->join('ns_consumption n','a.business_scope=n.con_cateid','left')
             	->find($id);
             $this->assign("row", $row);
 
