@@ -36,9 +36,9 @@ class Fastpay extends Controller
     protected $pageUrl = "http://mall.jxqkw8.com/index.php?s=/shop/Fastpay/page_url";
 
 
-    // public function __construct(){
-    //     $this->logs();
-    // }
+    public function __construct(){
+        $this->logs();
+    }
 
 	//用户开户接口
 	public function userOpen(){
@@ -51,7 +51,7 @@ class Fastpay extends Controller
 	     $transferReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
 	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
-	    // Log::DEBUG("请求给IPS的参数XMl:" . $openUserReqXml);  //未加密的日志
+	    Log::DEBUG("请求给IPS的参数XMl:" . $openUserReqXml);  //未加密的日志
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    $post_data['ipsRequest']  = $ipsRequest;
@@ -156,10 +156,10 @@ class Fastpay extends Controller
 
 	//初始化日志
 
-    // public function logs(){
-    //     $logHandler= new CLogFileHandler("./logs/".date('Y-m-d'). 'useropen'.'.log');
-    //     $log = Log::Init($logHandler, 15);
-    // }
+    public function logs(){
+        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d'). 'useropen'.'.txt');
+        $log = Log::Init($logHandler, 15);
+    }
 
 
 	
