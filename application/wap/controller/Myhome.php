@@ -466,6 +466,8 @@ class Myhome extends Controller
             $business_scope = input('post.business_scope');
             // dump($business_scope);die;
             $thumb = input('post.thumb');
+            $thumb_inimg_one = input('post.thumb_inimg_one');//门店照片，用于商家页面轮播图
+            $thumb_inimg_two = input('post.thumb_inimg_two');//门店照片，用于商家页面轮播图
             $thumb_zhizhao = input('post.thumb_zhizhao');
             $thumb_zhengmian = input('post.thumb_zhengmian');
             $thumb_fanmian = input('post.thumb_fanmian');
@@ -489,6 +491,8 @@ class Myhome extends Controller
             $data['tel'] = $tel;
             $dtat['business_scope'] = $business_scope;
             $data['thumb'] = $thumb;
+            $data['thumb_inimg_one'] = $thumb_inimg_one;//门店照片，用于商家页面轮播图
+            $data['thumb_inimg_two'] = $thumb_inimg_two;//门店照片，用于商家页面轮播图
             $data['thumb_zhizhao'] = $thumb_zhizhao;
             $data['thumb_zhengmian'] = $thumb_zhengmian;
             $data['thumb_fanmian'] = $thumb_fanmian;

@@ -172,19 +172,19 @@
 </script>
 	<div class="kong"></div>
 	<div class="intake-img">
-		<div class="intake-title"><span>门店照片</span><span>门店照片</span><span>门店照片</span></div>
+		<div class="intake-title"><span>门店照片</span><span>店内照片</span><span>店内照片</span></div>
 		<div class="up-file f-fl" >
 			<label>
 				<img src="__INDEX__/images/upload.png" id="thumb_img">
 				<input class="up-fileh error" name="thumb"  type="text" id="thumb" onclick="wximg('thumb')">
 			</label>
             <label>
-                <img src="__INDEX__/images/upload.png" id="thumb_img">
-                <input class="up-fileh error" name="thumb_"  type="text" id="thumb_" onclick="wximg('thumb_')">
+                <img src="__INDEX__/images/upload.png" id="thumb_inimg_one">
+                <input class="up-fileh error" name="thumb_inimg_one"  type="text" id="thumb_inimg_one" onclick="wximg('thumb_inimg_one')">
             </label>
             <label>
-                <img src="__INDEX__/images/upload.png" id="thumb_img">
-                <input class="up-fileh error" name="thumb_"  type="text" id="thumb_" onclick="wximg('thumb_')">
+                <img src="__INDEX__/images/upload.png" id="thumb_inimg_two">
+                <input class="up-fileh error" name="thumb_inimg_two"  type="text" id="thumb_inimg_two" onclick="wximg('thumb_inimg_two')">
             </label>
 		</div>
 
@@ -404,121 +404,121 @@
                 }
 
 
-        // if ($("#address").val()=='') {
+        if ($("#address").val()=='') {
 
-        //     alert('请输入详细地址');
+            alert('请输入详细地址');
 
-        //     $("#address").focus();
+            $("#address").focus();
 
-        //     return false;
+            return false;
 
-        // }
+        }
 
-        // if (!tel) {
+        if (!tel) {
 
-        //     alert('请输入商家电话');
+            alert('请输入商家电话');
 
-        //     $("#tel").focus();
+            $("#tel").focus();
 
-        //     return false;
+            return false;
 
-        // }
+        }
         
-        // if (!regs.test(tel) && !phone_reg.test(tel)) {
+        if (!regs.test(tel) && !phone_reg.test(tel)) {
 
-        //     alert('商家电话格式有误');
+            alert('商家电话格式有误');
 
-        //     $("#tel").focus();
+            $("#tel").focus();
 
-        //     return false;
+            return false;
 
-        // }
-        // if(!business_hours){
-        //     alert('请输入营业时间');
+        }
+        if(!business_hours){
+            alert('请输入营业时间');
 
-        //     $("#business_hours").focus();
+            $("#business_hours").focus();
 
-        //     return false;
-        // }
+            return false;
+        }
 
-        // if ($("#thumb").val()=='') {
+        if ($("#thumb").val()=='') {
 
-        //     alert('请上传门店照片');
+            alert('请上传门店照片');
 
-        //     $("#thumb").focus();
+            $("#thumb").focus();
 
-        //     return false;
+            return false;
 
-        // }
+        }
 
-        // if ($("#thumb_zhizhao").val()=='') {
+        if ($("#thumb_zhizhao").val()=='') {
 
-        //     alert('请上营业执照');
+            alert('请上营业执照');
 
-        //     $("#thumb_zhizhao").focus();
+            $("#thumb_zhizhao").focus();
 
-        //     return false;
+            return false;
 
-        // }
+        }
 
-        // if ($("#thumb_zhengmian").val()=='') {
+        if ($("#thumb_zhengmian").val()=='') {
 
-        //     alert('请上传法人正面照片');
+            alert('请上传法人正面照片');
 
-        //     $("#thumb_zhengmian").focus();
+            $("#thumb_zhengmian").focus();
 
-        //     return false;
+            return false;
 
-        // }
+        }
 
-        // if ($("#thumb_fanmian").val()=='') {
+        if ($("#thumb_fanmian").val()=='') {
 
-        //     alert('请上法人反面照片');
+            alert('请上法人反面照片');
 
-        //     $("#thumb_fanmian").focus();
+            $("#thumb_fanmian").focus();
 
-        //     return false;
+            return false;
 
-        // }
+        }
 
                 
-        //         if(username === ''){
-        //             alert("请输入持卡人姓名");
-        //             $('#txtUserName').focus();
-        //             return false;
-        //         }else if(kahao === '' && pic === ''){
-        //             alert("请输入银行卡号");
-        //             return false;
-        //         }else if(telephone === ''){
-        //             alert("预留手机号码不能为空");
-        //             return false;
-        //         }else if(!username.match( /^[\u4E00-\u9FA5]{1,}$/)){
-        //             alert("请填写正确的持卡人姓名");
-        //             return false;
-        //         }else if(kahao =="" || kahao.length < 16 || kahao.length > 19){
-        //             alert("银行卡号数必须在16到19之间");
-        //             return false;
-        //         }else if(strBin.indexOf(kahao.substring(0, 2))== -1){
-        //             alert("银行卡号开头6位不符合规范");
-        //             return false;
-        //         }else if(!regs.test(telephone)){
-        //             alert("请输入有效的手机号码!");
-        //         }
-        //         if($('#thumb_yhk1').val() == ''){
-        //             alert("请上传银行卡正面照片");
-        //             return false;
-        //         }
-        //         if($('#thumb_yhk2').val() == ''){
-        //             alert("请上传银行卡反面照片");
-        //             return false;
-        //         }
+                if(username === ''){
+                    alert("请输入持卡人姓名");
+                    $('#txtUserName').focus();
+                    return false;
+                }else if(kahao === '' && pic === ''){
+                    alert("请输入银行卡号");
+                    return false;
+                }else if(telephone === ''){
+                    alert("预留手机号码不能为空");
+                    return false;
+                }else if(!username.match( /^[\u4E00-\u9FA5]{1,}$/)){
+                    alert("请填写正确的持卡人姓名");
+                    return false;
+                }else if(kahao =="" || kahao.length < 16 || kahao.length > 19){
+                    alert("银行卡号数必须在16到19之间");
+                    return false;
+                }else if(strBin.indexOf(kahao.substring(0, 2))== -1){
+                    alert("银行卡号开头6位不符合规范");
+                    return false;
+                }else if(!regs.test(telephone)){
+                    alert("请输入有效的手机号码!");
+                }
+                if($('#thumb_yhk1').val() == ''){
+                    alert("请上传银行卡正面照片");
+                    return false;
+                }
+                if($('#thumb_yhk2').val() == ''){
+                    alert("请上传银行卡反面照片");
+                    return false;
+                }
 
-        //         if($("input[type='checkbox']").is(':checked')) {
-        //             return true;
-        //         }else{
-        //             alert('请同意商家协议！');
-        //             return false;
-        //         }
+                if($("input[type='checkbox']").is(':checked')) {
+                    return true;
+                }else{
+                    alert('请同意商家协议！');
+                    return false;
+                }
        });  
 });
 
