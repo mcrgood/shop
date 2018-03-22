@@ -39,7 +39,7 @@ class IpsPayNotify extends Log
                 $paymentResult = $_REQUEST['paymentResult'];
                 Log::DEBUG("支付返回报文:" . $paymentResult);
                 
-                $xmlResult = new SimpleXMLElement($paymentResult);
+                $xmlResult = simplexml_load_string($paymentResult);
                 $strSignature = $xmlResult->GateWayRsp->head->Signature;
                 
                 $retEncodeType =$xmlResult->GateWayRsp->body->RetEncodeType;

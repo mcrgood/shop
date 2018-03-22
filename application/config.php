@@ -354,9 +354,9 @@ return [
     "business_arr" =>[10,15,20,25,30,35,40],
     //网银支付接入配置数据
     'order_pay_data' =>[
-        'Version' =>'v1.0.0',   
+        'Version' =>'v1.0.0',  
         //商戶號
-        'MerCode' =>'205754',
+        'MerCode' =>'205754',  //ADMIN  Kwang2018
         //交易賬戶號
         'Account' =>'2057540011',
         //商戶證書

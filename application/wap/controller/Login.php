@@ -184,7 +184,6 @@ class Login extends Controller
     //登录
     public function index()
     {
-        
         $this->determineWapWhetherToOpen();
         if (request()->isAjax()) {
             $bind_message_info = json_decode(Session::get("bind_message_info"), true);
