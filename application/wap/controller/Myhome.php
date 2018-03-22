@@ -407,8 +407,10 @@ class Myhome extends Controller
             ->alias('a')
             ->join('ns_shop_message m','a.shop_id=m.userid','left')
             ->join('ns_wwb w','w.userid = a.shop_id','left')
+            ->order('id desc')
             ->where($where)
             ->select();
+        // dump($list);die;
         foreach($list as $k => $v){
             $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
         }    
@@ -898,7 +900,7 @@ class Myhome extends Controller
             $data['add_time'] = $add_time;
             $data['shop_id'] = $shop_id;
             $data['is_msg_send'] = 2;
-            $id = db('ns_goods_reserve')->insertGetId($data);
+            $id = db('ns_goods_reserve')->order('id desc')->insertGetId($data);
             if ($id)
                 return $result = ['error' => 0, 'message' => "提交成功",'iphone' => $iphone,'id' => $id];
             else
