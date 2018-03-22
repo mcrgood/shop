@@ -30,7 +30,7 @@ class Fastpay extends BaseController
     //异步通知地址
     protected $S2Snotify_url = "http://mall.jxqkw8.com/index.php?s=/shop/Fastpay/s2sUrl";
     //用户开户同步返回地址
-    protected $pageUrl = "http://mall.jxqkw8.com/index.php?s=/shop/Fastpay/pageUrl";
+    protected $pageUrl = "http://mall.jxqkw8.com/index.php?s=/shop/Fastpay/page_url";
 
 	//用户开户接口
 	public function userOpen(){
@@ -144,7 +144,7 @@ class Fastpay extends BaseController
 		 return $data;
 	 }
 	 //用户开户同步返回地址(页面响应地址)
-	 public function pageUrl(){
+	 public function page_url(){
 	 	ob_clean();
 	 	$ipsResponse = $_REQUEST['ipsResponse'];
 	 	dump($ipsResponse);
