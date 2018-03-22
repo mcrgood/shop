@@ -680,7 +680,7 @@ class Myhome extends Controller
 
     public function shengqingedit(){
         $id = request()->get('id', 0);
-        if($id)
+        if(!$id)
             $this->error('参数错误');
             $condition['id'] = $id;
             $condition['userid'] = $this->business_id;
@@ -695,6 +695,8 @@ class Myhome extends Controller
             $address = input('post.address');
             $tel = input('post.tel');
             $thumb = input('post.thumb');
+            $thumb_inimg_one = input('post.thumb_inimg_one');
+            $thumb_inimg_two = input('post.thumb_inimg_two');
             $thumb_zhizhao = input('post.thumb_zhizhao');
             $thumb_zhengmian = input('post.thumb_zhengmian');
             $thumb_fanmian = input('post.thumb_fanmian');
@@ -716,6 +718,8 @@ class Myhome extends Controller
             $data['address'] = $address;
             $data['tel'] = $tel;
             $data['thumb'] = $thumb;
+            $data['thumb_inimg_one'] = $thumb_inimg_one;
+            $data['thumb_inimg_two'] = $thumb_inimg_two;
             $data['thumb_zhizhao'] = $thumb_zhizhao;
             $data['thumb_zhengmian'] = $thumb_zhengmian;
             $data['thumb_fanmian'] = $thumb_fanmian;
@@ -753,7 +757,7 @@ class Myhome extends Controller
         ->join('sys_district d','d.district_id=s.area','left')
         ->where($condition)->find();
         // dump($shopinfo);die;
-        if($shopinfo)
+        if(!$shopinfo)
             $this->error('没有查找到相关信息！');
         $this->assign('shopinfo', $shopinfo);
 
