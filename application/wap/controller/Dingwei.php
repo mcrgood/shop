@@ -110,6 +110,7 @@ class Dingwei extends BaseController{
         ->field('s.*,w.business_status')
         ->find();
 		$this->assign('row',$row);
+        //轮播图查询
 		return view($this->style . 'Dingwei/catdetail');
 	}
 	 //百度地图
