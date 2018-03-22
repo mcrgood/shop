@@ -14,7 +14,7 @@
  * @version : v1.0.0.0
  */
 namespace app\shop\controller;
-
+header("content-type:text/html; charset=utf-8");
 class Fastpay extends BaseController
 {
  	//商户号
@@ -28,17 +28,18 @@ class Fastpay extends BaseController
     //交易賬戶號
     protected $merAcctNo = 2057540011;
     //异步通知地址
-    protected $S2Snotify_url = "http://mall.jxqkw8.com/index.php?s=/shop/orderpay/s2snotify_url";
+    protected $S2Snotify_url = "http://mall.jxqkw8.com/index.php?s=/shop/Fastpay/s2sUrl";
     //用户开户同步返回地址
     protected $pageUrl = "http://mall.jxqkw8.com/index.php?s=/shop/Fastpay/pageUrl";
 
 	//用户开户接口
 	public function userOpen(){
+		 ob_clean();
 		 $reqIp = request()->ip();  //获取客户端IP
 		 $reqDate = date("Y-m-d H:i:s",time());
-	 	//body	
-	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType></identityType><identityNo></identityNo><userName>屈华俊</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
+	 	 //body	
 	     //加签名(head)
+	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType></identityType><identityNo></identityNo><userName>屈华俊</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
 	     $head ="<head><version>V1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
 	     $openUserReqXml="<openUserReqXml>".$head.$body."</openUserReqXml>";
 	     // echo "openUserReqXml  明文：".$openUserReqXml."<br />";
@@ -49,13 +50,9 @@ class Fastpay extends BaseController
 	    //拼接$ipsRequest
 	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 	    // echo "ipsRequest  明文：".$ipsRequest."<br />";
-	 
-	    /*
-	    $content = $this->decrypt($transferReq);
-	    echo "解密：".$content;
-	    */
+
 	    //ips 易收付地址
-	    $url = 'https://ebp.ips.com.cn/fpms-access/action/user/open';
+	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    $post_data['ipsRequest']  = $ipsRequest;
 	   
 	    $responsexml = $this->request_post($url, $post_data);
@@ -68,6 +65,7 @@ class Fastpay extends BaseController
 	  * */
   
 	 public function request_post($url = '', $post_data = array()) {
+	 	ob_clean();
         if (empty($url) || empty($post_data)) {
             return false;
         }
@@ -78,7 +76,6 @@ class Fastpay extends BaseController
             $o.= "$k=" . urlencode( $v ). "&" ;
         }
         $post_data = substr($o,0,-1);
-
         $postUrl = $url;
         $curlPost = $post_data;
         $ch = curl_init();//初始化curl
@@ -90,7 +87,7 @@ class Fastpay extends BaseController
         $data = curl_exec($ch);//运行curl
         curl_close($ch);
         
-        return $data;
+        // return $data;
     }
 
      public function encrypt($input){//数据加密
@@ -148,6 +145,13 @@ class Fastpay extends BaseController
 	 }
 	 //用户开户同步返回地址(页面响应地址)
 	 public function pageUrl(){
+	 	ob_clean();
+	 	$ipsResponse = $_REQUEST['ipsResponse'];
+	 	dump($ipsResponse);
+	 }
+	 //异步返回地址
+	 public function s2sUrl(){
+	 	ob_clean();
 	 	$ipsResponse = $_REQUEST['ipsResponse'];
 	 	dump($ipsResponse);
 	 }
