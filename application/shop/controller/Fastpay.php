@@ -35,24 +35,23 @@ class Fastpay extends BaseController
 	//用户开户接口
 	public function userOpen(){
 		 $reqIp = request()->ip();  //获取客户端IP
-		 $merBillNo = date("YmdHis",time());  
 		 $reqDate = date("Y-m-d H:i:s",time());
 	 	//body	
-	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13912345678</customerCode><identityType></identityType><identityNo></identityNo><userName>客旺旺</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13912345678</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</ pageUrl><s2sUrl>".$this->S2Snotify_url."</ s2sUrl>< directSell></ directSell>< stmsAcctNo ></ stmsAcctNo >< ipsUserName ></ ipsUserName ></body>";
+	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType></identityType><identityNo></identityNo><userName>屈华俊</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
 	     //加签名(head)
 	     $head ="<head><version>V1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
-	     $openUserReqXml="<openUserReqXml>". $head.$body."</openUserReqXml>";
-	     // echo "transferReqXml  明文：".$transferReqXml."<br />";
+	     $openUserReqXml="<openUserReqXml>".$head.$body."</openUserReqXml>";
+	     // echo "openUserReqXml  明文：".$openUserReqXml."<br />";
 	     //加密请求类容
 	     $transferReq = $this->encrypt($openUserReqXml);
 
-	    // echo "transferReqXml  密文：".$transferReq."<br />";
+	    // echo "openUserReqXml  密文：".$transferReq."<br />";
 	    //拼接$ipsRequest
 	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 	    // echo "ipsRequest  明文：".$ipsRequest."<br />";
 	 
 	    /*
-	    $content = $iPSUtils->decrypt($transferReq);
+	    $content = $this->decrypt($transferReq);
 	    echo "解密：".$content;
 	    */
 	    //ips 易收付地址
@@ -60,7 +59,7 @@ class Fastpay extends BaseController
 	    $post_data['ipsRequest']  = $ipsRequest;
 	   
 	    $responsexml = $this->request_post($url, $post_data);
-	    echo "响应responsexml  明文：".$responsexml;die;
+	    echo "响应responsexml  明文：".$responsexml;
 	}
 
   	 /**
@@ -104,7 +103,7 @@ class Fastpay extends BaseController
 		 $data = mcrypt_generic($td, $input);
 		 mcrypt_generic_deinit($td);
 		 mcrypt_module_close($td);
-		 //    $data = base64_encode($this->PaddingPKCS7($data));
+		 // $data = base64_encode($this->PaddingPKCS7($data));
 		 $data = base64_encode($data);
 		 return $data;
 	 }
