@@ -680,7 +680,7 @@ class Myhome extends Controller
 
     public function shengqingedit(){
         $id = request()->get('id', 0);
-        if(!$id)
+        if($id)
             $this->error('参数错误');
             $condition['id'] = $id;
             $condition['userid'] = $this->business_id;
@@ -753,7 +753,7 @@ class Myhome extends Controller
         ->join('sys_district d','d.district_id=s.area','left')
         ->where($condition)->find();
         // dump($shopinfo);die;
-        if(!$shopinfo)
+        if($shopinfo)
             $this->error('没有查找到相关信息！');
         $this->assign('shopinfo', $shopinfo);
 

@@ -36,6 +36,13 @@
 <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
 <script src="__INDEX__/js/swiper.min.js"></script>
 </head>
+<style type="text/css">
+    .intake-title span{
+    width: 26%;
+    display: inline-block;
+    text-align: center;
+}
+</style>
 <body>
 <div class="top-kong"></div>
 
@@ -98,28 +105,22 @@
 
     <div class="kong"></div>
     <div class="intake-img">
-        <div class="intake-title">门店照片</div>
+        <div class="intake-title"><span>门店照片</span><span>店内照片</span><span>店内照片</span></div>
         <div class="up-file f-fl" >
             <label>
                 <img src="{$shopinfo.thumb|default='__INDEX__/images/upload.png'}" id="thumb_img ">
                 <input class="up-fileh error" name="thumb"  type="text" id="thumb"  value="{$shopinfo.thumb}" onclick="wximg('thumb')">
             </label>
-        </div>
-        <div class="intake-title">店内照片</div>
-        <div class="up-file f-fl" >
-            <label>
-                <img src="{$shopinfo.thumb_inimg_one|default='__INDEX__/images/upload.png'}" id="thumb_img ">
+             <label>
+                <img src="{$shopinfo.thumb_inimg_one|default='__INDEX__/images/upload.png'}" id="thumb_inimg_one ">
                 <input class="up-fileh error" name="thumb_inimg_one"  type="text" id="thumb_inimg_one"  value="{$shopinfo.thumb_inimg_one}" onclick="wximg('thumb_inimg_one')">
             </label>
-        </div>
-        <div class="intake-title">店内照片</div>
-        <div class="up-file f-fl" >
-            <label>
-                <img src="{$shopinfo.thumb_inimg_two|default='__INDEX__/images/upload.png'}" id="thumb_img ">
+             <label>
+                <img src="{$shopinfo.thumb_inimg_two|default='__INDEX__/images/upload.png'}" id="thumb_inimg_two ">
                 <input class="up-fileh error" name="thumb_inimg_two"  type="text" id="thumb_inimg_two"  value="{$shopinfo.thumb_inimg_two}" onclick="wximg('thumb_inimg_two')">
             </label>
         </div>
-
+     
         <div class="intake-title">营业执照</div>
         <div class="up-file f-fl">
             <label>
