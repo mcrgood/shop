@@ -78,12 +78,12 @@ class Fastpay extends Controller
             return false;
         }
         
-        // $o = "";
-        // foreach ( $post_data as $k => $v )
-        // { 
-        //     $o.= "$k=" . urlencode( $v ). "&" ;
-        // }
-        // $post_data = substr($o,0,-1);
+        $o = "";
+        foreach ( $post_data as $k => $v )
+        { 
+            $o.= "$k=" . urlencode( $v ). "&" ;
+        }
+        $post_data = substr($o,0,-1);
         $postUrl = $url;
         $curlPost = $post_data;
         $ch = curl_init();//初始化curl
