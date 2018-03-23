@@ -60,10 +60,12 @@ class Fastpay extends Controller
 	     $transferReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
 	    $ipsRequest = "<xml><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest></xml>";
+	    // dump(simplexml_load_string($ipsRequest));die;
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
+	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
 	    $responsexml = $this->request_post($url, $ipsRequest);
 	    dump("响应responsexml  明文：".$responsexml);
 	}
@@ -73,7 +75,7 @@ class Fastpay extends Controller
 	  * 
 	  * */
   
-	 public function request_post($url = '', $post_data = array()) {
+	 public function request_post($url = '', $post_data = '') {
 	 	ob_clean();
         if (empty($url) || empty($post_data)) {
             return false;
@@ -85,13 +87,12 @@ class Fastpay extends Controller
         //     $o.= "$k=" . urlencode( $v ). "&" ;
         // }
         // $post_data = substr($o,0,-1);
-        $curlPost = urlencode( $post_data );
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL , $url);//抓取指定网页
         curl_setopt($ch, CURLOPT_HEADER , 0);//设置header
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
         curl_setopt($ch, CURLOPT_POST, true);//post提交方式
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         $data = curl_exec($ch);//运行curl
         curl_close($ch);
 
