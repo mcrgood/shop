@@ -50,23 +50,25 @@ class Fastpay extends Controller
 
 	//用户开户接口
 	public function user_open(){
-		ob_clean();
+		 ob_clean();
 		 $reqIp = request()->ip();  //获取客户端IP
 		 $reqDate = date("Y-m-d H:i:s",time());
-	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>360103198906283418</identityNo><userName>屈华俊</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
-	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
-	     $openUserReqXml="<xml><openUserReqXml>".$head.$body."</openUserReqXml></xml>";
+	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>360103198906283418</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
+	     $head ="<head><version>V1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
+	     $openUserReqXml="<?xml version='1.0' encoding='UTF-8'?><openUserReqXml>".$head.$body."</openUserReqXml>";
+	     // dump($openUserReqXml);die;
 	     //加密请求类容
 	     $transferReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
 	    $ipsRequest = "<xml><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest></xml>";
-	    // dump(simplexml_load_string($ipsRequest));die;
+	    // dump(simplexml_load_string($openUserReqXml));die;
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
-	    $responsexml = $this->request_post($url, $ipsRequest);
+	    $ipsPost = $ipsRequest;
+	    $responsexml = $this->request_post($url, $ipsPost);
 	    dump("响应responsexml  明文：".$responsexml);
 	}
 
@@ -166,14 +168,13 @@ class Fastpay extends Controller
 	 }
 
 	//本地接收请求测试页面
-	// public function test(){
-	// 	//接收传送的数据
-	// 	$fileContent = file_get_contents("php://input"); 
-
-	// 	//转换为simplexml对象
-	// 	$xmlResult = simplexml_load_string($fileContent);
-	// 	dump($xmlResult);
-	// }
+	public function test(){
+		//接收传送的数据
+		$fileContent = file_get_contents("php://input");
+		//转换为simplexml对象
+		$xmlResult = simplexml_load_string($fileContent);
+		dump($xmlResult);
+	}
 
     //开户结果查询接口
    //  public function user_query(){
