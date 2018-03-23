@@ -228,10 +228,10 @@ class Fastpay extends Controller
         }
         curl_close($ch);
         echo $response;
-        $xml = simplexml_load_string($response);
+        //$xml = simplexml_load_string($response);
         echo "<h3>接收</h3>";
         //dump($response);
-        dump($xml);
+        //dump($xml);
     }
 
 }
