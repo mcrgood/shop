@@ -63,7 +63,7 @@ class Fastpay extends Controller
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
-	    $post_data['ipsRequest']  = $ipsRequest;
+	    $post_data  = $ipsRequest;
 	    $responsexml = $this->request_post($url, $post_data);
 	    dump("响应responsexml  明文：".$responsexml);
 	}
@@ -78,12 +78,12 @@ class Fastpay extends Controller
             return false;
         }
         
-        $o = "";
-        foreach ( $post_data as $k => $v )
-        { 
-            $o.= "$k=" . urlencode( $v ). "&" ;
-        }
-        $post_data = substr($o,0,-1);
+        // $o = "";
+        // foreach ( $post_data as $k => $v )
+        // { 
+        //     $o.= "$k=" . urlencode( $v ). "&" ;
+        // }
+        // $post_data = substr($o,0,-1);
         $postUrl = $url;
         $curlPost = $post_data;
         $ch = curl_init();//初始化curl
