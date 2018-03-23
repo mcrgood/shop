@@ -221,7 +221,7 @@ class Fastpay extends Controller
         curl_setopt($ch, CURLOPT_POST, 1);
         // post的变量
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
             print curl_error($ch);
