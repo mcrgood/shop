@@ -25,12 +25,13 @@ class Fastpay extends Controller
 	//商户md5证书
  	protected $MerCret = "z6r9z84rodeEX80pzVRNLj4ECzjDYtQRuvYO6ArFye5clC6HnUNxu7QEluSrmjcAXQ1AEh6ffErNf3KKGTXCyzDUPr9BbWx3UxHgf3ORlC5C8M7aHRyMqWXkULs4HP50";
  	//3des秘钥
-    protected $key = "b4C2lFYConD1Fmv1hgMa6twU";
+    protected $key = "sQ2L6cO0mWJLPpGVc1HJL4zt";
      //3des向量
-    protected $iv ="mnL8hwOr";
+    protected $iv ="OsoHvrJO";
     //交易賬戶號
     protected $merAcctNo = 2057540011;
     //异步通知地址
+    //向量:OsoHvrJO密钥:sQ2L6cO0mWJLPpGVc1HJL4zt
     protected $S2Snotify_url = "http://mall.jxqkw8.com/index.php?s=/shop/Fastpay/s2sUrl";
     //用户开户同步返回地址
     protected $pageUrl = "http://mall.jxqkw8.com/index.php?s=/shop/Fastpay/page_url";
@@ -59,11 +60,12 @@ class Fastpay extends Controller
 	    //拼接$ipsRequest
 	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
+	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    $post_data['ipsRequest']  = $ipsRequest;
-	    $responsexml = $this->request_post($url, $post_data);
-	    dump("响应responsexml  明文：".$responsexml);
+	    $this->request_post($url, $post_data);
+	    // dump("响应responsexml  明文：".$responsexml);
 	}
 
   	 /**
