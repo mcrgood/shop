@@ -62,7 +62,6 @@ class Fastpay extends Controller
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    $post_data['ipsRequest']  = $ipsRequest;
-	    dump($post_data);die;
 	    $responsexml = $this->request_post($url, $post_data);
 	    dump("响应responsexml  明文：".$responsexml);
 	}
