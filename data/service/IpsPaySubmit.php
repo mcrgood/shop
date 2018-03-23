@@ -53,7 +53,7 @@ class IpsPaySubmit extends Log
     }
     //初始化日志
     public function logs(){
-        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'.log');
+        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'pay'.'.txt');
         $log = Log::Init($logHandler, 15);
     }
     
