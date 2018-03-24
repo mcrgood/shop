@@ -232,8 +232,8 @@ class Fastpay extends Controller
         $post_data .= '</param>';*/
         //  dump($post_data);
 
-        /*$xml = simplexml_load_string($post_data);
-        dump($xml);
+        $xml = simplexml_load_string($post_data);
+        /*dump($xml);
         echo "<meta charset=\"UTF-8\">";
         echo "<h3>发送</h3>";
         dump($xml);*/
@@ -245,7 +245,7 @@ class Fastpay extends Controller
         // post数据
         curl_setopt($ch, CURLOPT_POST, 1);
         // post的变量
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
         /*if (curl_errno($ch)) {
