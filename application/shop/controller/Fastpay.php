@@ -58,13 +58,13 @@ class Fastpay extends Controller
 	     //加密请求类容
 	     $transferReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
-	    $ipsRequest = "<xml><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest></xml>";
+	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
-	    $ipsPost = $ipsRequest;
+	    $ipsPost['ipsRequest'] = $ipsRequest;
 	    $responsexml = $this->request_post($url, $ipsPost);
 	    dump("响应responsexml  明文：".$responsexml);
 	}
@@ -80,14 +80,14 @@ class Fastpay extends Controller
             return false;
         }
         
-        // $o = "";
-        // foreach ( $post_data as $k => $v )
-        // {
-        //     $o.= "$k=" . urlencode( $v ). "&" ;
-        // }
-        // $post_data = substr($o,0,-1);
+        $o = "";
+        foreach ( $post_data as $k => $v )
+        {
+            $o.= "$k=" . urlencode( $v ). "&" ;
+        }
+        $post_data = substr($o,0,-1);
+        $curlPost = $post_data;
         $header[] = "Content-type: text/xml;charset=utf-8";
-        $curlPost = urlencode($post_data);
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL , $url);//抓取指定网页
         curl_setopt($ch, CURLOPT_POST, true);//post提交方式
