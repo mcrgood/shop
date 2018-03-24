@@ -95,7 +95,7 @@ class Fastpay extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         $data = curl_exec($ch);//运行curl
         curl_close($ch);
-
+        echo $data;
         return $data;
     }
 
