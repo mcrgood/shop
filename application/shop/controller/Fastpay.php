@@ -96,7 +96,7 @@ class Fastpay extends Controller
         $data = curl_exec($ch);//运行curl
         curl_close($ch);
         echo $data;
-        return $data;
+        //return $data;
     }
 
      public function encrypt($input){//数据加密
