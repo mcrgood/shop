@@ -86,12 +86,11 @@ class Fastpay extends Controller
         //     $o.= "$k=" . urlencode( $v ). "&" ;
         // }
         // $post_data = substr($o,0,-1);
-        $header[] = "Content-type: text/xml";
-        $curlPost = $post_data;
+        $header[] = "Content-Type: application/x-www-form-urlencoded; charset=utf-8";
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL , $url);//抓取指定网页
+        curl_setopt($ch, CURLOPT_HEADER , 0);//设置header
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        // curl_setopt($ch, CURLOPT_HEADER , 0);//设置header
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
         curl_setopt($ch, CURLOPT_POST, true);//post提交方式
         curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
