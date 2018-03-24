@@ -17,7 +17,6 @@ namespace app\shop\controller;
 use data\service\Log as Log;
 use think\Controller;
 use data\service\CLogFileHandler as CLogFileHandler;
-header("content-type:text/html; charset=utf-8");
 class Fastpay extends Controller
 {
  	//商户号
@@ -53,21 +52,21 @@ class Fastpay extends Controller
 		 ob_clean();
 		 $reqIp = request()->ip();  //获取客户端IP
 		 $reqDate = date("Y-m-d H:i:s",time());
-	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>360103198906283418</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
+	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>360103199006283418</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
 	     $head ="<head><version>V1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
-	     $openUserReqXml="<?xml version='1.0' encoding='UTF-8'?><openUserReqXml>".$head.$body."</openUserReqXml>";
+	     $openUserReqXml="<?xml version='1.0.1' encoding='utf-8'?><openUserReqXml>".$head.$body."</openUserReqXml>";
 	     // dump($openUserReqXml);die;
 	     //加密请求类容
 	     $transferReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
-	    $ipsRequest = "<xml><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest></xml>";
+	    $ipsRequest = "<?xml version='1.0.1' encoding='utf-8'?><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 	    // dump(simplexml_load_string($openUserReqXml));die;
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
-	    $ipsPost = $ipsRequest;
+	    $ipsPost['ipsRequest'] = $ipsRequest;
 	    $responsexml = $this->request_post($url, $ipsPost);
 	    dump("响应responsexml  明文：".$responsexml);
 	}
@@ -83,18 +82,19 @@ class Fastpay extends Controller
             return false;
         }
         
-        // $o = "";
-        // foreach ( $post_data as $k => $v )
-        // { 
-        //     $o.= "$k=" . urlencode( $v ). "&" ;
-        // }
-        // $post_data = substr($o,0,-1);
+        $o = "";
+        foreach ( $post_data as $k => $v )
+        { 
+            $o.= "$k=" . urlencode( $v ). "&" ;
+        }
+        $post_data = substr($o,0,-1);
+        $curlPost = $post_data;
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL , $url);//抓取指定网页
         curl_setopt($ch, CURLOPT_HEADER , 0);//设置header
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
         curl_setopt($ch, CURLOPT_POST, true);//post提交方式
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
         $data = curl_exec($ch);//运行curl
         curl_close($ch);
 
@@ -173,6 +173,7 @@ class Fastpay extends Controller
 		$fileContent = file_get_contents("php://input");
 		//转换为simplexml对象
 		$xmlResult = simplexml_load_string($fileContent);
+		dump($fileContent);
 		dump($xmlResult);
 	}
 
