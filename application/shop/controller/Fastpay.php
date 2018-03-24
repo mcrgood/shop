@@ -55,18 +55,16 @@ class Fastpay extends Controller
 	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>360103199006283418</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
 	     $head ="<head><version>V1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
 	     $openUserReqXml="<?xml version='1.0.1' encoding='utf-8'?><openUserReqXml>".$head.$body."</openUserReqXml>";
-	     // dump($openUserReqXml);die;
 	     //加密请求类容
 	     $transferReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
-	    $ipsRequest = "<?xml version='1.0.1' encoding='utf-8'?><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
-	    // dump(simplexml_load_string($openUserReqXml));die;
+	    $ipsRequest = "<xml><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest></xml>";
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
-	    $ipsPost['ipsRequest'] = $ipsRequest;
+	    $ipsPost = $ipsRequest;
 	    $responsexml = $this->request_post($url, $ipsPost);
 	    dump("响应responsexml  明文：".$responsexml);
 	}
@@ -82,18 +80,17 @@ class Fastpay extends Controller
             return false;
         }
         
-        $o = "";
-        foreach ( $post_data as $k => $v )
-        {
-            $o.= "$k=" . urlencode( $v ). "&" ;
-        }
-        $post_data = substr($o,0,-1);
-        $header[] = "Content-type: text/xml";
-        $curlPost = $post_data;
+        // $o = "";
+        // foreach ( $post_data as $k => $v )
+        // {
+        //     $o.= "$k=" . urlencode( $v ). "&" ;
+        // }
+        // $post_data = substr($o,0,-1);
+        $header[] = "Content-Type: application/x-www-form-urlencoded; charset=utf-8";
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL , $url);//抓取指定网页
+        curl_setopt($ch, CURLOPT_HEADER , 0);//设置header
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        // curl_setopt($ch, CURLOPT_HEADER , 0);//设置header
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
         curl_setopt($ch, CURLOPT_POST, true);//post提交方式
         curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
