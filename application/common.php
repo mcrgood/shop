@@ -4271,6 +4271,53 @@ function subStrXml($begin,$end,$str){
 }
 
 
+/**
+ * 对象转数组
+ * @param unknown $array
+ * @return array
+ */
+function object_array($array)
+{
+    if(is_object($array))
+    {
+        $array = (array)$array;
+    }
+    if(is_array($array))
+    {
+        foreach($array as $key=>$value)
+        {
+            $array[$key] = object_array($value);
+        }
+    }
+    return $array;
+}
+
+
+function WebService($uri,$class_name='',$namespace='controller',$persistence = false){
+    $class = 'index\\'. $namespace .'\\'. $class_name;
+    $class = 'app\index\controller\Web';
+    $serv = new \SoapServer(null,array("uri"=>$uri));
+    $serv->setClass($class);
+    if($persistence)
+        $serv->setPersistence(SOAP_PERSISTENCE_SESSION);//默认是SOAP_PERSISTENCE_REQUEST
+    $serv->handle();
+    return $serv;
+    
+}
+
+function WebClient($url='',array $options=array()){
+  if(stripos($url,'?wsdl')!== false)
+  {
+    return new \SoapClient($url,array_merge(array('encoding'=>'utf-8'),$options));//WSDL
+  }
+  else
+  {
+    $location = "http://yb.houapi.cn/";
+    $uri = "index/web/index";
+    $options = array_merge(array('location'=>$location,'uri'=>$uri,'encoding'=>'utf-8'),$options);
+    return new \SoapClient(null,$options);//non-WSDL
+  }
+}
 
 
 

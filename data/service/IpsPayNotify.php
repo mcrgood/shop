@@ -11,7 +11,7 @@
  * 任何企业和个人不允许对程序代码以任何形式任何目的再发布。
  * =========================================================
  * @author : niuteam
- * @date : 
+ * @date : PC端支付
  * @version : v1.0.0.0
  */
 namespace data\service;
@@ -64,7 +64,7 @@ class IpsPayNotify extends Log
         //初始化日志
 
     public function logs(){
-        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'pay'.'.txt');
+        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'.txt');
         $log = Log::Init($logHandler, 15);
     }
 }
