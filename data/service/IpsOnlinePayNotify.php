@@ -47,7 +47,7 @@ class IpsOnlinePayNotify extends Log
                 $paymentResult = $_REQUEST['paymentResult'];
                 Log::DEBUG("扫码支付成功返回报文:" . $paymentResult);
                 
-                $xmlResult = new SimpleXMLElement($paymentResult);
+                $xmlResult = simplexml_load_string($paymentResult);
                 $strSignature = $xmlResult->GateWayRsp->head->Signature;
                 
                 $strRspCode = $xmlResult->GateWayRsp->head->RspCode;

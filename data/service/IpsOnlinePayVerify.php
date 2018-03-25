@@ -45,7 +45,7 @@ class IpsOnlinePayVerify extends Log
     {
         try {
             
-            $xmlResult = new SimpleXMLElement($param);
+            $xmlResult = simplexml_load_string($param);
             $strSignature = $xmlResult->GateWayRsp->head->Signature;
             
             $strBody = subStrXml("<body>", "</body>", $param);

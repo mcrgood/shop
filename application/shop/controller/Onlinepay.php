@@ -21,8 +21,7 @@ use data\service\IpsOnlinePayRequest as IpsOnlinePayRequest;
 use data\service\IpsOnlinePayVerify as IpsOnlinePayVerify;
 use data\service\IpsOnlinePayNotify as IpsOnlinePayNotify;
 class Onlinepay extends BaseController
-{
- 	
+{	
 
     //线上扫码支付首页
     public function index(){
@@ -92,14 +91,14 @@ class Onlinepay extends BaseController
     	$ipspay_config = config('online_pay_data');
 
 		//建立请求
-		$ipspayRequest = new IpsOnlinePayRequest($ipspay_config);
+		$ipspayRequest = new IpsOnlinePayRequest();
 		$html_text = $ipspayRequest->buildRequest($parameter);
 		$xmlResult = simplexml_load_string($html_text);
 		$strRspCode = $xmlResult->GateWayRsp->head->RspCode;
 		if($strRspCode == "000000")
 		{
 		    //返回报文验签
-		    $ipspayVerify = new IpsOnlinePayVerify($ipspay_config);
+		    $ipspayVerify = new IpsOnlinePayVerify();
 		    $verify_result = $ipspayVerify->verifyReturn($html_text);
 		    // 验证成功
 		    if ($verify_result) { 
@@ -118,7 +117,7 @@ class Onlinepay extends BaseController
   	//异步返回通知地址
   	public function s2snotify_url(){
   		$ipspay_config = config('online_pay_data');
-  		$ipspayNotify = new IpsOnlinePayNotify($ipspay_config);
+  		$ipspayNotify = new IpsOnlinePayNotify();
 		$verify_result = $ipspayNotify->verifyReturn();
 
 		if ($verify_result) { // 验证成功

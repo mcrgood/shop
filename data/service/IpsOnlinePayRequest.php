@@ -20,19 +20,14 @@ use data\service\CLogFileHandler as CLogFileHandler;
 
 class IpsOnlinePayRequest extends Log
 {
-    var $ipspay_config;
-     
-    public function __construct($ipspay_config){
-        $this->logs();
-        $this->ipspay_config = $ipspay_config;
-    }
-    public function IpsPayRequest($ipspay_config) {
-        
-        $this->__construct($ipspay_config);
-    }
-    
-        //初始化日志
+    protected $ipspay_config;
 
+    public function __construct(){
+        $this->logs();
+        $this->ipspay_config = config('online_pay_data');
+    }
+
+    //初始化日志
     public function logs(){
         $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'.txt');
         $log = Log::Init($logHandler, 15);
