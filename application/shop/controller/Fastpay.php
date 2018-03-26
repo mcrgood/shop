@@ -297,12 +297,19 @@ class Fastpay extends Controller
 
     public function test1()
     {
-
         ob_clean();
-        $post_data = '<xml><ipsRequest><argMerCode>205754</argMerCode><arg3DesXmlPara>XcBfjRkgXh/SDDHo7uD4DXKnMvBFcwncRmtm59OOoBM0ZDC2EYx0bgJCrjqkXKRchnqlqNVN6x3cZws6a90rwCeDj9Xyz9lvRPcetDUnYBWDYTr20un5CJAZAGXkQDNJhnzDFLJna0nYWF5XiNLFb9/MyE5Jvg/Xk3a49s0szaOFSlPPmrAl8Av0OvXNCPDNRX0mljAI+921bq2B+XGX3lAnHhR7UXrf/ue03jKekI0wrkr3OSTQ1GLAGfuezYFXp+lMj7oM1lL+QRsI0nx1lq3nVjeRi0uIKEWOypGrbMKa1cS2/iyF8aVX0ZZDykMjRVo/MKukttkiSHkfCgbUCK3qs0Eok8rbADziqbnGyAfBNCp6HdxtNXSDzQnnnAgEagy0tio58L9H6v/v6rLMo8vrQszlmfOlaqDWp8VvdyX1fx55igPJN+S3PaKaFiPEg2Oja4TJ6XrJdYiapY0DkKLSooBors30Z3Vj/Iplhk5kpNevGNdmFqVXM3NTmo6bCTJrB2eqTSxv5b7P8SKRszfgNuyTErbR5OsjUmAjGVebuR/0UHopjimMSKg2r1LKcH55v8I5CiRKJBk8kINHlU+4X3qEOFMtpOgbmeG3scGxq5sgFAs/xeoQm+Z/76+oVuRTC4Csb9twt6RnaC/Z3Fpxt3DG4/7P+muIZgMAvp6c/iWM0jLmyMULReGp2qZveteV/BUOGPdgmpSD3O4ZegegmNinqzH381/QiUCWS0nBCV/EBCJQoPjKSB+g6duYXhGAmq6PRv/hW25L4Rdgj/Fzptn2c7vWboUeCqE1vUJP8jwY72q4dQfSSR949Mq6QTrgmxbd/jWBlg5PQRGdoES/jgDVqzKEKnREOtzM0MPkhHfRI8+0N/E/qXKmAA4mN7tGRdCYrmgMJ0eInaZbaPjMCiWXKuYd290L9PfQVmrdF3s5j9b8DTeiMsAlGeDOwz7teKOWGOxg9QKjz8jDrUr2sKQIloDMkwAU0X2VcA1fQZkegQx1DQyBmmxo+/bwzNri2I1hhjccxFXcQisjTCCY6uY9/N+XnJFxMigjmjXcN4mPDmOdBvoh7pXL1KwrApX1IP6ktS10Y0XRkhkSPHLUrctqvIWgw4RsOhnAJVx3V2CmgWOgzA==</arg3DesXmlPara></ipsRequest></xml>';
+        $reqIp = request()->ip();  //获取客户端IP
+        $reqDate = date("Y-m-d H:i:s",time());
+        $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>52212619930930551X</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
+        $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
+        $openUserReqXml="<openUserReqXml>".$head.$body."</openUserReqXml>";
+        //加密请求类容
+        $transferReq = $this->encrypt($openUserReqXml);
+        //拼接$ipsRequest
 
+        $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 
-        $post_data = trim($post_data);
+        $post_data = trim($ipsRequest);
         $header[] = "Content-type: text/xml;charset=utf-8";//定义content-type为xml
         /*$post_data = '<?xml version="1.0" encoding="UTF-8"?>';
         $post_data .= '<param>';
@@ -313,7 +320,7 @@ class Fastpay extends Controller
         $post_data .= '</param>';*/
         //  dump($post_data);
 
-        $xml = simplexml_load_string($post_data);
+       // $xml = simplexml_load_string($post_data);
         /*dump($xml);
         echo "<meta charset=\"UTF-8\">";
         echo "<h3>发送</h3>";
@@ -326,12 +333,13 @@ class Fastpay extends Controller
         // post数据
         curl_setopt($ch, CURLOPT_POST, 1);
         // post的变量
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
-        /*if (curl_errno($ch)) {
+        if (curl_errno($ch)) {
             print curl_error($ch);
-        }*/
+        }
         curl_close($ch);
         echo $response;
         //$xml = simplexml_load_string($response);
