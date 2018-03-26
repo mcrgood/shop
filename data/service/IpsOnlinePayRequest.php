@@ -44,7 +44,7 @@ class IpsOnlinePayRequest extends Log
             
             $wsdl = $this->ipspay_config['PostUrl'];
              
-            $client=new \SoapClient($wsdl);
+            $client = new \SoapClient($wsdl);
             
             $sReqXml = $client->scanPay($para);
              

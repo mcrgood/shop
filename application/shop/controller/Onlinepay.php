@@ -22,7 +22,7 @@ use data\service\IpsOnlinePayVerify as IpsOnlinePayVerify;
 use data\service\IpsOnlinePayNotify as IpsOnlinePayNotify;
 class Onlinepay extends BaseController
 {	
-
+	
     //线上扫码支付首页
     public function index(){
     	$ipspay_config = config('online_pay_data');
