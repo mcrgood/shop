@@ -26,6 +26,7 @@ use data\model\NsMyhomeModel as NsMyhomeModel;
 use data\model\NsCooperateListModel as NsCooperateListModel;
 use data\model\NsParternListModel as NsParternListModel;
 use data\model\NsWwbListModel as NsWwbListModel;
+use data\model\NsGoodsCateList as NsGoodsCateList;
 
 class MyhomeService extends BaseService{
 
@@ -116,6 +117,27 @@ class MyhomeService extends BaseService{
         }
         return $result;
     }
+
+    /**
+     * 商家分类列表
+     * 
+     */
+    public function getGoodsList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsGoodsCateList();
+        $result = $myhome->getGoodsCate($page_index, $page_size, $condition, $order);
+        // foreach ($result['data'] as $k => $v) {
+        //     if($result['data'][$k]['business_status'] == 1){
+        //         $v['business_status'] = '营业中';
+        //     }else{
+        //         $v['business_status'] = '休息中';
+        //     }
+        //     $result['data'][$k]['create_time'] = date('Y-m-d H:i',$v['create_time']);
+        // }
+        return $result;
+    }
+
+  
 
     
 }

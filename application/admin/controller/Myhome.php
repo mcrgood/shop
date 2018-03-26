@@ -81,6 +81,50 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/registerlist");
 	}
 
+	//商家分类列表
+	public function goods_index(){
+		if (request()->isAjax()) {
+	            $page_index = request()->post("page_index", 1);
+	            $page_size = request()->post('page_size', PAGESIZE);
+	            $search_text = request()->post('search_text', '');
+	            $condition['catename'] = ['LIKE',"%".$search_text."%"];
+	            $member = new MyhomeService();
+	            $list = $member->getGoodsList($page_index, $page_size, $order = '');
+	            return $list;
+	    }
+		return view($this->style . "Myhome/index");
+	}
+
+	//商家分类添加
+	public function cateadd(){
+		if(request()->isAjax()){
+			$row = input("post.");
+			if(empty($row['catename'])){
+				$info = [
+					"status" =>0,
+					"msg" =>'商家分类信息不能为空'
+				];
+			}else{
+				$data['catename'] = $row['catename'];
+				$id = db("ns_shop_usercate")->insertGetId($data);
+				if($id){
+					$info = [
+						"status" =>1,
+						"msg" =>'商家分类信息添加成功'
+					];
+				}else{
+					$info = [
+						"status" =>0,
+						"msg" =>'商家分类信息添加失败'
+					];
+				}
+			}
+			return $info;
+		}
+		return view($this->style . "Myhome/cateadd");
+	}
+
+
 	public function registerdetail(){
 			$id = input('param.id');
 			if ($id == 0) {
@@ -207,6 +251,9 @@ class Myhome extends BaseController
 	public function jinge(){
 		return view($this->style . "Myhome/jinge");
 	}
+
+
+
+	
 }
 
- ?>

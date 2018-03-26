@@ -1,0 +1,88 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+<style>
+.brand_img{
+	width: 168px;
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+}
+.brand_img img{
+	max-width: 100%;
+	max-height: 100%;
+}
+</style>
+{/block}
+{block name="main"}
+<div class="options-btn">
+	<button class="btn-common btn-small" onclick="addAttributeService()">添加分类</button>
+</div>
+<table class="mytable">
+	<tr>
+		<th width="20%">
+		<form >
+			<input type="text" name="keyword" id = 'search_text' placeholder="分类名字" class="input-common"/>
+			<input type="button" onclick="searchData()" value="搜索" class="btn-common"/>
+		</form>
+		</th>
+	</tr>
+</table>
+<table class="table-class">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>分类名字</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+{/block}
+
+{block name="script"}
+	<script type="text/javascript">
+	function LoadingInfo(page_index) {
+		var search_text = $('#search_text').val();
+	$.ajax({
+		type : "post",
+		url : "{:__URL('ADMIN_MAIN/myhome/goods_index')}",
+		data : {
+			"page_index" : page_index,
+			 "page_size" : $("#showNumber").val(),
+			 "search_text":search_text
+		},
+		success : function(data) {
+			var html = '';
+			if (data["data"].length > 0) {
+				for (var i = 0; i < data["data"].length; i++) {
+					html += '<tr align="center">';
+					html += '<td>'+ data["data"][i]["listid"] +'</td>'
+					html += '<td>'+data["data"][i]["catename"]+'</td>';
+					html += '<td>';
+					html += '<a href="{:url("myhome/registerdetail")}?id='+data["data"][i]["id"]+' ">编辑</a>';
+					html += '<a href="{:url("myhome/registerdetail")}?id='+data["data"][i]["id"]+' ">删除</a>';
+					html += '</td>';
+					html += '</tr>';
+				}
+			} else {
+				html += '<tr align="center"><td colspan="9">暂无符合条件的数据记录</td></tr>';
+			}
+			$(".table-class tbody").html(html);
+			initPageData(data["page_count"],data['data'].length,data['total_count']);
+			$("#pageNumber").html(pagenumShow(jumpNumber,$("#page_count").val(),{$pageshow}));
+		}
+	});
+}
+	/* 跳转到添加品牌 */
+	function addAttributeService() {
+		location.href = __URL("ADMIN_MAIN/myhome/cateadd");
+	}
+	// 搜索
+	function searchData(){
+		LoadingInfo(1);
+	}
+	
+</script>
+{/block}
+
+

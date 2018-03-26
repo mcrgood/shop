@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>订单</title>
+<link rel="stylesheet" href="__YUDING__/css/style.css">
+<link rel="stylesheet" href="__YUDING__/css/laydate.css">
+</head>
+<style type="text/css">
+
+</style>
+<body>
+<!--列表切换的选项卡-->
+<div class="tab-header">
+    <ul>
+        <li class="first-li active"><span>点菜</span></li>
+        <li class="second-li"><span>包间</span></li>
+		<li class="second-li"><span>商家</span></li>
+    </ul>
+</div>
+
+
+<!--切换的内容部分-->
+<div class="content">
+    <div class="m-box first-content active">
+        <div class="main">
+	<div class="left-menu"  id="left">
+		<ul>
+			<li><span>营养套餐</span></li>
+			<li><span>实惠炒菜</span></li>
+			<li><span>实惠炒菜2</span></li>
+		</ul>
+	</div>
+	<div class="con">
+		<div class="right-con con-active" style="display: none;">
+			<ul>
+				<li>
+					<div class="menu-img"><img src="__YUDING__/img/pic.png" width="55" height="55"></div>
+					<div class="menu-txt">
+						<h4 data-icon="00">红烧牛肉</h4>
+						<p class="list1">家常菜</p>
+						<p class="list2">
+							<b>￥</b><b>28</b>
+						</p>
+						<div class="btn">
+						<button class="minus">
+							<strong></strong>
+						</button>
+						<i>0</i>
+						<button class="add">
+							<strong></strong>
+						</button>
+						<i class="price">28</i>
+					</div>
+
+					</div>
+				</li>
+				<li>
+					<div class="menu-img"><img src="__YUDING__/img/pic.png" width="55" height="55"></div>
+					<div class="menu-txt">
+						<h4 data-icon="01">辣子鸡</h4>
+						<p class="list1">家常菜</p>
+						<p class="list2">
+							<b>￥</b><b>25</b>
+						</p><div class="btn">
+						<button class="minus">
+							<strong></strong>
+						</button>
+						<i>0</i>
+						<button class="add">
+							<strong></strong>
+						</button>
+						<i class="price">25</i>
+					</div>
+
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="right-con con-active" style="display: none;">
+			<ul>
+				<li>
+					<div class="menu-img"><img src="__YUDING__/img/pic.png" width="55" height="55"></div>
+					<div class="menu-txt">
+						<h4 data-icon="10">宫保鸡丁</h4>
+						<p class="list1">家常菜</p>
+						<p class="list2">
+							<b>￥</b><b>26</b>
+						</p><div class="btn">
+						<button class="minus">
+							<strong></strong>
+						</button>
+						<i>0</i>
+						<button class="add">
+							<strong></strong>
+						</button>
+						<i class="price">26</i>
+					</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+				<div class="right-con con-active" style="display: none;">
+			<ul>
+				<li>
+					<div class="menu-img"><img src="__YUDING__/img/pic.png" width="55" height="55"></div>
+					<div class="menu-txt">
+						<h4 data-icon="10">宫保鸡丁2223</h4>
+						<p class="list1">家常菜333</p>
+						<p class="list2">
+							<b>￥</b><b>26</b>
+						</p><div class="btn">
+						<button class="minus">
+							<strong></strong>
+						</button>
+						<i>0</i>
+						<button class="add">
+							<strong></strong>
+						</button>
+						<i class="price">26</i>
+					</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="up1"></div>
+	<div class="shopcart-list fold-transition" style="">
+		<div class="list-header">
+			<h1 class="title">购物车</h1>
+			<span class="empty">清空</span>
+		</div>
+		<div class="list-content">
+			<ul></ul>
+		</div>
+	</div>
+	<div class="footer">  
+		<div class="left">
+		<div class="tupian">
+			<img src="__YUDING__/img/money_03.png"/>
+		</div>
+		已选：
+		<span id="cartN">
+			<span id="totalcountshow">0</span>份　总计：￥<span id="totalpriceshow">0</span>
+			</span>
+		元  
+		</div>  
+		<div class="right">  
+			<a id="btnselect" class="xhlbtn  disable" href="javascript:void(0)">去结算</a>  
+		</div>   
+	</div>
+</div>
+<div class="subFly">
+	<div class="up"></div>
+	<div class="down">
+		<a class="close" href="javascript:">
+			<img src="__YUDING__/img/close.png" alt="">
+		</a>
+		<dl class="subName">
+			<dt>
+				<img class="imgPhoto" src="__YUDING__/img/pic.png" alt="">
+			</dt>
+			<dd>
+				<p data-icon=""></p>
+				<p><span>¥ </span><span class="pce" style="font-size: 16px;font-weight: bold"></span></p>
+				<p>
+					<span>已选：“</span>
+					<span class="choseValue"></span>
+					<span>”</span>
+				</p>
+			</dd>
+		</dl>
+		<dl class="subChose">
+			<dt>口味</dt>
+			<dd class="m-active">辣味</dd>
+			<dd>酸甜</dd>
+		</dl>
+		<dl class="subCount">
+			<dt>购买数量</dt>
+			<dd>
+				<div class="btn">
+					<button class="ms" style="display: inline-block;">
+						<strong></strong>
+					</button>
+					<i style="display: inline-block;">1</i>
+					<button class="ad">
+						<strong></strong>
+					</button>
+					<i class="price">25</i>
+				</div>
+			</dd>
+		</dl>
+		<div class="foot">
+			<span>加入购物车</span>
+		</div>
+	</div>
+</div>
+</form>	
+<script type="text/javascript" src="__YUDING__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__YUDING__/js/add.js"></script>
+<script type="text/javascript" src="__YUDING__/js/vue.min.js"></script>
+</div>
+    <div class="m-box second-content"><!--包间-->
+        <div class="bigest">
+		<div class="seller">
+			<span>{$row.names}</span>
+		</div>
+		<form id="form" class="common">
+			<span>姓名:  <input type="text" name="username" id="user"/></span>
+			<span>人数:  <input type="number" name="renshu" id="num" value="" /></span>
+			<span>联系电话:  <input type="tel" name="dianhua" id="tel" /></span>
+		<div class="time">
+			<span>定用时间: <input type="text" id="test1" placeholder="请选择" /></span>			
+		</div>
+		<script src="__YUDING__/js/laydate.js"></script>
+		<script>
+		lay('#version').html('-v'+ laydate.v);
+
+		//执行一个laydate实例
+		laydate.render({
+		  elem: '#test1' //指定元素
+		});
+		</script>	
+		<textarea rows="3" cols="50" placeholder="详细时间" style="outline:none;margin-top:10px;font-size:15px;border:1px solid #cccccc;margin-left:10%;width:80%;"></textarea>
+		<div class="make">
+			<span>定制包间</span>
+			<div id="order_1" onclick="showtext()">可定制 ></div>
+		</div>
+		<div id="hide">
+			<select name="pageselect" id="sele" onchange="self.location.href=options[selectedIndex].value" >
+				<option value="" style="font-size:15px;height:30px;text-align:center">选择包间</option>
+				<option value="http://"style="font-size:15px;height:30px;text-align:center">跳百度</option>
+				<option value="http://"style="font-size:15px;height:30px;text-align:center">跳页面</option>
+				<option value="http://"style="font-size:15px;height:30px;text-align:center">跳页面</option>
+				<option value="http://"style="font-size:15px;height:30px;text-align:center">跳页面</option>
+			</select>
+		</div>
+	<script type="text/javascript">
+    function showtext(){    
+        var mychar = document.getElementById("hide").style.display ="block";   
+        };  
+      </script>
+    <div class="tuijian">
+    	<span>推荐</span>
+    	<div class="tj_pic">
+    		<ul>
+    			<li><a href=""><img src="__YUDING__/img/pic_03.png" /></a></li>
+    			<li><a href=""><img src="__YUDING__/img/pic_05.png" /></a></li>
+    			<li><a href=""><img src="__YUDING__/img/pic_03.png" /></a></li>
+    			<li><a href=""><img src="__YUDING__/img/pic_05.png" /></a></li>
+    		</ul>
+    	</div>
+    </div>
+    <div class="last">
+    	<input type="submit" value="确认" id="submit_button"/>
+    </div>
+		</form>	
+		 </div>
+	<script type="text/javascript">
+	$(document).ready(function () {
+    $("#submit_button").click(function () {
+        var username = $('#user').val();
+        var val = $('#num').val();
+        var phone = $('#tel').val();
+        var time = $('#date').val();
+        var isMobile=/^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;   
+		var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+
+        if (username == '') {
+            alert("请输入姓名");
+            return false;
+        }
+        else {
+            if (val == '') {
+                alert("请输入人数");
+                return false;
+            }else
+                if(!isNaN(username)){
+                    alert("请填写正确的姓名");
+                    return false;
+                }
+                else
+                if(!username.match(/^[\u4e00-\u9fa5]+$/)){
+                    alert("请填写正确的姓名");
+                    return false;
+                }
+            else
+            	if (val <=0 ) {
+                alert("人数至少为1");
+                return false;
+            }else
+            	if (phone == '') {
+                alert("请输入电话");
+                return false;
+            }else
+            	if (time == '') {
+                alert("请输入日期");
+                return false;
+        	}else
+        		 if( !isMobile.test(phone) && !isPhone.test(phone)){        			
+                    alert(phone +"不是电话");
+        		}
+        		else
+                $.ajax({  
+                    type: "POST",   //提交的方法
+                    url:"/home/request", //提交的地址  
+                    data:$('#form').serialize(),// 序列化表单值  
+                    async: false,  
+                    error: function(request) {  //失败的话
+                         alert("Connection error");  
+                    },  
+                    success: function(data) {  //成功
+                         alert(data);  //就将返回的数据显示出来
+                         window.location.href="跳转页面"  
+                    }  
+         });
+        }
+    });
+});
+</script>	
+</div>
+
+<div class="m-box second-content">
+        <p>这是第三个页面</p>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+//tab切换效果
+    $(document).ready(function () {
+        $(".tab-header li").on("click", function (e) {
+            e.preventDefault();
+            var i=$(this).index();
+            $(".tab-header li").removeClass("active").eq(i).addClass("active"),
+            $(".content .m-box").removeClass("active").eq(i).addClass("active")
+        });
+    });
+</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnselect").click(function () {
+            $.ajax({  
+                type: "POST",   //提交的方法
+                url:"/home/request", //提交的地址  url
+                data:$('#form1').serialize(),// 序列化表单值 表单id 
+                async: false,  
+                error: function(request) {  //失败的话
+                     alert("Connection error");  
+                },  
+                success: function(data) {  //成功
+                     alert(data);  //就将返回的数据显示出来
+                     window.location.href="跳转页面"  
+                }  
+             });
+       });  
+        });
+    </script>
+</html>

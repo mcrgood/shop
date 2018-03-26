@@ -879,7 +879,7 @@ class Myhome extends Controller
     /*
      * 预订
      */
-
+    // 以前
     public function book()
     {
 
@@ -920,6 +920,55 @@ class Myhome extends Controller
         $this->assign('userid', $userid);
         return view($this->style . 'Myhome/book');
     }
+    // 以前
+    //现在
+    public function yuding()
+    {
+        //查询商户信息
+        $ids = input('param.userid'); //商户ID
+        $where['userid'] = $ids;
+        $row = db("ns_shop_message")->where($where)->find();
+        $this->assign("row",$row);
+
+        if (request()->isAjax()) {
+            $name = request()->post('username', '');
+            $iphone = request()->post('phone', '');
+            $num = request()->post('num', '');
+            $time = request()->post('sj', '');
+            $message = request()->post('message', '');
+            $add_time = time();
+            $shop_id = request()->post('userid', 0);
+            if (!$shop_id)
+                return $result = ['error' => 3, 'message' => 页面过期，请重新提交];
+            $where['iphone'] = $iphone;
+            $where['time'] = $time;
+            $result = db("ns_goods_reserve")->where($where)->find();
+
+            if($result){
+                return $result = ['error' => 2, 'message' => "你已提交"];
+            }
+            $data['name'] = $name;
+            $data['iphone'] = $iphone;
+            $data['num'] = $num;
+            $data['time'] = $time;
+            $data['message'] = $message;
+            $data['add_time'] = $add_time;
+            $data['shop_id'] = $shop_id;
+            $data['is_msg_send'] = 2;
+            $id = db('ns_goods_reserve')->order('id desc')->insertGetId($data);
+            if ($id)
+                return $result = ['error' => 0, 'message' => "提交成功",'iphone' => $iphone,'id' => $id];
+            else
+
+                return $result = ['error' => 1, 'message' => "提交失败"];
+
+        }
+        $userid = request()->get('userid', 0);
+        $this->assign('userid', $userid);
+        return view($this->style . 'Myhome/yuding');
+    }
+    //现在
+
     /**
 
      * [lingquan 前台领券]

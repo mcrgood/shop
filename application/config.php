@@ -284,6 +284,7 @@ return [
     'view_replace_str' => array(
         '__PUBLIC__' => __ROOT__ . '/public/',
         '__STATIC__' => __ROOT__ . '/public/static',
+        '__YUDING__' => __ROOT__ . '/public/static/yuding',
         '__STATIC1__' => __ROOT__ . '/public/static/admin',
         '__INDEX__' => __ROOT__ . '/public/static/index',
         'ADMIN_IMG' => __ROOT__ . '/public/admin/images',
