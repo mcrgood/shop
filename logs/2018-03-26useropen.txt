@@ -1,0 +1,10 @@
+﻿[2018-03-26 12:11:20][debug] 用户开户请求的参数:
+
+
+<?xml version='1.0' encoding='utf-8'?><openUserReqXml><head><version>v1.0.1</version><reqIp>127.0.0.1</reqIp><reqDate>2018-03-26 12:11:20</reqDate><signature>fe05893f9a94c5308cd15e15413d6a41</signature></head><body><merAcctNo>2057540011</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>52212619930930551X</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>http://mall.jxqkw8.com/index.php/shop/Fastpay/page_url</pageUrl><s2sUrl>http://mall.jxqkw8.com/index.php/shop/Fastpay/s2sUrl</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body></openUserReqXml>
+
+
+
+
+
+[2018-03-26 12:11:20][debug] 用户开户请求的参数 密文完整:<ipsRequest><argMerCode>205754</argMerCode><arg3DesXmlPara>XcBfjRkgXh/SDDHo7uD4DZzaEsb/GOtkoECSlFpwPafuIorioFlCiDlklYjOzHo0/RNaO7YljLCB0yV5Q6zQ7D5CyrkXBvUDAtjDkfmRREgeWqwXAkWhUNpFpU2sOrhcZM9gioeZ/i1Lki6A9U598ppCsjYBKr8UNxXJvEZRtqU8vMJfz7+SPxj875sVtguIDRuty1sGdJgNpJmpzZnG40s9JOe/5pib4VGK26DDGHZ7dj6pbifSPTXH6/Ch5NYIoigpQJZX/s86OVcnB/zC3tpmN/Ael6rtzLlxtF5S6P+5rA6O2il9Ewzg0sWmzbHtJ4No4+Mnt7lBm7HFrH3v0grC8BLsTFuntKT74qaWIsuOC3QKsCgE/C08Vkcwui3rkK5iJeUz9ACJxq9p4uFmbXzSnsSAmLboR7aWaRb8ymbfAMDNUsZNGOQ/h6OI/eZJZyja+FYuTLTBYzfjIF/LlB7leyQUxI9qzWNsTtxf20dhmwx1HKA8ZP+vfggB2m/ywUHkbAyzbb4HdjFJvHdAfYAzwwlLgegj/mENoHBlULqr9QC/0YfqlJOP0/Qt9lTlSgGnD4vg5P3ZTgJdiITPPVvzkaLSLmPvHfVkT9sR2Zmv6skbrkEcR08I3PR+Z3dJaGbkZDUsENSK/IEbW8LRBCpEDV+hu8rqseCw1oej4oyekbVRqlIxDv9Sf7D6/yVewWVjGmKwOmNkqIIXklCJfX4t1Ajjs2p6LQqvjhuI8FNYBX1KD14c3IWbl+G8+CV+mi6CTsySoD2jiUb1yvC+2mPE+s43WrE8wmw3JmVu/+Se82FfYyZXRbpVXQy+HsSLVHqB1m+iSRhJv85TqznQxtTaiEJlgXf06fjeQlFrCKBAevUD2cXu1EwXFfPFJRPo3J2Fsg430dIf6/myPdKMHDOIElPEA/feqOGhXpNAbhXlPLHQ8KiKsGYGfg6tlvCV1jbwiBmKnU4cBbeGXb16JJDaLBZp1F8CCrPXPdVpAo/IO041HQOqK/17zaxoNqYNs3M9IuVm6F5k18Gs22Fq0zFYAZjs4PUBCdD6LOw4SqSjtC54jvYDDQDd5VEVNSbmYiZbIBpXz8OfFf/zqOA7E84bV1iGMJpvIT2YS/fKbDdKjTpzFD5CYQ==</arg3DesXmlPara></ipsRequest>
