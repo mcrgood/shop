@@ -80,8 +80,10 @@ class Fastpay extends Controller
 	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
 	    $ipsPost['ipsRequest'] = $ipsRequest;
 	    $xml = $this->request_post($url, $ipsPost);
+	    dump($reqIp);
+	    echo '<br />';
+	    dump($reqDate);
 	    dump("明文 :".$xml);die;
-	    
 	}
 
   	 /**
