@@ -34,6 +34,12 @@ class Fastpay extends Controller
     protected $S2Snotify_url = "http://mall.jxqkw8.com/index.php/shop/Fastpay/s2sUrl";
     //用户开户同步返回地址
     protected $pageUrl = "http://mall.jxqkw8.com/index.php/shop/Fastpay/page_url";
+    //用户信息修改接口同步返回地址
+    protected $updateUser_pageUrl = "http://mall.jxqkw8.com/index.php/shop/Fastpay/updateUserPageUrl";
+    //用户提现接口同步返回地址
+    protected $withdrawal_pageUrl = "http://mall.jxqkw8.com/index.php/shop/Fastpay/withdrawalPageUrl";
+    //用户提现接口异步通知地址
+    protected $withdrawal_s2sUrl = "http://mall.jxqkw8.com/index.php/shop/Fastpay/withdrawals2sUrl";
 
     //
     public function __construct(){
@@ -47,23 +53,22 @@ class Fastpay extends Controller
     }
 
 
-	//用户开户接口
+	//4.1 用户开户接口
 	public function user_open(){
-		 ob_clean();
 		 $reqIp = request()->ip();  //获取客户端IP
 		 $reqDate = date("Y-m-d H:i:s",time());
 	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>52212619930930551X</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
-	     $openUserReqXml="<?xml version='1.0' encoding='utf-8'?><openUserReqXml>".$head.$body."</openUserReqXml>";
+	     $openUserReqXml="<openUserReqXml>".$head.$body."</openUserReqXml>";
 	     //加密请求类容
 	     $transferReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
+	    
 	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
-	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
 	    $ipsPost['ipsRequest'] = $ipsRequest;
 	    $responsexml = $this->request_post($url, $ipsPost);
 	    dump("响应responsexml  明文：".$responsexml);
@@ -74,7 +79,7 @@ class Fastpay extends Controller
 	  * 
 	  * */
   
- 		public function request_post($url = '', $post_data = array()) {
+ 	public function request_post($url = '', $post_data = array()) {
         if (empty($url) || empty($post_data)) {
             return false;
         }
@@ -85,7 +90,6 @@ class Fastpay extends Controller
             $o.= "$k=" . urlencode( $v ). "&" ;
         }
         $post_data = substr($o,0,-1);
-
         $postUrl = $url;
         $curlPost = $post_data;
         $ch = curl_init();//初始化curl
@@ -159,7 +163,7 @@ class Fastpay extends Controller
 	 	$ipsResponse = $_REQUEST['ipsResponse'];
 	 	dump($ipsResponse);
 	 }
-	 //异步返回地址
+	 //用户开户异步返回地址
 	 public function s2sUrl(){
 	 	ob_clean();
 	 	$ipsResponse = $_REQUEST['ipsResponse'];
@@ -167,17 +171,8 @@ class Fastpay extends Controller
 
 	 }
 
-	//本地接收请求测试页面
-	public function test(){
-		//接收传送的数据
-		$fileContent = file_get_contents("php://input");
-		//转换为simplexml对象
-		$xmlResult = simplexml_load_string($fileContent);
-		dump($fileContent);
-		dump($xmlResult);
-	}
 
-    //开户结果查询接口
+    //4.2 开户结果查询接口
     public function user_query(){
     	 $reqIp = request()->ip();   //获取客户端IP
 		 $reqDate = date("Y-m-d H:i:s",time());
@@ -195,7 +190,7 @@ class Fastpay extends Controller
 	    $this->request_post($url, $post_data);
     }
 
-    //用户信息修改接口（后台调用）
+    //4.3 用户信息修改接口（后台调用）
     public function updateUserInfo(){
     	$reqIp = request()->ip();   //获取客户端IP
 		 $reqDate = date("Y-m-d H:i:s",time());
@@ -212,6 +207,93 @@ class Fastpay extends Controller
 	    $post_data['ipsRequest']  = $ipsRequest;
 	    $this->request_post($url, $post_data);
     }
+
+    //4.4 用户信息修改接口
+    public function updateUser(){
+    	 $reqIp = request()->ip();   //获取客户端IP
+		 $reqDate = date("Y-m-d H:i:s",time());
+	     $body="<body><customerCode>[string]</customerCode><pageUrl>".$this->updateUser_pageUrl."</pageUrl><s2sUrl></s2sUrl></body>";
+	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
+	     $updateUserReqXml="<?xml version='1.0' encoding='utf-8'?><updateUserReqXml>".$head.$body."</updateUserReqXml>";
+	     Log::DEBUG("开户结果查询接口明文:" . $updateUserReqXml);  //未加密的日志
+	     //加密请求类容
+	     $updateUser = $this->encrypt($updateUserReqXml);
+	    //拼接$ipsRequest
+	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$updateUser."</arg3DesXmlPara></ipsRequest>";
+	    //ips 易收付地址
+	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/update.html";
+	    $post_data['ipsRequest']  = $ipsRequest;
+	    $this->request_post($url, $post_data);
+    }
+    //用户信息修改接口同步返回地址
+    public function updateUserPageUrl(){
+
+    }
+
+    //4.5 转账接口
+    public function transfer(){
+    	 $reqIp = request()->ip();   //获取客户端IP
+		 $reqDate = date("Y-m-d H:i:s",time());
+	     $body="<body><merBillNo>[string]</merBillNo><transferType>2</transferType><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>[string]</customerCode><transferAmount>0.11</transferAmount><collectionItemName>测试转账</collectionItemName><remark>客旺旺</remark></body>";
+	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
+	     $transferReqXml="<?xml version='1.0' encoding='utf-8'?><transferReqXml>".$head.$body."</transferReqXml>";
+	     Log::DEBUG("开户结果查询接口明文:" . $transferReqXml);  //未加密的日志
+	     //加密请求类容
+	     $updateUser = $this->encrypt($transferReqXml);
+	    //拼接$ipsRequest
+	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$updateUser."</arg3DesXmlPara></ipsRequest>";
+	    //ips 易收付地址
+	    $url = "https://ebp.ips.com.cn/fpms-access/action/trade/transfer.do";
+	    $post_data['ipsRequest']  = $ipsRequest;
+	    $this->request_post($url, $post_data);
+    }
+
+    //4.6 用户提现接口
+     public function withdrawal(){
+    	 $reqIp = request()->ip();   //获取客户端IP
+		 $reqDate = date("Y-m-d H:i:s",time());
+	     $body="<body><merBillNo>[string]</merBillNo><customerCode>[string]</customerCode><pageUrl>".$this->withdrawal_pageUrl."</pageUrl><s2sUrl>".$this->withdrawal_s2sUrl."</s2sUrl><bankCard>[string]</bankCard><bankCode>[string]</bankCode></body>";
+	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
+	     $withdrawalReqXml="<?xml version='1.0' encoding='utf-8'?><withdrawalReqXml>".$head.$body."</withdrawalReqXml>";
+	     Log::DEBUG("开户结果查询接口明文:" . $withdrawalReqXml);  //未加密的日志
+	     //加密请求类容
+	     $updateUser = $this->encrypt($withdrawalReqXml);
+	    //拼接$ipsRequest
+	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$updateUser."</arg3DesXmlPara></ipsRequest>";
+	    //ips 易收付地址
+	    $url = "https://ebp.ips.com.cn/fpms-access/action/withdrawal/withdrawal.html";
+	    $post_data['ipsRequest']  = $ipsRequest;
+	    $this->request_post($url, $post_data);
+    }
+
+    //用户提现接口同步返回地址 
+     public function withdrawalPageUrl(){
+    	 
+    }
+
+     //用户提现接口异步通知地址 
+     public function withdrawals2sUrl(){
+    	 
+    }
+
+    //4.8 订单查询接口
+    public function queryOrdersList(){
+    	 $reqIp = request()->ip();   //获取客户端IP
+		 $reqDate = date("Y-m-d H:i:s",time());
+	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>[string]</customerCode><ordersType></ordersType><merBillNo></merBillNo><ipsBillNo></ipsBillNo><startTime></startTime><endTime></endTime><currrentPage></currrentPage><pageSize></pageSize></body>";
+	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
+	     $queryOrderReqXml="<?xml version='1.0' encoding='utf-8'?><queryOrderReqXml>".$head.$body."</queryOrderReqXml>";
+	     Log::DEBUG("开户结果查询接口明文:" . $queryOrderReqXml);  //未加密的日志
+	     //加密请求类容
+	     $updateUser = $this->encrypt($queryOrderReqXml);
+	    //拼接$ipsRequest
+	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$updateUser."</arg3DesXmlPara></ipsRequest>";
+	    //ips 易收付地址
+	    $url = "https://ebp.ips.com.cn/fpms-access/action/trade/queryOrdersList";
+	    $post_data['ipsRequest']  = $ipsRequest;
+	    $this->request_post($url, $post_data);
+    }
+
 
     public function test1()
     {
