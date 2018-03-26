@@ -74,30 +74,29 @@ class Fastpay extends Controller
 	  * 
 	  * */
   
-	 public function request_post($url = '', $post_data = '') {
-	 	ob_clean();
+ 		public function request_post($url = '', $post_data = array()) {
         if (empty($url) || empty($post_data)) {
             return false;
         }
         
         $o = "";
-        foreach ( $post_data as $k => $v )
-        {
+        foreach ( $post_data as $k => $v ) 
+        { 
             $o.= "$k=" . urlencode( $v ). "&" ;
         }
         $post_data = substr($o,0,-1);
-        $curlPost = $post_data;
+
         $postUrl = $url;
-        // $header[] = "Content-type: text/xml;charset=utf-8";
+        $curlPost = $post_data;
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
         curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
         curl_setopt($ch, CURLOPT_POST, 1);//post提交方式
         curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
-
         $data = curl_exec($ch);//运行curl
         curl_close($ch);
+        
         return $data;
     }
 
@@ -183,8 +182,8 @@ class Fastpay extends Controller
     	 $reqIp = request()->ip();   //获取客户端IP
 		 $reqDate = date("Y-m-d H:i:s",time());
 	     $body="<body><customerCode>13657085273</customerCode></body>";
-	     $head ="<head><version>V1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
-	     $queryUserReqXml="<?xml version='1.0.1' encoding='utf-8'?><queryUserReqXml>".$head.$body."</queryUserReqXml>";
+	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
+	     $queryUserReqXml="<?xml version='1.0' encoding='utf-8'?><queryUserReqXml>".$head.$body."</queryUserReqXml>";
 	     //加密请求类容
 	     $queryUserReq = $this->encrypt($queryUserReqXml);
 	    //拼接$ipsRequest
@@ -202,7 +201,7 @@ class Fastpay extends Controller
 		 $reqDate = date("Y-m-d H:i:s",time());
 	     $body="<body><customerCode>13657085273</customerCode><userName>隔壁老王</userName><identityType></identityType><identityNo></identityNo><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo></mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddr></contactAddr></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
-	     $updateUserInfoReqXml="<?xml version='1.0.1' encoding='utf-8'?><updateUserInfoReqXml>".$head.$body."</updateUserInfoReqXml>";
+	     $updateUserInfoReqXml="<?xml version='1.0' encoding='utf-8'?><updateUserInfoReqXml>".$head.$body."</updateUserInfoReqXml>";
 	     Log::DEBUG("开户结果查询接口明文:" . $updateUserInfoReqXml);  //未加密的日志
 	     //加密请求类容
 	     $updateUser = $this->encrypt($updateUserInfoReqXml);
