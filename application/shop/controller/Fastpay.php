@@ -17,7 +17,7 @@ namespace app\shop\controller;
 use data\service\Log as Log;
 use think\Controller;
 use data\service\CLogFileHandler as CLogFileHandler;
-class Fastpay extends Controller
+class Fastpay extends BaseController
 {
  	//商户号
  	protected $argMerCode = 205754;
@@ -73,19 +73,19 @@ class Fastpay extends Controller
 	     $openUserReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
 	    
-	    $ipsRequest = "<?xml version='1.0' encoding='utf-8'?><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$openUserReq."</arg3DesXmlPara></ipsRequest>";
+	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$openUserReq."</arg3DesXmlPara></ipsRequest>";
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
-	    $ipsPost['ipsRequest'] = $ipsRequest;
+	    $post_data['ipsRequest'] = $ipsRequest;
 
-	    $xml = $this->request_post($url, $ipsPost);
+	    $xmls = $this->request_post($url, $post_data);
 	    dump($reqIp);
 	    // echo '<br />';
-	    // dump($reqDate);
-	    dump("明文 :".$xml);die;
+	    dump($reqDate);
+	    echo "这是明文 ：" . $xmls;die;
 	}
 
   	 /**
@@ -102,8 +102,6 @@ class Fastpay extends Controller
         foreach ( $post_data as $k => $v ) 
         {
             $o.= "$k=" . urlencode( $v ). "&" ;
-            // $o = urlencode( $v );
-            // $o = $v;
         }
         $post_data = substr($o,0,-1);
         $postUrl = $url;
