@@ -73,7 +73,7 @@ class Fastpay extends Controller
 	     $openUserReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
 	    
-	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$openUserReq."</arg3DesXmlPara></ipsRequest>";
+	    $ipsRequest = "<?xml version='1.0' encoding='utf-8'?><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$openUserReq."</arg3DesXmlPara></ipsRequest>";
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
@@ -84,7 +84,7 @@ class Fastpay extends Controller
 	    $xml = $this->request_post($url, $ipsPost);
 	    dump($reqIp);
 	    // echo '<br />';
-	    dump($reqDate);
+	    // dump($reqDate);
 	    dump("明文 :".$xml);die;
 	}
 
@@ -101,13 +101,13 @@ class Fastpay extends Controller
         $o = "";
         foreach ( $post_data as $k => $v ) 
         {
-            // $o.= "$k=" . urlencode( $v ). "&" ;
+            $o.= "$k=" . urlencode( $v ). "&" ;
             // $o = urlencode( $v );
-            $o = $v;
+            // $o = $v;
         }
         $post_data = substr($o,0,-1);
         $postUrl = $url;
-        $curlPost = $o;
+        $curlPost = $post_data;
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
         curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
