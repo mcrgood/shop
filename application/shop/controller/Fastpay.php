@@ -68,19 +68,22 @@ class Fastpay extends Controller
 	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>52212619930930551X</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
 	     $openUserReqXml="<?xml version='1.0' encoding='utf-8'?><openUserReqXml>".$head.$body."</openUserReqXml>";
+
 	     //加密请求类容
-	     $transferReq = $this->encrypt($openUserReqXml);
+	     $openUserReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
 	    
-	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
+	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$openUserReq."</arg3DesXmlPara></ipsRequest>";
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
 	    $ipsPost['ipsRequest'] = $ipsRequest;
+
 	    $xml = $this->request_post($url, $ipsPost);
 	    dump($reqIp);
+	    echo '<br />';
 	    dump($reqDate);
 	    dump("明文 :".$xml);die;
 	}
@@ -98,13 +101,13 @@ class Fastpay extends Controller
         $o = "";
         foreach ( $post_data as $k => $v ) 
         {
-            // $o.= "$k=" . urlencode( $v ). "&" ;
-            $o = urlencode( $v );
+            $o.= "$k=" . urlencode( $v ). "&" ;
+            // $o = urlencode( $v );
             // $o = $v;
         }
-        // $post_data = substr($o,0,-1);
+        $post_data = substr($o,0,-1);
         $postUrl = $url;
-        $curlPost = $o;
+        $curlPost = $post_data;
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
         curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
