@@ -53,25 +53,39 @@ class Fastpay extends Controller
     }
 
 
+    public function test(){
+    	$info = file_get_contents("php://input");
+    	$data = simplexml_load_string($info);
+    	dump($info);
+    	dump($data);
+    }
+
+
 	//4.1 用户开户接口
 	public function user_open(){
 		 $reqIp = request()->ip();  //获取客户端IP
 		 $reqDate = date("Y-m-d H:i:s",time());
 	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>52212619930930551X</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
-	     $openUserReqXml="<openUserReqXml>".$head.$body."</openUserReqXml>";
+	     $openUserReqXml="<?xml version='1.0' encoding='utf-8'?><openUserReqXml>".$head.$body."</openUserReqXml>";
+
 	     //加密请求类容
-	     $transferReq = $this->encrypt($openUserReqXml);
+	     $openUserReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
 	    
-	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
+	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$openUserReq."</arg3DesXmlPara></ipsRequest>";
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
+	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
 	    $ipsPost['ipsRequest'] = $ipsRequest;
-	    $responsexml = $this->request_post($url, $ipsPost);
-	    dump("响应responsexml  明文：".$responsexml);
+
+	    $xml = $this->request_post($url, $ipsPost);
+	    dump($reqIp);
+	    // echo '<br />';
+	    dump($reqDate);
+	    dump("明文 :".$xml);die;
 	}
 
   	 /**
@@ -86,12 +100,14 @@ class Fastpay extends Controller
         
         $o = "";
         foreach ( $post_data as $k => $v ) 
-        { 
-            $o.= "$k=" . urlencode( $v ). "&" ;
+        {
+            // $o.= "$k=" . urlencode( $v ). "&" ;
+            // $o = urlencode( $v );
+            $o = $v;
         }
         $post_data = substr($o,0,-1);
         $postUrl = $url;
-        $curlPost = $post_data;
+        $curlPost = $o;
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
         curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
@@ -298,6 +314,7 @@ class Fastpay extends Controller
     public function test1()
     {
         ob_clean();
+
         $reqIp = request()->ip();  //获取客户端IP
         $reqDate = date("Y-m-d H:i:s",time());
         $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>52212619930930551X</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
@@ -308,6 +325,7 @@ class Fastpay extends Controller
         //拼接$ipsRequest
 
         $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
+
 
         $post_data = trim($ipsRequest);
         $header[] = "Content-type: text/xml;charset=utf-8";//定义content-type为xml
@@ -320,7 +338,7 @@ class Fastpay extends Controller
         $post_data .= '</param>';*/
         //  dump($post_data);
 
-       // $xml = simplexml_load_string($post_data);
+
         /*dump($xml);
         echo "<meta charset=\"UTF-8\">";
         echo "<h3>发送</h3>";
@@ -334,7 +352,6 @@ class Fastpay extends Controller
         curl_setopt($ch, CURLOPT_POST, 1);
         // post的变量
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
