@@ -11,60 +11,70 @@
  * 任何企业和个人不允许对程序代码以任何形式任何目的再发布。
  * =========================================================
  * @author : niuteam
- * @date : PC端支付
+ * @date : 线上扫码支付
  * @version : v1.0.0.0
  */
 namespace data\service;
 use data\service\Log as Log;
 use data\service\CLogFileHandler as CLogFileHandler;
 
-class IpsPayNotify extends Log
+class IpsOnlinePayNotify extends Log
 {
     var $ipspay_config;
     
-    function __construct($ipspay_config){
+    public function __construct($ipspay_config){
         $this->logs();
         $this->ipspay_config = $ipspay_config;
     }
-    function IpsPayNotify($ipspay_config) {
+    public function IpsPayNotify($ipspay_config) {
         $this->__construct($ipspay_config);
     }
-    
-    function verifyReturn(){
+
+            //初始化日志
+
+    public function logs(){
+        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'.txt');
+        $log = Log::Init($logHandler, 15);
+    }
+
+    //验证扫码状态
+    public function verifyReturn(){
         try {
             if(empty($_REQUEST)) {
                 return false;
             }
             else {
                 $paymentResult = $_REQUEST['paymentResult'];
-                Log::DEBUG("支付返回报文:" . $paymentResult);
+                Log::DEBUG("扫码支付成功返回报文:" . $paymentResult);
                 
                 $xmlResult = simplexml_load_string($paymentResult);
                 $strSignature = $xmlResult->GateWayRsp->head->Signature;
                 
-                $retEncodeType =$xmlResult->GateWayRsp->body->RetEncodeType;
-                $strBody = subStrXml("<body>","</body>",$paymentResult);
-                $rspCode = $xmlResult->GateWayRsp->head->RspCode;
-                if($rspCode == "000000")
-                {
-                    if(md5Verify($strBody,$strSignature,$this->ipspay_config["MerCode"],$this->ipspay_config["MerCert"])){
-                        return true;
+                $strRspCode = $xmlResult->GateWayRsp->head->RspCode;
+                
+                if($strRspCode == "000000"){
+                    $strStatus = $xmlResult->GateWayRsp->body->Status;
+                    if($strStatus == "Y"){
+                        $strBody = subStrXml("<body>","</body>",$paymentResult);
+                        if(md5Verify($strBody,$strSignature,$this->ipspay_config["MerCode"],$this->ipspay_config["MerCert"])){
+                            return true;
+                        }else{
+                            Log::DEBUG("扫码支付返回报文验签失败");
+                            return false;
+                        }
                     }else{
-                        Log::DEBUG("支付返回报文验签失败:" . $paymentResult);
+                        $strRspMsg = $xmlResult->GateWayRsp->head->RspMsg;
+                        Log::DEBUG("扫码支付失败:" . $strRspMsg);
                         return false;
                     }
+                }else{
+                    return false;
                 }
-                
             }
         } catch (Exception $e) {
             Log::ERROR("异常:" . $e);
         }
         return false;
     }
-        //初始化日志
 
-    public function logs(){
-        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'.txt');
-        $log = Log::Init($logHandler, 15);
-    }
 }

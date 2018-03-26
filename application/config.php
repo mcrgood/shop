@@ -362,7 +362,7 @@ return [
         'Account' =>'2057540011',
         //商戶證書
         'MerCert' =>'z6r9z84rodeEX80pzVRNLj4ECzjDYtQRuvYO6ArFye5clC6HnUNxu7QEluSrmjcAXQ1AEh6ffErNf3KKGTXCyzDUPr9BbWx3UxHgf3ORlC5C8M7aHRyMqWXkULs4HP50',
-        //請求地址
+        //网银支付請求地址
         'PostUrl' =>'https://newpay.ips.com.cn/psfp-entry/gateway/payment.do',
         //服务器S2S通知页面路径
         'S2Snotify_url' => "http://mall.jxqkw8.com/index.php?s=/shop/orderpay/s2snotify_url",
@@ -378,6 +378,18 @@ return [
         'RetType' => "1",
         'MsgId' => ""
 
+    ],
+    'online_pay_data'=>[
+         'Version' =>'v1.0.0',  
+        //商戶號
+        'MerCode' =>'205754',  //ADMIN  Kwang2018
+        //交易賬戶號
+        'Account' =>'2057540011',
+        //商戶證書
+        'MerCert' =>'z6r9z84rodeEX80pzVRNLj4ECzjDYtQRuvYO6ArFye5clC6HnUNxu7QEluSrmjcAXQ1AEh6ffErNf3KKGTXCyzDUPr9BbWx3UxHgf3ORlC5C8M7aHRyMqWXkULs4HP50',
+        //请求地址
+        'PostUrl' =>'https://thumbpay.e-years.com/psfp-webscan/services/scan?wsdl'
+        
     ],
   
 ];

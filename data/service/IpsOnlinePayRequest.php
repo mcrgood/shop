@@ -10,54 +10,58 @@
  * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用。
  * 任何企业和个人不允许对程序代码以任何形式任何目的再发布。
  * =========================================================
- * @author : niuteam
+ * @author : 线上扫码支付
  * @date : 
  * @version : v1.0.0.0
  */
 namespace data\service;
 use data\service\Log as Log;
 use data\service\CLogFileHandler as CLogFileHandler;
-ini_set('date.timezone','Asia/Shanghai');
-//初始化日志
 
-class IpsPaySubmit extends Log
+class IpsOnlinePayRequest extends Log
 {
-    var $ipspay_config;
-     
-    public function __construct($ipspay_config){
+    protected $ipspay_config;
+
+    public function __construct(){
         $this->logs();
-        $this->ipspay_config = $ipspay_config;
+        $this->ipspay_config = config('online_pay_data');
     }
-    public function IpsPaySubmit($ipspay_config) {
-        
-        $this->__construct($ipspay_config);
-    }
-    /**
-     * 建立请求，以表单HTML形式构造（默认）
-     * @param $para_temp 请求参数数组
-     * @return 提交表单HTML文本
-     */
-    public function buildRequestForm($para_temp) {
-        //待请求参数xml
-        $para = $this->buildRequestPara($para_temp);
-    
-        $sHtml = "<form id='ipspaysubmit' name='ipspaysubmit' method='post' action='".$this->ipspay_config['PostUrl']."'>";
-         
-        $sHtml.= "<input type='hidden' name='pGateWayReq' value='".$para."'/>";
-         
-        $sHtml = $sHtml."<input type='submit' style='display:none;'></form>";
-    
-        $sHtml = $sHtml."<script>document.forms['ipspaysubmit'].submit();</script>";
-    
-        return $sHtml;
-    }
+
     //初始化日志
     public function logs(){
         $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'.txt');
         $log = Log::Init($logHandler, 15);
     }
-    
-    /**
+
+     /**
+     * 建立请求，以表单HTML形式构造（默认）
+     * @param $para_temp 请求参数数组
+     * @return 提交表单HTML文本
+     */
+    public function buildRequest($para_temp) {
+        try {
+            $para = $this->buildRequestPara($para_temp);
+            
+            $wsdl = $this->ipspay_config['PostUrl'];
+            // vendor('nusoap.nusoap');
+            // $PHPExcel = new \PHPExcel();//实例化
+            // $soapClient = new nusoap_client($wsdl,TRUE); //TRUE参数表示使用wsdl  
+            // $soapClient->xml_encoding = 'UTF-8'; //指定字符编码  
+            // $soapClient->soap_defencoding = 'UTF-8';
+            // $soapClient->decode_utf8 = false;    
+            $client = new \SoapClient($wsdl);
+            
+            $sReqXml = $client->scanPay($para);
+             
+            Log::DEBUG("扫码支付请求返回报文:" . $sReqXml);
+            return $sReqXml;
+        } catch (Exception $e) {
+            Log::ERROR("扫码支付请求异常:" . $e);
+        }
+       return null;
+    }
+
+        /**
      * 生成要请求给IPS的参数XMl
      * @param $para_temp 请求前的参数数组
      * @return 要请求的参数XMl
@@ -69,7 +73,7 @@ class IpsPaySubmit extends Log
         $sReqXml .= $this->buildBody($para_temp);
         $sReqXml .= "</GateWayReq>";
         $sReqXml .= "</Ips>";
-        Log::DEBUG("请求给IPS的参数XMl:" . $sReqXml);
+        Log::DEBUG("扫码支付请求报文:" . $sReqXml);
         return $sReqXml;
     }
     /**
@@ -79,16 +83,17 @@ class IpsPaySubmit extends Log
      */
     public function buildHead($para_temp){
         $sReqXmlHead = "<head>";
-        $sReqXmlHead .= "<Version>".$para_temp["Version"]."</Version>";
+        $sReqXmlHead .= "<Version>".$this->ipspay_config["Version"]."</Version>";
         $sReqXmlHead .= "<MerCode>".$para_temp["MerCode"]."</MerCode>";
         $sReqXmlHead .= "<MerName>".$para_temp["MerName"]."</MerName>";
         $sReqXmlHead .= "<Account>".$para_temp["Account"]."</Account>";
         $sReqXmlHead .= "<MsgId>".$para_temp["MsgId"]."</MsgId>";
         $sReqXmlHead .= "<ReqDate>".$para_temp["ReqDate"]."</ReqDate>";
-        $sReqXmlHead .= "<Signature>".md5Sign($this->buildBody($para_temp),$para_temp["MerCode"],$this->ipspay_config['MerCert'])."</Signature>";
+        $sReqXmlHead .= "<Signature>".md5Sign($this->buildBody($para_temp),$this->ipspay_config["MerCode"],$this->ipspay_config['MerCert'])."</Signature>";
         $sReqXmlHead .= "</head>";
         return $sReqXmlHead;
     }
+    
     /**
      *  请求报文体
      * @param  $para_temp 请求前的参数数组
@@ -97,23 +102,16 @@ class IpsPaySubmit extends Log
     public function buildBody($para_temp){
         $sReqXmlBody = "<body>";
         $sReqXmlBody .= "<MerBillNo>".$para_temp["MerBillNo"]."</MerBillNo>";
-        $sReqXmlBody .= "<GatewayType>".$para_temp["PayType"]."</GatewayType>";
+        $sReqXmlBody .= "<GatewayType>".$para_temp["GatewayType"]."</GatewayType>";
         $sReqXmlBody .= "<Date>".$para_temp["Date"]."</Date>";
         $sReqXmlBody .= "<CurrencyType>".$para_temp["CurrencyType"]."</CurrencyType>";
         $sReqXmlBody .= "<Amount>".$para_temp["Amount"]."</Amount>";
         $sReqXmlBody .= "<Lang>".$para_temp["Lang"]."</Lang>";
-        $sReqXmlBody .= "<Merchanturl><![CDATA[".$para_temp["Return_url"]."]]></Merchanturl>";
-        $sReqXmlBody .= "<FailUrl><![CDATA[".$para_temp["FailUrl"]."]]></FailUrl>";
-        $sReqXmlBody .= "<Attach><![CDATA[".$para_temp["Attach"]."]]></Attach>";
-        $sReqXmlBody .= "<OrderEncodeType>".$para_temp["OrderEncodeType"]."</OrderEncodeType>";
+        $sReqXmlBody .= "<Attach>".$para_temp["Attach"]."</Attach>";
         $sReqXmlBody .= "<RetEncodeType>".$para_temp["RetEncodeType"]."</RetEncodeType>";
-        $sReqXmlBody .= "<RetType>".$para_temp["RetType"]."</RetType>";
-        $sReqXmlBody .= "<ServerUrl><![CDATA[".$para_temp["S2Snotify_url"]."]]></ServerUrl>";
+        $sReqXmlBody .= "<ServerUrl>".$para_temp["ServerUrl"]."</ServerUrl>";
         $sReqXmlBody .= "<BillEXP>".$para_temp["BillEXP"]."</BillEXP>";
         $sReqXmlBody .= "<GoodsName>".$para_temp["GoodsName"]."</GoodsName>";
-        $sReqXmlBody .= "<IsCredit>".$para_temp["IsCredit"]."</IsCredit>";
-        $sReqXmlBody .= "<BankCode>".$para_temp["BankCode"]."</BankCode>";
-        $sReqXmlBody .= "<ProductType>".$para_temp["ProductType"]."</ProductType>";
         $sReqXmlBody .= "</body>";
         return $sReqXmlBody;
     }
