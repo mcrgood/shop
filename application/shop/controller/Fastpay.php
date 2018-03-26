@@ -72,7 +72,7 @@ class Fastpay extends Controller
 	     $transferReq = $this->encrypt($openUserReqXml);
 	    //拼接$ipsRequest
 	    
-	    $ipsRequest = "<xml><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest></xml>";
+	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
 	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
@@ -81,7 +81,6 @@ class Fastpay extends Controller
 	    $ipsPost['ipsRequest'] = $ipsRequest;
 	    $xml = $this->request_post($url, $ipsPost);
 	    dump($reqIp);
-	    echo '<br />';
 	    dump($reqDate);
 	    dump("明文 :".$xml);die;
 	}
@@ -313,8 +312,7 @@ class Fastpay extends Controller
     {
 
         ob_clean();
-        $post_data = '<xml><ipsRequest><argMerCode>205754</argMerCode><arg3DesXmlPara>XcBfjRkgXh/SDDHo7uD4DXKnMvBFcwncRmtm59OOoBM0ZDC2EYx0bgJCrjqkXKRchnqlqNVN6x3cZws6a90rwCeDj9Xyz9lvRPcetDUnYBWDYTr20un5CJAZAGXkQDNJhnzDFLJna0nYWF5XiNLFb9/MyE5Jvg/Xk3a49s0szaOFSlPPmrAl8Av0OvXNCPDNRX0mljAI+921bq2B+XGX3lAnHhR7UXrf/ue03jKekI0wrkr3OSTQ1GLAGfuezYFXp+lMj7oM1lL+QRsI0nx1lq3nVjeRi0uIKEWOypGrbMKa1cS2/iyF8aVX0ZZDykMjRVo/MKukttkiSHkfCgbUCK3qs0Eok8rbADziqbnGyAfBNCp6HdxtNXSDzQnnnAgEagy0tio58L9H6v/v6rLMo8vrQszlmfOlaqDWp8VvdyX1fx55igPJN+S3PaKaFiPEg2Oja4TJ6XrJdYiapY0DkKLSooBors30Z3Vj/Iplhk5kpNevGNdmFqVXM3NTmo6bCTJrB2eqTSxv5b7P8SKRszfgNuyTErbR5OsjUmAjGVebuR/0UHopjimMSKg2r1LKcH55v8I5CiRKJBk8kINHlU+4X3qEOFMtpOgbmeG3scGxq5sgFAs/xeoQm+Z/76+oVuRTC4Csb9twt6RnaC/Z3Fpxt3DG4/7P+muIZgMAvp6c/iWM0jLmyMULReGp2qZveteV/BUOGPdgmpSD3O4ZegegmNinqzH381/QiUCWS0nBCV/EBCJQoPjKSB+g6duYXhGAmq6PRv/hW25L4Rdgj/Fzptn2c7vWboUeCqE1vUJP8jwY72q4dQfSSR949Mq6QTrgmxbd/jWBlg5PQRGdoES/jgDVqzKEKnREOtzM0MPkhHfRI8+0N/E/qXKmAA4mN7tGRdCYrmgMJ0eInaZbaPjMCiWXKuYd290L9PfQVmrdF3s5j9b8DTeiMsAlGeDOwz7teKOWGOxg9QKjz8jDrUr2sKQIloDMkwAU0X2VcA1fQZkegQx1DQyBmmxo+/bwzNri2I1hhjccxFXcQisjTCCY6uY9/N+XnJFxMigjmjXcN4mPDmOdBvoh7pXL1KwrApX1IP6ktS10Y0XRkhkSPHLUrctqvIWgw4RsOhnAJVx3V2CmgWOgzA==</arg3DesXmlPara></ipsRequest></xml>';
-
+        $post_data = "<xml><ipsRequest><argMerCode>205754</argMerCode><arg3DesXmlPara>XcBfjRkgXh/SDDHo7uD4DZzaEsb/GOtkoECSlFpwPafuIorioFlCiDlklYjOzHo0/RNaO7YljLCB0yV5Q6zQ7D5CyrkXBvUDAtjDkfmRREgeWqwXAkWhUNpFpU2sOrhcZM9gioeZ/i1Lki6A9U598ppCsjYBKr8UNxXJvEZRtqXjpG1VIJQjDL7AY7e2D61B0i6cZ8y1TCsCHziXKR8vJHWEozfFHV9ttDQRhzNhwhdANz1rTWYTWWS5w1D97EH/LJ0sH3RNVUzaN89sMMItAPut66jL5ZqsZINUfN0vQeLiE4dV43Smx2+dIYSnVXfUNO7dLdztnGa5q3fRUs6597MWS7eltSlA8FGb1538adasWOa4eae6mjKAvb+gQU0IObM6kCvIgxJ0yVchqHjbWd+5Z1sU8W2H0lP5qyDoRWo4GX2MDgQM16sagHd940XGlnGCMaUSEpgI/p65n8iPLsBMCYxGDUwlBqFEvNdAlPu7BRZDRMxIQqjlNZqtUVZPjh+9hVuMz6mVWSWjUmkVZqUyBW/4N3dfF51YSIpExQV0pJH48ziNRI86sRtOYk47Vw+drZfGc/23OBXZESsT2Mq8x2mXbZ1NIX+6CzRQUGt3Y9ESSt2+jGxOIjKU/+sIGDi/7cB9YNga06aeas3DEz14xsQeN0FoiQfyxyzIr78/8B9KMumcTNJbY6iBjQFrNimQK2zPQSHLgcnoY3a62sTbtsL7+zC3x9BfDaqig4X/asaovsN/lScHtjglt7wWcPcvwFUTbbHL7eEmTjbBDg+NVBlnvFIilM1m7fNHuG4PW3CujnlwICNPRyXa+kj5my4ClYViTnZkq5PH1Gs5ZTc5xBYO49KhFU5WeX8/sodLcRti2dLjkEtYI7HKW78yAjsK6OyMdrGALILUuhAuaNU2lMhwbqUhtpg1zoynSyfltDO+SWx5kzbarSY6SSnlnupxXtm5Kycj+M57/p7/dPPXhSRLnd20bUkTqZUULNZDwsJDhBTxZG7klhLxTgBtkiJmpQYSGVSvcpsUGUlkwQD82jiImTzy5cTE9AHxKPRmoM+dH5OvCypAHKMm1txY4osoxDPmD0P3V5fMPtU6k5V+WhWMsyGjUHZ9IvWDV1ey65KiVbP4tg==</arg3DesXmlPara></ipsRequest></xml>";
 
         $post_data = trim($post_data);
         $header[] = "Content-type: text/xml;charset=utf-8";//定义content-type为xml
@@ -327,7 +325,7 @@ class Fastpay extends Controller
         $post_data .= '</param>';*/
         //  dump($post_data);
 
-        $xml = simplexml_load_string($post_data);
+        // $xml = simplexml_load_string($post_data);
         /*dump($xml);
         echo "<meta charset=\"UTF-8\">";
         echo "<h3>发送</h3>";
@@ -340,7 +338,7 @@ class Fastpay extends Controller
         // post数据
         curl_setopt($ch, CURLOPT_POST, 1);
         // post的变量
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
         /*if (curl_errno($ch)) {
