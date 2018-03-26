@@ -83,6 +83,7 @@ class Fastpay extends BaseController
 
 	    $xmls = $this->request_post($url,$post_data);
 	    dump($reqIp);
+	    dump($reqDate);
 	    echo "这是明文 ：" . $xmls;die;
 	}
 
@@ -96,18 +97,18 @@ class Fastpay extends BaseController
             return false;
         }
         
-        // $o = "";
-        // foreach ( $post_data as $k => $v ) 
-        // {
-        //     $o.= "$k=" . urlencode( $v ). "&" ;
-        // }
-        // $post_data = substr($o,0,-1);
+        $o = "";
+        foreach ( $post_data as $k => $v ) 
+        {
+            $o.= "$k=" . urlencode( $v ). "&" ;
+        }
+        $post_data = substr($o,0,-1);
         $postUrl = $url;
         $curlPost = $post_data;
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);//要求结果为字符串且输出到屏幕上
-        // curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
+        curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
         curl_setopt($ch, CURLOPT_POST, true);//post提交方式
         curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
         $data = curl_exec($ch);//运行curl
@@ -171,15 +172,17 @@ class Fastpay extends BaseController
 	 }
 	 //用户开户同步返回地址(页面响应地址)
 	 public function page_url(){
-	 	ob_clean();
-	 	$ipsResponse = $_REQUEST['ipsResponse'];
-	 	dump($ipsResponse);
+	 	$info = file_get_contents("php://input");
+    	$data = simplexml_load_string($info);
+    	dump($info);
+    	dump($data);
 	 }
 	 //用户开户异步返回地址
 	 public function s2sUrl(){
-	 	ob_clean();
-	 	$ipsResponse = $_REQUEST['ipsResponse'];
-	    Log::DEBUG("用户开户响应返回的参数:" . $ipsResponse);  
+	 	$info = file_get_contents("php://input");
+    	$data = simplexml_load_string($info);
+    	dump($info);
+    	dump($data);
 
 	 }
 
