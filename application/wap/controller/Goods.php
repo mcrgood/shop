@@ -638,7 +638,7 @@ class Goods extends BaseController
                 $this->assign("category_price_grades", $category_price_grades);
                 $this->assign("category_price_grades_count", count($category_price_grades));
                 $this->assign("goods_spec_array", $goods_spec_array); // 分类下的规格
-                $this->assign("title_before", '1232454');
+                $this->assign("title_before", '现金旺币');
             }
             // 获取分类列表
             $goodsCategory = new GoodsCategory();

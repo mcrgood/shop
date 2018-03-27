@@ -216,8 +216,8 @@
     <div class="form_1">
         <p>持卡人：<input name="yhk_name" type="text" id="txtUserName"size="15" placeholder="持卡人姓名"  placeholder="持卡人姓名" onfocus="if (placeholder =='持卡人'){placeholder =''}" onblur="if (placeholder ==''){placeholder='持卡人姓名'}"/></p>
         <p>卡 &nbsp 号：<input name="yhk_num" type="number"  id="cardnum"   size="15" placeholder="请输入银行卡号" onfocus="if (placeholder =='请输入银行卡号'){placeholder =''}" onblur="checkCard()"/>
-        <span id="takepicture_1">
-        <input class="btn" id="takepicture" type="file" onchange="javascript:setImagePreview();"/></span>
+        <!-- <span id="takepicture_1"> -->
+        <!-- <input class="btn" id="takepicture" name="" type="file" onchange="javascript:setImagePreview();"/></span> -->
         </p>
         <div class="images" id="localImag">
             <img id="preview" width="-1" height="-1" style="display: none" />
@@ -227,7 +227,7 @@
     </div>
 </div>
  <script type="text/javascript">
-         function setImagePreview() {  
+         function setImagePreview(){
             var preview, img_txt, localImag, takepicture = document.getElementById("takepicture"),  
             picture = takepicture.value;  
             if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return alert("您上传的图片格式不正确，请重新选择！"),  
@@ -523,7 +523,7 @@
 });
 
     function checkCard(){
-        var cardNum = $('#cardnum').val();
+        var cardNum = $('#cardnum').val()
         var url = "{:url('Myhome/checkCards')}";
         var datas = {cardNum:cardNum};
         $.post(url,datas,function(res){
