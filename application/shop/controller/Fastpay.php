@@ -311,21 +311,20 @@ class Fastpay extends BaseController
 
     public function test1()
     {
-        ob_clean();
 
         $reqIp = request()->ip();  //获取客户端IP
         $reqDate = date("Y-m-d H:i:s",time());
         $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>52212619930930551X</identityNo><userName>隔壁老王</userName><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo>13657085273</mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddress></contactAddress><remark></remark><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><directSell></directSell><stmsAcctNo></stmsAcctNo><ipsUserName>13657085273</ipsUserName></body>";
         $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
-        $openUserReqXml="<openUserReqXml>".$head.$body."</openUserReqXml>";
+        $openUserReqXml="<?xml version='1.0' encoding='utf-8'?><openUserReqXml>".$head.$body."</openUserReqXml>";
         //加密请求类容
         $transferReq = $this->encrypt($openUserReqXml);
         //拼接$ipsRequest
 
-        $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
+        $ipsRequest = "<?xml version='1.0' encoding='utf-8'?><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 
 
-        $post_data = trim($ipsRequest);
+        $post_data = $ipsRequest;
         $header[] = "Content-type: text/xml;charset=utf-8";//定义content-type为xml
         /*$post_data = '<?xml version="1.0" encoding="UTF-8"?>';
         $post_data .= '<param>';
@@ -349,9 +348,11 @@ class Fastpay extends BaseController
         // post数据
         curl_setopt($ch, CURLOPT_POST, 1);
         // post的变量
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
+        $aStatus = curl_getinfo($ch);
         if (curl_errno($ch)) {
             print curl_error($ch);
         }
