@@ -82,13 +82,19 @@
 	<dl>
 		<dt><span class="required"></span>所在省：</dt>
 		<dd>
-			<p><input class="input-common"  type="text" name="sheng" value="{$row.sheng}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="sheng" value="{$row.province_name}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="required"></span>所在市：</dt>
 		<dd>
-			<p><input class="input-common"  type="text" name="shi" value="{$row.shi}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="shi" value="{$row.city_name}" disabled="disabled"></p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required"></span>所在区/县：</dt>
+		<dd>
+			<p><input class="input-common"  type="text" name="area" value="{$row.district_name}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
@@ -106,15 +112,10 @@
 	<dl>
 		<dt><span class="required"></span>所属银行：</dt>
 		<dd>
-			<p><input class="input-common"  type="text" name="bank" value="{$row.bank}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="yhk_type" value="{$row.yhk_type}" disabled="disabled"></p>
 		</dd>
 	</dl>
-	<dl>
-		<dt><span class="required"></span>银行卡支行：</dt>
-		<dd>
-			<p><input class="input-common"  type="text" name="yhk_address" value="{$row.yhk_address}" disabled="disabled"></p>
-		</dd>
-	</dl>
+	
 	<dl>
 		<dt><span class="required"></span>银行卡正面：</dt>
 		<dd>
@@ -155,7 +156,9 @@
 		</dd>
 		<dt><i class="required"></i>审核状态：</dt>
 		<dd>
+		{neq name="row.state" value="1"}
 			<button onclick="pass({$row.id})">审核通过</button>
+		{/neq}
 			<button onclick="returns()" class="returns">退回重审</button>
 		</dd>
 		<!-- <else />
