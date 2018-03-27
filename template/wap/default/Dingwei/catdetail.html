@@ -102,7 +102,7 @@
         .time{width: 60%;height: 120px;}
         .time h2{font-size: 40px;color:#1a1a1a;line-height: 120px;display: inline-block;float: left;}
         .time img{width: 60px;height: 60px;display: inline-block;float: left;margin: 30px;}
-        .time span{font-size: 40px;color: #808080;display: inline-block;float: left;line-height: 120px;margin-left: 20px;}
+        .time span{font-size: 40px;color: #808080;display: inline-block;margin-left: 268px;margin-top: -50px;}
         .comment{float:left;width: 100%;height:120px;margin: 0 auto;border-bottom: 1px solid #cccccc; }
         .comment p{font-size: 55px; padding-top: 27px;}
         .comment_1{width: 60%;height: 120px;}
@@ -136,9 +136,21 @@
         <div class="service_left">
         <p style="border-bottom: 1px solid #cccccc;">店名：{$row.names}</p><br />
         <p style="border-bottom: 1px solid #cccccc;">电话：{$row.tel}<a href="tel:{$row.tel}" style="display:inline-block;float:right;"><img src="__INDEX__/images/3_03.gif" width="60px" height="60px"style="padding-right: 60px;"/></a></p><br />
-        <p style="border-bottom: 1px solid #cccccc;">评分：<span style="margin-left:20px;"><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/><img src="__INDEX__/images/3_07.gif"/></span>
+        <p style="border-bottom: 1px solid #cccccc;">评分：
+        <span style="margin-left:20px;">
+            <img src="__INDEX__/images/3_07.gif"/>
+            <img src="__INDEX__/images/3_07.gif"/>
+            <img src="__INDEX__/images/3_07.gif"/>
+            <img src="__INDEX__/images/3_07.gif"/>
+            <img src="__INDEX__/images/3_07.gif"/>
+        </span>
         <span style="color:#ff6363;margin-left:10px;font-weight:bold;">5.0分</span></p><br/>
-        <p style=" border-bottom: 1px solid #cccccc;" >地址：<span id="address">{$row.address}</span><a target="_blank" class="map1" ><img  width="60px" height="60px" style="padding-right:60px;float: right" src="__INDEX__/images/3_10.gif" /></a></p>
+        <p style=" border-bottom: 1px solid #cccccc;" >地址：
+        <span id="address">{$row.address}</span>
+        <a target="_blank" class="map1" >
+            <img  width="60px" height="60px" style="padding-right:60px;float: right" src="__INDEX__/images/3_10.gif" />
+        </a>
+        </p>
         </div>
       </div>
 <script type="text/javascript" src="__INDEX__/js/jquery-1.7.2.min.js"></script>
@@ -270,7 +282,7 @@ width: 100%;height:480px;overflow: auto;margin:0;display: none;
         <div class="time">
             <img src="__INDEX__/images/3_13.gif" />
             <p>营业时间</p>
-            <span>{$row.business_hours}</span>
+            <span>05:30-6:25{$row.business_hours}</span>
         </div>
     </div>
     <div class="comment">
