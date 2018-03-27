@@ -35,6 +35,7 @@
 <link href="__INDEX__/css/swiper.min.css" rel="stylesheet" />
 <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
 <script src="__INDEX__/js/swiper.min.js"></script>
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
 </head>
 <style type="text/css">
     .intake-title span{
@@ -101,6 +102,20 @@
         <tr>
             <td><span>*</span>营业时间</td><td><input type="text" placeholder="例：01:30-20:45" name="business_hours" value="{$shopinfo.business_hours}" id="business_hours" /></td>
         </tr>
+        <tr>
+            <td width="18%"><span>*</span>营业范围</td><td width="80%" style="text-align:center">
+            <input id="con_cateid" name="business_scope" type="hidden" value="" />
+            <span id="fanwei" value="">请选择</span>
+                <ul style="display:none" id="oul_1">
+                    {volist name="scope" id="v"}  
+                        <li>
+                            <label class="label1" value="{$v.con_cateid}">{$v.con_cate_name}</label>
+                            <ul style="display:none" class="cate_list"></ul>
+                        </li>
+                   {/volist} 
+                </ul>
+            </td>
+        </tr>
     </table>
 
     <div class="kong"></div>
@@ -108,15 +123,15 @@
         <div class="intake-title"><span>门店照片</span><span>店内照片</span><span>店内照片</span></div>
         <div class="up-file f-fl" >
             <label>
-                <img src="{$shopinfo.thumb|default='__INDEX__/images/upload1.png'}" id="thumb_img">
+                <img src="{$shopinfo.thumb|default='__INDEX__/images/upload.png'}" id="thumb_img">
                 <input class="up-fileh error" name="thumb"  type="text" id="thumb"  value="{$shopinfo.thumb}" onchange="" onclick="wximg('thumb')">
             </label>
              <label>
-                <img src="{$shopinfo.thumb|default='__INDEX__/images/upload2.png'}" id="thumb_inimg_one_img">
+                <img src="{$shopinfo.thumb|default='__INDEX__/images/upload.png'}" id="thumb_inimg_one_img">
                 <input class="up-fileh error" name="thumb_inimg_one"  type="text" id="thumb_inimg_one"  value="{$shopinfo.thumb_inimg_one}" onchange="" onclick="wximg('thumb_inimg_one')">
             </label>
              <label>
-                <img src="{$shopinfo.thumb|default='__INDEX__/images/upload3.png'}" id="thumb_inimg_two_img">
+                <img src="{$shopinfo.thumb|default='__INDEX__/images/upload.png'}" id="thumb_inimg_two_img">
                 <input class="up-fileh error" name="thumb_inimg_two"  type="text" id="thumb_inimg_two"  value="{$shopinfo.thumb_inimg_two}" onchange="" onclick="wximg('thumb_inimg_two')">
             </label>
         </div>
@@ -159,10 +174,40 @@
     </div>
 </div>
  <script type="text/javascript">
+    $(function(){
+        $(".label1").on('click',function(){
+            var values = $(this).attr('value');
+            var url = "{:url('Myhome/findSecondCate')}";
+            var data = {values:values};
+            $.post(url,data,function(res){
+                var html ='';
+                if(res){
+                    for(var i=0; i<res.length; i++){
+                        html += '<li class="cateids"  value="'+res[i]["con_cateid"]+'">'+res[i]["con_cate_name"]+'</li>';
+                    }
+                }
+                $('.label1').each(function(i,v){
+                    if($(v).attr('value') == res[0]['con_pid']){
+                        $(v).siblings('.cate_list').empty().append(html);
+                    }
+                })
+                 $('.cateids').click(function(){
+                    var con_cateid =  $(this).attr('value');
+                    var info =  $(this).text();
+                    $('#con_cateid').val(con_cateid);
+                    $('#fanwei').empty().text(info);
+                    $('#oul_1').css({"display":"none"});
+                    // layer.msg($('#con_cateid').val());
+                 })
+            },'json')
+        
+        })
+    })
+
          function setImagePreview() {  
             var preview, img_txt, localImag, takepicture = document.getElementById("takepicture"),  
             picture = takepicture.value;  
-            if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return alert("您上传的图片格式不正确，请重新选择！"),  
+            if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return layer.msg("您上传的图片格式不正确，请重新选择！"),  
             !1;  
             if (preview = document.getElementById("preview"), takepicture.files && takepicture.files[0]) preview.style.display = "block",  
                 preview.style.width = "200px",  
@@ -179,7 +224,7 @@
                     localImag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",  
                     localImag.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt  
                 } catch(f) {  
-                    return alert("您上传的图片格式不正确，请重新选择！"),  
+                    return layer.msg("您上传的图片格式不正确，请重新选择！"),  
                     !1  
                 }  
                 preview.style.display = "none",  
@@ -313,14 +358,14 @@
                 var pic = $("#preview")[0].src;
 
                 if(category == 0){
-                    alert("请选择分类");
+                    layer.msg("请选择分类");
                     $("#category").focus();
                     return false;
                 }
 
                 if ($("#name").val()=='') {
 
-                    alert('请输入商家名称');
+                    layer.msg('请输入商家名称');
 
                     $("#name").focus();
 
@@ -328,17 +373,17 @@
 
                 }
                 if(seleAreaNext == -1){
-                    alert("请选择省份");
+                    layer.msg("请选择省份");
                     $("#seleAreaNext").focus();
                     return false;
                 }
                 if(seleAreaThird == -1){
-                    alert("请选择城市");
+                    layer.msg("请选择城市");
                     $("#seleAreaThird").focus();
                     return false;
                 }
                 if(seleAreaFouth == -1){
-                    alert("请选择区县");
+                    layer.msg("请选择区县");
                     $("#seleAreaFouth").focus();
                     return false;
                 }
@@ -346,7 +391,7 @@
 
         if ($("#address").val()=='') {
 
-            alert('请输入详细地址');
+            layer.msg('请输入详细地址');
 
             $("#address").focus();
 
@@ -356,7 +401,7 @@
 
         if (!tel) {
 
-            alert('请输入商家电话');
+            layer.msg('请输入商家电话');
 
             $("#tel").focus();
 
@@ -366,7 +411,7 @@
         
         if (!regs.test(tel) && !phone_reg.test(tel)) {
 
-            alert('商家电话格式有误');
+            layer.msg('商家电话格式有误');
 
             $("#tel").focus();
 
@@ -374,7 +419,7 @@
 
         }
         if(!business_hours){
-            alert('请输入营业时间');
+            layer.msg('请输入营业时间');
 
             $("#business_hours").focus();
 
@@ -383,7 +428,7 @@
 
         if ($("#thumb").val()=='') {
 
-            alert('请上传门店照片');
+            layer.msg('请上传门店照片');
 
             $("#thumb").focus();
 
@@ -394,7 +439,7 @@
         //店家图片
         if ($("#thumb_inimg_one").val()=='') {
 
-            alert('请上传店内照片');
+            layer.msg('请上传店内照片');
 
             $("#thumb_inimg_one").focus();
 
@@ -403,7 +448,7 @@
         }
         if ($("#thumb_inimg_two").val()=='') {
 
-            alert('请上传店内照片');
+            layer.msg('请上传店内照片');
 
             $("#thumb_inimg_two").focus();
 
@@ -414,7 +459,7 @@
 
         if ($("#thumb_zhizhao").val()=='') {
 
-            alert('请上营业执照');
+            layer.msg('请上营业执照');
 
             $("#thumb_zhizhao").focus();
 
@@ -424,7 +469,7 @@
 
         if ($("#thumb_zhengmian").val()=='') {
 
-            alert('请上传法人正面照片');
+            layer.msg('请上传法人正面照片');
 
             $("#thumb_zhengmian").focus();
 
@@ -434,7 +479,7 @@
 
         if ($("#thumb_fanmian").val()=='') {
 
-            alert('请上法人反面照片');
+            layer.msg('请上法人反面照片');
 
             $("#thumb_fanmian").focus();
 
@@ -444,30 +489,30 @@
 
                 
                 if(username === ''){
-                    alert("请输入持卡人姓名");
+                    layer.msg("请输入持卡人姓名");
                     return false;
                 }else if(kahao === '' && pic === ''){
-                    alert("请输入银行卡号");
+                    layer.msg("请输入银行卡号");
                     return false;
                 }else if(telephone === ''){
-                    alert("预留手机号码不能为空");
+                    layer.msg("预留手机号码不能为空");
                     return false;
                 }else if(!username.match( /^[\u4E00-\u9FA5]{1,}$/)){
-                    alert("请填写正确的持卡人姓名");
+                    layer.msg("请填写正确的持卡人姓名");
                     return false;
                 }else if(kahao =="" || kahao.length < 16 || kahao.length > 19){
-                    alert("银行卡号数必须在16到19之间");
+                    layer.msg("银行卡号数必须在16到19之间");
                     return false;
                 }else if(strBin.indexOf(kahao.substring(0, 2))== -1){
-                    alert("银行卡号开头6位不符合规范");
+                    layer.msg("银行卡号开头6位不符合规范");
                     return false;
                 }else if(!regs.test(telephone)){
-                    alert("请输入有效的手机号码!");
+                    layer.msg("请输入有效的手机号码!");
                 }
                 if($("input[type='checkbox']").is(':checked')) {
                     return true;
                 }else{
-                    alert('请同意商家协议！');
+                    layer.msg('请同意商家协议！');
                     return false;
                 }
        });  
@@ -672,10 +717,10 @@
                 'getLocation'
             ],
             success: function (res) {
-                //alert(JSON.stringify(res));
-                //alert(JSON.stringify(res.checkResult.getLocation));
+                //layer.msg(JSON.stringify(res));
+                //layer.msg(JSON.stringify(res.checkResult.getLocation));
                 if (res.checkResult.getLocation == false) {
-                    alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+                    layer.msg('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
                     return;
                 }
             }
@@ -690,7 +735,7 @@
 
                 jingdu = longitude;
                 weidu = latitude;
-                //alert(jingdu);
+                //layer.msg(jingdu);
                 var map = new BMap.Map("allmap");
                 // map.enableScrollWheelZoom(true);
                 // map.disableDragging();
@@ -708,7 +753,7 @@
                     var pt = e.point;
                     geoc.getLocation(pt, function(rs){
                         var addComp = rs.addressComponents;
-                        // alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                        // layer.msg(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
 
                         $("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
                         $("#sheng").val(addComp.province);
@@ -735,7 +780,7 @@
                     var pt = e.point;
                     geoc.getLocation(pt, function(rs){
                         var addComp = rs.addressComponents;
-                        // alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                        // layer.msg(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
                         $("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
                         $("#sheng").val(addComp.province);
                         $("#shi").val(addComp.city);

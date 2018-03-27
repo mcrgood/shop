@@ -511,6 +511,7 @@ class Myhome extends Controller
             $data['shi'] = $shi;
             $data['jingdu'] = $jingdu;
             $data['weidu'] = $weidu;
+            $data['business_hours'] = $business_hours;
             $data['state'] = 0;
             $data['business_scope'] = $business_scope;
             $id = db('ns_shop_message')->insertGetId($data);
