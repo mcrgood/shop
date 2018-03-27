@@ -95,14 +95,20 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/index");
 	}
 
-	//商家分类添加
+	//商家商品分类添加
 	public function cateadd(){
 		if(request()->isAjax()){
 			$row = input("post.");
+			$look = db("ns_shop_usercate")->where('catename',$row['catename'])->find();
 			if(empty($row['catename'])){
 				$info = [
 					"status" =>0,
 					"msg" =>'商家分类信息不能为空'
+				];
+			}else if($look){
+				$info = [
+					"status" =>0,
+					"msg" =>'商家分类信息不能重复'
 				];
 			}else{
 				$data['catename'] = $row['catename'];
@@ -123,7 +129,32 @@ class Myhome extends BaseController
 		}
 		return view($this->style . "Myhome/cateadd");
 	}
-
+	//商家商品分类删除
+	public function deletecate(){
+		if(request()->isAjax()){
+			$id = input('post.listid');
+			if(!$id){
+				$info = [
+					"status" =>1,
+					"msg" =>'没有获取到删除信息'
+				];
+			}else{
+				$row = db('ns_shop_usercate')->delete($id);
+				if($row){
+					$info = [
+						"status" =>1,
+						"msg" =>'商家分类信息删除成功'
+					];
+				}else{
+					$info = [
+						"status" =>0,
+						"msg" =>'商家分类信息删除失败'
+					];
+				}
+			}
+		}
+		return $info;
+	}
 
 	public function registerdetail(){
 			$id = input('param.id');

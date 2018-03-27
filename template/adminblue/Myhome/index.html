@@ -1,5 +1,6 @@
 {extend name="adminblue/base" /}
 {block name="resources"/}
+<script src="__STATIC__/layui/layui.all.js"></script>
 <style>
 .brand_img{
 	width: 168px;
@@ -60,7 +61,7 @@
 					html += '<td>'+data["data"][i]["catename"]+'</td>';
 					html += '<td>';
 					html += '<a href="{:url("myhome/registerdetail")}?id='+data["data"][i]["id"]+' ">编辑</a>';
-					html += '<a href="{:url("myhome/registerdetail")}?id='+data["data"][i]["id"]+' ">删除</a>';
+					html += '<a onclick="deletes('+data["data"][i]["listid"]+')" href="javascript:;">删除</a>';
 					html += '</td>';
 					html += '</tr>';
 				}
@@ -82,6 +83,24 @@
 		LoadingInfo(1);
 	}
 	
+	//删除
+	function deletes(listid){
+		layer.confirm('是否删除商品分类名',{icon: 3, title:'客旺旺提醒您'},
+			function(){
+			var url = "{:url('Myhome/deletecate')}";
+			var data = {"listid":listid};
+			$.post(url,data,function(res){
+				if(res.status==1){
+					layer.msg(res.msg,{icon:6});
+					setTimeout(function(){
+                        location.href="{:url('Myhome/goods_index')}";
+                    },1000);
+				}else{
+					layer.msg(res.msg,{icon:5});
+				}
+			},'json')
+		})
+	}
 </script>
 {/block}
 
