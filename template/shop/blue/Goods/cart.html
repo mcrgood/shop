@@ -66,15 +66,30 @@
 										</td>
 										<td align="center" width="15%">
 											<font class="cart_jmprice" id="goods_price_{$cart_info.cart_id}">
+											{if condition="$cart_info.price neq 0"}
 											￥{$cart_info.price}
-											{if condition="$cart_info.point_exchange_type==1 "}
+											{/if}
+											{if condition="$cart_info.point_exchange_type==1"}
 												{if condition=" $cart_info.point_exchange>0"}
-												+{$cart_info.point_exchange}{:lang('goods_integral')}
+												{if condition="$cart_info.point_exchange_type==1 AND $cart_info.price neq 0"}
+												+
+												{/if}
+												{$cart_info.point_exchange}{:lang('goods_integral')}
 												{/if}
 											{/if}
 											</font>
 										</td>
-										<td align="center" width="15%"><font class="cart_jmprice" id="subtotal_{$cart_info.cart_id}" data-total="{$cart_info.price*$cart_info.num}" data-integral="{if condition='$cart_info.point_exchange_type==1'}{$cart_info.point_exchange*$cart_info.num}{else/}0{/if}" data-integral_one="{if condition='$cart_info.point_exchange_type==1'}{$cart_info.point_exchange}{else/}0{/if}"  data-price="{$cart_info.price}" >￥{$cart_info.price*$cart_info.num}+{$cart_info.point_exchange*$cart_info.num}{:lang('goods_integral')}</font></td>
+										<td align="center" width="15%"><font class="cart_jmprice" id="subtotal_{$cart_info.cart_id}" data-total="{$cart_info.price*$cart_info.num}" data-integral="{if condition='$cart_info.point_exchange_type==1'}{$cart_info.point_exchange*$cart_info.num}{else/}0{/if}" data-integral_one="{if condition='$cart_info.point_exchange_type==1'}{$cart_info.point_exchange}{else/}0{/if}"  data-price="{$cart_info.price}" >
+										{if $cart_info.price neq 0}
+											￥{$cart_info.price*$cart_info.num}
+										{/if}
+										{if $cart_info.price neq 0 AND $cart_info.point_exchange neq 0}
+										+
+										{/if}
+										{if $cart_info.point_exchange neq 0}
+											{$cart_info.point_exchange*$cart_info.num}{:lang('goods_integral')}
+										{/if}
+										</font></td>
 										<td align="center" width="10%">
 											<a href="javascript:deleteShoppingCartById({$cart_info.cart_id},true)" class="f6">{:lang('goods_delete')}</a>
 										</td>
