@@ -95,11 +95,11 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/index");
 	}
 
-	//商家商品分类添加
+	//商家商品分类修改添加
 	public function cateadd(){
 		if(request()->isAjax()){
 			$row = input("post.");
-			$look = db("ns_shop_usercate")->where('catename',$row['catename'])->find();
+			$look = db("ns_shop_usercate")->where('catename',$row['catename'])->find();//查询是否重复
 			if(empty($row['catename'])){
 				$info = [
 					"status" =>0,
@@ -112,31 +112,65 @@ class Myhome extends BaseController
 				];
 			}else{
 				$data['catename'] = $row['catename'];
-				$id = db("ns_shop_usercate")->insertGetId($data);
-				if($id){
-					$info = [
-						"status" =>1,
-						"msg" =>'商家分类信息添加成功'
-					];
+				$where['listid'] = $row['listid'];
+				if($row['listid']){
+					$id = db("ns_shop_usercate")->where($where)->update($data);
+					if($id){
+						$info = [
+							"status" =>1,
+							"msg" =>'商家分类信息修改成功'
+						];
+					}else{
+						$info = [
+							"status" =>0,
+							"msg" =>'商家分类信息修改失败'
+						];
+					}
 				}else{
-					$info = [
-						"status" =>0,
-						"msg" =>'商家分类信息添加失败'
-					];
+					$id = db("ns_shop_usercate")->insertGetId($data);
+					if($id){
+						$info = [
+							"status" =>1,
+							"msg" =>'商家分类信息添加成功'
+						];
+					}else{
+						$info = [
+							"status" =>0,
+							"msg" =>'商家分类信息添加失败'
+						];
+					}
 				}
 			}
 			return $info;
+		}else{
+			$listid = input('get.id',0);
+			if($listid){
+				$idrow = db("ns_shop_usercate")->where('listid',$listid)->find();
+				$this->assign('idrow',$idrow);
+			}else{
+				$this->assign('listid',$listid);
+			}
 		}
 		return view($this->style . "Myhome/cateadd");
 	}
+
 	//商家商品分类删除
 	public function deletecate(){
 		if(request()->isAjax()){
 			$id = input('post.listid');
+			//删除前判断下面是否有相关细分类
+			$ids = db("ns_shop_usercate")->alias('a')
+				->join("ns_shop_usercatedetail m",'a.listid=m.cateid')
+				->select($id);
 			if(!$id){
 				$info = [
 					"status" =>1,
 					"msg" =>'没有获取到删除信息'
+				];
+			}else if($ids){
+				$info = [
+					"status" =>0,
+					"msg" =>'所属分类下有子分类，不能删除'
 				];
 			}else{
 				$row = db('ns_shop_usercate')->delete($id);
@@ -151,6 +185,105 @@ class Myhome extends BaseController
 						"msg" =>'商家分类信息删除失败'
 					];
 				}
+			}
+		}
+		return $info;
+	}
+
+	//商品分类详情首页
+	public function catedetail(){
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $condition['catedetail'] = ['LIKE',"%".$search_text."%"];
+            $member = new MyhomeService();
+            $list = $member->getGoodsListdetail($page_index, $page_size, $order = '');
+            return $list;
+	    }
+		return view($this->style . "Myhome/catedetail");
+	}
+
+	//商品分类详情添加
+	public function catedetailadd(){
+		//查询所有分类
+		$list = db("ns_shop_usercate")->select();
+		$this->assign("list",$list);
+		if(request()->isAjax()){
+			$row = input("post.");
+			// dump($row);die;
+			$where['catedetail'] = $row['catedetail'];
+			$where['cateid'] = $row['listid'];
+			$look = db("ns_shop_usercatedetail")->where($where)->find();
+			if(!$row['catedetail'] || !$row['listid']){
+				$info = [
+					"status" =>0,
+					"msg" =>'请填写必填项！！！'
+				];
+			}else if($look){
+				$info = [
+					"status" =>0,
+					"msg" =>'商家详情名称已存在'
+				];
+			}else{
+				$data['catedetail'] = $row['catedetail'];
+				$data['cateid'] = $row['listid'];
+				if($row['did']){
+					$editlist = db("ns_shop_usercatedetail")->where(['did' => $row['did']])->update($data);
+					if($editlist){
+						$info = [
+							"status" =>1,
+							"msg" =>'商家详情修改成功'
+						];
+					}else{
+						$info = [
+							"status" =>0,
+							"msg" =>'商家详情修改失败'
+						];
+					}
+				}else{
+					$addlist = db("ns_shop_usercatedetail")->insertGetId($data);
+					if($addlist){
+						$info = [
+							"status" =>1,
+							"msg" =>'商家详情添加成功'
+						];
+					}else{
+						$info = [
+							"status" =>0,
+							"msg" =>'商家详情添加失败'
+						];
+					}
+				}
+			}
+			return $info;
+		}else{
+			$did = input("get.id",0);
+			if($did){
+				$row = db("ns_shop_usercatedetail")->find($did);
+				$this->assign("row",$row);
+			}else{
+				$this->assign("did",$did);
+			}
+		}
+		return view($this->style . "Myhome/catedetailadd");
+	}
+
+	//删除商品分类详情
+	public function deleteDetailcate(){
+		if(request()->isAjax()){
+			$id = input("post.listid");
+			$list = db("ns_shop_usercatedetail")->delete($id);
+			if($list){
+				$info=[
+					"status" =>1,
+					"msg" =>'删除商品详情成功'
+				];
+			}else{
+				$info=[
+					"status" =>0,
+					"msg" =>'删除商品详情失败'
+				];
 			}
 		}
 		return $info;

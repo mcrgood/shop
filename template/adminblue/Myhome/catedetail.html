@@ -16,7 +16,7 @@
 {/block}
 {block name="main"}
 <div class="options-btn">
-	<button class="btn-common btn-small" onclick="addAttributeService()">添加分类</button>
+	<button class="btn-common btn-small" onclick="addAttributeService()">添加分类详情</button>
 </div>
 <table class="mytable">
 	<tr>
@@ -32,7 +32,8 @@
 	<thead>
 		<tr>
 			<th>ID</th>
-			<th>分类名字</th>
+			<th>所属分类</th>
+			<th>分类详情名字</th>
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -46,7 +47,7 @@
 		var search_text = $('#search_text').val();
 	$.ajax({
 		type : "post",
-		url : "{:__URL('ADMIN_MAIN/myhome/goods_index')}",
+		url : "{:__URL('ADMIN_MAIN/myhome/catedetail')}",
 		data : {
 			"page_index" : page_index,
 			 "page_size" : $("#showNumber").val(),
@@ -57,11 +58,12 @@
 			if (data["data"].length > 0) {
 				for (var i = 0; i < data["data"].length; i++) {
 					html += '<tr align="center">';
-					html += '<td>'+ data["data"][i]["listid"] +'</td>'
+					html += '<td>'+ data["data"][i]["did"] +'</td>'
 					html += '<td>'+data["data"][i]["catename"]+'</td>';
+					html += '<td>'+data["data"][i]["catedetail"]+'</td>';
 					html += '<td>';
-					html += '<a href="{:url("myhome/cateadd")}?id='+data["data"][i]["listid"]+' ">编辑</a>';
-					html += '<a onclick="deletes('+data["data"][i]["listid"]+')" href="javascript:;">删除</a>';
+					html += '<a href="{:url("myhome/catedetailadd")}?id='+data["data"][i]["did"]+' ">编辑</a>';
+					html += '<a onclick="deletes('+data["data"][i]["did"]+')" href="javascript:;">删除</a>';
 					html += '</td>';
 					html += '</tr>';
 				}
@@ -76,7 +78,7 @@
 }
 	/* 跳转到添加品牌 */
 	function addAttributeService() {
-		location.href = __URL("ADMIN_MAIN/myhome/cateadd");
+		location.href = __URL("ADMIN_MAIN/myhome/catedetailadd");
 	}
 	// 搜索
 	function searchData(){
@@ -87,13 +89,13 @@
 	function deletes(listid){
 		layer.confirm('是否删除商品分类名',{icon: 3, title:'客旺旺提醒您'},
 			function(){
-			var url = "{:url('Myhome/deletecate')}";
+			var url = "{:url('Myhome/deleteDetailcate')}";
 			var data = {"listid":listid};
 			$.post(url,data,function(res){
 				if(res.status==1){
 					layer.msg(res.msg,{icon:6});
 					setTimeout(function(){
-                        location.href="{:url('Myhome/goods_index')}";
+                        location.href="{:url('Myhome/catedetail')}";
                     },1000);
 				}else{
 					layer.msg(res.msg,{icon:5});

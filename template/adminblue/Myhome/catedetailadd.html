@@ -14,12 +14,25 @@
 {block name="main"}
 <div class="set-style">
 	<dl>
-		<dt><span class="color-red">*</span>商品分类名称:</dt>
+		<dt><span class="color-red">*</span>商品所属分类:</dt>
 		<dd>
-			<input id="catename" type="text" placeholder="请输入商品分类名称" class="input-common" value="{$idrow.catename|default=''}" />
-			<input type="hidden" class="hidden" value="{$idrow.listid}">
+			<select class="input-common input-commona">
+				<option value="">商家详情必填</option>
+			{volist name="list" id="v"}
+				<option value="{$v.listid}"{eq name="$row.cateid|default=''" value="$v.listid" }selected{/eq}> 
+					{$v.catename}
+				</option>
+			{/volist}
+			</select>
 		</dd>
 	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>商品详情名称:</dt>
+		<dd>
+			<input id="catenamedetail" type="text" placeholder="请输入商品分类名称" class="input-common" value="{$row['catedetail']}" />
+		</dd>
+	</dl>
+	<input type="hidden" class="hidden" value="{$row.did}">
 	<dl>
 		<dt></dt>
 		<dd><button class="btn-common btn-big">{if $idrow.listid eq true}修&nbsp;&nbsp;改{else if/}新&nbsp;&nbsp;增{/if}</button></dd>
@@ -27,15 +40,16 @@
 </div>
 <script>
 	$(".btn-big").click(function(){
-		var catename = $("#catename").val();
-		var listid = $(".hidden").val();
-		var url = "{:url('Myhome/cateadd')}";
-		var data = {"catename":catename,"listid":listid};
+		var catedetail = $("#catenamedetail").val();
+		var listid = $(".input-commona").val();
+		var did = $(".hidden").val();
+		var url = "{:url('Myhome/catedetailadd')}";
+		var data = {"catedetail":catedetail,"listid":listid,"did":did};
 		$.post(url,data,function(res){
 			if(res.status==1){
                 layer.msg(res.msg,{time:1000,icon:6});
                 setTimeout(function(){
-                    location.href="{:url('Myhome/goods_index')}";
+                    location.href="{:url('Myhome/catedetail')}";
                 },1000);
 			}else{
 				layer.msg(res.msg,{time:2000,icon:5});

@@ -71,22 +71,16 @@
 						</div>
 						<div class="p-comm">
 							<span class="p-price money-color">
-								{if $vo.price neq 0}
-									￥{$vo.price}
-								{/if}
-								{if $vo.price neq 0 AND $vo.point_exchange neq 0}
-									+
-								{/if}
+								{if $vo.price neq 0}￥{$vo.price}{/if}
+								{if $vo.price neq 0 AND $vo.point_exchange neq 0}+{/if}
 								{if $vo.point_exchange neq 0}
 									{$vo.point_exchange}{:lang('goods_integral')}
 								{/if}
 							</span>
-							
 						</div>
 					</li>
 					{/volist}
 				{/if}
-				
 			</ul>
 		</div>
 	</div>
