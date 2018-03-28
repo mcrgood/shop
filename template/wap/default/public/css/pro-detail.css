@@ -2275,11 +2275,12 @@ opacity
 
 .wchat-photo {
 	margin: 0 15px;
+	margin-top: 5px;
 }
 
 .wchat-title {
 	font-size: 14px;
-	line-height: 28px;
+	line-height: 50px;
 	color: #222;
 }
 
@@ -2294,12 +2295,13 @@ opacity
 }
 
 .ali-photo {
-	margin: 0 15px;
+	margin: 0 19px;
+	margin-top: 2px;
 }
 
 .ali-item {
 	font-size: 14px;
-	line-height: 31px;
+	line-height: 36px;
 	color: #222;
 }
 

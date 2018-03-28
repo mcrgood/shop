@@ -53,13 +53,13 @@ class Phonefastpay extends BaseController
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
 		$inMerBillNo = 'Mer'.date('YmdHis');
 		//支付方式 01#借记卡 02#信用卡 03#IPS账户支付
-		$GatewayType = 01;
+		$GatewayType = '01';
 		//商戶名
 		$inMerName = '江西花儿盛开贸易有限公司';
 		//订单日期
 		$inDate = date('Ymd');
 		//订单金额
-		$inAmount = '0.01';
+		$inAmount = $orderInfo['order_money'];
 		//支付结果失败返回的商户URL
 		$inFailUrl = '';
 		//商户数据包
@@ -84,18 +84,17 @@ class Phonefastpay extends BaseController
 		    "Account"       => $ipspay_config['Account'],
 		    "MerCert"       => $ipspay_config['MerCert'],
 		    "PostUrl"       => $ipspay_config['PostUrl'],
-		    "ServerUrl"       => $ipspay_config['ServerUrl'],
+		    "ServerUrl" => $ipspay_config['ServerUrl'],
 		    "Return_url"  => $ipspay_config['return_url'],
 		    "CurrencyType"	=> $ipspay_config['Ccy'],
 		    "Lang"	=> $ipspay_config['Lang'],
-		    "Return_url"	=> $ipspay_config['return_url'],
 		    "OrderEncodeType"=>$ipspay_config['OrderEncodeType'],
 		    "RetType"=>$ipspay_config['RetType'],
 		    "MerBillNo"	=> $inMerBillNo,
 		    "MerName"	=> $inMerName,
 		    "MsgId"	=> $ipspay_config['MsgId'],
-		    "GatewayType"	=> $GatewayType,
-		    "FailUrl"   => $inFailUrl, 
+		    "GatewayType" => $GatewayType,
+		    "FailUrl" => $inFailUrl, 
 		    "Date"	=> $inDate, 
 		    "ReqDate"	=> date("YmdHis"),
 		    "Amount"	=> $inAmount,
@@ -153,7 +152,7 @@ class Phonefastpay extends BaseController
 		}
 		$this->assign('message',$message);
 		
-		return view($this->style . 'Orderpay/return_url');
+		return view($this->style . 'Phonefastpay/return_url');
 	}
 
 	//异步S2S返回:
@@ -176,7 +175,6 @@ class Phonefastpay extends BaseController
 		    echo "ipscheckfail";
 		}
 		$this->assign('msg',$msg);
-		return view($this->style . 'Orderpay/s2snotify_url');
 
 	}
 

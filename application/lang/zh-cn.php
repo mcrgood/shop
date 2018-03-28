@@ -1247,6 +1247,7 @@ return [
     'no_logistics_required'                                               => '无需物流',
     'no_logistics_information'                                            => '无物流信息',
     'wechat_payment'                                                      => '微信支付',
+    'phone_fastpay'                                                      => '快捷支付',
     'alipay'                                                              => '支付宝支付',
     'order_settlement'                                                    => '订单结算',
     'please_fill_in_or_select_the_delivery_address_first'                 => '请先填写或选择收货地址',

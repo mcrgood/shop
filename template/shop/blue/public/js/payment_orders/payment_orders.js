@@ -71,7 +71,7 @@ $(function(){
 						}else if(pay_type == 4){
 							location.href = __URL(SHOPMAIN + '/member/orderlist');
 						}else{
-							location.href = __URL(SHOPMAIN + '/shop/orderpay/index?out_trade_no=' + res.code);
+							location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
 						}
 					}else{
 						$.msg(res.message,{time : 5000});

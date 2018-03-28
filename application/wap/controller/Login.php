@@ -235,7 +235,7 @@ class Login extends Controller
         // 没有登录首先要获取上一页
         $pre_url = '';
         $_SESSION['bund_pre_url'] = '';
-        if (! empty($_SERVER['HTTP_REFERER'])) {    
+        if (! empty($_SERVER['HTTP_REFERER'])) {
             $pre_url = $_SERVER['HTTP_REFERER'];
             if (strpos($pre_url, 'login')) {
                 $pre_url = '';
