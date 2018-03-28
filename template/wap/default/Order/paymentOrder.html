@@ -56,7 +56,7 @@
 						{/if}
 						{if condition="$list.point_exchange_type==1 "}
 							{if condition=" $list.point_exchange>0"}
-								{if condition=" $list.point_exchange>0 && $list.price>0"}+{/if}
+								{if condition=" $list.point_exchange>0 AND $list.price>0"}+{/if}
 								{$list.point_exchange}{:lang('goods_integral')}
 							{/if}
 						{/if}
@@ -250,7 +250,9 @@
 		{if $count_money neq 0}
 			<span class="font-size-16 theme-price-color">￥<b id="realprice">0.00</b></span>
 		{/if}
-		{if $count_money neq 0 AND $count_point_exchange>0}+{/if}
+		{if $count_point_exchange neq 0 AND $count_money neq 0 }
+		<span class="font-size-16 theme-price-color">+</span>
+		{/if}
 		{if condition="$count_point_exchange>0"}
 		<span class="font-size-16 theme-price-color" id="count-point">{$count_point_exchange}{:lang('goods_integral')}</span>
 		{/if}
