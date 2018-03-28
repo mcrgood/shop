@@ -379,6 +379,7 @@ return [
         'MsgId' => ""
 
     ],
+    //线上扫码配置数据
     'online_pay_data'=>[
          'Version' =>'v1.0.0',  
         //商戶號
@@ -390,6 +391,33 @@ return [
         //请求地址
         'PostUrl' =>'https://thumbpay.e-years.com/psfp-webscan/services/scan?wsdl'
         
+    ],
+    //手机快捷支付配置数据
+    'phonefastpay_data'=>[
+         'Version' =>'v1.0.0',  
+        //商戶號
+        'MerCode' =>'205754',  //ADMIN  Kwang2018
+        //交易賬戶號
+        'Account' =>'2057540011',
+        //商戶證書
+        'MerCert' =>'z6r9z84rodeEX80pzVRNLj4ECzjDYtQRuvYO6ArFye5clC6HnUNxu7QEluSrmjcAXQ1AEh6ffErNf3KKGTXCyzDUPr9BbWx3UxHgf3ORlC5C8M7aHRyMqWXkULs4HP50',
+        //请求地址
+        'PostUrl' =>'https://mobilegw.ips.com.cn/psfp-mgw/paymenth5.do',
+        //消息编号
+        'MsgId' => "000001",
+        //156#人民币
+        'Ccy' => "156",
+        //GB中文
+        'Lang' => "GB",
+        //页面跳转同步通知页面路径 
+        'return_url' => "http://mall.jxqkw8.com/index.php?s=/wap/Phonefastpay/return_url",
+        //订单支付接口加密方式 5#订单支付采用Md5的摘要认证方式
+        'OrderEncodeType' => "5",
+        //返回方式 1#S2S返回
+        'RetType' => "1",
+        //服务器S2S通知页面路径
+        'ServerUrl' =>'http://mall.jxqkw8.com/index.php?s=/wap/Phonefastpay/ServerUrl',
+
     ],
   
 ];
