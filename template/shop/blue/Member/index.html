@@ -250,7 +250,19 @@
 							</a>
 							<div class="item">
 							<a href="{:__URL('SHOP_MAIN/goods/goodsinfo','goodsid='.$cart['goods_id'])}" target="_blank" title="{$cart.goods_name}" class="name">{$cart.goods_name}</a>
-							<p>售价：<strong>￥{$cart.price}</strong></p>
+							<p>售价：
+								<strong>
+									{if $cart.price neq 0}
+										￥{$cart.price}
+									{/if}
+									{if $cart.price neq 0 AND $cart.point_exchange neq 0}
+										+
+									{/if}
+									{if $cart.point_exchange neq 0}
+										{$cart.point_exchange}{:lang('goods_integral')}
+									{/if}
+								</strong>
+							</p>
 							</div>
 						</li>
 						{/foreach}
