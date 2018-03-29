@@ -42,24 +42,42 @@ class Phonefastpay extends BaseController
 	// }
 	//手机端快捷支付API
 	public function IpsPayApi(){
+		
+
 		$out_trade_no = input('param.out_trade_no');
+		if(!$out_trade_no){
+			$this->error('参数错误，请重试！',__url(__URL__ . "/index"));
+		}
 		$orderInfo = db('ns_order')
 			->alias('o')
 			->join('ns_order_goods g','g.order_id = o.order_id','left')
 			->field('o.*,g.goods_name,g.order_goods_id')
 			->where('out_trade_no',$out_trade_no)->find();
-			
-		$ipspay_config = config('phonefastpay_data');
+		if($orderInfo){
+			//商品名称
+			$inGoodsName = mb_substr($orderInfo['goods_name'],0,36,'utf-8') . '...';
+			//订单金额
+			$inAmount = $orderInfo['order_money'];	
+		}else{
+			//充值订单
+			$recharge = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find();
+			//商品名称
+			$inGoodsName = $recharge['pay_body'];
+			//订单金额
+			$inAmount = $recharge['pay_money'];	
+		}	
+		
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
-		$inMerBillNo = 'Mer'.date('YmdHis');
+		$inMerBillNo = 'Mer'.date('YmdHis') . rand(100000,999999);
+		// 向订单支付表插入商户订单号唯一订单号
+		db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['merbillno'=>$inMerBillNo]);
 		//支付方式 01#借记卡 02#信用卡 03#IPS账户支付
 		$GatewayType = '01';
 		//商戶名
 		$inMerName = '江西花儿盛开贸易有限公司';
 		//订单日期
 		$inDate = date('Ymd');
-		//订单金额
-		$inAmount = $orderInfo['order_money'];
+		
 		//支付结果失败返回的商户URL
 		$inFailUrl = '';
 		//商户数据包
@@ -68,15 +86,15 @@ class Phonefastpay extends BaseController
 		$selRetEncodeType = 17;
 		//订单有效期
 		$inBillEXP = 1;
-		//商品名称
-		$inGoodsName = mb_substr($orderInfo['goods_name'],0,36,'utf-8') . '...';
+		
 		//银行号
 		$inBankCode = '';
 		//产品类型
 		$selProductType = '';
 		//直连选项
 		$selIsCredit = '';
-
+		//获取config.php里面配置的数据
+		$ipspay_config = config('phonefastpay_data');
 		//构造要请求的参数数组
 		$parameter = array(
 		    "Version"       => $ipspay_config['Version'],
@@ -105,9 +123,9 @@ class Phonefastpay extends BaseController
 		    "BankCode"	=> $inBankCode,
 		    "IsCredit"	=> $selIsCredit,
 		    "ProductType"	=> $selProductType,
-		    'UserRealName' =>'',
-		    'UserId' =>'',
-		    'CardInfo' =>'',
+		    'UserRealName' => '',
+		    'UserId' => '',
+		    'CardInfo' => '',
 
 		    
 		);
@@ -118,6 +136,8 @@ class Phonefastpay extends BaseController
 	}
 	//支付结果成功返回的商户URL:
 	public function return_url(){
+		$user_name = session('user_name');
+		dump($user_name);
 		$ipspay_config = config('phonefastpay_data');
 		$ipspayNotify = new IpsPayNotify($ipspay_config);
 		$verify_result = $ipspayNotify->verifyReturn();
@@ -136,11 +156,21 @@ class Phonefastpay extends BaseController
 		        $ipsBillNo = $xmlResult->GateWayRsp->body->IpsBillNo;
 		        $ipsTradeNo = $xmlResult->GateWayRsp->body->IpsTradeNo;
 		        $bankBillNo = $xmlResult->GateWayRsp->body->BankBillNo;
-		        $this->assign('merBillNo',$merBillNo);
+		        dump($merBillNo);
+		        $message = "交易成功";
+		        $data['pay_status'] = 1;
+		        $data['pay_time'] = time();
+		        db('ns_order_payment')->where('merbillno',$merBillNo)->update($data); //修改支付状态和支付时间
+		        $pay_money = db('ns_order_payment')->where('merbillno',$merBillNo)->value('pay_money'); //查询出充值的金额
+		        db('ns_member_account')
+				->alias('m')
+				->join('sys_user u','m.uid = u.uid','left')
+				->where('u.user_name',$user_name)->setInc('balance',$pay_money);// 给会员的余额中增加金额
+
+				$this->assign('merBillNo',$merBillNo);
 				$this->assign('ipsBillNo',$ipsBillNo);
 				$this->assign('ipsTradeNo',$ipsTradeNo);
 				$this->assign('bankBillNo',$bankBillNo);
-		        $message = "交易成功";
 		    }elseif($status == "N")
 		    {
 		        $message = "交易失败";
