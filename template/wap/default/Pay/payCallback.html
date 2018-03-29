@@ -42,7 +42,6 @@ article button{
 </div>
 {else/}
 <article>
-	{if condition="$status==1"}
 		<div class="pay-block">
 			<img src="__TEMP__/{$style}/public/css/pay/pay_success.png"/>
 		</div>
@@ -50,15 +49,13 @@ article button{
 		{notempty name="$order_no"}
 		<p>{:lang('order_number')}{$order_no}</p>
 		{/notempty}
-	{else/}
-		<div class="pay-block">
+		<!-- <div class="pay-block">
 			<img src="__TEMP__/{$style}/public/css/pay/pay_error.png"/>
 		</div>
 		<h3>{:lang('payment_failed')}</h3>
 		{notempty name="$order_no"}
 		<p style="color:#FF3C3C;">{:lang('order_number')}{$order_no}</p>
-		{/notempty}
-	{/if}
+		{/notempty} -->
 	<button onclick="enterOrderList()">{:lang('access_member_center')}</button>
 {/if}
 </article>

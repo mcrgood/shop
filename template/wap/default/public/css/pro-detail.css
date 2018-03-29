@@ -2272,10 +2272,15 @@ opacity
 	border-bottom: 1px solid #e5e5e5;
 	padding-bottom: 10px;
 }
+.codes .balance_pay {
+	background: #fff;
+	border-bottom: 1px solid #e5e5e5;
+	padding-bottom: 10px;
+}
 
 .wchat-photo {
 	margin: 0 15px;
-	margin-top: 5px;
+	margin-top: 2.6%;
 }
 
 .wchat-title {
@@ -2288,6 +2293,10 @@ opacity
 	margin-right: 13px;
 	float: right;
 }
+#balance {
+	margin-right: 13px;
+	float: right;
+}
 
 .ali-pay {
 	background: #fff;
@@ -2295,13 +2304,13 @@ opacity
 }
 
 .ali-photo {
-	margin: 0 19px;
-	margin-top: 2px;
+	margin: 0 15px;
+	margin-top: 2.6%;
 }
 
 .ali-item {
 	font-size: 14px;
-	line-height: 36px;
+	line-height: 50px;
 	color: #222;
 }
 
