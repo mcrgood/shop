@@ -2272,18 +2272,28 @@ opacity
 	border-bottom: 1px solid #e5e5e5;
 	padding-bottom: 10px;
 }
+.codes .balance_pay {
+	background: #fff;
+	border-bottom: 1px solid #e5e5e5;
+	padding-bottom: 10px;
+}
 
 .wchat-photo {
 	margin: 0 15px;
+	margin-top: 2.6%;
 }
 
 .wchat-title {
 	font-size: 14px;
-	line-height: 28px;
+	line-height: 50px;
 	color: #222;
 }
 
 #wchatpay {
+	margin-right: 13px;
+	float: right;
+}
+#balance {
 	margin-right: 13px;
 	float: right;
 }
@@ -2295,11 +2305,12 @@ opacity
 
 .ali-photo {
 	margin: 0 15px;
+	margin-top: 2.6%;
 }
 
 .ali-item {
 	font-size: 14px;
-	line-height: 31px;
+	line-height: 50px;
 	color: #222;
 }
 

@@ -19,64 +19,66 @@ use think\Cookie;
 use data\service\IpsPhoneFastpaySubmit as IpsPhoneFastpaySubmit;
 use data\service\IpsPayNotify as IpsPayNotify;
 /**
- * 首页控制器
+ * 移动端支付控制器
  * 创建人：王永杰
  * 创建时间：2017年2月6日 11:01:19
  */
 class Phonefastpay extends BaseController
 {
-	//
-	// public function index(){
-		
-			// $orderInfo = db('ns_order')
-			// ->alias('o')
-			// ->join('ns_order_goods g','g.order_id = o.order_id','left')
-			// ->field('o.*,g.goods_name,g.order_goods_id')
-			// ->where('out_trade_no',$out_trade_no)->find();
-			// $orderInfo['goods_name'] = mb_substr($orderInfo['goods_name'],0,36,'utf-8') . '...';
-			// $this->assign('orderInfo',$orderInfo);
-		
-	// 	$order_pay_data = config('order_pay_data');
-	// 	$this->assign('order_pay_data',$order_pay_data);
-	// 	return view($this->style . 'Phonefastpay/index');
-	// }
+	
 	//手机端快捷支付API
 	public function IpsPayApi(){
+		
+
 		$out_trade_no = input('param.out_trade_no');
+		if(!$out_trade_no){
+			$this->error('参数错误，请重试！',__url(__URL__ . "/index"));
+		}
 		$orderInfo = db('ns_order')
 			->alias('o')
 			->join('ns_order_goods g','g.order_id = o.order_id','left')
 			->field('o.*,g.goods_name,g.order_goods_id')
 			->where('out_trade_no',$out_trade_no)->find();
-			
-		$ipspay_config = config('phonefastpay_data');
+		if($orderInfo){
+			//商品名称
+			$inGoodsName = mb_substr($orderInfo['goods_name'],0,36,'utf-8') . '...';
+			//订单金额
+			$inAmount = $orderInfo['order_money'];	
+		}else{
+			//充值订单
+			$recharge = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find();
+			//商品名称
+			$inGoodsName = $recharge['pay_body'];
+			//订单金额
+			$inAmount = $recharge['pay_money'];	
+		}	
+		
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
-		$inMerBillNo = 'Mer'.date('YmdHis');
+		$inMerBillNo = 'Mer'.date('YmdHis') . rand(100000,999999);
 		//支付方式 01#借记卡 02#信用卡 03#IPS账户支付
-		$GatewayType = 01;
+		$GatewayType = '01';
 		//商戶名
 		$inMerName = '江西花儿盛开贸易有限公司';
 		//订单日期
 		$inDate = date('Ymd');
-		//订单金额
-		$inAmount = '0.01';
+		
 		//支付结果失败返回的商户URL
 		$inFailUrl = '';
 		//商户数据包
-		$inAttach = '';
+		$inAttach = $out_trade_no;
 		//交易返回接口加密方式
 		$selRetEncodeType = 17;
 		//订单有效期
 		$inBillEXP = 1;
-		//商品名称
-		$inGoodsName = mb_substr($orderInfo['goods_name'],0,36,'utf-8') . '...';
+		
 		//银行号
 		$inBankCode = '';
 		//产品类型
 		$selProductType = '';
 		//直连选项
 		$selIsCredit = '';
-
+		//获取config.php里面配置的数据
+		$ipspay_config = config('phonefastpay_data');
 		//构造要请求的参数数组
 		$parameter = array(
 		    "Version"       => $ipspay_config['Version'],
@@ -84,18 +86,17 @@ class Phonefastpay extends BaseController
 		    "Account"       => $ipspay_config['Account'],
 		    "MerCert"       => $ipspay_config['MerCert'],
 		    "PostUrl"       => $ipspay_config['PostUrl'],
-		    "ServerUrl"       => $ipspay_config['ServerUrl'],
+		    "ServerUrl" => $ipspay_config['ServerUrl'],
 		    "Return_url"  => $ipspay_config['return_url'],
 		    "CurrencyType"	=> $ipspay_config['Ccy'],
 		    "Lang"	=> $ipspay_config['Lang'],
-		    "Return_url"	=> $ipspay_config['return_url'],
 		    "OrderEncodeType"=>$ipspay_config['OrderEncodeType'],
 		    "RetType"=>$ipspay_config['RetType'],
 		    "MerBillNo"	=> $inMerBillNo,
 		    "MerName"	=> $inMerName,
 		    "MsgId"	=> $ipspay_config['MsgId'],
-		    "GatewayType"	=> $GatewayType,
-		    "FailUrl"   => $inFailUrl, 
+		    "GatewayType" => $GatewayType,
+		    "FailUrl" => $inFailUrl, 
 		    "Date"	=> $inDate, 
 		    "ReqDate"	=> date("YmdHis"),
 		    "Amount"	=> $inAmount,
@@ -106,9 +107,9 @@ class Phonefastpay extends BaseController
 		    "BankCode"	=> $inBankCode,
 		    "IsCredit"	=> $selIsCredit,
 		    "ProductType"	=> $selProductType,
-		    'UserRealName' =>'',
-		    'UserId' =>'',
-		    'CardInfo' =>'',
+		    'UserRealName' => '',
+		    'UserId' => '',
+		    'CardInfo' => '',
 
 		    
 		);
@@ -119,6 +120,7 @@ class Phonefastpay extends BaseController
 	}
 	//支付结果成功返回的商户URL:
 	public function return_url(){
+		$user_name = session('user_name');
 		$ipspay_config = config('phonefastpay_data');
 		$ipspayNotify = new IpsPayNotify($ipspay_config);
 		$verify_result = $ipspayNotify->verifyReturn();
@@ -137,11 +139,26 @@ class Phonefastpay extends BaseController
 		        $ipsBillNo = $xmlResult->GateWayRsp->body->IpsBillNo;
 		        $ipsTradeNo = $xmlResult->GateWayRsp->body->IpsTradeNo;
 		        $bankBillNo = $xmlResult->GateWayRsp->body->BankBillNo;
-		        $this->assign('merBillNo',$merBillNo);
+		        $out_trade_no = $xmlResult->GateWayRsp->body->Attach;
+		        $message = "交易成功";
+		        $data['pay_status'] = 1;
+		        $data['pay_time'] = time();
+		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
+		        $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出充值的金额
+		        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');
+		        $row = db('ns_member_account')->where('uid',$uid)->find();
+		        if($row){
+		        	db('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
+		        }else{
+		        	$dd['uid'] = $uid;
+		        	$dd['balance'] = $pay_money;
+		        	db('ns_member_account')->insert($dd);
+		        }
+
+				$this->assign('merBillNo',$merBillNo);
 				$this->assign('ipsBillNo',$ipsBillNo);
 				$this->assign('ipsTradeNo',$ipsTradeNo);
 				$this->assign('bankBillNo',$bankBillNo);
-		        $message = "交易成功";
 		    }elseif($status == "N")
 		    {
 		        $message = "交易失败";
@@ -153,7 +170,7 @@ class Phonefastpay extends BaseController
 		}
 		$this->assign('message',$message);
 		
-		return view($this->style . 'Orderpay/return_url');
+		return view($this->style . 'Phonefastpay/return_url');
 	}
 
 	//异步S2S返回:
@@ -176,9 +193,43 @@ class Phonefastpay extends BaseController
 		    echo "ipscheckfail";
 		}
 		$this->assign('msg',$msg);
-		return view($this->style . 'Orderpay/s2snotify_url');
 
 	}
+
+	//余额支付
+	public function balance_pay(){
+		$user_name = session('user_name');
+		if(request()->isAjax()){
+			$pwd = input('post.pwd');   //输入的密码
+			$out_trade_no = input('post.out_trade_no');  //订单号
+			$password = db('sys_user')->where('user_name',$user_name)->value('user_password');
+			if(md5($pwd) != $password){
+				$info = ['status' => 0, 'msg' => '您输入的密码有误！'];
+			}else{
+				$balance = db('sys_user')
+				->alias('u')
+				->join('ns_member_account m','m.uid = u.uid','left')
+				->where('u.user_name',$user_name)
+				->value('balance'); //查询出该会员当前拥有的余额
+				$pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money');
+				if($pay_money > $balance){
+					$info = ['status' => 0, 'msg' => '您账户的余额不足！'];
+				}else{
+					$res = db('ns_member_account')->alias('m')
+					->join('sys_user u','m.uid = u.uid','left')
+					->where('u.user_name',$user_name)
+					->setDec('balance',$pay_money);
+					if(!$res){
+						$info = ['status' => 0, 'msg' => '支付失败，请刷新重试！'];
+					}else{
+						$info = ['status' => 1, 'msg' => '恭喜您支付成功！'];
+					}
+				}
+			}
+		}
+		return json($info);
+	}
+
 
 }
 

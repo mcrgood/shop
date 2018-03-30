@@ -100,7 +100,7 @@ class IpsPhoneFastpaySubmit extends Log
         $sReqXmlBody .= "<Amount>".$para_temp["Amount"]."</Amount>";
         $sReqXmlBody .= "<Date>".$para_temp["Date"]."</Date>";
         $sReqXmlBody .= "<CurrencyType>".$para_temp["CurrencyType"]."</CurrencyType>";
-        $sReqXmlBody .= "<GatewayType>".$para_temp["PayType"]."</GatewayType>";
+        $sReqXmlBody .= "<GatewayType>".$para_temp["GatewayType"]."</GatewayType>";
         $sReqXmlBody .= "<Lang>".$para_temp["Lang"]."</Lang>";
         $sReqXmlBody .= "<Merchanturl><![CDATA[".$para_temp["Return_url"]."]]></Merchanturl>";
         $sReqXmlBody .= "<FailUrl><![CDATA[".$para_temp["FailUrl"]."]]></FailUrl>";
@@ -108,7 +108,7 @@ class IpsPhoneFastpaySubmit extends Log
         $sReqXmlBody .= "<OrderEncodeType>".$para_temp["OrderEncodeType"]."</OrderEncodeType>";
         $sReqXmlBody .= "<RetEncodeType>".$para_temp["RetEncodeType"]."</RetEncodeType>";
         $sReqXmlBody .= "<RetType>".$para_temp["RetType"]."</RetType>";
-        $sReqXmlBody .= "<ServerUrl><![CDATA[".$para_temp["S2Snotify_url"]."]]></ServerUrl>";
+        $sReqXmlBody .= "<ServerUrl><![CDATA[".$para_temp["ServerUrl"]."]]></ServerUrl>";
         $sReqXmlBody .= "<BillEXP>".$para_temp["BillEXP"]."</BillEXP>";
         $sReqXmlBody .= "<GoodsName>".$para_temp["GoodsName"]."</GoodsName>";
         $sReqXmlBody .= "<IsCredit>".$para_temp["IsCredit"]."</IsCredit>";

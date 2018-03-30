@@ -55,7 +55,7 @@ function calculateRecharge(){
         dataType: "json",
         success: function (response) {
         	if(response.code>0){
-        		window.location.href = __URL("APP_MAIN/pay/getpayvalue?out_trade_no="+pay_no);
+        		window.location.href = __URL("APP_MAIN/pay/getpayvalue?out_trade_no="+pay_no+"&type=recharge");
          	}else{
          		is_submint = false;
          		showBox("{:lang('member_recharge_failed')}");

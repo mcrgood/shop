@@ -39,29 +39,28 @@
 					<div class="border border-mix"></div>
 				</div>
 				<div class="pay-way item-checked margin padding clearfix pays js-select-pay">
-					{if condition="$pay_config['wchat_pay_config']['is_use'] ==1 || $pay_config['ali_pay_config']['is_use'] == 1"}
-						{if condition="$pay_config['wchat_pay_config']['is_use']==1"}
-						<div class="item" data-pay="wchat">
+						<!-- <div class="item" data-pay="wchat">
 							<i></i>
 							<a class="pic-center border-none" href="javascript:;">
 								<img src="__TEMP__/{$style}/public/images/pay/wechat_qr.png">
 							</a>
+						</div> -->
+						<div class="item" data-pay="onlineBank">
+							<i></i>
+							<a class="pic-center border-none" href="javascript:;">
+								<img src="__TEMP__/{$style}/public/images/pay/onlineBank.png">
+							</a>
 						</div>
-						{/if}
-						{if condition="$pay_config['ali_pay_config']['is_use']==1"}
-						<div class="item" data-pay="alipay">
+						<!-- <div class="item" data-pay="alipay">
 							<i></i>
 							<a class="pic-center border-none" href="javascript:;">
 								<img src="__TEMP__/{$style}/public/images/pay/alipay.png">
 							</a>
-						</div>
-						{/if}
-					{else/}
-						<span class="none_pays">{:lang('not_yet_open_payment_background')}</span>
-					{/if}
+						</div> -->
+						<!-- <span class="none_pays">{:lang('not_yet_open_payment_background')}</span> -->
 				</div>
 				<div class="text-center">
-					<a class="cart-btn text-default disabled" id="pay" href="javascript:;">{:lang('immediate_pay')}</a>
+					<a class="cart-btn text-default" id="pay" href="javascript:;">{:lang('immediate_pay')}</a>
 				</div>
 			</div>
 		</div>
@@ -137,6 +136,7 @@ window.onresize = function(){
 	setFooterStyle();
 }
 $(function() {
+
 	setFooterStyle();
 		
 	//设置时间倒计时
@@ -167,6 +167,10 @@ $(function() {
 				//跳转到支付宝
 				url = '{:__URL('APP_MAIN/pay/alipay?no='.$pay_value['out_trade_no'])}';
 				break;
+			case "onlineBank":
+				//跳转网银支付
+				url = '{:__URL('SHOP_MAIN/shop/orderpay/index?out_trade_no='.$pay_value['out_trade_no'])}';
+				break;	
 			}
 			window.open(url);
 			$(".mask-layer-dialog").fadeIn(300);
