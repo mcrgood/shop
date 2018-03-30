@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="__TEMP__/{$style}/public/css/pro-detail.css">
 <link rel="stylesheet" type="text/css" href="__TEMP__/{$style}/public/css/payment_order_new.css">
 <link rel="stylesheet" type="text/css" href="__TEMP__/{$style}/public/css/payment_order_popup.css">
+<script type="text/javascript" src="__TEMP__/{$style}/public/js/payment_order.js"></script>
 {/block}
 
 {block name="goodsHead"}
@@ -112,7 +113,7 @@
 	</div>
 	{if $count_point_exchange eq 0}
 		<div class="item-options optionss">
-		<label>身份证号码</label><input name="" id="idcard" class="idcardd" type="text" placeholder="进口产品请填写身份证号码" style="width:152px;margin-left:133px;">
+		<label>身份证号码</label><input {if $idc neq 0} disabled="disabled"{/if}  value="{$idc}" id="idcard" class="idcardd" type="text" placeholder="进口产品请填写身份证号码" style="width:152px;margin-left:133px;">
 		</div>
 	{/if}
 	

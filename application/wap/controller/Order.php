@@ -69,6 +69,11 @@ class Order extends BaseController
      */
     public function paymentOrder()
     {
+          $user_name = session("user_name");
+          $idc = db("sys_user")->where("user_name",$user_name)->value("idcard");
+          if($idc){
+            $this->assign("idc",$idc);
+          }
         $this->orderInfo();
         return view($this->style . 'Order/paymentOrder');
     }
@@ -606,7 +611,8 @@ class Order extends BaseController
      * @return Ambigous <\think\response\View, \think\response\$this, \think\response\View>
      */
     public function orderDetail()
-    {
+    {   
+
         $order_id = request()->get('orderId', 0);
         if (! is_numeric($order_id)) {
             $this->error("没有获取到订单信息");
