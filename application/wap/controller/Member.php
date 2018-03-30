@@ -90,15 +90,6 @@ class Member extends BaseController
      */
     public function index()
     {
-
-        $user_name = session('user_name');
-        $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode');
-        if(!$user_qrcode){
-            $url = __URL('wap/login/index?referee_phone=' . $user_name);
-            $user_qrcode_img = getShopQRcode($url, 'upload/user_qrcode', 'user_qrcode_' . $user_name);
-            $this->create($url, $user_qrcode_img, '       客旺旺会员推广码');
-            db('sys_user')->where('user_name',$user_name)->update(['user_qrcode' => $user_qrcode_img]);
-        }
         switch (NS_VERSION) {
             case 'NS_VER_B2C':
                 $retval = $this->memberIndex(); // 单店B2C版
@@ -115,6 +106,14 @@ class Member extends BaseController
      */
     public function memberIndex()
     {
+        $user_name = session('user_name');
+        $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode');
+        if(!$user_qrcode){
+            $url = __URL('wap/login/index?referee_phone=' . $user_name);
+            $user_qrcode_img = getShopQRcode($url, 'upload/user_qrcode', 'user_qrcode_' . $user_name);
+            $this->create($url, $user_qrcode_img, '       客旺旺会员推广码');
+            db('sys_user')->where('user_name',$user_name)->update(['user_qrcode' => $user_qrcode_img]);
+        }
         $member = new MemberService();
         $platform = new Platform();
         // 基本信息行级显示菜单项

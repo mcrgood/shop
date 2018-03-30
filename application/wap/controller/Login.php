@@ -594,11 +594,19 @@ class Login extends Controller
                 if($referee_phone && $mobile){
                     //假如填写了推荐人手机号，就插入推荐人手机号到数据表中。
                     db('sys_user')->where('user_tel',$mobile)->update(['referee_phone'=>$referee_phone]);
+                }
                     $uid = db('sys_user')->where('user_tel',$mobile)->value('uid');
                     $infos['uid'] = $uid;
                     $infos['point'] = 10;
                     db('ns_member_account')->insert($infos);
-                }
+
+                    $user_qrcode = db('sys_user')->where('user_name',$mobile)->value('user_qrcode');
+                    if(!$user_qrcode){
+                        $url = __URL('wap/login/index?referee_phone=' . $mobile);
+                        $user_qrcode_img = getShopQRcode($url, 'upload/user_qrcode', 'user_qrcode_' . $mobile);
+                        $this->create($url, $user_qrcode_img, '       客旺旺会员推广码');
+                        db('sys_user')->where('user_name',$mobile)->update(['user_qrcode' => $user_qrcode_img]);
+                    }
                 // 微信的会员绑定
                 if (empty($user_name)) {
                     $user_name = $mobile;
@@ -1240,5 +1248,43 @@ class Login extends Controller
                 $this->redirect($redirect);
             }
         }
+    }
+
+           //生成二维码
+    public function create($string='',$filename='',$extinfo='')
+    {
+        if(!$string || !$filename){
+            return false;
+        }
+        $tmpfile = $filename;
+        if(!file_exists($tmpfile)){
+            return false;
+        }
+        $QR = imagecreatefromstring(file_get_contents($tmpfile));
+        $QR_width = imagesx($QR);
+        $QR_height = imagesy($QR);
+        if(!$extinfo){
+            imagepng($QR,$filename);
+            @unlink($tmpfile);
+            return true;
+        }
+        @unlink($tmpfile);
+        imagepng($QR,$tmpfile);
+        unset($QR);
+        $QR = imagecreate($QR_width,($QR_height + 30));
+        $white = imagecolorallocate($QR, 255, 255, 255);
+        $black = imagecolorallocate($QR,0,0,0);
+        imagefilledrectangle($QR, 0, 0,$QR_width,($QR_height + 30), $white);
+
+        $qrimg = imagecreatefromstring(file_get_contents($tmpfile));
+        imagecopyresampled($QR,$qrimg,0,0,0,0,$QR_width,$QR_height,$QR_width,$QR_height);
+        if($this->font && function_exists('imagettftext')){
+            imagettftext($QR, $this->fontsize, 0, 21, ($QR_height+10), $black, $this->font, $extinfo);
+        }else{
+            imagestring($QR,5,21,($QR_height + 10),$extinfo,$black);
+        }
+        imagepng($QR,$filename);
+        //@unlink($tmpfile);
+        return true;
     }
 }
