@@ -168,9 +168,8 @@ class Phonefastpay extends BaseController
 		} else {
 		    $message = "验证失败";
 		}
-		$this->assign('message',$message);
 		
-		return view($this->style . 'Phonefastpay/return_url');
+		return view($this->style . 'Pay/payCallback');
 	}
 
 	//异步S2S返回:
@@ -222,6 +221,11 @@ class Phonefastpay extends BaseController
 					if(!$res){
 						$info = ['status' => 0, 'msg' => '支付失败，请刷新重试！'];
 					}else{
+						$data['pay_status'] = 1;  
+						$data['pay_type'] = 2;  //状态2 为余额付款
+		       			$data['pay_time'] = time();
+						db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data);//修改付款状态
+						db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
 						$info = ['status' => 1, 'msg' => '恭喜您支付成功！'];
 					}
 				}
