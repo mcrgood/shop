@@ -701,7 +701,7 @@ function submitOrder(){
 					}else{
 						if(str){
 							layer.confirm('您的身份证号：'+str,{
-								btn: ['正确','返回审核'],
+								btn: ['确认正确','返回审核'],
 								icon: 3, 
 								title:'客旺旺提醒您一定确定身份证信息'
 							},
