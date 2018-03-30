@@ -55,8 +55,6 @@ class Phonefastpay extends BaseController
 		
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
 		$inMerBillNo = 'Mer'.date('YmdHis') . rand(100000,999999);
-		// 向订单支付表插入商户订单号唯一订单号
-		db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['merbillno'=>$inMerBillNo]);
 		//支付方式 01#借记卡 02#信用卡 03#IPS账户支付
 		$GatewayType = '01';
 		//商戶名
@@ -67,7 +65,7 @@ class Phonefastpay extends BaseController
 		//支付结果失败返回的商户URL
 		$inFailUrl = '';
 		//商户数据包
-		$inAttach = '';
+		$inAttach = $out_trade_no;
 		//交易返回接口加密方式
 		$selRetEncodeType = 17;
 		//订单有效期
@@ -141,11 +139,12 @@ class Phonefastpay extends BaseController
 		        $ipsBillNo = $xmlResult->GateWayRsp->body->IpsBillNo;
 		        $ipsTradeNo = $xmlResult->GateWayRsp->body->IpsTradeNo;
 		        $bankBillNo = $xmlResult->GateWayRsp->body->BankBillNo;
+		        $out_trade_no = $xmlResult->GateWayRsp->body->Attach;
 		        $message = "交易成功";
 		        $data['pay_status'] = 1;
 		        $data['pay_time'] = time();
-		        db('ns_order_payment')->where('merbillno',$merBillNo)->update($data); //修改支付状态和支付时间
-		        $pay_money = db('ns_order_payment')->where('merbillno',$merBillNo)->value('pay_money'); //查询出充值的金额
+		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
+		        $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出充值的金额
 		        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');
 		        $row = db('ns_member_account')->where('uid',$uid)->find();
 		        if($row){
