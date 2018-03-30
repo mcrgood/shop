@@ -16,6 +16,31 @@
 	padding: 0 10px;
 	display: none;
 }
+.idcard{
+	width: 100%;
+	border-top: 4px solid #e6e6e6;
+	border-bottom:4px solid #e6e6e6;
+	height: 40px;
+}
+.idcard .input_1{
+	width: 77%;
+	height: 40px;
+	border: none;
+	outline: none;
+	padding-left: 3%;
+	float: left;
+	font-size: .8rem;
+}
+.idcard .input_2{
+	outline: none;
+	width: 20%;
+	height: 40px;
+	line-height: 40px;
+	float: left;
+	border: none;
+	background: #bfbfbf;
+	color:#fff;
+}
 </style>
 {/block}
 {block name="main"}
@@ -110,6 +135,12 @@
 					<span>{:lang('member_payment_method')}</span>
 				</h3>
 			</div>
+
+			<div class="idcard">
+		  		<input type="number" class="input_1" id="idcard_1" placeholder="因海关清关需要，请填写收货人的身份证号">
+		  		<input type="submit" class="input_2" value="保存" id="checkCard">
+		  	</div>
+
 			{if condition="count($coupon_list)"}
 			<div class="zhifu-box">		
 				{if condition="count($coupon_list)"}

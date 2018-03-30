@@ -2289,15 +2289,15 @@ opacity
 	color: #222;
 }
 
-#wchatpay {
+#wchatpay img{
 	position: absolute;
-    left: 88%;
-    top: 30%;
+	left: 88%;
+	top: 30%;
 }
 #balance {
 	position: absolute;
-    left: 88%;
-    top: 30%;
+	left: 88%;
+	top: 30%;
 }
 
 .ali-pay {

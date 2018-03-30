@@ -35,15 +35,15 @@
 	</div>
 	<div class="codes">
 			
-		<div class="wchat-weixin" style="position: relative;">
+		<div class="wchat-weixin" style="position:relative;">
 			<img  src="__TEMP__/{$style}/public/images/kuaijie.png"  class="wchat-photo">
 			<span class="wchat-title">{:lang('phone_fastpay')}</span>
 			<span id="wchatpay"><img  src="__TEMP__/{$style}/public/images/segou.png"></span> 
 		</div>
-		<div class="balance_pay" style="position: relative;">
+		<div class="balance_pay" style="position:relative;">
 			<img src="__TEMP__/{$style}/public/images/balance_pay.png" class="ali-photo">
 			<span class="ali-item">{:lang('balance_pay')}</span>
-			<span id="balance"><img src="__TEMP__/{$style}/public/images/hgou.png"></span>
+			<span id="balance"><img  src="__TEMP__/{$style}/public/images/hgou.png"></span>
 		</div>
 		<div class="log-cont" style="display: none;border:none;">
 			<label for="password">{:lang("password")}&nbsp;&nbsp;&nbsp;&nbsp;<input
@@ -135,8 +135,8 @@ $(".balance_pay").click(function() {
 	$(".shade").hide();
 	$(".popup").hide();
 	$("#pay_type").val(1);
-	$("#balance").html("<img style='position:absolute;' src='" + __IMG__ + "/segou.png'>");
-	$("#wchatpay").html("<img style='position:absolute;' src='" + __IMG__ + "/hgou.png'>");
+	$("#balance").html("<img src='" + __IMG__ + "/segou.png'>");
+	$("#wchatpay").html("<img src='" + __IMG__ + "/hgou.png'>");
 	$("#pay-text").html("{:lang('alipay')}");
 	$('.log-cont').css({"display":"block"});
 })
@@ -145,8 +145,8 @@ $(".wchat-weixin").click(function() {
 	$(".shade").hide();
 	$(".popup").hide();
 	$("#pay_type").val(0);
-	$("#balance").html("<img style='position:absolute;' src='" + __IMG__ + "/hgou.png'>");
-	$("#wchatpay").html("<img style='position:absolute;' src='" + __IMG__ + "/segou.png'>");
+	$("#balance").html("<img src='" + __IMG__ + "/hgou.png'>");
+	$("#wchatpay").html("<img src='" + __IMG__ + "/segou.png'>");
 	$("#pay-text").html("{:lang('wechat_payment')}");
 	$('.log-cont').css({"display":"none"});
 
