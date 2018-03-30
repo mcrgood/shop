@@ -156,11 +156,5 @@ class MyhomeService extends BaseService{
         //     $result['data'][$k]['create_time'] = date('Y-m-d H:i',$v['create_time']);
         // }
         return $result;
-    }
-
-
-
-  
-
-    
+    }   
 }

@@ -77,6 +77,7 @@ class Order extends BaseController
      * 待付款订单需要的数据
      * 2017年6月28日 15:24:48 王永杰
      */
+    
     public function orderInfo()
     {
         $member = new MemberService();

@@ -23,7 +23,7 @@
  * 
  */
 $(function() {
-	
+
 	//初始化数据
 	init();
 
@@ -631,14 +631,38 @@ function calculateTotalAmount(){
 	}
 	$("#invoice_tax_money").text(order_invoice_tax_money.toFixed(2));//税率
 	validationMemberBalance();
+
+
+
 }
 
-/**
+		/**
  * 提交订单
  * 2017年6月22日 15:09:08 王永杰
  */
 var flag = false;//防止重复提交
-function submitOrder() {
+function submitOrder(){
+		if(points == 0 || points == '' ){
+			var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+			var cards = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;
+			var str = $('#idcard').val();
+			if(!str){
+				alert("身份证号码必填");
+				return false;
+			}
+			if(!cards.exec(str)&&!card.exec(str)){
+				alert("身份证号码不对");
+				return false;
+			}
+			var checked = $('#check').is(':checked');
+			if(!checked){
+				alert("进口产品必须同意条款");
+				return false;
+			}
+		}
+			
+
+		
 	if(validationOrder()){
 		if(flag){
 			return;
@@ -677,9 +701,25 @@ function submitOrder() {
 					}else if(pay_type == 4){
 						location.href = __URL(APPMAIN + '/order/myorderlist');
 					}else{
-						location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
+						if(str){
+							layer.confirm('您的身份证号：'+str,{
+								btn: ['正确','返回审核'],
+								icon: 3, 
+								title:'客旺旺提醒您一定确定身份证信息'
+							},
+							function(){
+								setTimeout(function(){
+									location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
+		                    	},200);
+							},
+							function(){
+                				window.location.reload();
+			           		});
+						}else{
+							location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
+						}
 					}
-				} else {
+				}else{
 					showBox(res.message);
 					flag = false;
 				}
@@ -687,3 +727,4 @@ function submitOrder() {
 		});
 	}
 }
+

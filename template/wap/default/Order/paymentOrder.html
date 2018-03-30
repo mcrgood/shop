@@ -1,5 +1,6 @@
 {extend name="wap/default/base" /}
 {block name="resources"}
+<script src="__STATIC__/layui/layui.all.js"></script>
 <link rel="stylesheet" type="text/css" href="__TEMP__/{$style}/public/css/order.css">
 <link rel="stylesheet" type="text/css" href="__TEMP__/{$style}/public/css/pro-detail.css">
 <link rel="stylesheet" type="text/css" href="__TEMP__/{$style}/public/css/payment_order_new.css">
@@ -109,6 +110,11 @@
 			{/if}
 		{/if}
 	</div>
+	{if $count_point_exchange eq 0}
+		<div class="item-options optionss">
+		<label>身份证号码</label><input name="" id="idcard" class="idcardd" type="text" placeholder="进口产品请填写身份证号码" style="width:152px;margin-left:133px;">
+		</div>
+	{/if}
 	
 	<!-- 开启商家配送并且有物流公司显示 -->
 	{if condition="$shop_config.seller_dispatching"}
@@ -182,12 +188,88 @@
 		<span class="arrow-right color-gray">{:lang('select_invoice_content')}</span>
 	</div>
 	{/if}
-	
+	{if $count_point_exchange eq 0}
+<style type="text/css">
+	/*弹窗*/
+.black_overlay{
+display: none;
+position: absolute;
+top: 0%;
+left: 0%;
+width: 100%;
+height: 100%;
+background-color: #504d4d;
+z-index:1001;
+-moz-opacity: 0.8;
+opacity:.80;
+filter: alpha(opacity=80);
+}
+.item-options a{
+	color: red;
+}
+.white_content {
+display: none;
+position: absolute;
+top: 10%;
+left: 10%;
+width: 80%;
+height: 80%;
+border: 1px solid lightblue;
+background-color: white;
+z-index:1002;
+overflow: auto;
+border-radius: 10px;
+}
+.white_content_small {
+display: none;
+position: absolute;
+top: 20%;
+left: 30%;
+width: 40%;
+height: 50%;
+border: 16px solid lightblue;
+background-color: white;
+z-index:1002;
+overflow: auto;
+}
+</style>
 	<div class="item-options">
 		<label>{:lang('member_buyer_message')}</label>
 		<textarea id="leavemessage" placeholder="{:lang('leave_a_message_for_the_seller')}" maxlength="100"></textarea>
 	</div>
-	
+	<div class="item-options">
+		<input type="checkbox" id="check">
+  		<label for="check"></label>
+  		<span>购买全球购商品需同意<a onclick="ShowDiv('MyDiv','fade')">《用户购买须知》</a></span>
+	</div>
+
+	  	<!--弹出层时背景层DIV-->
+	<div id="fade" class="black_overlay">
+	</div>
+	<div id="MyDiv" class="white_content">
+	<div style="text-align: right; cursor: default; height: 25px;">
+	<span style="font-size: 16px;" onclick="CloseDiv('MyDiv','fade')">关闭</span>
+	</div>
+	<p>内容</p>
+	</div>
+<script type="text/javascript">
+	//弹出隐藏层
+	function ShowDiv(show_div,bg_div){
+	document.getElementById(show_div).style.display='block';
+	document.getElementById(bg_div).style.display='block' ;
+	var bgdiv = document.getElementById(bg_div);
+	bgdiv.style.width = document.body.scrollWidth;
+	// bgdiv.style.height = $(document).height();
+	$("#"+bg_div).height($(document).height());
+	};
+	//关闭弹出层
+	function CloseDiv(show_div,bg_div)
+	{
+	document.getElementById(show_div).style.display='none';
+	document.getElementById(bg_div).style.display='none';
+	};
+</script>
+{/if}
 	
 	<div class="order-list">
 		<h3>{:lang('member_settlement_information')}</h3>
@@ -457,4 +539,23 @@
 {block name="bottom"}{/block}
 {block name="javascript"}
 <script type="text/javascript" src="__TEMP__/{$style}/public/js/payment_order.js"></script>
+<script type="text/javascript">
+	var points = "{$count_point_exchange}";
+	//弹出隐藏层
+	function ShowDiv(show_div,bg_div){
+	document.getElementById(show_div).style.display='block';
+	document.getElementById(bg_div).style.display='block' ;
+	var bgdiv = document.getElementById(bg_div);
+	bgdiv.style.width = document.body.scrollWidth;
+	// bgdiv.style.height = $(document).height();
+	$("#"+bg_div).height($(document).height());
+	};
+	//关闭弹出层
+	function CloseDiv(show_div,bg_div)
+	{
+	document.getElementById(show_div).style.display='none';
+	document.getElementById(bg_div).style.display='none';
+	};
+</script>
+
 {/block}
