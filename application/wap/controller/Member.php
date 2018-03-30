@@ -90,6 +90,7 @@ class Member extends BaseController
      */
     public function index()
     {
+
         $user_name = session('user_name');
         $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode');
         if(!$user_qrcode){

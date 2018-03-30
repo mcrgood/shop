@@ -93,14 +93,23 @@ class Pay extends Controller
         $pay_config = $pay->getPayConfig();
         $this->assign("pay_config", $pay_config);
         $pay_value = $pay->getPayInfo($out_trade_no);
-        
         if (empty($pay_value)) {
             $this->error("订单主体信息已发生变动!", __URL(__URL__ . "/member/index"));
         }
         
-        if ($pay_value['pay_status'] == 1) {
+        if ($pay_value['pay_status'] == 1 && $pay_value['pay_money'] != 0) {
             // 订单已经支付
-            $this->error("订单已经支付或者订单价格为0.00，无需再次支付!");
+            $redirect = __URL(__URL__ . "/wap/member/index");
+            $this->redirect($redirect);
+        }elseif($pay_value['pay_status'] == 1 && $pay_value['pay_money'] == 0){
+            //只用旺旺币兑换
+            $data['pay_type'] = 3;
+            $data['pay_time'] = time();
+            $res = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data);
+            if($res){
+                $redirect = __URL(__URL__ . "/wap/pay/payCallback");
+                $this->redirect($redirect);
+            }
         }
         if ($pay_value['type'] == 1) {
             // 订单
