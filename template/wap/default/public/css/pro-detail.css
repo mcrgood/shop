@@ -2275,7 +2275,7 @@ opacity
 .codes .balance_pay {
 	background: #fff;
 	border-bottom: 1px solid #e5e5e5;
-	padding-bottom: 10px;
+	padding: 5px 0;
 }
 
 .wchat-photo {
@@ -2293,11 +2293,13 @@ opacity
 	display: inline-block;
 	width: 10%;
 	text-align: center;
+	line-height: 20px;
 }
 #balance {
 	display: inline-block;
 	width: 10%;
 	text-align: center;
+	line-height: 20px;
 }
 
 .ali-pay {
