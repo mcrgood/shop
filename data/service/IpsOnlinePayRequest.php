@@ -29,7 +29,7 @@ class IpsOnlinePayRequest extends Log
 
     //初始化日志
     public function logs(){
-        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'.txt');
+        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'online.txt');
         $log = Log::Init($logHandler, 15);
     }
 

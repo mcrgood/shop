@@ -154,7 +154,10 @@ class Phonefastpay extends BaseController
 		        	$dd['balance'] = $pay_money;
 		        	db('ns_member_account')->insert($dd);
 		        }
-
+		        $result = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
+		        if($result){
+		        	db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
+		        }
 				$this->assign('merBillNo',$merBillNo);
 				$this->assign('ipsBillNo',$ipsBillNo);
 				$this->assign('ipsTradeNo',$ipsTradeNo);
@@ -225,6 +228,7 @@ class Phonefastpay extends BaseController
 						$data['pay_type'] = 2;  //状态2 为余额付款
 		       			$data['pay_time'] = time();
 						db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data);//修改付款状态
+						//更改商品订单里面的付款状态和商品发货状态
 						db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
 						$info = ['status' => 1, 'msg' => '恭喜您支付成功！'];
 					}

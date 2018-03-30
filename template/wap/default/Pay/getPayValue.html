@@ -35,17 +35,21 @@
 	</div>
 	<div class="codes">
 			
-		<div class="wchat-weixin" style="position:relative;">
-			<img  src="__TEMP__/{$style}/public/images/kuaijie.png"  class="wchat-photo">
+		<div class="wchat-weixin" style="height:50px;">
+			<div style="display:inline-block;width:85%;height:50px;">
+				<img  src="__TEMP__/{$style}/public/images/kuaijie.png"  class="wchat-photo">
 			<span class="wchat-title">{:lang('phone_fastpay')}</span>
-			<span id="wchatpay"><img  src="__TEMP__/{$style}/public/images/segou.png"></span> 
+			</div>
+			<div id="wchatpay"><img  src="__TEMP__/{$style}/public/images/segou.png"></div> 
 		</div>
-		<div class="balance_pay" style="position:relative;">
-			<img src="__TEMP__/{$style}/public/images/balance_pay.png" class="ali-photo">
+		<div class="balance_pay" style="height:50px;">
+			<div style="display:inline-block;width:85%;height:50px;">
+				<img src="__TEMP__/{$style}/public/images/balance_pay.png" class="ali-photo">
 			<span class="ali-item">{:lang('balance_pay')}</span>
-			<span id="balance"><img  src="__TEMP__/{$style}/public/images/hgou.png"></span>
+			</div>
+			<div id="balance"><img  src="__TEMP__/{$style}/public/images/hgou.png"></div>
 		</div>
-		<div class="log-cont" style="display: none;border:none;">
+		<div class="log-cont" style="display: none;border:none;margin-top:10px;">
 			<label for="password">{:lang("password")}&nbsp;&nbsp;&nbsp;&nbsp;<input
 					class=""  style="width:60%;" type="password" name="password" id="password"
 					placeholder="{:lang("please_input_password_pay")}"> 
