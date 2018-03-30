@@ -642,10 +642,13 @@ function calculateTotalAmount(){
  */
 var flag = false;//防止重复提交
 function submitOrder(){
-		if(points == 0 || points == '' && noyes=='' ){
+		if(points == 0 || points == ''){
 			var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
 			var cards = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;
 			var str = $('#idcard').val();
+
+
+			
 			if(!str){
 				alert("身份证号码必填");
 				return false;
@@ -660,7 +663,7 @@ function submitOrder(){
 				return false;
 			}
 		}
-		
+
 	if(validationOrder()){
 		if(flag){
 			return;
@@ -689,7 +692,7 @@ function submitOrder(){
 				'pay_type' : pay_type,
 				'buyer_invoice' : buyer_invoice,
 				'pick_up_id' : getPickupId(),
-				'shipping_company_id' : shipping_company_id
+				'shipping_company_id' : shipping_company_id,
 			},
 			success : function(res) {
 				if (res.code > 0) {
@@ -701,18 +704,26 @@ function submitOrder(){
 					}else{
 						if(str){
 							layer.confirm('您的身份证号：'+str,{
-								btn: ['确认正确','返回审核'],
+								btn: ['正确','返回审核'],
 								icon: 3, 
 								title:'客旺旺提醒您一定确定身份证信息'
 							},
 							function(){
-								setTimeout(function(){
-									location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
-		                    	},200);
+								var urls = __URL(APPMAIN + "/Order/paymentOrder/")
+								var datas = {"str":str};
+								$.post(urls,datas,function(dd){
+									if(dd.code == 1){
+										setTimeout(function(){
+											location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
+				                    	},200);
+									}else{
+										window.history.go(-1);
+									}
+								},'json')
+								
 							},
-							function(index){
-								layer.close(index);
-								location.reload();
+							function(){
+								window.history.go(-1);
 			           		});
 						}else{
 							window.location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
@@ -725,5 +736,10 @@ function submitOrder(){
 			}
 		});
 	}
+	// var url =
+			// 
+			// $.post(url,data,function(){
+				
+			// },'json')
 }
 

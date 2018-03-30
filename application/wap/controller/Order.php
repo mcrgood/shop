@@ -69,6 +69,29 @@ class Order extends BaseController
      */
     public function paymentOrder()
     {
+            $user_name = session("user_name");
+            if(request()->isAjax()){
+                $newidcard = input("post.str");
+                $data['idcard'] = $newidcard;
+                $idcard = db("sys_user")->where('user_name',$user_name)->value('idcard');
+                if($idcard){
+                     $info = [
+                        "code"=>1
+                    ];
+                }else{
+                    $id = db("sys_user")->where('user_name',$user_name)->update($data);
+                    if($id){
+                        $info = [
+                            "code"=>1
+                        ];
+                    }else{
+                        $info = [
+                            "code"=>0
+                        ];
+                    }
+                }
+               return $info;
+            }
           $user_name = session("user_name");
           $idc = db("sys_user")->where("user_name",$user_name)->value("idcard");
           if($idc){
@@ -344,6 +367,8 @@ class Order extends BaseController
         $buyer_invoice = request()->post("buyer_invoice", ""); // 发票
         $pick_up_id = request()->post("pick_up_id", 0); // 自提点
         $shipping_company_id = request()->post("shipping_company_id", 0); // 物流公司
+        $strs = request()->post("strs", ''); // 身份证
+
         
         $shipping_type = 1; // 配送方式，1：物流，2：自提
         if ($pick_up_id != 0) {
