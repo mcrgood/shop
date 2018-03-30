@@ -2290,12 +2290,14 @@ opacity
 }
 
 #wchatpay {
-	margin-right: 13px;
-	float: right;
+	position: absolute;
+    left: 88%;
+    top: 30%;
 }
 #balance {
-	margin-right: 13px;
-	float: right;
+	position: absolute;
+    left: 88%;
+    top: 30%;
 }
 
 .ali-pay {
