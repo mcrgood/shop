@@ -29,7 +29,7 @@ use think\Session;
 use think\Cookie;
 use data\extend\chuanglan\ChuanglanSmsApi;
 \think\Loader::addNamespace('data', 'data/');
-
+header("content-type:text/html; charset=utf-8");
 /**
  * 前台用户登录
  *

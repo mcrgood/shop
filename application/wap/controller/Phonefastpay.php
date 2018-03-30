@@ -140,24 +140,27 @@ class Phonefastpay extends BaseController
 		        $ipsTradeNo = $xmlResult->GateWayRsp->body->IpsTradeNo;
 		        $bankBillNo = $xmlResult->GateWayRsp->body->BankBillNo;
 		        $out_trade_no = $xmlResult->GateWayRsp->body->Attach;
+		        //ns_order表中没有这条订单号码，就是充值
+		        $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
+		        if(!$orderRow){
+		        	$pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出充值的金额
+			        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');
+			        $row = db('ns_member_account')->where('uid',$uid)->find();
+			        if($row){
+			        	db('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
+			        }else{
+			        	$dd['uid'] = $uid;
+			        	$dd['balance'] = $pay_money;
+			        	db('ns_member_account')->insert($dd);
+			        }
+		        }else{
+		        	db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
+		        }
 		        $message = "交易成功";
 		        $data['pay_status'] = 1;
 		        $data['pay_time'] = time();
 		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
-		        $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出充值的金额
-		        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');
-		        $row = db('ns_member_account')->where('uid',$uid)->find();
-		        if($row){
-		        	db('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
-		        }else{
-		        	$dd['uid'] = $uid;
-		        	$dd['balance'] = $pay_money;
-		        	db('ns_member_account')->insert($dd);
-		        }
-		        $result = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
-		        if($result){
-		        	db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
-		        }
+		  
 				$this->assign('merBillNo',$merBillNo);
 				$this->assign('ipsBillNo',$ipsBillNo);
 				$this->assign('ipsTradeNo',$ipsTradeNo);
