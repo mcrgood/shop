@@ -642,7 +642,6 @@ function calculateTotalAmount(){
  */
 var flag = false;//防止重复提交
 function submitOrder(){
-		var noyes = $("#idcard").val();
 		if(points == 0 || points == '' && noyes=='' ){
 			var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
 			var cards = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;
@@ -700,7 +699,7 @@ function submitOrder(){
 					}else if(pay_type == 4){
 						location.href = __URL(APPMAIN + '/order/myorderlist');
 					}else{
-						if(str && noyes==''){
+						if(str){
 							layer.confirm('您的身份证号：'+str,{
 								btn: ['正确','返回审核'],
 								icon: 3, 
