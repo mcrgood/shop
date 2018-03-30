@@ -2272,11 +2272,13 @@ opacity
 	background: #fff;
 	border-bottom: 1px solid #e5e5e5;
 	padding-bottom: 10px;
+	width: 100%;
 }
 .codes .balance_pay {
 	background: #fff;
 	border-bottom: 1px solid #e5e5e5;
 	padding:5px 0;
+	width: 100%;
 }
 
 .wchat-photo {
