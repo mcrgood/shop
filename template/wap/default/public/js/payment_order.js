@@ -710,7 +710,9 @@ function submitOrder(){
 									location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
 		                    	},200);
 							},
-							function(){
+							function(index){
+								layer.close(index);
+								location.reload();
 			           		});
 						}else{
 							location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
