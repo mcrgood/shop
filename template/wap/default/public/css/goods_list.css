@@ -104,7 +104,6 @@
 	height:70px;
 	position: fixed;
 	top:45px;
-	/* height:40px; */
 	background: #fff;
 	z-index: 99;
     width: 100%;
@@ -125,9 +124,7 @@
 .order_div>span.select a{
 	color:#ff4444;
 }
-.order_div>span:nth-child(3){
-	position: relative;
-}
+
 .order_div>span:nth-child(3) .ico_order_state{
 	border-bottom: 1px solid #999;
     border-right: 1px solid #999;
