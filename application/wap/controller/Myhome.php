@@ -103,17 +103,7 @@ class Myhome extends Controller
                 cookie('phone',$info['iphone'],3600*24*30);
                 cookie('password',$password,3600*24*30);
 
-                //查询该商户是否有二维码，如果没有就自动生成
-                $qrcode = db('ns_shop_message')->where(array("userid" => $info['id']))->value('shop_qrcode');
-                if(!$qrcode){
-                    $shop_qrcode_num = '0791'.$rand;
-                    $url = __URL('wap/myhome/pay?id=' . $info['id']);
-                    $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $info['id']);
-                    $this->create($url, $shop_qrcode,"    NO.".$shop_qrcode_num);
-                    $data['shop_qrcode'] = $shop_qrcode;
-                    $data['shop_qrcode_num'] = $shop_qrcode_num;
-                    db('ns_shop_message')->where(array("userid" => $info['id']))->update($data);
-                }
+               
                 if (!empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,
@@ -199,10 +189,11 @@ class Myhome extends Controller
     public function qrcode()
     {
         $this->check_login();
-        $where['userid'] = $this->business_id;
-        $result = db("ns_shop_message")->where($where)->select();
-        if ($result)
-            $qrcode = $result[0]['shop_qrcode'];
+        $business_id = $this->business_id;
+        $result = db("ns_shop_message")->where('userid',$business_id)->find();
+        if ($result){
+            $qrcode = $result['shop_qrcode'];
+        }
         $this->assign('qrcode', $qrcode);
         return view($this->style . 'Myhome/qrcode');
     }
@@ -361,6 +352,19 @@ class Myhome extends Controller
 
     public function yingshou(){
         $this->check_login();
+        $business_id = $this->business_id;
+        $rand = getRandNum();    //获取随机12位数字
+         //查询该商户是否有二维码，如果没有就自动生成
+        $qrcode = db('ns_shop_message')->where('userid',$business_id)->value('shop_qrcode');
+        if(!$qrcode){
+            $shop_qrcode_num = '0791'.$rand;
+            $url = __URL('wap/myhome/pay?id=' . $business_id);
+            $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $business_id);
+            $this->create($url, $shop_qrcode,"    NO.".$shop_qrcode_num);
+            $data['shop_qrcode'] = $shop_qrcode;
+            $data['shop_qrcode_num'] = $shop_qrcode_num;
+            db('ns_shop_message')->where('userid',$business_id)->update($data);
+        }
         $where['shop_id'] = $this->business_id;
         $where['state'] = 0;
         $count = db('ns_goods_reserve')->where($where)->count();
