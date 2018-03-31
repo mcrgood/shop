@@ -147,12 +147,12 @@
 }
 .myorder-none>.icon-none{
 	display: block;
-	width: 24%;
+	width: 80px;
 	height: 80px;
 	background: url(../images/distribution2.png) no-repeat;
 	background-size: 100%;
 	margin-top: 20%;
-	margin-left: 38%;
+	margin-left: 40%;
 }
 .myorder-none>span {
     display: block;
