@@ -2294,14 +2294,28 @@ opacity
 	display: inline-block;
 	width: 70%;
 }
-
+/*兼容安卓手机*/
+@media only  screen and (min-device-width:361px) and (max-device-width:480px){/*奇葩安卓机dpr统一为1 */
+		.ali-item {
+		font-size: 14px;
+		line-height: 50px;
+		color: #222;
+		display: inline-block;
+	}
+		#balance {
+		width: 61.5%;
+		display: inline-block;
+		text-align: right;
+	}
+}
 #wchatpay {
 	width: 10%;
 	display: inline-block;
 }
 #balance {
-	width: 10%;
-	display: inline-block;
+		width: 61.5%;
+		display: inline-block;
+		text-align: right;
 }
 
 .ali-pay {
@@ -2322,13 +2336,12 @@ opacity
 	float: left;
 	width:85%;
 }*/
-.ali-item {
-	font-size: 14px;
-	line-height: 50px;
-	color: #222;
-	display: inline-block;
-    width: 70%;
-}
+	.ali-item {
+		font-size: 14px;
+		line-height: 50px;
+		color: #222;
+		display: inline-block;
+	}
 
 #alipay {
 	margin-right: 13px;
