@@ -101,6 +101,7 @@
 		margin-bottom: 10px;
 	}
 .order_div{
+	height:70px;
 	position: fixed;
 	top:45px;
 	/* height:40px; */
@@ -110,7 +111,7 @@
     max-width: 640px;
 }
 .order_div>span{
-	width:25%;
+	width:20%;
 	display: block;
 	float: left;
 	text-align: center;
@@ -146,6 +147,20 @@
 .order_div>span.select .ico_order_state{
 	border-bottom: 1px solid #ff4444;
     border-right: 1px solid #ff4444;
+}
+.myorder-none>.icon-none{
+	display: block;
+	width: 24%;
+	height: 80px;
+	background: url(../images/distribution2.png) no-repeat;
+	background-size: 100%;
+	margin-top: 20%;
+	margin-left: 38%;
+}
+.myorder-none>span {
+    display: block;
+    text-align: center;
+    line-height: 30px;
 }
 .order_div>span .ico_order_state.statu_two{
 	top: 14px;

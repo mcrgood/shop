@@ -50,6 +50,8 @@ class Login extends Controller
     protected $instance_id;
 
     protected $shop_name;
+    private  $font = "data/font/simhei.ttf";
+    private $fontsize = 16;
     
     // 验证码配置
     public $login_verify_code;
@@ -204,9 +206,14 @@ class Login extends Controller
                 }
             }
             if ($retval == 1) {
+                if(!session('user_name')){
                     session('user_name',$user_name);
+                }
+                if(!cookie('user_name')){
                     cookie('user_name',$user_name,3600*24*30);
                     cookie('password',$password,3600*24*30);
+                }
+                    
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [
                         'code' => 1,
@@ -591,6 +598,9 @@ class Login extends Controller
                     }
             }
             if ($retval > 0) {
+                    session('user_name',$user_name);
+                    cookie('user_name',$user_name,3600*24*30);
+                    cookie('password',$password,3600*24*30);
                 if($referee_phone && $mobile){
                     //假如填写了推荐人手机号，就插入推荐人手机号到数据表中。
                     db('sys_user')->where('user_tel',$mobile)->update(['referee_phone'=>$referee_phone]);

@@ -61,7 +61,7 @@ share_number{extend name="wap/default/base" /} {block name="goodsHead"}
     font-weight: normal;
 }
 .members_goodspic {
-	margin-top: 85px;
+	margin-top: 113px;
 }
 
 
@@ -69,25 +69,28 @@ share_number{extend name="wap/default/base" /} {block name="goodsHead"}
     max-width: 100%;
     display: inline;
 }
-.order_div{
-	height:35px;
 
+.myorder-none>.none_01{
+	color: #939393;
+    font-size: 16px;
+    line-height: 24px;
 }
-.order_div>.ff{
-	color:#ff4444;
-}
+
 </style>
 <script type="text/javascript">
 	
 </script>
 {/block} {block name="main"}
 <div class="order_div">
-	<span class="select" value='1'>{:lang("goods_sales_volume")}</span>
-	<span value='2'>{:lang("collect_quantity")}</span>
-	<span value='3'>{:lang("rating_scale")}<i class='ico_order_state'></i></span>
+{volist name="cateList" id="v"}
+	<span value="{$v.category_id}">{$v.category_alias}</span>
+{/volist}	
+	<!-- <span class="select" value='1'>{:lang("goods_sales_volume")}</span> -->
+	<!-- <span value='2'>{:lang("collect_quantity")}</span> -->
+	<!-- <span value='3'>{:lang("rating_scale")}<i class='ico_order_state'></i></span> -->
 	<!-- <span value='4'>{:lang("share_number")}</span> -->
 	<!-- <span value ='4'  id="jgqj">{:lang("price_range")}</span> -->
-	<b  class="jgqj">{:lang("price_range")}</b>
+	<!-- <b  class="jgqj">{:lang("price_range")}</b> -->
 </div>
 <section class="members_goodspic" id="main_list">
 	
@@ -97,27 +100,28 @@ share_number{extend name="wap/default/base" /} {block name="goodsHead"}
 
 
 	$(function() {
-		 	GetgoodsList(1,0);
-		$('.order_div span').click(function() {
-			$('.order_div b').removeClass('ff');
+		$('.order_div span:nth-child(1)').addClass('select');
+		GetgoodsList(1,0);
+		$('.order_div span').click(function(){
 			$('.order_div span').removeClass('select');
 			$(this).addClass('select');
 			GetgoodsList($(this).attr('value'));
 		})
-		$('.order_div span:nth-child(3)').click(function() {
-			if (!$(this).children().is('.statu_two')) {
-				$(this).children().addClass('statu_two');
-			} else {
-				$(this).children().removeClass('statu_two');
-			}
-		})
+		// $('.order_div span:nth-child(3)').click(function() {
+		// 	if (!$(this).children().is('.statu_two')) {
+		// 		$(this).children().addClass('statu_two');
+		// 	} else {
+		// 		$(this).children().removeClass('statu_two');
+		// 	}
+		// })
 		
 	})
+
 	function GetgoodsList(sear_type) {
-		var orderState = 'asc';
-		if ($('.order_div span:nth-child(3)').children().is('.statu_two')) {
-			orderState = 'desc';
-		}
+		// var orderState = 'asc';
+		// if ($('.order_div span:nth-child(3)').children().is('.statu_two')) {
+		// 	orderState = 'desc';
+		// }
 		
 		$.ajax({
 			type : "post",
@@ -128,34 +132,38 @@ share_number{extend name="wap/default/base" /} {block name="goodsHead"}
 				showLoadMaskLayer();
 			},
 			success : function(data) {
-				if (data != null) {
-					 					var html = '';
-					 		      		html +='<ul class="price_qj">';
-					 		      		html +='<li value="5">1-99</li>';
-					 		      		html +='<li value="6">100-499</li>';
-					 		      		html +='<li value="7">500-999</li>';
-					 		      		html +='<li value="8">1000-9999</li>';
-					 		      		html +='<li value="9">10000 以上</li>';
-					 		      		html +='</ul>';
-					 					html +='<ul>';
-					 					 	for(i=0; i<data.length;i++)
-					 					 		{
-					 					 			html+='<li class="gooditem"><div class="img"> <a href="'+__URL('APP_MAIN/goods/goodsdetail?id='+data[i]['goods_id'])+'">';
-					 					 			html+='<img class="lazy" src="'+__IMG(data[i]['pic_cover_small'])+'" >';
-					 					 			html+='</a></div><div class="info">';
-					 					 			html+='<p class="goods-title"><a href="'+__URL('APP_MAIN/goods/goodsdetail?id='+data[i]['goods_id'])+'" >'+data[i]['goods_name']+'</a></p>';
+				console.log(data);
+				if (data.length > 0) {
+	 					var html = '';
+	 		      		// html +='<ul class="price_qj">';
+	 		      		// html +='<li value="5">1-99</li>';
+	 		      		// html +='<li value="6">100-499</li>';
+	 		      		// html +='<li value="7">500-999</li>';
+	 		      		// html +='<li value="8">1000-9999</li>';
+	 		      		// html +='<li value="9">10000 以上</li>';
+	 		      		// html +='</ul>';
+	 					html +='<ul>';
+	 					 	for(i=0; i<data.length;i++)
+	 					 		{
+	 					 			html+='<li class="gooditem"><div class="img"> <a href="'+__URL('APP_MAIN/goods/goodsdetail?id='+data[i]['goods_id'])+'">';
+	 					 			html+='<img class="lazy" src="'+__IMG(data[i]['pic_cover_small'])+'" >';
+	 					 			html+='</a></div><div class="info">';
+	 					 			html+='<p class="goods-title"><a href="'+__URL('APP_MAIN/goods/goodsdetail?id='+data[i]['goods_id'])+'" >'+data[i]['goods_name']+'</a></p>';
 
-					 					 			// html+='<p class="goods-price"><em>￥'+data[i]['promotion_price']+'&nbsp+</em><em>'+data[i]['point_exchange']+'{:lang("goods_integral")}</em></p>';
-					 					 			html+='<p class="goods-price"><em>'+'</em><em>'+data[i]['point_exchange']+'{:lang("goods_integral")}</em></p>';
+	 					 			// html+='<p class="goods-price"><em>￥'+data[i]['promotion_price']+'&nbsp+</em><em>'+data[i]['point_exchange']+'{:lang("goods_integral")}</em></p>';
+	 					 			html+='<p class="goods-price"><em>'+'</em><em>'+data[i]['point_exchange']+'{:lang("goods_integral")}</em></p>';
 
 
-					 					 			html+=' <a href="'+__URL('APP_MAIN/goods/goodsdetail?id='+data[i]['goods_id'])+'"><div class="goods-buy"></div></a> </div></li>';	 			
-					 					 		}
+	 					 			html+=' <a href="'+__URL('APP_MAIN/goods/goodsdetail?id='+data[i]['goods_id'])+'"><div class="goods-buy"></div></a> </div></li>';	 			
+	 					 		}
 
-					 		      		html +='</ul>';
-					 		      		html += '<div class="h50"></div>';
-					 		      		$("#main_list").empty().append(html);
-
+	 		      		html +='</ul>';
+	 		      		html += '<div class="h50"></div>';
+	 		      		$("#main_list").empty().append(html);
+					hiddenLoadMaskLayer();
+				}else if(data.length == 0){
+					html ='<div class="myorder-none"><i class="icon-none"></i><span class="none_01">暂时还没有相关的商品</span><span class="none_03"></span></div>';
+					$("#main_list").empty().append(html);
 					hiddenLoadMaskLayer();
 				}
 			}
@@ -163,25 +171,25 @@ share_number{extend name="wap/default/base" /} {block name="goodsHead"}
 	}
 </script>
 <script>
-	$(function(){
-		var aa = 0;
-		$(".jgqj").click(function(){
-			if(aa == 0){
-				$('.price_qj').css({"display":"block"});
-				$('.order_div span').removeClass('select');
-				$('.order_div b').addClass('ff');
-				aa = 1;
-				$('.price_qj').find('li').on('click',function(){
-					var num = $(this).attr('value');
-					aa = 0;
-					GetgoodsList(num);
-				})
-			}else{
-				$('.price_qj').css({"display":"none"});
+	// $(function(){
+	// 	var aa = 0;
+	// 	$(".jgqj").click(function(){
+	// 		if(aa == 0){
+	// 			$('.price_qj').css({"display":"block"});
+	// 			$('.order_div span').removeClass('select');
+	// 			$('.order_div b').addClass('ff');
+	// 			aa = 1;
+	// 			$('.price_qj').find('li').on('click',function(){
+	// 				var num = $(this).attr('value');
+	// 				aa = 0;
+	// 				GetgoodsList(num);
+	// 			})
+	// 		}else{
+	// 			$('.price_qj').css({"display":"none"});
 				
-				aa = 0;
-			}
-		})
-	})
+	// 			aa = 0;
+	// 		}
+	// 	})
+	// })
 </script>
 {/block} {block name="bottom"} {/block}

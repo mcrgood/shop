@@ -874,6 +874,8 @@ class Goods extends BaseController
      */
     public function integralCenterList()
     {
+        $cateList = db('ns_goods_category_block')->select();
+        $this->assign('cateList',$cateList);
         return view($this->style . 'Goods/integralCenterList');
     }
 
@@ -882,59 +884,19 @@ class Goods extends BaseController
      */
     public function integralCenterListAjax()
     {
-        $platform = new Platform();
         if (request()->isAjax()) {
             // 零元兑换商品
             $this->goods = new GoodsService();
-            $order = "";
+            $order = "ng.point_exchange asc";
             // 排序
-            $id = request()->post('id', '');
-            if ($id) {
-                if ($id == 1) {
-                    $order = "sales desc";
-                } else 
-                    if ($id == 2) {
-                        $order = "collects desc";
-                    } else 
-                        if ($id == 3) {
-                            $order = "evaluates desc";
-                        } else 
-                            if ($id == 5) {
-                                $order = "point_exchange";
-                                $condition['ng.point_exchange'] = ['between',[1,99]];
-                            } else {
-                                if($id == 6){
-                                    $order = "point_exchange";
-                                    $condition['ng.point_exchange'] = ['between',[100,499]];
-                                }else{
-                                    if($id == 7){
-                                        $order = "point_exchange";
-                                        $condition['ng.point_exchange'] = ['between',[500,999]];
-                                    }else{
-                                        if($id == 8){
-                                            $order = "point_exchange";
-                                            $condition['ng.point_exchange'] = ['between',[1000,9999]];
-                                        }else{
-                                            if($id == 9){
-                                                $order = "point_exchange";
-                                                $condition['ng.point_exchange'] = ['>',10000];
-                                            }else{
-                                                $id = 0;
-                                                $order = "";  
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-            } else {
-                $id = 0;
-            }
+            $id = request()->post('id', '1');
+            $condition['ng.category_id'] = $id;
             $page_index = request()->post('page', '1');
             $condition['ng.state'] = 1;
-            $condition['ng.point_exchange_type'] = ['<>',0];
+            $condition['ng.point_exchange_type'] = 1;
+            $condition['ng.point_exchange'] = ['<>',0];
             $condition['price'] = 0;
-            $page_counts = db("ns_goods_sku")->count();
-            $page_count = $page_counts;
+            $page_count = db("ns_goods_sku")->count();
             $allGoods = $this->goods->getGoodsList($page_index, $page_count, $condition, $order);
             return $allGoods['data'];
         }
