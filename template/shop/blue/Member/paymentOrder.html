@@ -106,6 +106,16 @@
 				
 			</div>
 		</div>
+		<!--填写身份证-->
+		<div class="write-idcard">
+				<h3>
+					<span>因海关清关需要，请填写收货人的身份证号</span>
+				</h3>				
+			</div>
+		<div class="idcard">
+		  		<input type="text" class="input_1" id="idcard_1" placeholder="请填写身份证号码">
+		  		<input type="submit" class="input_2" value="保存" id="checkCard">
+  		</div>
 
 		<div class="style-zhifu">
 			<div class="cart-title">
@@ -150,7 +160,6 @@
 				</ul>
 			</div>
 		</div>
-		
 		<div class="style-zhifu order-invoice">
 			<div class="cart-title">
 				<h3>
@@ -229,7 +238,59 @@
 				{/if}
 			</div>
 		</div> 
-		
+		<!--商家协议-->
+		<div class="permision_agree">
+			<h5>
+				<span>商家协议</span>
+			</h5>
+		</div>
+		<div class="xieyi_agree">
+	  		<input type="checkbox" id="check">
+	  		<label for="check"></label>购买全球购商品需同意<a onclick="ShowDiv('MyDiv','fade')">《用户购买须知》</a>
+  		</div>
+		<!--弹出层时背景层DIV-->
+	<div id="fade" class="black_overlay"></div>
+		<div id="MyDiv" class="white_content">
+			<div style="text-align: right; cursor: default; height: 25px;">
+			<span style="font-size: 16px;" onclick="CloseDiv('MyDiv','fade')">关闭</span>
+		</div>
+		<p>内容</p>
+	</div>
+
+	<script type="text/javascript">
+	//弹出隐藏层
+	function ShowDiv(show_div,bg_div){
+		document.getElementById(show_div).style.display='block';
+		document.getElementById(bg_div).style.display='block' ;
+		var bgdiv = document.getElementById(bg_div);
+		bgdiv.style.width = document.body.scrollWidth;
+		// bgdiv.style.height = $(document).height();
+		$("#"+bg_div).height($(document).height());
+		};
+	//关闭弹出层
+	function CloseDiv(show_div,bg_div)
+	{
+		document.getElementById(show_div).style.display='none';
+		document.getElementById(bg_div).style.display='none';
+	};
+</script>
+<script>
+$(document).ready(function(){
+		$('.btn-jiesuan').click(function(){
+  		var str = $('#idcard_1').val();
+  		var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/; 
+  		if(!card .test(str)){
+  			alert('身份证号码不合格');
+  		}else if($("#check").attr("checked")){
+  			return true;
+  		}else{
+  			alert('未同意购买须知');
+  			return false;
+  		}
+  	});	
+});
+</script>
+
 		{if condition="count($shop_config.order_invoice_content_list)"}
 		<div class="style-zhifu order-invoice">
 			<div class="cart-title">
