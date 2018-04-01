@@ -322,7 +322,7 @@ class Fastpay extends BaseController
         $transferReq = $this->encrypt($openUserReqXml);
         //拼接$ipsRequest
 
-        $ipsRequest = "<?xml version='1.0' encoding='utf-8'?><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest><xml></xml>";
+        $ipsRequest = "<?xml version='1.0' encoding='utf-8'?><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
 
 
         $post_data = $ipsRequest;
