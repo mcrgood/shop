@@ -642,13 +642,21 @@ function calculateTotalAmount(){
  */
 var flag = false;//防止重复提交
 function submitOrder(){
-		if(points == 0 || points == ''){
+		var num = 0;
+		$('.goodinfo').each(function(i,v){
+			var status = $(v).find('.wwb').text();
+			if(status){
+				var have = 0;
+			}else{
+				var have = 1;
+			}
+			num += have;
+		})
+		if(num != 0){
 			var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
 			var cards = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;
 			var str = $('#idcard').val();
 
-
-			
 			if(!str){
 				alert("身份证号码必填");
 				return false;
@@ -663,7 +671,6 @@ function submitOrder(){
 				return false;
 			}
 		}
-
 	if(validationOrder()){
 		if(flag){
 			return;

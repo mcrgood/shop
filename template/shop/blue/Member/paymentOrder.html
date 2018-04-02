@@ -19,6 +19,9 @@
 .edit-address ul li label {
 	width: 85px;
 }
+.sfz{
+	display: none;
+}
 </style>
 {/block}
 {block name="main"}
@@ -97,26 +100,49 @@
 <!-- 								<p></p> -->
 							</div>
 						</div>
-						<div class="col col3 goods-price">￥{$cart_info.price}+{$cart_info.point_exchange}{:lang('goods_integral')}</div>
+						<div class="col col3 goods-price">
+						{if $cart_info.price neq 0}
+						￥{$cart_info.price}
+						{/if}
+						{if $cart_info.price neq 0 AND $cart_info.point_exchange neq 0}
+						+
+						{/if}
+						{if $cart_info.point_exchange neq 0}
+						{$cart_info.point_exchange}{:lang('goods_integral')}
+						{/if}
+						</div>
 						<div class="col col4 good-num">{$cart_info.num}</div>
-						<div class="col col5 orange-bold xiaoji" data-subtotal="{$cart_info.subtotal}" style="border-bottom-style: none;">￥{$cart_info.subtotal}+{$cart_info.point_exchange*$cart_info.num}{:lang('goods_integral')}</div>
+						<div class="col col5 orange-bold xiaoji" data-subtotal="{$cart_info.subtotal}" style="border-bottom-style: none;">
+						{if $cart_info.subtotal neq 0}
+						￥{$cart_info.subtotal}
+						{/if}
+						{if $cart_info.subtotal neq 0 AND $cart_info.point_exchange neq 0}
+						+
+						{/if}
+						{if $cart_info.point_exchange neq 0}
+						<span class="wwb">{$cart_info.point_exchange*$cart_info.num}</span>{:lang('goods_integral')}
+						{/if}
+						</div>
 					</div>
 					{/foreach}
 				</div>
 				
 			</div>
 		</div>
-		<!--填写身份证-->
-		<div class="write-idcard">
+		<!--填写身份证begin-->
+	
+		<div class="write-idcard sfz">
 				<h3>
 					<span>因海关清关需要，请填写收货人的身份证号</span>
 				</h3>				
-			</div>
-		<div class="idcard">
-		  		<input type="text" class="input_1" id="idcard_1" placeholder="请填写身份证号码">
-		  		<input type="submit" class="input_2" value="保存" id="checkCard">
+		</div>
+		<div class="idcard sfz">
+		  		<input type="text" class="input_1" id="idcard" {if $idc neq 0} disabled="disabled"{/if}  value="{$idc}" placeholder="请填写身份证号码">
+		  		<!-- <input type="submit" class="input_2" value="保存" id="checkCard"> -->
   		</div>
-
+	
+		<!--填写身份证end-->
+		
 		<div class="style-zhifu">
 			<div class="cart-title">
 				<h3>
@@ -239,12 +265,12 @@
 			</div>
 		</div> 
 		<!--商家协议-->
-		<div class="permision_agree">
+		<div class="permision_agree sfz">
 			<h5>
 				<span>商家协议</span>
 			</h5>
 		</div>
-		<div class="xieyi_agree">
+		<div class="xieyi_agree sfz">
 	  		<input type="checkbox" id="check">
 	  		<label for="check"></label>购买全球购商品需同意<a onclick="ShowDiv('MyDiv','fade')">《用户购买须知》</a>
   		</div>
@@ -1862,11 +1888,13 @@
         <p>
             <br>
         </p>
+    <!--弹出层时背景层DIV-->
     </div>
 </div>
 
 	<script type="text/javascript">
 	//弹出隐藏层
+	var points = "{$count_point_exchange}";
 	function ShowDiv(show_div,bg_div){
 		document.getElementById(show_div).style.display='block';
 		document.getElementById(bg_div).style.display='block' ;
@@ -1881,22 +1909,6 @@
 		document.getElementById(show_div).style.display='none';
 		document.getElementById(bg_div).style.display='none';
 	};
-</script>
-<script>
-$(document).ready(function(){
-		$('.btn-jiesuan').click(function(){
-  		var str = $('#idcard_1').val();
-  		var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/; 
-  		if(!card .test(str)){
-  			alert('身份证号码不合格');
-  		}else if($("#check").attr("checked")){
-  			return true;
-  		}else{
-  			alert('未同意购买须知');
-  			return false;
-  		}
-  	});	
-});
 </script>
 
 		{if condition="count($shop_config.order_invoice_content_list)"}
@@ -2152,4 +2164,19 @@ $(document).ready(function(){
 {block name="javascript"}
 <script src="__TEMP__/{$style}/public/js/payment_orders/shipping_address.js"></script>
 <script src="__TEMP__/{$style}/public/js/payment_orders/payment_orders.js"></script>
+<script>
+	var num = 0;
+	$('.goodinfo').each(function(i,v){
+		var aaa = $(v).find('.wwb').text();
+		if(aaa){
+			var bbb = 0;
+		}else{
+			var bbb = 1;
+		}
+		num += bbb;
+	})
+	if(num != 0){
+		$('.sfz').css({"display":"block"});
+	}
+</script>
 {/block}

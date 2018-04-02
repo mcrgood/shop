@@ -32,7 +32,38 @@ $(function(){
 	 * 提交订单
 	 */
 	var flag = false;//防止重复提交
+
 	$(".btn-jiesuan").click(function(){
+		var num = 0;
+		$('.goodinfo').each(function(i,v){
+			var status = $(v).find('.wwb').text();
+			if(status){
+				var have = 0;
+			}else{
+				var have = 1;
+			}
+			num += have;
+		})
+		if(num != 0){
+			var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+			var cards = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;
+			var str = $('#idcard').val();
+
+			if(!str){
+				alert("身份证号码必填");
+				return false;
+			}
+			if(!cards.exec(str)&&!card.exec(str)){
+				alert("身份证号码不对");
+				return false;
+			}
+			var checked = $('#check').is(':checked');
+			if(!checked){
+				alert("进口产品必须同意条款");
+				return false;
+			}
+		}
+		
 		if(validationOrder()){
 			if(flag){
 				return;
@@ -71,7 +102,32 @@ $(function(){
 						}else if(pay_type == 4){
 							location.href = __URL(SHOPMAIN + '/member/orderlist');
 						}else{
-							location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
+							if(str){
+									layer.confirm('您的身份证号：'+str,{
+									btn: ['正确','返回审核'],
+									icon: 3, 
+									title:'客旺旺提醒您一定确定身份证信息'
+							},
+							function(){
+									var urls = __URL("/shop/Member/paymentOrder/");
+									var datas = {"str":str};
+									$.post(urls,datas,function(dd){
+										if(dd.code == 1){
+											setTimeout(function(){
+												location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
+					                    	},200);
+										}else{
+											window.history.go(-1);
+										}
+									},'json')
+									
+								},
+								function(){
+									window.history.go(-1);
+				           		});
+							}else{
+								window.location.href = __URL(APPMAIN + '/pay/getpayvalue?out_trade_no=' + res.code);
+							}
 						}
 					}else{
 						$.msg(res.message,{time : 5000});

@@ -723,7 +723,34 @@ class Member extends BaseController
      * @return \think\response\View
      */
     public function paymentOrder()
-    {
+    {   
+        $user_name = $_COOKIE['user_name'];
+        if(request()->isAjax()){
+            $newidcard = input("post.str");
+            $data['idcard'] = $newidcard;
+            $idcard = db("sys_user")->where('user_name',$user_name)->value('idcard');
+            if($idcard){
+                    $info = [
+                        "code"=>1
+                    ];
+                }else{
+                    $id = db("sys_user")->where('user_name',$user_name)->update($data);
+                    if($id){
+                        $info = [
+                            "code"=>1
+                        ];
+                    }else{
+                        $info = [
+                            "code"=>0
+                        ];
+                    }
+                }
+               return $info;
+        }
+        $idc = db("sys_user")->where("user_name",$user_name)->value("idcard");
+        if($idc){
+            $this->assign("idc",$idc);
+        }
         $this->orderInfo();
         return view($this->style . 'Member/paymentOrder');
     }

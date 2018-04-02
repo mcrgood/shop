@@ -41,7 +41,7 @@
 <div class="block-item express" style="padding: 0;"></div>
 <section class="order">
 	{foreach name="itemlist" item="list"}
-	<div class="order-goods-item clearfix" data-subtotal="{$list.subtotal}">
+	<div class="order-goods-item clearfix goodinfo" data-subtotal="{$list.subtotal}">
 		<div class="name-card block-item">
 			<a href="{:__URL('APP_MAIN/goods/goodsdetail?id='.$list['goods_id'])}" class="thumb">
 				<img src="{:__IMG($list['picture_info']['pic_cover_small'])}" alt="{$list.goods_name}" />
@@ -59,7 +59,7 @@
 						{if condition="$list.point_exchange_type==1 "}
 							{if condition=" $list.point_exchange>0"}
 								{if condition=" $list.point_exchange>0 AND $list.price>0"}+{/if}
-								{$list.point_exchange}{:lang('goods_integral')}
+								<span class="wwb">{$list.point_exchange}</span>{:lang('goods_integral')}
 							{/if}
 						{/if}
 						</span>
@@ -94,6 +94,53 @@
 .idcardd{
 		max-width:100%;float:right;
 	}
+	.sfz{
+		display: none;
+	}
+	/*弹窗*/
+.black_overlay{
+display: none;
+position: absolute;
+top: 0%;
+left: 0%;
+width: 100%;
+height: 100%;
+background-color: #504d4d;
+z-index:1001;
+-moz-opacity: 0.8;
+opacity:.80;
+filter: alpha(opacity=80);
+}
+
+.item-options a{
+	color: red;
+}
+.white_content {
+display: none;
+position: absolute;
+top: 10%;
+left: 10%;
+width: 80%;
+height: 80%;
+border: 1px solid lightblue;
+background-color: white;
+z-index:1002;
+overflow: auto;
+border-radius: 10px;
+}
+.white_content_small {
+display: none;
+position: absolute;
+top: 20%;
+left: 30%;
+width: 40%;
+height: 50%;
+border: 16px solid lightblue;
+background-color: white;
+z-index:1002;
+overflow: auto;
+}
+
 </style>
 	
 	{if condition="count($coupon_list) >0"}
@@ -120,11 +167,9 @@
 			{/if}
 		{/if}
 	</div>
-	{if $count_point_exchange eq 0}
-		<div class="item-options optionss">
+		<div class="item-options sfz">
 		<label><span style="color:red;">身份证号码</span></label><input {if $idc neq 0} disabled="disabled"{/if}  value="{$idc}" id="idcard" class="idcardd" type="text" placeholder="进口产品请填身份证号码">
 		</div>
-	{/if}
 	
 	<!-- 开启商家配送并且有物流公司显示 -->
 	{if condition="$shop_config.seller_dispatching"}
@@ -198,61 +243,16 @@
 		<span class="arrow-right color-gray">{:lang('select_invoice_content')}</span>
 	</div>
 	{/if}
-	{if $count_point_exchange eq 0}
-<style type="text/css">
-	/*弹窗*/
-.black_overlay{
-display: none;
-position: absolute;
-top: 0%;
-left: 0%;
-width: 100%;
-height: 100%;
-background-color: #504d4d;
-z-index:1001;
--moz-opacity: 0.8;
-opacity:.80;
-filter: alpha(opacity=80);
-}
-.item-options a{
-	color: red;
-}
-.white_content {
-display: none;
-position: absolute;
-top: 10%;
-left: 10%;
-width: 80%;
-height: 80%;
-border: 1px solid lightblue;
-background-color: white;
-z-index:1002;
-overflow: auto;
-border-radius: 10px;
-}
-.white_content_small {
-display: none;
-position: absolute;
-top: 20%;
-left: 30%;
-width: 40%;
-height: 50%;
-border: 16px solid lightblue;
-background-color: white;
-z-index:1002;
-overflow: auto;
-}
-</style>
+
 	<div class="item-options">
 		<label>{:lang('member_buyer_message')}</label>
 		<textarea id="leavemessage" placeholder="{:lang('leave_a_message_for_the_seller')}" maxlength="100"></textarea>
 	</div>
-	<div class="item-options">
+	<div class="item-options sfz">
 		<input type="checkbox" id="check">
   		<label for="check"></label>
   		<span>购买全球购商品需同意<a onclick="ShowDiv('MyDiv','fade')">《用户购买须知》</a></span>
 	</div>
-
 	  	<!--弹出层时背景层DIV-->
 	<div id="fade" class="black_overlay">
 	</div>
@@ -279,7 +279,6 @@ overflow: auto;
 	document.getElementById(bg_div).style.display='none';
 	};
 </script>
-{/if}
 	
 	<div class="order-list">
 		<h3>{:lang('member_settlement_information')}</h3>
@@ -550,7 +549,6 @@ overflow: auto;
 {block name="javascript"}
 <script type="text/javascript" src="__TEMP__/{$style}/public/js/payment_order.js"></script>
 <script type="text/javascript">
-	var points = "{$count_point_exchange}";
 	//弹出隐藏层
 	function ShowDiv(show_div,bg_div){
 	document.getElementById(show_div).style.display='block';
@@ -566,6 +564,21 @@ overflow: auto;
 	document.getElementById(show_div).style.display='none';
 	document.getElementById(bg_div).style.display='none';
 	};
+</script>
+<script>
+	var num = 0;
+	$('.goodinfo').each(function(i,v){
+		var aaa = $(v).find('.wwb').text();
+		if(aaa){
+			var bbb = 0;
+		}else{
+			var bbb = 1;
+		}
+		num += bbb;
+	})
+	if(num != 0){
+		$('.sfz').css({"display":"block"});
+	}
 </script>
 
 {/block}
