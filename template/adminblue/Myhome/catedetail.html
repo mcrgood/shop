@@ -12,6 +12,9 @@
 	max-width: 100%;
 	max-height: 100%;
 }
+.imgs{
+	width: 150px;height: 70px;
+}
 </style>
 {/block}
 {block name="main"}
@@ -33,6 +36,7 @@
 		<tr>
 			<th>ID</th>
 			<th>所属分类</th>
+			<th>菜谱图片</th>
 			<th>分类详情名字</th>
 			<th>操作</th>
 		</tr>
@@ -58,8 +62,9 @@
 			if (data["data"].length > 0) {
 				for (var i = 0; i < data["data"].length; i++) {
 					html += '<tr align="center">';
-					html += '<td>'+ data["data"][i]["did"] +'</td>'
+					html += '<td>'+ data["data"][i]["did"] +'</td>';
 					html += '<td>'+data["data"][i]["catename"]+'</td>';
+					html += '<td> <img class="imgs" src="'+data["data"][i]["shop_img"]+'"> </td>';
 					html += '<td>'+data["data"][i]["catedetail"]+'</td>';
 					html += '<td>';
 					html += '<a href="{:url("myhome/catedetailadd")}?id='+data["data"][i]["did"]+' ">编辑</a>';

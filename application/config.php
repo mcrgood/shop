@@ -282,6 +282,7 @@ return [
         'setcookie' => true
     ],
     'view_replace_str' => array(
+        '__UPLOADS__'=> __ROOT__ . '/public/goodsimg',
         '__PUBLIC__' => __ROOT__ . '/public/',
         '__STATIC__' => __ROOT__ . '/public/static',
         '__YUDING__' => __ROOT__ . '/public/static/yuding',

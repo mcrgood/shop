@@ -7,6 +7,7 @@ use think\Db;
 use data\service\Supplier;
 use think\Request;
 use data\service\MyhomeService as MyhomeService;
+use think\Upload;//文件上传
 header("Content-Type: text/html; charset=UTF-8"); //编码
 
 class Myhome extends BaseController
@@ -212,20 +213,22 @@ class Myhome extends BaseController
 		if(request()->isAjax()){
 			$row = input("post.");
 			// dump($row);die;
+			$where['shop_img'] = $row['img'];
 			$where['catedetail'] = $row['catedetail'];
 			$where['cateid'] = $row['listid'];
-			$look = db("ns_shop_usercatedetail")->where($where)->find();
+			// $look = db("ns_shop_usercatedetail")->where($where)->find();
 			if(!$row['catedetail'] || !$row['listid']){
 				$info = [
 					"status" =>0,
 					"msg" =>'请填写必填项！！！'
 				];
-			}else if($look){
-				$info = [
-					"status" =>0,
-					"msg" =>'商家详情名称已存在'
-				];
+			// }else if($look){
+			// 	$info = [
+			// 		"status" =>0,
+			// 		"msg" =>'商家详情名称已存在'
+			// 	];
 			}else{
+				$data['shop_img'] = $row['img'];
 				$data['catedetail'] = $row['catedetail'];
 				$data['cateid'] = $row['listid'];
 				if($row['did']){
@@ -419,8 +422,26 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/jinge");
 	}
 
-
-
+	//图片上传
+	public function ajax_upimg(){
+        // 获取表单上传文件 例如上传了001.jpg
+        $file = request()->file('image');
+        // 移动到框架应用根目录/public/uploads/ 目录下
+        if($file){
+                $info = $file->move(ROOT_PATH . 'public' . DS . 'goodsimg');
+                if($info){
+                        // 成功上传后 获取上传信息
+                        // 输出 jpg
+                        $data['src'] = $info->getSaveName();
+                        $data['status'] = 1;
+                }else{
+                        $data['src'] = '';
+                        $data['status'] = 0;
+                }
+                return json($data);
+                die;
+        }
+	}
 	
 }
 
