@@ -13,12 +13,20 @@
  * @date : 
  * @version : v1.0.0.0
  */
+
 namespace app\shop\controller;
+use think\Cache;
+use think\Cookie;
+use data\service\IpsOnlinePayRequest as IpsOnlinePayRequest;
+use data\service\IpsOnlinePayVerify as IpsOnlinePayVerify;
+use data\service\IpsOnlinePayNotify as IpsOnlinePayNotify;
 use data\service\Log as Log;
 use think\Controller;
 use data\service\CLogFileHandler as CLogFileHandler;
+
 class Fastpay extends BaseController
 {
+
  	//商户号
  	protected $argMerCode = 205754;
 	//商户md5证书
@@ -30,7 +38,6 @@ class Fastpay extends BaseController
     //交易賬戶號
     protected $merAcctNo = 2057540011;
     //异步通知地址
-    //向量:OsoHvrJO密钥:sQ2L6cO0mWJLPpGVc1HJL4zt
     protected $S2Snotify_url = "http://mall.jxqkw8.com/index.php/shop/Fastpay/s2sUrl";
     //用户开户同步返回地址
     protected $pageUrl = "http://mall.jxqkw8.com/index.php/shop/Fastpay/page_url";
@@ -41,25 +48,11 @@ class Fastpay extends BaseController
     //用户提现接口异步通知地址
     protected $withdrawal_s2sUrl = "http://mall.jxqkw8.com/index.php/shop/Fastpay/withdrawals2sUrl";
 
-    //
-    public function __construct(){
-        $this->logs();
+ 
+   
+    public function index(){
+    	return view($this->style . 'Fastpay/index');
     }
-
-    //初始化日志
-    public function logs(){
-        $logHandler= new CLogFileHandler("./logs/".date('Y-m-d'). 'useropen'.'.txt');
-        $log = Log::Init($logHandler, 15);
-    }
-
-
-    public function test(){
-    	$info = file_get_contents("php://input");
-    	$data = simplexml_load_string($info);
-    	dump($info);
-    	dump($data);
-    }
-
 
 	//4.1 用户开户接口
 	public function user_open(){
@@ -74,8 +67,8 @@ class Fastpay extends BaseController
 	    //拼接$ipsRequest
 	    
 	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$openUserReq."</arg3DesXmlPara></ipsRequest>";
-	    Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
-	    Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
+	    // //Log::DEBUG("用户开户请求的参数:" . $openUserReqXml);  //未加密的日志
+	    // //Log::DEBUG("用户开户请求的参数 密文完整:" . $ipsRequest);
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
 	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
@@ -84,8 +77,9 @@ class Fastpay extends BaseController
 	    $xmls = $this->request_post($url,$post_data);
 	    dump($reqIp);
 	    dump($reqDate);
-	    echo "这是明文 ：" . $xmls;die;
+	    echo "这是明文 ：" . $xmls;
 	}
+
 
   	 /**
 	  * post提交
@@ -172,17 +166,10 @@ class Fastpay extends BaseController
 	 }
 	 //用户开户同步返回地址(页面响应地址)
 	 public function page_url(){
-	 	$info = file_get_contents("php://input");
-    	$data = simplexml_load_string($info);
-    	dump($info);
-    	dump($data);
+
 	 }
 	 //用户开户异步返回地址
 	 public function s2sUrl(){
-	 	$info = file_get_contents("php://input");
-    	$data = simplexml_load_string($info);
-    	dump($info);
-    	dump($data);
 
 	 }
 
@@ -198,7 +185,7 @@ class Fastpay extends BaseController
 	     $queryUserReq = $this->encrypt($queryUserReqXml);
 	    //拼接$ipsRequest
 	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$queryUserReq."</arg3DesXmlPara></ipsRequest>";
-	    Log::DEBUG("开户结果查询接口明文:" . $openUserReqXml);  //未加密的日志
+	    //Log::DEBUG("开户结果查询接口明文:" . $openUserReqXml);  //未加密的日志
 	    //ips 易收付地址
 	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/query";
 	    $post_data['ipsRequest']  = $ipsRequest;
@@ -212,7 +199,7 @@ class Fastpay extends BaseController
 	     $body="<body><customerCode>13657085273</customerCode><userName>隔壁老王</userName><identityType></identityType><identityNo></identityNo><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo></mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddr></contactAddr></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
 	     $updateUserInfoReqXml="<?xml version='1.0' encoding='utf-8'?><updateUserInfoReqXml>".$head.$body."</updateUserInfoReqXml>";
-	     Log::DEBUG("开户结果查询接口明文:" . $updateUserInfoReqXml);  //未加密的日志
+	     //Log::DEBUG("开户结果查询接口明文:" . $updateUserInfoReqXml);  //未加密的日志
 	     //加密请求类容
 	     $updateUser = $this->encrypt($updateUserInfoReqXml);
 	    //拼接$ipsRequest
@@ -230,7 +217,7 @@ class Fastpay extends BaseController
 	     $body="<body><customerCode>[string]</customerCode><pageUrl>".$this->updateUser_pageUrl."</pageUrl><s2sUrl></s2sUrl></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
 	     $updateUserReqXml="<?xml version='1.0' encoding='utf-8'?><updateUserReqXml>".$head.$body."</updateUserReqXml>";
-	     Log::DEBUG("开户结果查询接口明文:" . $updateUserReqXml);  //未加密的日志
+	     //Log::DEBUG("开户结果查询接口明文:" . $updateUserReqXml);  //未加密的日志
 	     //加密请求类容
 	     $updateUser = $this->encrypt($updateUserReqXml);
 	    //拼接$ipsRequest
@@ -252,7 +239,7 @@ class Fastpay extends BaseController
 	     $body="<body><merBillNo>[string]</merBillNo><transferType>2</transferType><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>[string]</customerCode><transferAmount>0.11</transferAmount><collectionItemName>测试转账</collectionItemName><remark>客旺旺</remark></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
 	     $transferReqXml="<?xml version='1.0' encoding='utf-8'?><transferReqXml>".$head.$body."</transferReqXml>";
-	     Log::DEBUG("开户结果查询接口明文:" . $transferReqXml);  //未加密的日志
+	     //Log::DEBUG("开户结果查询接口明文:" . $transferReqXml);  //未加密的日志
 	     //加密请求类容
 	     $updateUser = $this->encrypt($transferReqXml);
 	    //拼接$ipsRequest
@@ -270,7 +257,7 @@ class Fastpay extends BaseController
 	     $body="<body><merBillNo>[string]</merBillNo><customerCode>[string]</customerCode><pageUrl>".$this->withdrawal_pageUrl."</pageUrl><s2sUrl>".$this->withdrawal_s2sUrl."</s2sUrl><bankCard>[string]</bankCard><bankCode>[string]</bankCode></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
 	     $withdrawalReqXml="<?xml version='1.0' encoding='utf-8'?><withdrawalReqXml>".$head.$body."</withdrawalReqXml>";
-	     Log::DEBUG("开户结果查询接口明文:" . $withdrawalReqXml);  //未加密的日志
+	     //Log::DEBUG("开户结果查询接口明文:" . $withdrawalReqXml);  //未加密的日志
 	     //加密请求类容
 	     $updateUser = $this->encrypt($withdrawalReqXml);
 	    //拼接$ipsRequest
@@ -298,7 +285,7 @@ class Fastpay extends BaseController
 	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>[string]</customerCode><ordersType></ordersType><merBillNo></merBillNo><ipsBillNo></ipsBillNo><startTime></startTime><endTime></endTime><currrentPage></currrentPage><pageSize></pageSize></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
 	     $queryOrderReqXml="<?xml version='1.0' encoding='utf-8'?><queryOrderReqXml>".$head.$body."</queryOrderReqXml>";
-	     Log::DEBUG("开户结果查询接口明文:" . $queryOrderReqXml);  //未加密的日志
+	     //Log::DEBUG("开户结果查询接口明文:" . $queryOrderReqXml);  //未加密的日志
 	     //加密请求类容
 	     $updateUser = $this->encrypt($queryOrderReqXml);
 	    //拼接$ipsRequest
@@ -364,6 +351,7 @@ class Fastpay extends BaseController
         //dump($response);
         //dump($xml);
     }
+
 
 }
 
