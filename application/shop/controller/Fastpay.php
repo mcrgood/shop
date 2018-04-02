@@ -74,8 +74,8 @@ class Fastpay extends BaseController
 	    // $url = "http://127.0.0.1/shop/index.php/shop/fastpay/test";
 	    $post_data['ipsRequest'] = $ipsRequest;
 
-	   	$this->request_post($url,$post_data);
-
+	   	$xmls = $this->request_post($url,$post_data);
+	   	echo $xmls;
 	}
 
 
