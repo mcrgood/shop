@@ -475,6 +475,17 @@ class Myhome extends BaseController
                 die;
         }
 	}
+
+	//菜单系统 张行飞
+	public function menu(){
+
+		return view($this->style . "Myhome/menu");
+	}
+
+	//新增菜单  张行飞
+	public function menuadd(){
+		return view($this->style . "Myhome/menuadd");
+	}
 	
 }
 

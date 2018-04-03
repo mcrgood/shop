@@ -14,6 +14,9 @@
 </style>
 {/block}
 {block name="main"}
+<div class="options-btn">
+	<button class="btn-common btn-small" onclick="addGoods()">添加商品</button>
+</div>
 <table class="mytable">
 	<tr>
 		<th width="20%">
@@ -27,13 +30,11 @@
 <table class="table-class">
 	<thead>
 		<tr>
-			<th>账号(手机)</th>
-			<th>店铺类型</th>
-			<th>经营范围</th>
-			<th>店铺名称</th>
-			<th>店铺地址</th>
-			<th>店铺电话</th>
-			<th>审核状态</th>
+			<th>菜名</th>
+			<th>图片</th>
+			<th>价格</th>
+			<th>所属分类</th>
+			<th>是否停用</th>
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -60,20 +61,12 @@
 					html += '<tr align="center">';
 					html += '<td>'+ data["data"][i]["iphone"] +'</td>'
 					html += '<td>'+data["data"][i]["leixing"]+'</td>';
-					html += '<td>'+data["data"][i]["business_scope"]+'</td>';
-					html += '<td>'+ data["data"][i]["names"] +'</td>';
 					html += '<td>'+ data["data"][i]["address"] +'</td>';
 					html += '<td>'+ data["data"][i]["tel"] +'</td>';
-					if(data["data"][i]["state"]==0 || data["data"][i]["state"]==null){
-						html += '<td style="color:red">正在审核</td>';
-					}else if(data["data"][i]["state"]==1){
-						html += '<td style="color:blue">已审核</td>';
-					}else if(data["data"][i]["state"]==2){
-						html += '<td style="color:black">重审中</td>';
-					}
+					html += '<td><button>停用</button></td>'
 					html += '<td>';
-					html += '<a href="{:url("myhome/registerdetail")}?id='+data["data"][i]["id"]+' ">查看详情</a>';
-					html += '<a href="{:url("myhome/menu")}?id='+data["data"][i]["id"]+' "><span style="color:green">菜单系统</span></a>';
+					html += '<a href="{:url("myhome/registerdetail")}?id='+data["data"][i]["id"]+' ">编辑</a>';
+					html += '<a href="{:url("myhome/menu")}?id='+data["data"][i]["id"]+' "><span style="color:green">删除</span></a>';
 					html += '</td>';
 					html += '</tr>';
 				}
@@ -90,7 +83,11 @@
 	function searchData(){
 		LoadingInfo(1);
 	}
-	
+
+	//新增菜单
+	function addGoods(){
+		location.href = __URL("ADMIN_MAIN/myhome/menuadd");
+	}
 	
 </script>
 {/block}

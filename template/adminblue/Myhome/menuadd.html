@@ -1,0 +1,116 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+<script src="ADMIN_JS/art_dialog.source.js"></script>
+<script src="ADMIN_JS/iframe_tools.source.js"></script>
+<script src="ADMIN_JS/material_managedialog.js"></script>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__STATIC__/js/ajax_file_upload.js" type="text/javascript"></script>
+<script src="__STATIC__/js/file_upload.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="ADMIN_CSS/defau.css">
+<link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+<style type="text/css">
+.image1111{margin-left: 188px;width: 413px;height: 211px;}
+.error {padding-left: 5px !important;}
+</style>
+{/block}
+{block name="main"}
+<div class="set-style">
+	<dl id="two">
+		<dt><span class="color-red">*</span>店家名字:</dt>
+		<dd>
+			<input id="newcatename" type="text" placeholder="请输入新建分类名称" class="input-common" />
+		</dd>
+	</dl>
+	<dl id="one">
+		<dt><span class="color-red">*</span>商品分类:</dt>
+		<dd>
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>商品名称:</dt>
+		<dd>
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+			<input type="checkbox" value="宫保鸡丁">宫保鸡丁
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>商品价格:</dt>
+		<dd>
+			<input id="catenamedetail" type="text" placeholder="请输入商品分类名称" class="input-common" value="{$row['catedetail']}" />
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red"></span>商品图片可以选择不上传，使用默认图片:</dt><br>
+		<dt><span class="color-red">*</span>商品图片:</dt>
+		<button type="button" class="layui-btn" id="test2" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
+        </button>
+	</dl>
+	<img class="image image1111" src="{$row.shop_img|default=''}" alt="" id="photo1">
+	<input type="hidden" class="hidden" value="{$row.did}">
+	<dl>
+		<dt></dt>
+		<dd><button class="btn-common btn-big">{if $row.did eq true}修&nbsp;&nbsp;改{else if/}新&nbsp;&nbsp;增{/if}</button></dd>
+	</dl>
+</div>
+<script>
+	$(".btn-big").click(function(){
+		var img = $("#photo1").attr('src');
+		var catedetail = $("#catenamedetail").val();
+		var newcatename = $("#newcatename").val();
+		var listid = $(".input-commona").val();
+		var did = $(".hidden").val();
+		var url = "{:url('Myhome/catedetailadd')}";
+		var data = {"catedetail":catedetail,"newcatename":newcatename,"listid":listid,"did":did,"img":img};
+		$.post(url,data,function(res){
+			if(res.status==1){
+                layer.msg(res.msg,{time:1000,icon:6});
+                setTimeout(function(){
+                    location.href="{:url('Myhome/catedetail')}";
+                },1000);
+			}else{
+				layer.msg(res.msg,{time:2000,icon:5});
+			}
+		},'json')
+	})
+	//上传图片
+    layui.use('upload', function(){
+            var upload = layui.upload;
+            //执行实例
+            var uploadInst = upload.render({
+                    elem: "#test2" ,//绑定元素
+                    url: "{:url('Myhome/ajax_upimg')}",//上传接口
+                    field: 'image' ,//允许上传的文件类型
+                    done: function(res){
+                        //上传完毕回调
+                        if(res.status==1){
+                            var photo1 = document.getElementById('photo1');
+                            photo1.src = '__UPLOADS__/'+res.src;
+                        }
+                        layer.closeAll('loading'); //关闭loading
+                    },
+                    error: function(){
+                        //请求异常回调
+                        layer.closeAll('loading'); //关闭loading
+                    }
+            });
+    });
+</script>
+{/block}
