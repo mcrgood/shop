@@ -214,6 +214,61 @@ class Myhome extends Controller
         return view($this->style . 'Myhome/user_open');
     }
 
+    //开户结果查询页面
+    public function user_query(){
+        return view($this->style . 'Myhome/user_query');
+    }
+
+     //开户结果查询API
+    public function user_query_api(){
+        $customerCode = input('post.customerCode');
+        $payment = new EasyPayment();
+        $html_xml = $payment->user_query($customerCode);
+        echo $html_xml;
+    }
+    //用户信息修改接口页面
+    public function updateUserInfo(){
+        return view($this->style . 'Myhome/updateUserInfo');
+    }
+    //用户信息修改接口API
+    public function updateUserInfoApi(){
+        $customerCode = input('post.customerCode');
+        $payment = new EasyPayment();
+        $html_xml = $payment->updateUser($customerCode);
+        echo $html_xml;
+    }
+
+    //转账接口页面
+    public function transfer(){
+        return view($this->style . 'Myhome/transfer');
+    }
+    //转账接口API
+    public function transfer_api(){
+        $customerCode = input('post.customerCode');
+        $transferAmount = input('post.transferAmount');
+        $payment = new EasyPayment();
+        $html_xml = $payment->transfer($customerCode, $transferAmount);
+        echo $html_xml;
+    }
+
+    //用户提现页面
+    public function withdrawal(){
+        return view($this->style . 'Myhome/withdrawal');
+    }
+
+     //用户提现接口API
+    public function withdrawal_api(){
+        $customerCode = input('post.customerCode');
+        $bankCard = input('post.bankCard');
+        $payment = new EasyPayment();
+        $html_xml = $payment->withdrawal($customerCode, $bankCard);
+        echo $html_xml;
+    }
+
+
+
+
+
 
     public function mobile_login()
     {
