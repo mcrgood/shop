@@ -83,18 +83,18 @@ class Myhome extends BaseController
 	}
 
 	//商家分类列表
-	public function goods_index(){
-		if (request()->isAjax()) {
-	            $page_index = request()->post("page_index", 1);
-	            $page_size = request()->post('page_size', PAGESIZE);
-	            $search_text = request()->post('search_text', '');
-	            $condition['catename'] = ['LIKE',"%".$search_text."%"];
-	            $member = new MyhomeService();
-	            $list = $member->getGoodsList($page_index, $page_size, $order = '');
-	            return $list;
-	    }
-		return view($this->style . "Myhome/index");
-	}
+	// public function goods_index(){
+	// 	if (request()->isAjax()) {
+	//             $page_index = request()->post("page_index", 1);
+	//             $page_size = request()->post('page_size', PAGESIZE);
+	//             $search_text = request()->post('search_text', '');
+	//             $condition['catename'] = ['LIKE',"%".$search_text."%"];
+	//             $member = new MyhomeService();
+	//             $list = $member->getGoodsList($page_index, $page_size, $order = '');
+	//             return $list;
+	//     }
+	// 	return view($this->style . "Myhome/index");
+	// }
 
 	//商家商品分类修改添加
 	public function cateadd(){
@@ -207,59 +207,92 @@ class Myhome extends BaseController
 
 	//商品分类详情添加
 	public function catedetailadd(){
-		//查询所有分类
-		$list = db("ns_shop_usercate")->select();
+		$list = db("ns_shop_usercate")->select();//查询所有分类
 		$this->assign("list",$list);
+		$did = input('param.id');
 		if(request()->isAjax()){
 			$row = input("post.");
-			// dump($row);die;
-			$where['shop_img'] = $row['img'];
-			$where['catedetail'] = $row['catedetail'];
-			$where['cateid'] = $row['listid'];
-			// $look = db("ns_shop_usercatedetail")->where($where)->find();
-			if(!$row['catedetail'] || !$row['listid']){
-				$info = [
+			if(empty($row['catedetail']) || empty($row['img'])){//判断必填项
+				return $info = [
 					"status" =>0,
-					"msg" =>'请填写必填项！！！'
+					"msg" =>'请填写必填项或上传图片！！！'
 				];
-			// }else if($look){
-			// 	$info = [
-			// 		"status" =>0,
-			// 		"msg" =>'商家详情名称已存在'
-			// 	];
-			}else{
-				$data['shop_img'] = $row['img'];
-				$data['catedetail'] = $row['catedetail'];
-				$data['cateid'] = $row['listid'];
-				if($row['did']){
-					$editlist = db("ns_shop_usercatedetail")->where(['did' => $row['did']])->update($data);
-					if($editlist){
-						$info = [
+			}
+			$data['shop_img'] = $row['img'];//获取图片
+			$data['catedetail'] = $row['catedetail'];//获取详情
+			$data['cateid'] = $row['listid'];//获取关联id
+			$where['did'] = $row['did'];
+			//新增编辑都存在
+			$look = db("ns_shop_usercate")->where("catename",$row['newcatename'])->find();//判断是否存在分类
+			if($look){
+				return $info = [
+					"status" =>0,
+					"msg" =>'商家分类名重复!!!'
+				];
+			}
+			if($row['did']){//编辑部分
+				if($row['newcatename']){
+					$datas['catename']=$row['newcatename'];
+					$newcatename = db("ns_shop_usercate")->insertGetId($datas);//新增到分类表
+					$data['cateid'] = $newcatename;
+					$editlist = db("ns_shop_usercatedetail")->where($where)->update($data);//修改到详情表
+					if($newcatename&&$editlist){
+						return $info = [
 							"status" =>1,
 							"msg" =>'商家详情修改成功'
 						];
 					}else{
-						$info = [
+						return $info = [
 							"status" =>0,
 							"msg" =>'商家详情修改失败'
 						];
 					}
 				}else{
-					$addlist = db("ns_shop_usercatedetail")->insertGetId($data);
-					if($addlist){
-						$info = [
+					$editlist = db("ns_shop_usercatedetail")->where($where)->update($data);//修改到详情表
+					if($editlist){
+						return $info = [
 							"status" =>1,
-							"msg" =>'商家详情添加成功'
+							"msg" =>'商家详情修改成功'
 						];
 					}else{
-						$info = [
+						return $info = [
 							"status" =>0,
-							"msg" =>'商家详情添加失败'
+							"msg" =>'商家详情修改失败'
+						];
+					}
+				}
+			}else{//新增部分
+				if($row['newcatename']){
+					$datas['catename']=$row['newcatename'];
+					$newcatename = db("ns_shop_usercate")->insertGetId($datas);//新增到分类表
+					$data['cateid'] = $newcatename;
+					$addlist = db("ns_shop_usercatedetail")->insertGetId($data);//新增到详情表
+					if($newcatename&&$addlist){
+						return $info = [
+							"status" =>1,
+							"msg" =>'商家详情新增成功'
+						];
+					}else{
+						return $info = [
+							"status" =>0,
+							"msg" =>'商家详情新增失败'
+						];
+					}
+				}else{
+					$addlist = db("ns_shop_usercatedetail")->insertGetId($data);//新增到详情表
+					if($addlist){
+						return $info = [
+							"status" =>1,
+							"msg" =>'商家详情新增成功'
+						];
+					}else{
+						return $info = [
+							"status" =>0,
+							"msg" =>'商家详情新增失败'
 						];
 					}
 				}
 			}
-			return $info;
 		}else{
 			$did = input("get.id",0);
 			if($did){

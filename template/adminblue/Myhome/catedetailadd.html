@@ -15,17 +15,23 @@
 {/block}
 {block name="main"}
 <div class="set-style">
-	<dl>
+	<dl id="two">
 		<dt><span class="color-red">*</span>商品所属分类:</dt>
 		<dd>
 			<select class="input-common input-commona">
-				<option value="">商家详情必填</option>
+				<option value="0">商家详情必填</option>
 			{volist name="list" id="v"}
 				<option value="{$v.listid}"{eq name="$row.cateid|default=''" value="$v.listid" }selected{/eq}> 
 					{$v.catename}
 				</option>
 			{/volist}
 			</select>
+		</dd>
+	</dl>
+	<dl id="one">
+		<dt><span class="color-red">*</span>新建分类名称:</dt>
+		<dd>
+			<input id="newcatename" type="text" placeholder="请输入新建分类名称" class="input-common" />
 		</dd>
 	</dl>
 	<dl>
@@ -47,13 +53,33 @@
 	</dl>
 </div>
 <script>
+	// 有我没你，有他没我
+	$(".input-commona").change(function(){
+		var cate1 = $(this).val();
+		if(cate1 != 0){
+			$("#one").css("display","none");
+		}else{
+			$("#one").css("display","block");
+		}
+	})
+
+	$("#one input").blur(function(){
+		var input = $("#newcatename").val();
+		if(input !=''){
+			$("#two").css("display","none");
+		}else{
+			$("#two").css("display","block");
+		}
+	})
+	
 	$(".btn-big").click(function(){
 		var img = $("#photo1").attr('src');
 		var catedetail = $("#catenamedetail").val();
+		var newcatename = $("#newcatename").val();
 		var listid = $(".input-commona").val();
 		var did = $(".hidden").val();
 		var url = "{:url('Myhome/catedetailadd')}";
-		var data = {"catedetail":catedetail,"listid":listid,"did":did,"img":img};
+		var data = {"catedetail":catedetail,"newcatename":newcatename,"listid":listid,"did":did,"img":img};
 		$.post(url,data,function(res){
 			if(res.status==1){
                 layer.msg(res.msg,{time:1000,icon:6});
