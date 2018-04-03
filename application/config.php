@@ -186,12 +186,7 @@ return [
     ], // 内置标签库名称(标签使用不必指定标签库名称),以逗号分隔 注意解析顺序
        // 'taglib_pre_load' => 'data\extend\Niu',
        
-    // 视图输出字符串内容替换
-    'view_replace_str' => [
-        '__ROOT__' =>'/',
-        '__INDEX__' =>'/public/static/index',
-        '__PUBLIC__' =>'/public'
-    ],
+
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl' => ROOT_PATH . 'template' . DS . 'success_tmpl.html',
     'dispatch_error_tmpl' => ROOT_PATH . 'template' . DS . 'error_tmpl.html',

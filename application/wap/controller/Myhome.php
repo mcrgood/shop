@@ -7,6 +7,7 @@ use data\service\WebSite;
 use think\Controller;
 use think\Db;
 use think\Session;
+use data\service\EasyPayment as EasyPayment;
 use data\extend\org\wechat\Jssdk;
 use data\extend\chuanglan\ChuanglanSmsApi;
 use \data\extend\QRcode as QRcode;
@@ -197,6 +198,24 @@ class Myhome extends Controller
         $this->assign('qrcode', $qrcode);
         return view($this->style . 'Myhome/qrcode');
     }
+
+    //商家开户调用API
+    public function user_open_api(){
+        $username = input('post.username');
+        $idCard = input('post.idCard');
+        $phone = input('post.phone');
+        $userType = input('post.userType');
+        $payment = new EasyPayment();
+        $html_xml = $payment->user_open($username, $idCard, $phone, $userType);
+        echo $html_xml;
+        
+    }
+    //商家开户页面
+    public function user_open(){
+        return view($this->style . 'Myhome/user_open');
+    }
+
+
     public function mobile_login()
     {
         if (request()->isAjax()) {
