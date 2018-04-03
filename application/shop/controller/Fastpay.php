@@ -59,8 +59,17 @@ class Fastpay extends BaseController
 
 
     //用户提现接口同步返回地址 
-     public function withdrawalPageUrl(){
-    	 
+    public function withdrawalPageUrl(){
+    	$ipsResponse = $_REQUEST['ipsResponse'];
+        $xmlResult = simplexml_load_string($ipsResponse);
+        if($xmlResult->rspCode == 'M999999'){
+            $msg = $xmlResult->rspMsg;
+        }else{
+            $msg = '提现成功';
+        }
+        $this->assign('msg',$msg);
+        $this->assign('result',$xmlResult->rspCode);
+        return view($this->style . 'Fastpay/withdrawalPageUrl');
     }
 
      //用户提现接口异步通知地址 
