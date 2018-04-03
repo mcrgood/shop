@@ -29,7 +29,6 @@ class Onlinepay extends BaseController
     	$this->assign('ipspay_config',$ipspay_config);
     	$s2sUrl = "http://mall.jxqkw8.com/index.php/shop/Onlinepay/s2snotify_url";
     	$this->assign('s2sUrl',$s2sUrl);
-    	dump($this->style);die;
     	return view($this->style . 'Onlinepay/index');
     }
     //扫码支付API

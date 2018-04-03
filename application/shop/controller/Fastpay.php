@@ -30,14 +30,21 @@ class Fastpay extends BaseController
 	 //用户开户同步返回地址(页面响应地址)
 	 public function page_url(){
         $ipsResponse = $_REQUEST['ipsResponse'];
-        $xmlResult = simplexml_load_string($ipsResponse);
-        if($xmlResult->rspCode == 'M999999'){
-            $msg = $xmlResult->rspMsg;
+        if($ipsResponse){
+            $xmlResult = simplexml_load_string($ipsResponse);
+            if($xmlResult->rspCode == 'M999999'){
+                dump($xmlResult->p3DesXmlPara);die;
+                $msg = $xmlResult->rspMsg;
+            }else{
+                $msg = '开户成功';
+            }
+            $this->assign('msg',$msg);
+            $this->assign('result',$xmlResult->rspCode);
         }else{
-            $msg = '开户成功';
+            $redirect = __URL(__URL__.'/wap/myhome/yingshou');
+            $this->redirect($redirect);
         }
-        $this->assign('msg',$msg);
-        $this->assign('result',$xmlResult->rspCode);
+        
         return view($this->style . 'Fastpay/page_url');
 	 }
 	 //用户开户异步返回地址
@@ -61,14 +68,20 @@ class Fastpay extends BaseController
     //用户提现接口同步返回地址 
     public function withdrawalPageUrl(){
     	$ipsResponse = $_REQUEST['ipsResponse'];
-        $xmlResult = simplexml_load_string($ipsResponse);
-        if($xmlResult->rspCode == 'M999999'){
-            $msg = $xmlResult->rspMsg;
+        if($ipsResponse){
+            $xmlResult = simplexml_load_string($ipsResponse);
+            if($xmlResult->rspCode == 'M999999'){
+                $msg = $xmlResult->rspMsg;
+            }else{
+                $msg = '提现成功';
+            }
+            $this->assign('msg',$msg);
+            $this->assign('result',$xmlResult->rspCode);
         }else{
-            $msg = '提现成功';
+            $redirect = __URL(__URL__.'/wap/myhome/yingshou');
+            $this->redirect($redirect);
         }
-        $this->assign('msg',$msg);
-        $this->assign('result',$xmlResult->rspCode);
+        
         return view($this->style . 'Fastpay/withdrawalPageUrl');
     }
 
