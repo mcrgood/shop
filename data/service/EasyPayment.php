@@ -61,7 +61,7 @@ class EasyPayment
 
          //加密请求类容
          $openUserReq = $this->encrypt($openUserReqXml);
-         Log::DEBUG("用户开户请求的参数:" . $openUserReq);  //未加密的日志
+         Log::DEBUG("用户开户请求明文:" . $openUserReq);  //未加密的日志
         //拼接$ipsRequest
         
         $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$openUserReq."</arg3DesXmlPara></ipsRequest>";
@@ -78,6 +78,28 @@ class EasyPayment
     
         return $sHtml;
     }
+
+    //4.2 开户结果查询接口
+    public function user_query($customerCode){
+         $reqIp = request()->ip();   //获取客户端IP
+         $reqDate = date("Y-m-d H:i:s",time());
+         $body="<body><customerCode>".$customerCode."</customerCode></body>";
+         $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
+         $queryUserReqXml="<?xml version='1.0' encoding='utf-8'?><queryUserReqXml>".$head.$body."</queryUserReqXml>";
+         //加密请求类容
+         $queryUserReq = $this->encrypt($queryUserReqXml);
+         Log::DEBUG("开户结果查询接口明文:" . $queryUserReq);  //未加密的日志
+         //拼接$ipsRequest
+         $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$queryUserReq."</arg3DesXmlPara></ipsRequest>";
+         //ips 易收付地址
+         $url = "https://ebp.ips.com.cn/fpms-access/action/user/query";
+         $post_data['ipsRequest']  = $ipsRequest;
+         $this->request_post($url, $post_data);
+    }
+
+
+
+
 
      public function encrypt($input){//数据加密
          $size = mcrypt_get_block_size(MCRYPT_3DES,MCRYPT_MODE_CBC);

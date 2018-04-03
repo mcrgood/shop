@@ -208,7 +208,6 @@ class Myhome extends Controller
         $payment = new EasyPayment();
         $html_xml = $payment->user_open($username, $idCard, $phone, $userType);
         echo $html_xml;
-        
     }
     //商家开户页面
     public function user_open(){

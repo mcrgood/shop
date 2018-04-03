@@ -598,6 +598,7 @@ return [
     
     
     'member_additional_evaluation_commodities' => '对商品进行追加评价',
+    'back_myhome' => '返回商家页面',
     'member_return'                  => '返',
     'member_go_back'                 => '回',
     'member_evaluation_information'  => '评价信息最多填写150字，请您根据本次交易，给予真实、客观地评价；您的评价将是其他会员的参考。',

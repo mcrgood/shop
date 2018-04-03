@@ -26,16 +26,19 @@ use data\service\CLogFileHandler as CLogFileHandler;
 
 class Fastpay extends BaseController
 {
-	
-    public function index(){
-    	return view($this->style . 'Fastpay/index');
-    }
-
+    
 	 //用户开户同步返回地址(页面响应地址)
 	 public function page_url(){
         $ipsResponse = $_REQUEST['ipsResponse'];
-        dump($ipsResponse);
-
+        $xmlResult = simplexml_load_string($ipsResponse);
+        if($xmlResult->rspCode == 'M999999'){
+            $msg = $xmlResult->rspMsg;
+        }else{
+            $msg = '开户成功';
+        }
+        $this->assign('msg',$msg);
+        $this->assign('result',$xmlResult->rspCode);
+        return view($this->style . 'Fastpay/page_url');
 	 }
 	 //用户开户异步返回地址
 	 public function s2sUrl(){
@@ -43,27 +46,11 @@ class Fastpay extends BaseController
 	 }
 
 
-    //4.2 开户结果查询接口
-    public function user_query(){
-    	 $reqIp = request()->ip();   //获取客户端IP
-		 $reqDate = date("Y-m-d H:i:s",time());
-	     $body="<body><customerCode>13657085273</customerCode></body>";
-	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
-	     $queryUserReqXml="<?xml version='1.0' encoding='utf-8'?><queryUserReqXml>".$head.$body."</queryUserReqXml>";
-	     //加密请求类容
-	     $queryUserReq = $this->encrypt($queryUserReqXml);
-	    //拼接$ipsRequest
-	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$queryUserReq."</arg3DesXmlPara></ipsRequest>";
-	    //Log::DEBUG("开户结果查询接口明文:" . $openUserReqXml);  //未加密的日志
-	    //ips 易收付地址
-	    $url = "https://ebp.ips.com.cn/fpms-access/action/user/query";
-	    $post_data['ipsRequest']  = $ipsRequest;
-	    $this->request_post($url, $post_data);
-    }
+
 
     //4.3 用户信息修改接口（后台调用）
     public function updateUserInfo(){
-    	$reqIp = request()->ip();   //获取客户端IP
+    	 $reqIp = request()->ip();   //获取客户端IP
 		 $reqDate = date("Y-m-d H:i:s",time());
 	     $body="<body><customerCode>13657085273</customerCode><userName>隔壁老王</userName><identityType></identityType><identityNo></identityNo><legalName></legalName><legalCardNo></legalCardNo><mobiePhoneNo></mobiePhoneNo><telPhoneNo></telPhoneNo><email></email><contactAddr></contactAddr></body>";
 	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
