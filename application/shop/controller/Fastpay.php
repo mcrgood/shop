@@ -33,7 +33,11 @@ class Fastpay extends BaseController
         if($ipsResponse){
             $xmlResult = simplexml_load_string($ipsResponse);
             if($xmlResult->rspCode == 'M999999'){
-                dump($xmlResult->p3DesXmlPara);die;
+                $openUserRespXml = $this->decrypt($xmlResult->p3DesXmlPara);
+                dump($openUserRespXml);
+                dump($openUserRespXml->head);
+                dump($openUserRespXml->body);
+                die;
                 $msg = $xmlResult->rspMsg;
             }else{
                 $msg = '开户成功';
@@ -108,61 +112,20 @@ class Fastpay extends BaseController
 	    $this->request_post($url, $post_data);
     }
 
+    public function decrypt($encrypted){//数据解密
+         $encrypted = base64_decode($encrypted);
+         $key = str_pad($this->key,24,'0');
+         $td = mcrypt_module_open(MCRYPT_3DES,'',MCRYPT_MODE_CBC,'');
+         $iv = $this->iv;
+         $ks = mcrypt_enc_get_key_size($td);
+         @mcrypt_generic_init($td, $key, $iv);
+         $decrypted = mdecrypt_generic($td, $encrypted);
+         mcrypt_generic_deinit($td);
+         mcrypt_module_close($td);
+         $y=$this->pkcs5_unpad($decrypted);
+         return $y;
+     }
 
-    public function test1()
-    {
-
-        $reqIp = request()->ip();  //获取客户端IP
-        $reqDate = date("Y-m-d H:i:s",time());
-        $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><userType>2</userType><customerCode>13657085273</customerCode><identityType>1</identityType><identityNo>52212619930930551X</identityNo><userName>隔壁老王</userName><mobiePhoneNo>13657085273</mobiePhoneNo><pageUrl>".$this->pageUrl."</pageUrl><s2sUrl>".$this->S2Snotify_url."</s2sUrl><ipsUserName>13657085273</ipsUserName></body>";
-        $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".md5($body.$this->MerCret)."</signature></head>";
-        $openUserReqXml="<?xml version='1.0' encoding='utf-8'?><openUserReqXml>".$head.$body."</openUserReqXml>";
-        //加密请求类容
-        $transferReq = $this->encrypt($openUserReqXml);
-        //拼接$ipsRequest
-
-        $ipsRequest = "<?xml version='1.0' encoding='utf-8'?><ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$transferReq."</arg3DesXmlPara></ipsRequest>";
-
-
-        $post_data = $ipsRequest;
-        $header[] = "Content-type: text/xml;charset=utf-8";//定义content-type为xml
-        /*$post_data = '<?xml version="1.0" encoding="UTF-8"?>';
-        $post_data .= '<param>';
-        $post_data .= '<siteId>' . 123 . '</siteId>';
-        $post_data .= '<mtgTitle>' . 测试数据 . '</mtgTitle>';
-        $post_data .= '<startTime>' . 2016-10-30 18:08:30 . '</startTime>';
-        $post_data .= '<endTime>' . 2016-10-30 19:08:30 . '</endTime>';
-        $post_data .= '</param>';*/
-        //  dump($post_data);
-
-
-        /*dump($xml);
-        echo "<meta charset=\"UTF-8\">";
-        echo "<h3>发送</h3>";
-        dump($xml);*/
-        $url = "https://ebp.ips.com.cn/fpms-access/action/user/open";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // post数据
-        curl_setopt($ch, CURLOPT_POST, 1);
-        // post的变量
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $response = curl_exec($ch);
-        $aStatus = curl_getinfo($ch);
-        if (curl_errno($ch)) {
-            print curl_error($ch);
-        }
-        curl_close($ch);
-        echo $response;
-        //$xml = simplexml_load_string($response);
-        echo "<h3>接收</h3>";
-        //dump($response);
-        //dump($xml);
-    }
 
 
 }
