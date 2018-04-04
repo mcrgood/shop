@@ -36,6 +36,7 @@
 		<tr>
 			<th>ID</th>
 			<th>所属分类</th>
+			<th>标准价格</th>
 			<th>菜谱图片</th>
 			<th>分类详情名字</th>
 			<th>操作</th>
@@ -65,6 +66,7 @@
 					html += '<tr align="center">';
 					html += '<td>'+ data["data"][i]["did"] +'</td>';
 					html += '<td>'+data["data"][i]["catename"]+'</td>';
+					html += '<td>'+data["data"][i]["goodsprice"]+'</td>';
 					html += '<td> <img class="imgs" src="'+data["data"][i]["shop_img"]+'"> </td>';
 					html += '<td>'+data["data"][i]["catedetail"]+'</td>';
 					html += '<td>';

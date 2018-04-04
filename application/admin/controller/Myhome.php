@@ -219,6 +219,7 @@ class Myhome extends BaseController
 				];
 			}
 			$data['shop_img'] = $row['img'];//获取图片
+			$data['goodsprice'] = $row['goodsprice'];//获取标价
 			$data['catedetail'] = $row['catedetail'];//获取详情
 			$data['cateid'] = $row['listid'];//获取关联id
 			$where['did'] = $row['did'];
@@ -478,14 +479,157 @@ class Myhome extends BaseController
 
 	//菜单系统 张行飞
 	public function menu(){
-
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $id = request()->post('id', '');
+            $condition['a.goodsname'] = ['LIKE',"%".$search_text."%"];
+            $condition['a.userid'] = $id;
+            $member = new MyhomeService();
+            $list = $member->getMenulist($page_index, $page_size, $condition, $order = '');
+            return $list;
+	    }
 		return view($this->style . "Myhome/menu");
 	}
 
 	//新增菜单  张行飞
 	public function menuadd(){
+		//获取商家店名id
+		$id = input("get.id");
+		$dianname = db("ns_shop_message")->where("id",$id)->value("names");
+		//获取商品名称
+		$goodsname = db("ns_shop_usercatedetail")->select();
+		$this->assign("dianname",$dianname);
+		$this->assign("goodsname",$goodsname);
+		if(request()->isAjax()){
+			$para = input("post.");
+			if(empty($para['ids'])){
+				$info = [
+					'status' => 0,
+					'msg' =>'勾选需要的商品按钮！！！'
+				];
+			}else{
+				foreach($para['ids'] as $k => $v){
+					$row = db('ns_shop_usercatedetail')->where('did',$v)->find();
+					$data['goodsimg'] = $row['shop_img'];
+					$data['goodsprice'] = $row['goodsprice'];
+					$data['cateid'] = $row['cateid'];
+					$data['goodsname'] = $row['catedetail'];
+					$data['userid'] = $para['userid'];
+					$data['goodsid'] = $v;
+					$res = db('ns_shop_menu')->insertGetId($data);
+				}
+				if($res){
+					$info = [
+						'status' => 1,
+						'msg' =>'新增成功'
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>'新增失败'
+					];
+				}
+			}
+			return $info;
+		}
 		return view($this->style . "Myhome/menuadd");
 	}
-	
+
+	//停用和启用 张行飞
+	public function stop(){
+		if(request()->isAjax()){
+			$menuid = input("param.menuid");
+			$row = db("ns_shop_menu")->where("menuid",$menuid)->value("status");
+			if($row){
+				$data["status"] = 0;
+				$stop = db("ns_shop_menu")->where("menuid",$menuid)->update($data);
+				if($stop){
+					$info = [
+						'status' => 3,
+						'text' =>'已停用',
+						'cssa' =>'red',
+						'msg' =>"停用成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"停用失败"
+					];
+				}
+			}else{
+				$data["status"] = 1;
+				$qiyong = db("ns_shop_menu")->where("menuid",$menuid)->update($data);
+				if($qiyong){
+					$info = [
+						'status' => 1,
+						'text' =>'已启用',
+						'cssa' =>'green',
+						'msg' =>"启用成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"启用失败"
+					];
+				}
+			}
+			return $info;
+		}
+	}
+	//编辑菜单价格图片名称
+	public function menuEdit(){
+		$id = input("get.id");//获取商品id
+		$row = db("ns_shop_menu")->alias("a")->join("ns_shop_usercate m","a.cateid = m.listid",'left')->field('a.*,m.catename')->where("menuid",$id)->find();
+		$this->assign("row",$row);
+		if(request()->isAjax()){
+			$ids = input("param.");
+			$where['menuid'] = $ids['id'];
+			$data['goodsname'] = $ids['goodsname'];
+			$data['goodsprice'] = $ids['goodsprice'];
+			$data['goodsimg'] = $ids['img'];
+			$row = db("ns_shop_menu")->where($where)->update($data);
+			if($row){
+				$info = [
+					'status' => 1,
+					'msg' =>"更新菜单成功"
+				];
+			}else{
+				$info = [
+					'status' => 0,
+					'msg' =>"更新菜单失败"
+				];
+			}
+			return $info;
+		}
+		return view($this->style . "Myhome/menuedit");
+	}
+	//删除菜名
+	public function goodsDel(){
+		if(request()->isAjax()){
+			$id = input("post.menuid");
+			if($id){
+				$row = db("ns_shop_menu")->delete($id);
+				if($row){
+					$info = [
+						'status' => 1,
+						'msg' =>"删除成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"删除失败"
+					];
+				}
+			}else{
+				$info = [
+					'status' => 0,
+					'msg' =>"未获取删除信息"
+				];
+			}
+		}
+		return $info;
+	}
 }
 

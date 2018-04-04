@@ -28,6 +28,7 @@ use data\model\NsParternListModel as NsParternListModel;
 use data\model\NsWwbListModel as NsWwbListModel;
 use data\model\NsGoodsCateList as NsGoodsCateList;
 use data\model\NsGoodsCateListdetail as NsGoodsCateListdetail;
+use data\model\NsMenulist as NsMenulist;
 
 class MyhomeService extends BaseService{
 
@@ -157,4 +158,12 @@ class MyhomeService extends BaseService{
         // }
         return $result;
     }   
+
+    //菜单首页管理 张行飞
+    public function getMenulist($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsMenulist();
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        return $result;
+    }
 }

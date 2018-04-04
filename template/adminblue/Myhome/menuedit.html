@@ -15,83 +15,52 @@
 {/block}
 {block name="main"}
 <div class="set-style">
-	<dl id="two">
-		<dt><span class="color-red">*</span>商品所属分类:</dt>
+	<dl id="one">
+		<dt><span class="color-red">*</span>商品分类:</dt>
 		<dd>
-			<select class="input-common input-commona">
-				<option value="0">商家详情必填</option>
-			{volist name="list" id="v"}
-				<option value="{$v.listid}"{eq name="$row.cateid|default=''" value="$v.listid" }selected{/eq}> 
-					{$v.catename}
-				</option>
-			{/volist}
-			</select>
+			<input type="text"class="input-common" value="{$row.catename}" disabled="disabled" />
 		</dd>
 	</dl>
 	<dl id="one">
-		<dt><span class="color-red">*</span>新建分类名称:</dt>
+		<dt><span class="color-red">*</span>商品名称:</dt>
 		<dd>
-			<input id="newcatename" type="text" placeholder="请输入新建分类名称" class="input-common" />
+			<input id="goodsname" type="text" placeholder="请输入新建分类名称" class="input-common" value="{$row.goodsname}" />
 		</dd>
 	</dl>
 	<dl>
-		<dt><span class="color-red">*</span>商品详情名称:</dt>
-		<dd>
-			<input id="catenamedetail" type="text" placeholder="请输入商品分类名称" class="input-common" value="{$row['catedetail']}" />
-		</dd>
+		<dt><span class="color-red">*</span>商品图片:</dt>
+		<button type="button" class="layui-btn" id="test2" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
+        </button>
 	</dl>
+	{if $row.goodsimg  eq true}
+	<img class="image image1111" src="{$row.goodsimg|default=''}" alt="" id="photo1">
+	{/if}
 	<dl>
-		<dt><span class="color-red">*</span>商品标准价格:</dt>
+		<dt><span class="color-red">*</span>商品价格:</dt>
 		<dd>
 			<input id="goodsprice" type="text" placeholder="请输入商品分类名称" class="input-common" value="{$row['goodsprice']}" />
 		</dd>
 	</dl>
-	<dl>
-		<dt><span class="color-red">*</span>商品详情图片:</dt>
-		<button type="button" class="layui-btn" id="test2" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
-        </button>
-	</dl>
-	<img class="image image1111" src="{$row.shop_img|default=''}" alt="" id="photo1">
 	<input type="hidden" class="hidden" value="{$row.did}">
 	<dl>
 		<dt></dt>
-		<dd><button class="btn-common btn-big">{if $row.did eq true}修&nbsp;&nbsp;改{else if/}新&nbsp;&nbsp;增{/if}</button></dd>
+		<dd><button class="btn-common btn-big">修改</button></dd>
 	</dl>
 </div>
 <script>
-	// 有我没你，有他没我
-	$(".input-commona").change(function(){
-		var cate1 = $(this).val();
-		if(cate1 != 0){
-			$("#one").css("display","none");
-		}else{
-			$("#one").css("display","block");
-		}
-	})
-
-	$("#one input").blur(function(){
-		var input = $("#newcatename").val();
-		if(input !=''){
-			$("#two").css("display","none");
-		}else{
-			$("#two").css("display","block");
-		}
-	})
-	
 	$(".btn-big").click(function(){
+		var id = "{$Request.param.id}";
+		var userid = "{$Request.param.userid}";
 		var img = $("#photo1").attr('src');
-		var catedetail = $("#catenamedetail").val();
 		var goodsprice = $("#goodsprice").val();
-		var newcatename = $("#newcatename").val();
-		var listid = $(".input-commona").val();
-		var did = $(".hidden").val();
-		var url = "{:url('Myhome/catedetailadd')}";
-		var data = {"catedetail":catedetail,"newcatename":newcatename,"listid":listid,"did":did,"img":img,"goodsprice":goodsprice};
+		var goodsname = $("#goodsname").val();
+		var url = "{:url('Myhome/menuedit')}";
+		var data = {"goodsprice":goodsprice,"goodsname":goodsname,"img":img,"id":id};
 		$.post(url,data,function(res){
 			if(res.status==1){
                 layer.msg(res.msg,{time:1000,icon:6});
                 setTimeout(function(){
-                    location.href="{:url('Myhome/catedetail')}";
+                    location.href="{:url('Myhome/menu')}?id="+userid;
                 },1000);
 			}else{
 				layer.msg(res.msg,{time:2000,icon:5});
