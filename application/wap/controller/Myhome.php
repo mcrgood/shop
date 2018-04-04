@@ -201,15 +201,16 @@ class Myhome extends Controller
 
     //商家开户调用API（个人和企业）
     public function user_open_api(){
+        $userid = $this->business_id;  //商户登录ID
         $username = input('post.username');
         $idCard = input('post.idCard');
         $phone = input('post.phone');
         $userType = input('post.userType');
         $payment = new EasyPayment();
-        $html_xml = $payment->user_open($username, $idCard, $phone, $userType);
+        $html_xml = $payment->user_open($username, $idCard, $phone, $userType, $userid);
         echo $html_xml;
     }
-    
+
     //商家开户页面（个人）
     public function user_open(){
         return view($this->style . 'Myhome/user_open');

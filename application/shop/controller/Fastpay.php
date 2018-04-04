@@ -34,12 +34,16 @@ class Fastpay extends BaseController
         $ipsResponse = $_REQUEST['ipsResponse'];
         if($ipsResponse){
             $xmlResult = simplexml_load_string($ipsResponse);
+                $respXml = $payment->decrypt($xmlResult->p3DesXmlPara);
+                $data['idcard'] = $respXml->openUserRespXml->body->identityNo;
+                $data['username'] = $respXml->openUserRespXml->body->userName;
+                $data['phone'] = $respXml->openUserRespXml->body->mobiePhoneNo;
+                $data['userType'] = $respXml->openUserRespXml->body->userType;
+                $data['customerCode'] = $respXml->openUserRespXml->body->customerCode;
+                $data['userid'] = $respXml->openUserRespXml->body->remark;
+                db('ns_business_open')->insert($data);
             if($xmlResult->rspCode == 'M999999'){
-                $openUserRespXml = $payment->decrypt($xmlResult->p3DesXmlPara);
-                dump($openUserRespXml);
-                dump($openUserRespXml->head);
-                dump($openUserRespXml->body);
-                die;
+                
                 $msg = $xmlResult->rspMsg;
             }else{
                 $msg = '开户成功';
@@ -58,8 +62,6 @@ class Fastpay extends BaseController
 
 	 }
 
-
-  
 
     //用户信息修改接口同步返回地址
     public function updateUserPageUrl(){
