@@ -278,6 +278,21 @@ class Myhome extends Controller
         $html_xml = $payment->withdrawal($customerCode, $bankCard);
         echo $html_xml;
     }
+    //用户查询账单页面
+    public function queryOrdersList(){
+        return view($this->style . 'Myhome/queryOrdersList');
+    }
+
+    //用户查询账单接口API
+    public function queryOrdersList_api(){
+        $customerCode = input('post.customerCode');
+        $ordersType = input('post.ordersType');
+        $startTime = input('post.startTime');
+        $endTime = input('post.endTime');
+        $payment = new EasyPayment();
+        $html_xml = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime);
+        echo $html_xml;
+    }
 
 
 

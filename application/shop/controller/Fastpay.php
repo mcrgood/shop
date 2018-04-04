@@ -33,9 +33,12 @@ class Fastpay extends BaseController
         $payment = new EasyPayment();
         $ipsResponse = $_REQUEST['ipsResponse'];
         if($ipsResponse){
+            dump($ipsResponse);
             $xmlResult = simplexml_load_string($ipsResponse);
+            dump($xmlResult);
                 $respXml = $payment->decrypt($xmlResult->p3DesXmlPara);
-                dump($respXml->openUserRespXml);die;
+                $responseXml = simplexml_load_string($respXml);
+                dump($responseXml);die;
                 // $data['idcard'] = $respXml->openUserRespXml->body->identityNo;
                 // $data['username'] = $respXml->openUserRespXml->body->userName;
                 // $data['phone'] = $respXml->openUserRespXml->body->mobiePhoneNo;
@@ -99,23 +102,7 @@ class Fastpay extends BaseController
     	 
     }
 
-    //4.8 订单查询接口
-    public function queryOrdersList(){
-    	 $reqIp = request()->ip();   //获取客户端IP
-		 $reqDate = date("Y-m-d H:i:s",time());
-	     $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>[string]</customerCode><ordersType></ordersType><merBillNo></merBillNo><ipsBillNo></ipsBillNo><startTime></startTime><endTime></endTime><currrentPage></currrentPage><pageSize></pageSize></body>";
-	     $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
-	     $queryOrderReqXml="<?xml version='1.0' encoding='utf-8'?><queryOrderReqXml>".$head.$body."</queryOrderReqXml>";
-	     //Log::DEBUG("开户结果查询接口明文:" . $queryOrderReqXml);  //未加密的日志
-	     //加密请求类容
-	     $updateUser = $this->encrypt($queryOrderReqXml);
-	    //拼接$ipsRequest
-	    $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$updateUser."</arg3DesXmlPara></ipsRequest>";
-	    //ips 易收付地址
-	    $url = "https://ebp.ips.com.cn/fpms-access/action/trade/queryOrdersList";
-	    $post_data['ipsRequest']  = $ipsRequest;
-	    $this->request_post($url, $post_data);
-    }
+
 
 
 

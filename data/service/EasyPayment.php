@@ -178,6 +178,31 @@ class EasyPayment
          return $sHtml;
     }
 
+    //4.8 订单查询接口
+    public function queryOrdersList($customerCode, $ordersType, $startTime, $endTime){
+         $reqIp = request()->ip();   //获取客户端IP
+         $reqDate = date("Y-m-d H:i:s",time());
+         $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>".$customerCode."</customerCode><ordersType>".$ordersType."</ordersType><merBillNo></merBillNo><ipsBillNo></ipsBillNo><startTime>".$startTime."</startTime><endTime>".$endTime."</endTime><currrentPage></currrentPage><pageSize></pageSize></body>";
+         $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
+         $queryOrderReqXml="<?xml version='1.0' encoding='utf-8'?><queryOrderReqXml>".$head.$body."</queryOrderReqXml>";
+         Log::DEBUG("订单查询接口明文:" . $queryOrderReqXml);  //未加密的日志
+         //加密请求类容
+         $updateUser = $this->encrypt($queryOrderReqXml);
+        //拼接$ipsRequest
+        $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$updateUser."</arg3DesXmlPara></ipsRequest>";
+        //ips 易收付地址
+        $url = "https://ebp.ips.com.cn/fpms-access/action/trade/queryOrdersList";
+         $sHtml = "<form id='ipspaysubmit' name='ipspaysubmit' method='post' action='".$url."'>";
+         
+         $sHtml.= "<input type='hidden' name='ipsRequest' value='".$ipsRequest."'/>";
+         
+         $sHtml = $sHtml."<input type='submit' style='display:none;'></form>";
+    
+         $sHtml = $sHtml."<script>document.forms['ipspaysubmit'].submit();</script>";
+    
+         return $sHtml;
+    }
+
 
 
 
