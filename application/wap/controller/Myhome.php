@@ -296,9 +296,10 @@ class Myhome extends Controller
         $result = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime);
         dump($result);
     }
-
-
-
+    //账单详情页面
+    public function deal(){
+        return view($this->style . 'Myhome/deal');
+    }
 
 
 
