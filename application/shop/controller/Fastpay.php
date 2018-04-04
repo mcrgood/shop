@@ -33,21 +33,17 @@ class Fastpay extends BaseController
         $payment = new EasyPayment();
         $ipsResponse = $_REQUEST['ipsResponse'];
         if($ipsResponse){
-            dump($ipsResponse);
-            $xmlResult = simplexml_load_string($ipsResponse);
-            dump($xmlResult);
+                $xmlResult = simplexml_load_string($ipsResponse);
                 $respXml = $payment->decrypt($xmlResult->p3DesXmlPara);
                 $responseXml = simplexml_load_string($respXml);
-                dump($responseXml);die;
-                // $data['idcard'] = $respXml->openUserRespXml->body->identityNo;
-                // $data['username'] = $respXml->openUserRespXml->body->userName;
-                // $data['phone'] = $respXml->openUserRespXml->body->mobiePhoneNo;
-                // $data['userType'] = $respXml->openUserRespXml->body->userType;
-                // $data['customerCode'] = $respXml->openUserRespXml->body->customerCode;
-                // $data['userid'] = $respXml->openUserRespXml->body->remark;
-                // db('ns_business_open')->insert($data);
+                $data['idcard'] = $responseXml->body->identityNo;
+                $data['username'] = $responseXml->body->userName;
+                $data['phone'] = $responseXml->body->mobiePhoneNo;
+                $data['userType'] = $responseXml->body->userType;
+                $data['customerCode'] = $responseXml->body->customerCode;
+                $data['userid'] = $responseXml->body->remark;
+                db('ns_business_open')->insert($data);
             if($xmlResult->rspCode == 'M999999'){
-                
                 $msg = $xmlResult->rspMsg;
             }else{
                 $msg = '开户成功';

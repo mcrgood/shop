@@ -290,8 +290,8 @@ class Myhome extends Controller
         $startTime = input('post.startTime');
         $endTime = input('post.endTime');
         $payment = new EasyPayment();
-        $html_xml = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime);
-        echo $html_xml;
+        $result = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime);
+        dump($result);
     }
 
 

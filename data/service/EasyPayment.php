@@ -192,15 +192,26 @@ class EasyPayment
         $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$updateUser."</arg3DesXmlPara></ipsRequest>";
         //ips 易收付地址
         $url = "https://ebp.ips.com.cn/fpms-access/action/trade/queryOrdersList";
-         $sHtml = "<form id='ipspaysubmit' name='ipspaysubmit' method='post' action='".$url."'>";
-         
-         $sHtml.= "<input type='hidden' name='ipsRequest' value='".$ipsRequest."'/>";
-         
-         $sHtml = $sHtml."<input type='submit' style='display:none;'></form>";
-    
-         $sHtml = $sHtml."<script>document.forms['ipspaysubmit'].submit();</script>";
-    
-         return $sHtml;
+        $post_data['ipsRequest']  = $ipsRequest;
+        $responsexml = $this->request_post($url, $post_data);
+        dump($responsexml);
+        $resXml = simplexml_load_string($responsexml);
+        dump($resXml);
+        if($resXml->rspCode == 'M999999'){ //请求失败，有错误信息
+            $info = [
+                'rspCode' => $resXml->rspCode,
+                'rspMsg' =>$resXml->rspMsg
+            ];
+        }else{ //请求成功
+            
+            $result = $this->decrypt($resXml->p3DesXmlPara);
+            $resultXml = simplexml_load_string($result);
+            $info = [
+                'rspCode' => $resXml->rspCode,
+                'rspMsg' =>$resXml->rspMsg
+            ];
+        }
+        return $info;    
     }
 
 
@@ -278,7 +289,7 @@ class EasyPayment
         $ch = curl_init();//初始化curl
         curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
         curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 0);//要求结果为字符串且输出到屏幕上
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
         curl_setopt($ch, CURLOPT_POST, 1);//post提交方式
         curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
         $data = curl_exec($ch);//运行curl
