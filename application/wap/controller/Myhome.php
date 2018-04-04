@@ -262,6 +262,11 @@ class Myhome extends Controller
 
     //用户提现页面
     public function withdrawal(){
+        $userid = $this->business_id;
+        $customerCode = db('ns_business_open')->where('userid',$userid)->value('customerCode');
+        $yhk_num = db('ns_shop_message')->where('userid',$userid)->value('yhk_num');
+        $this->assign('customerCode',$customerCode);
+        $this->assign('yhk_num',$yhk_num);
         return view($this->style . 'Myhome/withdrawal');
     }
 
@@ -456,9 +461,16 @@ class Myhome extends Controller
     //隐藏页面
     public function yincan(){
         $this->check_login();
-
-        $where['userid'] = $this->business_id;
-        $result = db("ns_shop_message")->where($where)->select();
+        $userid = $this->business_id;
+        $row = db('ns_business_open')->where('userid',$userid)->find();
+        if($row){
+            $this->assign('customerCode', $row['customerCode']);
+            $business = 1;  //已经开户
+        }else{
+            $business = 0;  //未开户
+        }
+        $this->assign('business', $business);
+        $result = db("ns_shop_message")->where('userid',$userid)->select();
         if ($result) {
             $state = $result[0]['state'];
             $beizhu = $result[0]['beizhu'];
@@ -472,6 +484,7 @@ class Myhome extends Controller
         $this->assign('phone',$this->mobile);
         return view($this->style . 'Myhome/yincan');
     }
+
     public function jinge(){
         $this->check_login();
         return view($this->style . 'Myhome/jinge');

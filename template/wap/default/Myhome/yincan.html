@@ -94,8 +94,12 @@
 			<li class="lis">
 				<h2>账户管理<span>></span></h2>
 				<ul>
+				{if $business == 0}
 					<li><a href="{:__URL('APP_MAIN/Myhome/user_open')}">商家开户（个人）</a></li>
-					<!-- <li><a href="javascript:;">商家开户（企业）</a></li> -->
+					<li><a href="javascript:;">商家开户（企业）</a></li>
+				{else/}	
+					<li><a href="javascript:;">您的客户号：{$customerCode}</a></li>
+				{/if}	
 					<li><a href="{:__URL('APP_MAIN/Myhome/withdrawal')}">我要提现</a></li>
 				</ul>
 			</li>
