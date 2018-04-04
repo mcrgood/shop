@@ -199,7 +199,7 @@ class Myhome extends Controller
         return view($this->style . 'Myhome/qrcode');
     }
 
-    //商家开户调用API
+    //商家开户调用API（个人和企业）
     public function user_open_api(){
         $username = input('post.username');
         $idCard = input('post.idCard');
@@ -209,10 +209,18 @@ class Myhome extends Controller
         $html_xml = $payment->user_open($username, $idCard, $phone, $userType);
         echo $html_xml;
     }
-    //商家开户页面
+    
+    //商家开户页面（个人）
     public function user_open(){
         return view($this->style . 'Myhome/user_open');
     }
+
+
+    //商家开户页面（企业）
+    public function user_open_bus(){
+        return view($this->style . 'Myhome/user_open_bus');
+    }
+
 
     //开户结果查询页面
     public function user_query(){

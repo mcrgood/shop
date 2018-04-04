@@ -21,6 +21,7 @@ use data\service\IpsOnlinePayRequest as IpsOnlinePayRequest;
 use data\service\IpsOnlinePayVerify as IpsOnlinePayVerify;
 use data\service\IpsOnlinePayNotify as IpsOnlinePayNotify;
 use data\service\Log as Log;
+use data\service\EasyPayment as EasyPayment;
 use think\Controller;
 use data\service\CLogFileHandler as CLogFileHandler;
 
@@ -29,11 +30,12 @@ class Fastpay extends BaseController
     
 	 //用户开户同步返回地址(页面响应地址)
 	 public function page_url(){
+        $payment = new EasyPayment();
         $ipsResponse = $_REQUEST['ipsResponse'];
         if($ipsResponse){
             $xmlResult = simplexml_load_string($ipsResponse);
             if($xmlResult->rspCode == 'M999999'){
-                $openUserRespXml = $this->decrypt($xmlResult->p3DesXmlPara);
+                $openUserRespXml = $payment->decrypt($xmlResult->p3DesXmlPara);
                 dump($openUserRespXml);
                 dump($openUserRespXml->head);
                 dump($openUserRespXml->body);
@@ -112,19 +114,7 @@ class Fastpay extends BaseController
 	    $this->request_post($url, $post_data);
     }
 
-    public function decrypt($encrypted){//数据解密
-         $encrypted = base64_decode($encrypted);
-         $key = str_pad($this->key,24,'0');
-         $td = mcrypt_module_open(MCRYPT_3DES,'',MCRYPT_MODE_CBC,'');
-         $iv = $this->iv;
-         $ks = mcrypt_enc_get_key_size($td);
-         @mcrypt_generic_init($td, $key, $iv);
-         $decrypted = mdecrypt_generic($td, $encrypted);
-         mcrypt_generic_deinit($td);
-         mcrypt_module_close($td);
-         $y=$this->pkcs5_unpad($decrypted);
-         return $y;
-     }
+
 
 
 

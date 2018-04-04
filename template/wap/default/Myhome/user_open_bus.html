@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>商家开户(个人)</title>
+<title>商家开户(企业)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -112,15 +112,15 @@ $(function(){
 </head>
 <body>
   <div class="big">
-  	<h3>商家开户信息(个人)</h3>
+  	<h3>商家开户信息(企业)</h3>
   	<div class="content">
   		<form method="post" action="{:url('Myhome/user_open_api')}">
-  			<span>姓&nbsp;&nbsp;&nbsp;&nbsp;名:<input type="text" name="username" class="username" placeholder="请输入姓名"/></span>
+  			<span>企业名称:<input type="text" name="username" class="username" placeholder="请输入姓名"/></span>
   			<span>身份证号:<input type="text" placeholder="请输入身份证号" class="idCard" name="idCard"/></span>
   			<span>手 机 号:<input type="number" placeholder="请输入手机号" class="phone" name="phone"/></span>
   			<div class="user_type">用户类型:
   				<select name="userType" class="userType">
-  					<option value="2" selected>个人</option>
+  					<option value="1" selected>企业</option>
   				</select>
   			</div>
   			<input type="submit" class="submit_st" />
