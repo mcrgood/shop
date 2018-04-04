@@ -194,24 +194,22 @@ class EasyPayment
         $url = "https://ebp.ips.com.cn/fpms-access/action/trade/queryOrdersList";
         $post_data['ipsRequest']  = $ipsRequest;
         $responsexml = $this->request_post($url, $post_data);
-        $resXml = simplexml_load_string($responsexml);
-        $rspCode = $resXml->rspCode;
-        $rspMsg = $resXml->rspMsg;
-        if($resXml->rspCode == 'M999999'){ //请求失败，有错误信息
-            $info = [
-                'rspCode' => $rspCode,
-                'rspMsg' =>$rspMsg
-            ];
-        }else{ //请求成功
+        $resArray = xmlToArray($responsexml);
+        // if($resArray['rspCode'] == 'M999999'){ //请求失败，有错误信息
+        //     $info = [
+        //         'rspCode' => $rspCode,
+        //         'rspMsg' =>$rspMsg
+        //     ];
+        // }else{ //请求成功
             
-            $result = $this->decrypt($resXml->p3DesXmlPara);
-            $resultXml = simplexml_load_string($result);
-            $info = [
-                'rspCode' => $rspCode,
-                'rspMsg' =>$rspCode
-            ];
-        }
-        return $info;    
+        //     $result = $this->decrypt($resXml->p3DesXmlPara);
+        //     $resultXml = simplexml_load_string($result);
+        //     $info = [
+        //         'rspCode' => $rspCode,
+        //         'rspMsg' =>$rspMsg
+        //     ];
+        // }
+        return $resArray;    
     }
 
 

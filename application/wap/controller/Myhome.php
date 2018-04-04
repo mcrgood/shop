@@ -280,6 +280,9 @@ class Myhome extends Controller
     }
     //用户查询账单页面
     public function queryOrdersList(){
+        $userid = $this->business_id;
+        $customerCode = db('ns_business_open')->where('userid',$userid)->value('customerCode');
+        $this->assign('customerCode',$customerCode);
         return view($this->style . 'Myhome/queryOrdersList');
     }
 

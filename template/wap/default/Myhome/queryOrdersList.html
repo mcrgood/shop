@@ -58,13 +58,13 @@
 	width: 90%;
 	margin: auto;
 	box-shadow: 3px 2px 2px #888888;
-	height: 250px;
+	height: 310px;
 	border: 1px solid #dddddd;
 	text-align: center;
 }
 .content form{
 	width: 100%;
-	height: 180px;
+	height: 240px;
 	border-bottom:1px solid #e8e5e5;
 	background: #f5f7f9;
 	text-align: center;
@@ -116,9 +116,9 @@
   	<h3>账单查询信息</h3>
   	<div class="content">
   		<form method="post" action="{:url('Myhome/queryOrdersList_api')}">
-  		<span>客 户 号:<input type="text" placeholder="请输入客户号（开户手机号）" class="customerCode" name="customerCode"/></span>
-  		<span>起始日期:<input type="number" placeholder="例:20180101（8位数）" class="startTime" name="startTime"/></span>
-  			<span>结束日期:<input type="number" placeholder="例:20180131（8位数）" class="endTime" name="endTime"/></span>
+  		<span>客 户 号:<input type="text" placeholder="请输入客户号（开户手机号）" disabled value="{$customerCode}" class="customerCode" name="customerCode"/></span>
+  		<span>起始日期:<input type="number" placeholder="例:20180101（可不填写）" class="startTime" name="startTime"/></span>
+  			<span>结束日期:<input type="number" placeholder="例:20180131（可不填写）" class="endTime" name="endTime"/></span>
   			<div class="user_type">交易类型:
   				<select name="ordersType" class="ordersType">
   					<option value="" selected>全部</option>
@@ -126,6 +126,7 @@
   					<option value="4">提现</option>
   				</select>
   			</div>
+  			<span style="color:red;font-size:14px;line-height:17px;">注：起始日期不填，默认为 30 天前的日期。结束日期不填，默认为当天日期，日期间距须小于一个月</span>
   			<input type="submit" class="submit_st" />
   		</form>
   	</div>
