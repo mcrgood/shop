@@ -22,38 +22,55 @@
 		</dd>
 	</dl>
 	<dl>
-		<dt><span class="color-red">*</span>商品名称:</dt>
+		<dt><span class="color-red">*</span>商品类别:</dt>
 		<dd style="width:35%;">
-			{volist name="goodsname" id="v"}
-				<input type="checkbox" value="{$v.did}" class="box">{$v.catedetail}
-			{/volist}
-		</dd>
-	</dl>
-	<!-- <dl>
-		<dt><span class="color-red">*</span>商品价格:</dt>
-		<dd>
-			<input id="catenamedetail" type="text" placeholder="请输入商品价格" class="input-common" value="{$row['catedetail']}" />
+			<select id="goodscate">
+				<option value="0">请选择分类</option>
+				{volist name="catename" id="v"}
+					<option value="{$v.listid}">{$v.catename}</option>
+				{/volist}
+			</select>
 		</dd>
 	</dl>
 	<dl>
-		<dt style="color:red;margin-left:12%;width:20%;"><span class="color-red"></span>商品图片可以选择不上传，使用默认图片</dt><br>
-		<dt><span class="color-red">*</span>商品图片:</dt>
-		<button type="button" class="layui-btn" id="test2" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
-        </button>
+		<dt><span class="color-red">*</span>商品名称:</dt>
+		<dd style="width:35%; color:red;" id="cate">请先选择商品类别</dd>
 	</dl>
-	<img class="image image1111" src="{$row.shop_img|default=''}" alt="" id="photo1">
-	<input type="hidden" class="hidden" value="{$row.did}"> -->
 	<dl>
 		<dt></dt>
 		<dd><button class="btn-common btn-big">{if $row.did eq true}修&nbsp;&nbsp;改{else if/}新&nbsp;&nbsp;增{/if}</button></dd>
 	</dl>
 </div>
 <script>
+	$("#goodscate").change(function(){
+		var goodscate = $(this).val();//获取分类详情
+		var shopid = "{$Request.param.id}";
+		$.ajax({
+			type:"post",
+			url:"{:url('Myhome/menucateadd')}",
+			data:{"goodscate":goodscate,"shopid":shopid},
+			success : function(data){
+				console.log(data)
+				var html = '';
+				if(data.status == 1){
+					for(var i = 0; i < data["list"].length; i++){
+						html += '<input type="checkbox" value="'+data["list"][i]["did"]+'" class="box" style="margin-left:10px;">'+data["list"][i]["catedetail"]+'';
+					}
+				}else{
+					html += '<span style="color:red;">'+data["list"]+'</span>';
+				}
+				$('#cate').empty().append(html);
+			
+			}
+		});
+	})
+
 	$(".btn-big").click(function(){
 		var ids = new Array();
 		$('input[type="checkbox"]:checked').each(function(i,v){
 	        ids[i] = $(v).val();
 	    })
+	    var goodscate = $("#goodscate").val();//获取分类详情
 	   	var userid = "{$Request.param.id}";
 	   	var data ={"ids":ids,"userid":userid};
 	   	var url = "{:url('Myhome/menuadd')}";

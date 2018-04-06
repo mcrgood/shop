@@ -500,6 +500,9 @@ class Myhome extends BaseController
 		$dianname = db("ns_shop_message")->where("id",$id)->value("names");
 		//获取商品名称
 		$goodsname = db("ns_shop_usercatedetail")->select();
+		//获取商品分类
+		$catename = db("ns_shop_usercate")->select();
+		$this->assign("catename",$catename);
 		$this->assign("dianname",$dianname);
 		$this->assign("goodsname",$goodsname);
 		if(request()->isAjax()){
@@ -536,7 +539,32 @@ class Myhome extends BaseController
 		}
 		return view($this->style . "Myhome/menuadd");
 	}
-
+	//菜单确定
+	public function menuCateadd(){
+		if(request()->isAjax()){
+			$goodscate = input("post.goodscate");
+			$shopid = input("post.shopid");
+			if($goodscate == 0){
+				$info = ['status'=>0,'list' => '请先选择商品类别'];
+			}else{
+				$havegoodsid = db("ns_shop_menu")->where("userid",$shopid)->column('goodsid');
+				if($havegoodsid){
+					$where['did'] = ['notin',$havegoodsid];
+					$where['cateid'] = $goodscate;
+					$list = db("ns_shop_usercatedetail")->where($where)->select();
+					if($list){
+						$info = ['status'=>1,'list'=>$list];
+					}else{
+						$info = ['status'=>0,'list'=>'当前分类下已经选择完毕'];
+					}
+				}else{ // 未添加过商品
+					$list = db("ns_shop_usercatedetail")->where('cateid',$goodscate)->select();
+					$info = ['status'=>1,'list'=>$list];
+				}
+			}
+			return $info;
+		}
+	}
 	//停用和启用 张行飞
 	public function stop(){
 		if(request()->isAjax()){
