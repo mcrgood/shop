@@ -305,9 +305,9 @@ class Myhome extends Controller
             $orderDetails = $resArr['body']['orderDetails'];
             foreach($orderDetails as $k => $v){
                 if($v['ordersType'] == 3){
-                    $orderDetails[$k]['ordersType'] == '+';
+                    $orderDetails[$k]['ordersType'] = '+';
                 }elseif($v['ordersType'] == 4){
-                    $orderDetails[$k]['ordersType'] == '-';
+                   $orderDetails[$k]['ordersType'] = '-';
                 }
             }
             $this->assign('orderDetails',$orderDetails);
@@ -476,13 +476,13 @@ class Myhome extends Controller
 
     public function yingshou(){
         $this->check_login();
-        $business_id = $this->business_id;
+        $business_id = $this->business_id; //商家登录的ID
         $rand = getRandNum();    //获取随机12位数字
          //查询该商户是否有二维码，如果没有就自动生成
         $qrcode = db('ns_shop_message')->where('userid',$business_id)->value('shop_qrcode');
-        if(!$qrcode){
+        if(!$qrcode){ 
             $shop_qrcode_num = '0791'.$rand;
-            $url = __URL('wap/myhome/pay?id=' . $business_id);
+            $url = __URL('wap/member/recharge?business_id=' . $business_id);
             $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $business_id);
             $this->create($url, $shop_qrcode,"    NO.".$shop_qrcode_num);
             $data['shop_qrcode'] = $shop_qrcode;

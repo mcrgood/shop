@@ -80,10 +80,17 @@ class Pay extends Controller
     }
 
     /**
-     * 获取支付相关信息
+     * 获取支付相关信息  (线下付款跳转此页面 2018-04-06 屈华俊)
      */
     public function getPayValue()
     {
+        // business_id 存在的话为线下扫码跳转支付
+        $business_id = input('param.business_id');
+        if($business_id){
+            $names = db('ns_shop_message')->where('userid',$business_id)->value('names');
+            $this->assign('names',$names);
+        }
+        $this->assign('business_id',$business_id);
         $out_trade_no = request()->get('out_trade_no', '');
         if (empty($out_trade_no)) {
             $this->error("没有获取到支付信息");

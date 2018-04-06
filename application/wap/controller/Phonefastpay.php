@@ -34,6 +34,7 @@ class Phonefastpay extends BaseController
 		if(!$out_trade_no){
 			$this->error('参数错误，请重试！',__url(__URL__ . "/index"));
 		}
+		$business_id = input('param.business_id');
 		$orderInfo = db('ns_order')
 			->alias('o')
 			->join('ns_order_goods g','g.order_id = o.order_id','left')
@@ -108,7 +109,7 @@ class Phonefastpay extends BaseController
 		    "IsCredit"	=> $selIsCredit,
 		    "ProductType"	=> $selProductType,
 		    'UserRealName' => '',
-		    'UserId' => '',
+		    'UserId' => $business_id, // 传入商家ID，假如为真，就是扫码商家支付(默认0，就不是扫码跳转)
 		    'CardInfo' => '',
 
 		    
@@ -132,13 +133,11 @@ class Phonefastpay extends BaseController
 		    	**/
 		if ($verify_result) { // 验证成功
 		    $paymentResult = $_REQUEST['paymentResult'];
+		    $xmlRes = xmlToArray($paymentResult);
+		    dump($xmlRes);
 		    $xmlResult = simplexml_load_string($paymentResult);
 		    $status = $xmlResult->GateWayRsp->body->Status;
 		    if ($status == "Y") {
-		        $merBillNo = $xmlResult->GateWayRsp->body->MerBillNo;
-		        $ipsBillNo = $xmlResult->GateWayRsp->body->IpsBillNo;
-		        $ipsTradeNo = $xmlResult->GateWayRsp->body->IpsTradeNo;
-		        $bankBillNo = $xmlResult->GateWayRsp->body->BankBillNo;
 		        $out_trade_no = $xmlResult->GateWayRsp->body->Attach;
 		        //ns_order表中没有这条订单号码，就是充值
 		        $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
@@ -156,15 +155,12 @@ class Phonefastpay extends BaseController
 		        }else{
 		        	db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
 		        }
-		        $message = "交易成功";
 		        $data['pay_status'] = 1;
 		        $data['pay_time'] = time();
 		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
 		  
-				$this->assign('merBillNo',$merBillNo);
-				$this->assign('ipsBillNo',$ipsBillNo);
-				$this->assign('ipsTradeNo',$ipsTradeNo);
-				$this->assign('bankBillNo',$bankBillNo);
+		        $message = "交易成功";
+				
 		    }elseif($status == "N")
 		    {
 		        $message = "交易失败";

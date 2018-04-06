@@ -1197,10 +1197,13 @@ class Member extends BaseController
     }
 
     /**
-     * 用户充值余额
+     * 用户充值余额 (线下付款跳转此页面 2018-04-06 屈华俊)
      */
     public function recharge()
     {
+        // business_id 存在的话为线下扫码跳转支付
+        $business_id = input('param.business_id',0);
+        $this->assign("business_id", $business_id);
         $pay = new UnifyPay();
         $pay_no = $pay->createOutTradeNo();
         $this->assign("pay_no", $pay_no);
