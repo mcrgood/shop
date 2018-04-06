@@ -252,16 +252,10 @@ class Myhome extends Controller
 
     //转账接口页面
     public function transfer(){
+
         return view($this->style . 'Myhome/transfer');
     }
-    //转账接口API
-    public function transfer_api(){
-        $customerCode = input('post.customerCode');
-        $transferAmount = input('post.transferAmount');
-        $payment = new EasyPayment();
-        $html_xml = $payment->transfer($customerCode, $transferAmount);
-        echo $html_xml;
-    }
+
 
     //用户提现页面
     public function withdrawal(){

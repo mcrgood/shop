@@ -52,7 +52,7 @@ function calculateRecharge(){
         url: "{:__URL('APP_MAIN/member/createrechargeorder')}",
         type: "post",              
         async: false,
-        data: { "recharge_money": pay_money, "out_trade_no": pay_no},
+        data: { "recharge_money": pay_money, "out_trade_no": pay_no,"business_id":business_id},
         dataType: "json",
         success: function (response) {
         	if(response.code>0){

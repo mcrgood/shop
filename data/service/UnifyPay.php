@@ -81,7 +81,7 @@ class UnifyPay extends BaseService implements IUnifyPay
      * @param unknown $type  订单类型  1. 商城订单  2.
      * @param unknown $pay_money
      */
-    public function createPayment($shop_id, $out_trade_no, $pay_body, $pay_detail, $pay_money, $type, $type_alis_id)
+    public function createPayment($shop_id, $out_trade_no, $pay_body, $pay_detail, $pay_money, $type, $type_alis_id, $business_id)
     {
         $pay = new NsOrderPaymentModel();
         $data = array(
@@ -92,7 +92,8 @@ class UnifyPay extends BaseService implements IUnifyPay
             'pay_body'      => $pay_body,
             'pay_detail'    => $pay_detail,
             'pay_money'     => $pay_money,
-            'create_time'   => time()
+            'create_time'   => time(),
+            'business_id'   => $business_id
         );
         if($pay_money <= 0)
         {

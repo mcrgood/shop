@@ -1576,7 +1576,7 @@ class Member extends User implements IMember
      *
      * @see \data\api\IMember::createMemberRecharge()
      */
-    public function createMemberRecharge($recharge_money, $uid, $out_trade_no)
+    public function createMemberRecharge($recharge_money, $uid, $out_trade_no, $business_id)
     {
         $member_recharge = new NsMemberRechargeModel();
         $pay = new UnifyPay();
@@ -1587,7 +1587,11 @@ class Member extends User implements IMember
         );
         $res = $member_recharge->save($data);
         if ($res) {
-            $pay->createPayment($this->instance_id, $out_trade_no, '余额充值', '用户通知余额', $recharge_money, 4, $member_recharge->id);
+            if($business_id == 0){
+                $pay->createPayment($this->instance_id, $out_trade_no, '余额充值', '用户通知余额', $recharge_money, 4, $member_recharge->id, $business_id);
+            }else{
+                $pay->createPayment($this->instance_id, $out_trade_no, '扫码付款', '扫码付款', $recharge_money, 5, $member_recharge->id, $business_id);
+            }
         }
         return $res;
     }

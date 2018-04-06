@@ -28,13 +28,10 @@ class Phonefastpay extends BaseController
 	
 	//手机端快捷支付API
 	public function IpsPayApi(){
-		
-
 		$out_trade_no = input('param.out_trade_no');
 		if(!$out_trade_no){
 			$this->error('参数错误，请重试！',__url(__URL__ . "/index"));
 		}
-		$business_id = input('param.business_id');
 		$orderInfo = db('ns_order')
 			->alias('o')
 			->join('ns_order_goods g','g.order_id = o.order_id','left')
@@ -109,7 +106,7 @@ class Phonefastpay extends BaseController
 		    "IsCredit"	=> $selIsCredit,
 		    "ProductType"	=> $selProductType,
 		    'UserRealName' => '',
-		    'UserId' => $business_id, // 传入商家ID，假如为真，就是扫码商家支付(默认0，就不是扫码跳转)
+		    'UserId' => '', 
 		    'CardInfo' => '',
 
 		    
@@ -134,23 +131,18 @@ class Phonefastpay extends BaseController
 		if ($verify_result) { // 验证成功
 		    $paymentResult = $_REQUEST['paymentResult'];
 		    $xmlRes = xmlToArray($paymentResult);
-		    dump($xmlRes);
-		    $xmlResult = simplexml_load_string($paymentResult);
-		    $status = $xmlResult->GateWayRsp->body->Status;
+		    $status = $xmlRes['GateWayRsp']['body']['Status'];
 		    if ($status == "Y") {
-		        $out_trade_no = $xmlResult->GateWayRsp->body->Attach;
+		        $out_trade_no = $xmlRes['GateWayRsp']['body']['Attach'];
 		        //ns_order表中没有这条订单号码，就是充值
 		        $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
+		        $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出充值的金额
 		        if(!$orderRow){
-		        	$pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出充值的金额
+		        	
 			        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');
 			        $row = db('ns_member_account')->where('uid',$uid)->find();
 			        if($row){
 			        	db('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
-			        }else{
-			        	$dd['uid'] = $uid;
-			        	$dd['balance'] = $pay_money;
-			        	db('ns_member_account')->insert($dd);
 			        }
 		        }else{
 		        	db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
@@ -158,9 +150,18 @@ class Phonefastpay extends BaseController
 		        $data['pay_status'] = 1;
 		        $data['pay_time'] = time();
 		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
-		  
+		  	
 		        $message = "交易成功";
-				
+				//向商家转账
+		        $business_id = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id'); 
+		        if($business_id != 0){  //扫码付款
+		        	$customerCode = db('ns_business_open')->where('userid',$business_id)->value('customerCode');
+		        	$ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio');
+		        	$money = (100-$ratio)*0.01*$pay_money;
+		        	$result = $this->toTransfer($customerCode, $money);
+		        }
+
+
 		    }elseif($status == "N")
 		    {
 		        $message = "交易失败";
@@ -173,6 +174,12 @@ class Phonefastpay extends BaseController
 		
 		return view($this->style . 'Pay/payCallback');
 	}
+
+	//向商户转账
+	public function toTransfer($customerCode, $money){
+
+	}
+
 
 	//异步S2S返回:
 	public function ServerUrl(){
@@ -236,6 +243,7 @@ class Phonefastpay extends BaseController
 		}
 		return json($info);
 	}
+
 
 
 }

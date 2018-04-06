@@ -35,7 +35,7 @@ interface IUnifyPay{
      * @param unknown $type  订单类型  1. 商城订单  2.
      * @param unknown $pay_money
      */
-    function createPayment($shop_id, $out_trade_no, $pay_body, $pay_detail, $pay_money, $type, $type_alis_id);
+    function createPayment($shop_id, $out_trade_no, $pay_body, $pay_detail, $pay_money, $type, $type_alis_id, $business_id);
     
     /**
      * 根据支付编号修改待支付单据

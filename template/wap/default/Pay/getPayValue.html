@@ -100,14 +100,13 @@
 	if(type && type == 'recharge'){
 		$('.balance_pay').css({"display":"none"});
 	}
-	var business_id = "{$business_id}";  //business_id存在的话，向此商家付款
 var __IMG__ = '__TEMP__/{$style}/public/images';
 function calculate() {
 	var pay_type = $("#pay_type").val();
 	var out_trade_no = $("#out_trade_no").val();
 	if (pay_type == 0) {
 		//快捷支付
-		window.location.href = __URL("APP_MAIN/Phonefastpay/IpsPayApi?out_trade_no=" + out_trade_no+"&business_id="+business_id+"");
+		window.location.href = __URL("APP_MAIN/Phonefastpay/IpsPayApi?out_trade_no=" + out_trade_no);
 	} else if (pay_type == 1) {
 		//余额支付
 		var pwd = $('#password').val();
