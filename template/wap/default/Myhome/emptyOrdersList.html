@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>提示页面</title>
+<script src="__TEMP__/{$style}/public/js/jquery.js"></script>
+<style>
+body{padding:0;margin:0;}
+article{
+	text-align: center;
+	margin:50px auto;
+}
+article h3{
+	font-weight: normal;
+	color:#373737;
+	font-family: "{:lang('microsoft_yahei')}", "Helvetica Neue", Helvetica, Arial,sans-serif;
+}
+article p{
+	color:#00C12C;
+	font-family: "{:lang('microsoft_yahei')}", "Helvetica Neue", Helvetica, Arial,sans-serif;
+}
+article button{
+	border:0;
+	background: #01C12D;
+	color:#ffffff;
+	border-radius: 3px;
+	padding:10px;
+	width:90%;
+	font-size:16px;
+	outline: none;
+	font-family: "{:lang('microsoft_yahei')}", "Helvetica Neue", Helvetica, Arial,sans-serif;
+	margin:15px 0;
+}
+.other-view{max-width: 90%;width:90%;margin-top:30px;}
+</style>
+</head>
+<body>
+
+<article>
+	
+		<div class="pay-block">
+			<img src="__TEMP__/{$style}/public/images/pay_error.png"/>
+		</div>
+		<h3>{$msg}</h3>
+
+	<button onclick="enterOrderList()">{:lang('back_myhome')}</button>
+
+</article>
+<script>
+function enterOrderList(){
+	window.location.href = '{:__URL('APP_MAIN/myhome/yingshou')}';
+}
+
+</script>
+</body>
+</html>

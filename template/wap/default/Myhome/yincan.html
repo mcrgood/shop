@@ -74,7 +74,7 @@
 				{elseif $state eq 0}
 				<span>正在审核</span>
 				{elseif $state eq 1 }
-				<span><a href="">用户名</a></span>
+				<span><a>用户名</a></span>
 				<span>{$phone}</span>
 				{else/}
 				<span><a href="{:__URL('APP_MAIN/Myhome/shenqing')}">去认证</a></span>
@@ -83,6 +83,7 @@
 			</div>
 		</div>
 	</div>
+	{if $state eq 1}
 	<div class="content">
 		<ul id="list">
 			<li class="lis">
@@ -98,7 +99,7 @@
 					<li><a href="{:__URL('APP_MAIN/Myhome/user_open')}">商家开户（个人）</a></li>
 					<li><a href="{:__URL('APP_MAIN/Myhome/user_open_bus')}">商家开户（企业）</a></li>
 				{else/}	
-					<li><a href="javascript:;">您的客户号：{$customerCode}</a></li>
+					<li><a>您的客户号：{$customerCode}</a></li>
 				{/if}	
 					<li><a href="{:__URL('APP_MAIN/Myhome/withdrawal')}">我要提现</a></li>
 				</ul>
@@ -117,6 +118,7 @@
 			</li>
 		</ul>
 	</div>
+	{/if}
 </div>
 </body>
 </html>

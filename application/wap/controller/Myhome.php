@@ -38,6 +38,7 @@ class Myhome extends Controller
 
     public function __construct()
     {
+
         parent::__construct();
         $this->init();
     }
@@ -213,12 +214,14 @@ class Myhome extends Controller
 
     //商家开户页面（个人）
     public function user_open(){
+        $this->check_login();
         return view($this->style . 'Myhome/user_open');
     }
 
 
     //商家开户页面（企业）
     public function user_open_bus(){
+        $this->check_login();
         return view($this->style . 'Myhome/user_open_bus');
     }
 
@@ -262,6 +265,7 @@ class Myhome extends Controller
 
     //用户提现页面
     public function withdrawal(){
+        $this->check_login();
         $userid = $this->business_id;
         $customerCode = db('ns_business_open')->where('userid',$userid)->value('customerCode');
         $yhk_num = db('ns_shop_message')->where('userid',$userid)->value('yhk_num');
@@ -280,12 +284,7 @@ class Myhome extends Controller
     }
     //用户查询账单页面
     public function queryOrdersList(){
-    //     $aa = "V/a/AorA0UUWMGf6VcW0zCVGewG1YT7Jb4bRm9qPXo3rs3fBMA39QFM/9ob7iMnZPK+APpDsWL6KfUIYhZqHZ1u5HxhBYrwqUsz/G5u7rvWzKKZiDfNjwgpefhba6YIb9PRPWemRdWrYYkXqjf572j71e6mm4YPYYN7jiNiwCmM0ftmJHopt4y7gaZV+QCFwCPxUI7xJNixCbvtS1jiintxt1p0Vh0Do0QEtynDA0PhQnTcaZFDa9AjddK7+iKlM0Yb2TMniEzrICwPZBEmPU08rpZqJRUI6CGV4QWORJjPyZ/fbmfVz56iuW+Tks1nTbT7vegkoV3B2dh45ZOxsNvXMmksNtGyGLCObwRLe/81BylhrM4qyXGCisjY26I94wpUMW62WYEuc2J57kKBShtvw0/oVAZ8tByLTwIKRz0za16aWPRr1DSNjWUFAXoZ2fvB3Oq3Y81F6I6X12sYgmUblgNO9K4QMsXp63p0cnNe5hEUdnOvsghlLKJHbnZ+5nHBACwfcpMWEGg2OH7ktsUZw8RjIBFxcOTCJRIrN+uBdJgF7rX0ptz0Nt7giKoV+y8knIIB2gjve2z4uqvzGCjAzHpftz+kqcy8ZsArQSZs9AYykfHJj1pJdXoCa2tl5uW3uM+pt9SoKd6zKwtaeUqlzlEp3dASEEdgRNRvujQ6hZ6JKogrubueGO9tdCQzgITr1qyH079kODfNY9aw8l2StKk59Yh3Fq2ZZQGnJSx9/JGXwg/U3hxRM20FhkNq/WsQrmYQeSUtKP4SFPrNT3PKK/3cD8ldAGwPli6MfJDXMURbQfEzpuri4bag7HWLUjFDeQtakRMFv1oSAUKG3SrWvAfwlNefy/2wRrGMb13lqEQrvWxc9KH/YeSoCK22v";
-    //     $payment = new EasyPayment();
-    //     $result = $payment->decrypt($aa);
-    //     dump($result);
-    //     $result = xmlToArray($result);
-    //     dump($result['body']['orderDetails']);die;
+        $this->check_login();
         $userid = $this->business_id;
         $customerCode = db('ns_business_open')->where('userid',$userid)->value('customerCode');
         $this->assign('customerCode',$customerCode);
@@ -300,13 +299,26 @@ class Myhome extends Controller
         $endTime = input('post.endTime');
         $payment = new EasyPayment();
         $result = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime);
-        dump($result);
+        if($result['rspCode'] == 'M000000'){ //请求接口成功
+            $resXml = $payment->decrypt($result['p3DesXmlPara']);
+            $resArr = xmlToArray($resXml);
+            $orderDetails = $resArr['body']['orderDetails'];
+            foreach($orderDetails as $k => $v){
+                if($v['ordersType'] == 3){
+                    $orderDetails[$k]['ordersType'] == '+';
+                }elseif($v['ordersType'] == 4){
+                    $orderDetails[$k]['ordersType'] == '-';
+                }
+            }
+            $this->assign('orderDetails',$orderDetails);
+            return view($this->style . 'Myhome/deal');
+        }else{ //请求接口失败
+            $msg = $result['rspMsg'];
+            $this->assign('msg',$msg);
+            return view($this->style . 'Myhome/emptyOrdersList');
+        }
     }
-    //账单详情页面
-    public function deal(){
-        return view($this->style . 'Myhome/deal');
-    }
-
+   
 
 
     public function mobile_login()
