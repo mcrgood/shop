@@ -34,6 +34,7 @@ function check_pay_money(event){
 }
 var is_submint = false;
 function calculateRecharge(){
+	var business_id = "{$business_id}";
 	var pay_no = $("#pay_no").val();
 	var pay_money = $("#pay_money").val();
 
@@ -55,7 +56,7 @@ function calculateRecharge(){
         dataType: "json",
         success: function (response) {
         	if(response.code>0){
-        		window.location.href = __URL("APP_MAIN/pay/getpayvalue?out_trade_no="+pay_no+"&type=recharge");
+        		window.location.href = __URL("APP_MAIN/pay/getpayvalue?out_trade_no="+pay_no+"&type=recharge&business_id="+business_id+"");
          	}else{
          		is_submint = false;
          		showBox("{:lang('member_recharge_failed')}");

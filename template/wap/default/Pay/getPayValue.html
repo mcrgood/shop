@@ -15,7 +15,11 @@
 
 {block name="main"}
 <div class="head-info">
-	<div class="head-pay">{:lang('towards')}{$shopname}{:lang('pay')}</div>
+	{if $business_id eq 0}
+		<div class="head-pay">{:lang('towards')}{$shopname}{:lang('pay')}</div>
+	{else/}
+		<div class="head-pay">向{$names}{:lang('pay')}</div>
+	{/if}
 	<div class="head-pay-value">￥{$pay_value.pay_money}</div>
 </div>
 
@@ -80,7 +84,7 @@
 		{elseif condition="$pay_config['ali_pay_config']['is_use']==1"}
 		<input type="hidden" id="pay_type" value="1"> 
 		{else}
-		<input type="hidden" id="pay_type" value="-1">
+		<input type="hidden" id="pay_type" value="0">
 		{/if}
 		<input type="hidden" id="out_trade_no" value="{$pay_value.out_trade_no}">
 	</div>
@@ -96,16 +100,14 @@
 	if(type && type == 'recharge'){
 		$('.balance_pay').css({"display":"none"});
 	}
+	var business_id = "{$business_id}";  //business_id存在的话，向此商家付款
 var __IMG__ = '__TEMP__/{$style}/public/images';
 function calculate() {
 	var pay_type = $("#pay_type").val();
-	if(pay_type == -1){
-		pay_type = 0;
-	}
 	var out_trade_no = $("#out_trade_no").val();
 	if (pay_type == 0) {
 		//快捷支付
-		window.location.href = __URL("APP_MAIN/Phonefastpay/IpsPayApi?out_trade_no=" + out_trade_no);
+		window.location.href = __URL("APP_MAIN/Phonefastpay/IpsPayApi?out_trade_no=" + out_trade_no+"&business_id="+business_id+"");
 	} else if (pay_type == 1) {
 		//余额支付
 		var pwd = $('#password').val();
@@ -153,6 +155,20 @@ $(".wchat-weixin").click(function() {
 	$('.log-cont').css({"display":"none"});
 
 })
+
+// function calculate() {      之前的代码
+// 	var pay_type = $("#pay_type").val();
+// 	var out_trade_no = $("#out_trade_no").val();
+// 	if (pay_type == 0) {
+// 		//微信支付
+// 		window.location.href = __URL("APP_MAIN/pay/wchatpay?no=" + out_trade_no);
+// 	} else if (pay_type == 1) {
+// 		//支付宝支付
+// 		window.location.href = __URL("APP_MAIN/pay/alipay?no=" + out_trade_no);
+// 	}else if(pay_type == -1){
+// 		showBox("{:lang('the_merchant_does_not_configure_payment_methods')}");
+// 	}
+// }
 
 </script>
 {/block}
