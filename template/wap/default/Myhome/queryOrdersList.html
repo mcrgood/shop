@@ -116,7 +116,7 @@
   	<h3>账单查询信息</h3>
   	<div class="content">
   		<form method="post" action="{:url('Myhome/queryOrdersList_api')}">
-  		<span>客 户 号:<input type="text" placeholder="请输入客户号（开户手机号）" disabled value="{$customerCode}" class="customerCode" name="customerCode"/></span>
+  		<span>客 户 号:<input type="text" placeholder="请输入客户号（开户手机号）" readonly value="{$customerCode}" class="customerCode" name="customerCode"/></span>
   		<span>起始日期:<input type="number" placeholder="例:20180101（可不填写）" class="startTime" name="startTime"/></span>
   			<span>结束日期:<input type="number" placeholder="例:20180131（可不填写）" class="endTime" name="endTime"/></span>
   			<div class="user_type">交易类型:

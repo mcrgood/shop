@@ -280,6 +280,12 @@ class Myhome extends Controller
     }
     //用户查询账单页面
     public function queryOrdersList(){
+    //     $aa = "V/a/AorA0UUWMGf6VcW0zCVGewG1YT7Jb4bRm9qPXo3rs3fBMA39QFM/9ob7iMnZPK+APpDsWL6KfUIYhZqHZ1u5HxhBYrwqUsz/G5u7rvWzKKZiDfNjwgpefhba6YIb9PRPWemRdWrYYkXqjf572j71e6mm4YPYYN7jiNiwCmM0ftmJHopt4y7gaZV+QCFwCPxUI7xJNixCbvtS1jiintxt1p0Vh0Do0QEtynDA0PhQnTcaZFDa9AjddK7+iKlM0Yb2TMniEzrICwPZBEmPU08rpZqJRUI6CGV4QWORJjPyZ/fbmfVz56iuW+Tks1nTbT7vegkoV3B2dh45ZOxsNvXMmksNtGyGLCObwRLe/81BylhrM4qyXGCisjY26I94wpUMW62WYEuc2J57kKBShtvw0/oVAZ8tByLTwIKRz0za16aWPRr1DSNjWUFAXoZ2fvB3Oq3Y81F6I6X12sYgmUblgNO9K4QMsXp63p0cnNe5hEUdnOvsghlLKJHbnZ+5nHBACwfcpMWEGg2OH7ktsUZw8RjIBFxcOTCJRIrN+uBdJgF7rX0ptz0Nt7giKoV+y8knIIB2gjve2z4uqvzGCjAzHpftz+kqcy8ZsArQSZs9AYykfHJj1pJdXoCa2tl5uW3uM+pt9SoKd6zKwtaeUqlzlEp3dASEEdgRNRvujQ6hZ6JKogrubueGO9tdCQzgITr1qyH079kODfNY9aw8l2StKk59Yh3Fq2ZZQGnJSx9/JGXwg/U3hxRM20FhkNq/WsQrmYQeSUtKP4SFPrNT3PKK/3cD8ldAGwPli6MfJDXMURbQfEzpuri4bag7HWLUjFDeQtakRMFv1oSAUKG3SrWvAfwlNefy/2wRrGMb13lqEQrvWxc9KH/YeSoCK22v";
+    //     $payment = new EasyPayment();
+    //     $result = $payment->decrypt($aa);
+    //     dump($result);
+    //     $result = xmlToArray($result);
+    //     dump($result['body']['orderDetails']);die;
         $userid = $this->business_id;
         $customerCode = db('ns_business_open')->where('userid',$userid)->value('customerCode');
         $this->assign('customerCode',$customerCode);

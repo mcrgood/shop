@@ -36,8 +36,10 @@ class Fastpay extends BaseController
                 $xmlResult = simplexml_load_string($ipsResponse);
                 $respXml = $payment->decrypt($xmlResult->p3DesXmlPara);
                 $resArray = xmlToArray($respXml);
-                dump($respXml);
-                dump($resArray);
+               
+            if($xmlResult->rspCode == 'M999999'){
+                $msg = $xmlResult->rspMsg;
+            }else{
                 $data['idcard'] = $resArray['body']['identityNo'];
                 $data['username'] = $resArray['body']['userName'];
                 $data['phone'] = $resArray['body']['mobiePhoneNo'];
@@ -45,9 +47,6 @@ class Fastpay extends BaseController
                 $data['customerCode'] = $resArray['body']['customerCode'];
                 $data['userid'] = $resArray['body']['remark'];
                 db('ns_business_open')->insert($data);
-            if($xmlResult->rspCode == 'M999999'){
-                $msg = $xmlResult->rspMsg;
-            }else{
                 $msg = '开户成功';
             }
             $this->assign('msg',$msg);

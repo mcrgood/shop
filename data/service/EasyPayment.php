@@ -195,20 +195,6 @@ class EasyPayment
         $post_data['ipsRequest']  = $ipsRequest;
         $responsexml = $this->request_post($url, $post_data);
         $resArray = xmlToArray($responsexml);
-        // if($resArray['rspCode'] == 'M999999'){ //请求失败，有错误信息
-        //     $info = [
-        //         'rspCode' => $rspCode,
-        //         'rspMsg' =>$rspMsg
-        //     ];
-        // }else{ //请求成功
-            
-        //     $result = $this->decrypt($resXml->p3DesXmlPara);
-        //     $resultXml = simplexml_load_string($result);
-        //     $info = [
-        //         'rspCode' => $rspCode,
-        //         'rspMsg' =>$rspMsg
-        //     ];
-        // }
         return $resArray;    
     }
 
