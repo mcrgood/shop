@@ -17,6 +17,7 @@ namespace app\wap\controller;
 use think\Cache;
 use think\Cookie;
 use data\service\IpsPhoneFastpaySubmit as IpsPhoneFastpaySubmit;
+use data\service\EasyPayment as EasyPayment;
 use data\service\IpsPayNotify as IpsPayNotify;
 /**
  * 移动端支付控制器
@@ -154,11 +155,13 @@ class Phonefastpay extends BaseController
 		        $message = "交易成功";
 				//向商家转账
 		        $business_id = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id'); 
-		        if($business_id != 0){  //扫码付款
+		        if($business_id != 0 && $pay_money){  //扫码付款
 		        	$customerCode = db('ns_business_open')->where('userid',$business_id)->value('customerCode');
 		        	$ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio');
 		        	$money = (100-$ratio)*0.01*$pay_money;
-		        	$result = $this->toTransfer($customerCode, $money);
+		        	$payment = new EasyPayment();
+					$resArray = $payment->transfer($customerCode, $money);
+					dump($resArray);die;
 		        }
 
 
@@ -175,10 +178,6 @@ class Phonefastpay extends BaseController
 		return view($this->style . 'Pay/payCallback');
 	}
 
-	//向商户转账
-	public function toTransfer($customerCode, $money){
-
-	}
 
 
 	//异步S2S返回:
