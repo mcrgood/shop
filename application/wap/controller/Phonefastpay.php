@@ -164,16 +164,30 @@ class Phonefastpay extends BaseController
 			$resArray = $payment->transfer($customerCode, $money); //向商家转账相应的金额
 			$gold = db('ns_wwb')->where('userid',$business_id)->value('gold'); //查出该商家设置赠送旺旺币的比例
 			$sendGold = round($gold*0.01*$pay_money);  //应该赠送给会员的旺旺币数量
-			if($sendGold){ //赠送旺旺币给买单消费的会员账号下
-				$uid = db('ns_order_payment')
-				->alias('p')
-				->join('ns_member_recharge m','p.type_alis_id = m.id','left')
-				->where('p.out_trade_no',$out_trade_no)
-				->value('uid');
+			
+			$uid = db('ns_order_payment') //查出会员的uid
+			->alias('p')
+			->join('ns_member_recharge m','p.type_alis_id = m.id','left')
+			->where('p.out_trade_no',$out_trade_no)
+			->value('uid');
+			$referee_money = $pay_money*0.25*0.15*$ratio*0.01; //计算出给推荐人的佣金
+			if($sendGold){ //赠送旺旺币给买单消费的会员账号下	
 				db('ns_member_account')->where('uid',$uid)->setInc('point',$sendGold);
 			}
+			$user_referee_phone = db('sys_user')->where('uid',$uid)->value('referee_phone'); //查出会员的推荐人手机号
+			if($user_referee_phone){
+				$user_referee_uid = db('sys_user')->where('user_name',$user_referee_phone)->value('uid'); 
+				db('ns_member_account')->where('uid',$user_referee_uid)->setInc('balance',$referee_money); //赠送佣金给会员的推荐人
+			}
+			$iphone = db('ns_goods_login')->where('id',$business_id)->value('iphone'); //查到商家的手机号
+			$business_referee_phone = db('sys_user')->where('user_name',$iphone)->value('referee_phone'); //查出商家的推荐人手机号
+			if($business_referee_phone){
+				$business_referee_uid = db('sys_user')->where('user_name',$business_referee_phone)->value('uid'); 
+				db('ns_member_account')->where('uid',$business_referee_uid)->setInc('balance',$referee_money); //赠送佣金给商家的推荐人
+			}
+
         }else{ // 非扫码付款
-        	 //ns_order表中有这条订单号码，就是商城购物
+        	//ns_order表中有这条订单号码，就是商城购物
 	        $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
 	        if(!$orderRow){ // 没有的话就是充值
 		        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');

@@ -90,6 +90,8 @@ class Member extends BaseController
      */
     public function index()
     {
+
+      
         switch (NS_VERSION) {
             case 'NS_VER_B2C':
                 $retval = $this->memberIndex(); // 单店B2C版

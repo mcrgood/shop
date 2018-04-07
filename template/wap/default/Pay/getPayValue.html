@@ -45,6 +45,11 @@
 			
 			<span id="wchatpay"><img  src="__TEMP__/{$style}/public/images/segou.png"></span> 
 		</div>
+		<div class="ali-pay">
+			<img src="__TEMP__/{$style}/public/images/zhifu.png" class="ali-photo">
+			<span class="ali-item">{:lang('alipay')}</span>
+			<span id="alipay"><img src="__TEMP__/{$style}/public/images/hgou.png"></span>
+		</div>	
 		<div class="balance_pay">
 			<img src="__TEMP__/{$style}/public/images/balance_pay.png" class="ali-photo">
 			<span class="ali-item">{:lang('balance_pay')}</span>
@@ -56,7 +61,7 @@
 					class=""  style="width:60%;" type="password" name="password" id="password"
 					placeholder="{:lang("please_input_password_pay")}"> 
 			</label>
-		</div>	
+		</div>
 		{if condition="$pay_config['ali_pay_config']['is_use'] eq 1 && $pay_config['wchat_pay_config']['is_use'] eq 1"}
 			
 		{elseif condition="$pay_config['wchat_pay_config']['is_use']==1"}
@@ -80,9 +85,9 @@
 		{/if} 
 
 		{if condition="$pay_config['wchat_pay_config']['is_use']==1"} 
-		<input type="hidden" id="pay_type" value="0"> 
+		<input type="hidden" id="pay_type" value="3"> 
 		{elseif condition="$pay_config['ali_pay_config']['is_use']==1"}
-		<input type="hidden" id="pay_type" value="1"> 
+		<input type="hidden" id="pay_type" value="2"> 
 		{else}
 		<input type="hidden" id="pay_type" value="0">
 		{/if}
@@ -129,6 +134,9 @@ function calculate() {
 				layer.msg(res.msg,{time:1200});
 			}
 		},'json')
+	}else if(pay_type == 2){
+		//支付宝
+		window.location.href = __URL("APP_MAIN/pay/alipay?no=" + out_trade_no);
 	}else if(pay_type == -1){
 		showBox("{:lang('the_merchant_does_not_configure_payment_methods')}");
 	}
@@ -139,9 +147,21 @@ $(".balance_pay").click(function() {
 	$(".popup").hide();
 	$("#pay_type").val(1);
 	$("#balance").html("<img src='" + __IMG__ + "/segou.png'>");
+	$("#alipay").html("<img src='" + __IMG__ + "/hgou.png'>");
 	$("#wchatpay").html("<img src='" + __IMG__ + "/hgou.png'>");
 	$("#pay-text").html("{:lang('alipay')}");
 	$('.log-cont').css({"display":"block"});
+})
+
+$(".ali-pay").click(function() {
+	$(".shade").hide();
+	$(".popup").hide();
+	$("#pay_type").val(2);
+	$("#balance").html("<img src='" + __IMG__ + "/hgou.png'>");
+	$("#alipay").html("<img src='" + __IMG__ + "/segou.png'>");
+	$("#wchatpay").html("<img src='" + __IMG__ + "/hgou.png'>");
+	$("#pay-text").html("{:lang('alipay')}");
+	$('.log-cont').css({"display":"none"});
 })
 
 $(".wchat-weixin").click(function() {
@@ -149,6 +169,7 @@ $(".wchat-weixin").click(function() {
 	$(".popup").hide();
 	$("#pay_type").val(0);
 	$("#balance").html("<img src='" + __IMG__ + "/hgou.png'>");
+	$("#alipay").html("<img src='" + __IMG__ + "/hgou.png'>");
 	$("#wchatpay").html("<img src='" + __IMG__ + "/segou.png'>");
 	$("#pay-text").html("{:lang('wechat_payment')}");
 	$('.log-cont').css({"display":"none"});
