@@ -8,7 +8,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="format-detection" content="telephone=no">
+{if $business_id eq 0}
 <title>{if condition="$title_before neq ''"}{$title_before}&nbsp;-&nbsp;{/if}{$platform_shopname}{if condition="$seoconfig.seo_title neq ''"}-{$seoconfig.seo_title}{/if}</title>
+{else/}
+<title>{$names|default=''}</title>
+{/if}
 <meta name="keywords" content="{$seoconfig.seo_meta}" />
 <meta name="description" content="{$seoconfig.seo_desc}"/>
 <link rel="shortcut  icon" type="image/x-icon" href="__TEMP__/{$style}/public/images/favicon.ico" media="screen"/>

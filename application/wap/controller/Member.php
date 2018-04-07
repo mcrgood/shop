@@ -1203,6 +1203,10 @@ class Member extends BaseController
     {
         // business_id 存在的话为线下扫码跳转支付
         $business_id = input('param.business_id',0);
+        if($business_id){
+            $names = db('ns_shop_message')->where('userid',$business_id)->value('names');    
+            $this->assign("names", $names);
+        }
         $this->assign("business_id", $business_id);
         $pay = new UnifyPay();
         $pay_no = $pay->createOutTradeNo();

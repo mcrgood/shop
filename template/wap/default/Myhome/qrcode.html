@@ -42,17 +42,19 @@
             <img src="/{$qrcode}" id="DemoImg" border="0" />
         </div>
         <div class="pic">
-            <button onclick="SaveAs5(this.src)">保存图片</button>
+            <!-- <button onclick="SaveAs5(this.src)">保存图片</button> -->
+            <button onclick="SaveAs5()">保存图片</button>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
 
-    function SaveAs5(imgURL)
-
+    function SaveAs5()
     {
-
+        // var imgURL = $('#DemoImg').attr('src');
+        var DemoImg = document.getElementById('DemoImg');
+        var imgURL = DemoImg.src;
         var oPop = window.open(imgURL,"","width=1, height=1, top=5000, left=5000");
 
         for(; oPop.document.readyState != "complete"; )

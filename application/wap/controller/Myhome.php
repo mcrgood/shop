@@ -190,6 +190,7 @@ class Myhome extends Controller
      */
     public function qrcode()
     {
+       
         $this->check_login();
         $business_id = $this->business_id;
         $result = db("ns_shop_message")->where('userid',$business_id)->find();

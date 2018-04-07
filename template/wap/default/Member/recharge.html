@@ -68,8 +68,12 @@ function calculateRecharge(){
 {/block}
 {block name="goodsHead"}
 <section class="head">
+{if $business_id eq 0}
 	<a class="head_back" id="head_back" href="javascript:window.history.go(-1)"><i class="icon-back"></i></a>
 	<div class="head-title">{:lang('recharge_balance')}</div>
+{else/}
+	<div class="head-title">向商家付款</div>	
+{/if}
 </section>
 {/block}
 {block name="main"}

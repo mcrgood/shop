@@ -132,7 +132,6 @@ class Phonefastpay extends BaseController
 		if ($verify_result) { // 验证成功
 		    $paymentResult = $_REQUEST['paymentResult'];
 		    $xmlRes = xmlToArray($paymentResult);
-		    dump($xmlRes);
 		    $status = $xmlRes['GateWayRsp']['body']['Status'];
 		    if ($status == "Y") {
 		    	//查询到付款的订单号
@@ -146,7 +145,6 @@ class Phonefastpay extends BaseController
 		        	$money = (100-$ratio)*0.01*$pay_money;
 		        	$payment = new EasyPayment();
 					$resArray = $payment->transfer($customerCode, $money);
-					dump($resArray);die;
 		        }else{
 		        	 //ns_order表中有这条订单号码，就是商城购物
 			        $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
