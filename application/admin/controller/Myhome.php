@@ -197,9 +197,9 @@ class Myhome extends BaseController
             $page_index = request()->post("page_index", 1);
             $page_size = request()->post('page_size', PAGESIZE);
             $search_text = request()->post('search_text', '');
-            $condition['catedetail'] = ['LIKE',"%".$search_text."%"];
+            $condition['abc.catedetail'] = ['LIKE',"%".$search_text."%"];
             $member = new MyhomeService();
-            $list = $member->getGoodsListdetail($page_index, $page_size, $order = '');
+            $list = $member->getGoodsListdetail($page_index, $page_size, $condition, $order = '');
             return $list;
 	    }
 		return view($this->style . "Myhome/catedetail");
