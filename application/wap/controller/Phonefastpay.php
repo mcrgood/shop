@@ -164,7 +164,7 @@ class Phonefastpay extends BaseController
 			$resArray = $payment->transfer($customerCode, $money); //向商家转账相应的金额
 			$gold = db('ns_wwb')->where('userid',$business_id)->value('gold'); //查出该商家设置赠送旺旺币的比例
 			$sendGold = round($gold*0.01*$pay_money);  //应该赠送给会员的旺旺币数量
-			if($sendGold){
+			if($sendGold){ //赠送旺旺币给买单消费的会员账号下
 				$uid = db('ns_order_payment')
 				->alias('p')
 				->join('ns_member_recharge m','p.type_alis_id = m.id','left')

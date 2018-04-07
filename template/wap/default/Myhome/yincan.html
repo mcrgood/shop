@@ -103,12 +103,12 @@
 <script type="text/javascript">
 	$(function(){
 		var a = true;
-		$('.lis').click(function(){
+		$('.lis h2').click(function(){
 			if(a){
-				$(this).find('ul').show();
+				$(this).siblings('ul').show();
 				a = false;
 			}else{
-				$(this).find('ul').hide();
+				$(this).siblings('ul').hide();
 				a = true;
 			}
 		})
