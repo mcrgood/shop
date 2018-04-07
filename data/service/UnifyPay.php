@@ -81,7 +81,7 @@ class UnifyPay extends BaseService implements IUnifyPay
      * @param unknown $type  订单类型  1. 商城订单  2.
      * @param unknown $pay_money
      */
-    public function createPayment($shop_id, $out_trade_no, $pay_body, $pay_detail, $pay_money, $type, $type_alis_id, $business_id)
+    public function createPayment($shop_id, $out_trade_no, $pay_body, $pay_detail, $pay_money, $type, $type_alis_id, $business_id = 0)
     {
         $pay = new NsOrderPaymentModel();
         $data = array(

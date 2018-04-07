@@ -738,6 +738,7 @@ function submitOrder(){
 					}
 				}else{
 					showBox(res.message);
+					// showBox(res.message);
 					flag = false;
 				}
 			}

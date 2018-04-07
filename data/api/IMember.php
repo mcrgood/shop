@@ -529,7 +529,7 @@ interface IMember extends IUser
      * @param unknown $uid            
      * @param unknown $out_trade_no            
      */
-    function createMemberRecharge($recharge_money, $uid, $out_trade_no, $business_id);
+    function createMemberRecharge($recharge_money, $uid, $out_trade_no);
 
     /**
      * 支付充值余额

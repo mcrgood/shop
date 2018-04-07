@@ -1576,7 +1576,7 @@ class Member extends User implements IMember
      *
      * @see \data\api\IMember::createMemberRecharge()
      */
-    public function createMemberRecharge($recharge_money, $uid, $out_trade_no, $business_id)
+    public function createMemberRecharge($recharge_money, $uid, $out_trade_no, $business_id = 0)
     {
         $member_recharge = new NsMemberRechargeModel();
         $pay = new UnifyPay();
