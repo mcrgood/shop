@@ -474,7 +474,8 @@ class Myhome extends Controller
         $rand = getRandNum();    //获取随机12位数字
          //查询该商户是否有二维码，如果没有就自动生成
         $qrcode = db('ns_shop_message')->where('userid',$business_id)->value('shop_qrcode');
-        if(!$qrcode){ 
+        $state = db('ns_shop_message')->where('userid',$business_id)->value('state');
+        if(!$qrcode && $state == 1){ 
             $shop_qrcode_num = '0791'.$rand;
             $url = __URL('wap/member/recharge?business_id=' . $business_id);
             $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $business_id);
@@ -648,14 +649,6 @@ class Myhome extends Controller
             
             //当商家新增成功后，自动生成唯一的二维码
             if($id){
-                $rand = getRandNum();    //获取随机12位数字
-                $url = __URL('wap/myhome/pay?id='.$business_id);
-                $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $business_id);
-                $shop_qrcode_num = '0791'.$rand;
-                $this->create($url, $shop_qrcode,"    NO.".$shop_qrcode_num);
-                $infos['shop_qrcode'] = $shop_qrcode;
-                $infos['shop_qrcode_num'] = $shop_qrcode_num;
-                db('ns_shop_message')->where(array("id"=>$id))->update($infos);
                 $this->success('申请成功，请等待审核！',__URL('wap/myhome/yingshou'));
             }else{
                 $this->error('申请失败！');

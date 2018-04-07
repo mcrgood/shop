@@ -1217,7 +1217,7 @@ class Member extends BaseController
     {
         $recharge_money = request()->post('recharge_money', 0);
         $out_trade_no = request()->post('out_trade_no', '');
-        $business_id = request()->post('business_id', '');
+        $business_id = request()->post('business_id', 0);
         if (empty($recharge_money) || empty($out_trade_no)) {
             return AjaxReturn(0);
         } else {
