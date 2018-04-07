@@ -1061,8 +1061,7 @@ class Myhome extends Controller
         if($ids == 0){
             $this->error('页面过期，请重新提交',__URL(__URL__ . '/wap/dingwei/index/cat/1'));
         }
-        $id = db("ns_shop_message")->where("userid",$ids)->value("id");//得到菜单表关联的ID
-        $userid = db("ns_shop_menu")->where("userid",$id)->column("cateid");//得到关联分类id
+        $userid = db("ns_shop_menu")->where("userid",$ids)->column("cateid");//得到关联分类id
         $where['listid'] = ['in',$userid];
         $list = db("ns_shop_usercate")->where($where)->select();
         $this->assign("list",$list);
@@ -1111,9 +1110,8 @@ class Myhome extends Controller
         if(request()->isAjax()){
             $id = input("post.cateid");
             $userid = input("post.userid");
-            $ids = db("ns_shop_message")->where("userid",$userid)->value("id");//得到菜单表关联的ID
-            $userid = db("ns_shop_menu")->where("userid",$ids)->column("userid");//关联菜单表了
-            $where['userid'] = ['in',$userid];
+            $userids = db("ns_shop_menu")->where("userid",$userid)->column("userid");//关联菜单表了
+            $where['userid'] = ['in',$userids];
             $where['cateid'] = $id;
             $where['status'] = 1;
             $list = db("ns_shop_menu")->where($where)->select();
