@@ -132,29 +132,14 @@ class Phonefastpay extends BaseController
 		if ($verify_result) { // 验证成功
 		    $paymentResult = $_REQUEST['paymentResult'];
 		    $xmlRes = xmlToArray($paymentResult);
+		    dump($xmlRes);
 		    $status = $xmlRes['GateWayRsp']['body']['Status'];
 		    if ($status == "Y") {
+		    	//查询到付款的订单号
 		        $out_trade_no = $xmlRes['GateWayRsp']['body']['Attach'];
-		        //ns_order表中没有这条订单号码，就是充值
-		        $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
-		        $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出充值的金额
-		        if(!$orderRow){
-		        	
-			        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');
-			        $row = db('ns_member_account')->where('uid',$uid)->find();
-			        if($row){
-			        	db('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
-			        }
-		        }else{
-		        	db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
-		        }
-		        $data['pay_status'] = 1;
-		        $data['pay_time'] = time();
-		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
-		  	
-		        $message = "交易成功";
-				//向商家转账
+		        //假如business_id 不等于0，说明是扫码付款
 		        $business_id = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id'); 
+		        $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出付款的金额
 		        if($business_id != 0 && $pay_money){  //扫码付款
 		        	$customerCode = db('ns_business_open')->where('userid',$business_id)->value('customerCode');
 		        	$ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio');
@@ -162,9 +147,23 @@ class Phonefastpay extends BaseController
 		        	$payment = new EasyPayment();
 					$resArray = $payment->transfer($customerCode, $money);
 					dump($resArray);die;
+		        }else{
+		        	 //ns_order表中有这条订单号码，就是商城购物
+			        $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
+			        if(!$orderRow){ // 没有的话就是充值
+				        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');
+				        $row = db('ns_member_account')->where('uid',$uid)->find();
+				        if($row){
+				        	db('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
+				        }
+			        }else{
+			        	db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
+			        }
 		        }
-
-
+		        $data['pay_status'] = 1;
+		        $data['pay_time'] = time();
+		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
+		       
 		    }elseif($status == "N")
 		    {
 		        $message = "交易失败";
