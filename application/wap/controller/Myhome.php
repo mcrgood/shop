@@ -493,6 +493,7 @@ class Myhome extends Controller
     }
     //隐藏页面
     public function yincan(){
+
         $this->check_login();
         $userid = $this->business_id;
         $row = db('ns_business_open')->where('userid',$userid)->find();

@@ -136,31 +136,8 @@ class Phonefastpay extends BaseController
 		    if ($status == "Y") {
 		    	//查询到付款的订单号
 		        $out_trade_no = $xmlRes['GateWayRsp']['body']['Attach'];
-		        //假如business_id 不等于0，说明是扫码付款
-		        $business_id = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id'); 
-		        $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出付款的金额
-		        if($business_id != 0 && $pay_money){  //扫码付款
-		        	$customerCode = db('ns_business_open')->where('userid',$business_id)->value('customerCode');
-		        	$ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio');
-		        	$money = (100-$ratio)*0.01*$pay_money;
-		        	$payment = new EasyPayment();
-					$resArray = $payment->transfer($customerCode, $money);
-		        }else{
-		        	 //ns_order表中有这条订单号码，就是商城购物
-			        $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
-			        if(!$orderRow){ // 没有的话就是充值
-				        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');
-				        $row = db('ns_member_account')->where('uid',$uid)->find();
-				        if($row){
-				        	db('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
-				        }
-			        }else{
-			        	db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
-			        }
-		        }
-		        $data['pay_status'] = 1;
-		        $data['pay_time'] = time();
-		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
+		        //处理分账
+		        $this->handleOrder($out_trade_no);
 		       
 		    }elseif($status == "N")
 		    {
@@ -174,8 +151,44 @@ class Phonefastpay extends BaseController
 		
 		return view($this->style . 'Pay/payCallback');
 	}
-
-
+	//处理支付成功后的分账情况
+	public function handleOrder($out_trade_no){
+		 //假如business_id 不等于0，说明是扫码付款
+        $business_id = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id');  //商家ID
+        $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出付款的金额
+        if($business_id != 0 && $pay_money){  //扫码付款
+        	$customerCode = db('ns_business_open')->where('userid',$business_id)->value('customerCode'); //商家的客户号
+        	$ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio'); //查出该商家设置分账金额比例
+        	$money = (100-$ratio)*0.01*$pay_money;  //应该转给商家的金额
+        	$payment = new EasyPayment();
+			$resArray = $payment->transfer($customerCode, $money); //向商家转账相应的金额
+			$gold = db('ns_wwb')->where('userid',$business_id)->value('gold'); //查出该商家设置赠送旺旺币的比例
+			$sendGold = round($gold*0.01*$pay_money);  //应该赠送给会员的旺旺币数量
+			if($sendGold){
+				$uid = db('ns_order_payment')
+				->alias('p')
+				->join('ns_member_recharge m','p.type_alis_id = m.id','left')
+				->where('p.out_trade_no',$out_trade_no)
+				->value('uid');
+				db('ns_member_account')->where('uid',$uid)->setInc('point',$sendGold);
+			}
+        }else{ // 非扫码付款
+        	 //ns_order表中有这条订单号码，就是商城购物
+	        $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
+	        if(!$orderRow){ // 没有的话就是充值
+		        $uid = db('sys_user')->where('user_name',$user_name)->value('uid');
+		        $row = db('ns_member_account')->where('uid',$uid)->find();
+		        if($row){
+		        	db('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
+		        }
+	        }else{
+	        	db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
+	        }
+        }
+        $data['pay_status'] = 1;
+        $data['pay_time'] = time();
+        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
+	}
 
 	//异步S2S返回:
 	public function ServerUrl(){
