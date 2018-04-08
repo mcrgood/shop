@@ -31,6 +31,9 @@
 .wchat-weixin {
 	text-align: left;
 }
+.kuaijie {
+	text-align: left;
+}
 
 .ali-pay {
 	text-align: left;
@@ -56,7 +59,7 @@
 .codes{
 	width: 100%;
 }
-.codes .wchat-weixin,.codes .ali-pay{
+.codes .wchat-weixin,.codes .ali-pay,.codes .kuaijie{
 	padding: 5px 0;
 }
 .codes .not-pay-type{

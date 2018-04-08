@@ -40,17 +40,16 @@ class IpsOnlinePayRequest extends Log
      */
     public function buildRequest($para_temp) {
         try {
-            $para = $this->buildRequestPara($para_temp);
             
-            $wsdl = $this->ipspay_config['PostUrl'];
             // vendor('nusoap.nusoap');
-            // $PHPExcel = new \PHPExcel();//实例化
             // $soapClient = new nusoap_client($wsdl,TRUE); //TRUE参数表示使用wsdl  
             // $soapClient->xml_encoding = 'UTF-8'; //指定字符编码  
             // $soapClient->soap_defencoding = 'UTF-8';
-            // $soapClient->decode_utf8 = false;    
-            $client = new \SoapClient($wsdl);
+            // $soapClient->decode_utf8 = false;
             
+            $para = $this->buildRequestPara($para_temp);
+            $wsdl = $this->ipspay_config['PostUrl'];    
+            $client = new \SoapClient($wsdl);
             $sReqXml = $client->scanPay($para);
              
             Log::DEBUG("扫码支付请求返回报文:" . $sReqXml);
