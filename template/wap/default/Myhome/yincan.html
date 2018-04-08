@@ -102,19 +102,20 @@
 <script src="__TEMP__/{$style}/public/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		var a = true;
-		$('.lis h2').click(function(){
-			if(a){
-				$(this).siblings('ul').show();
-				a = false;
-			}else{
-				$(this).siblings('ul').hide();
-				a = true;
-			}
+		var a = 0;
+		$('.lis h2').each(function(i,v){
+			$(v).click(function(){
+				if(a == 0){
+					$(v).siblings('ul').show();
+					a = 1;
+				}else{
+					$(v).siblings('ul').hide();
+					a = 0;
+				}
+			})
 		})
 	})
         // window.onload = function(){
-        // 	alert(2)
         //     var oUI = document.getElementById('list');
         //     var aH2 = oUI.getElementsByTagName('h2');
         //     var aUI = oUI.getElementsByTagName('ul');
