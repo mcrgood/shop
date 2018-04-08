@@ -83,7 +83,11 @@ maximum-scale=1.0, user-scalable=no"/>
 	  				<span>订单号:<em>{$v.ipsBillNo}</em></span>
 	  				<label>{$v.createTime}</label>
 	  			</div>
-	  			<div class="money-detail">{$v.ordersType}{$v.orderAmount}</div>
+	  			{if $v.ordersType eq 3}
+	  			<div class="money-detail" style="color:green;">+{$v.orderAmount}</div>
+	  			{elseif $v.ordersType eq 4/}
+	  			<div class="money-detail" >-{$v.orderAmount}</div>
+	  			{/if}
 	  		</li>
 	  		{/if}
 	  	{/volist}	

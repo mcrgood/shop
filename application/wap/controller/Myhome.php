@@ -298,13 +298,6 @@ class Myhome extends Controller
             $resXml = $payment->decrypt($result['p3DesXmlPara']);
             $resArr = xmlToArray($resXml);
             $orderDetails = $resArr['body']['orderDetails']['orderDetail'];
-            foreach($orderDetails as $k => $v){
-                if($v['ordersType'] == 3){
-                    $orderDetails[$k]['ordersType'] = '+';
-                }elseif($v['ordersType'] == 4){
-                   $orderDetails[$k]['ordersType'] = '-';
-                }
-            }
             $this->assign('orderDetails',$orderDetails);
             return view($this->style . 'Myhome/deal');
         }else{ //请求接口失败

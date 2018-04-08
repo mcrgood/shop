@@ -405,7 +405,7 @@ class Order extends BaseController
      */
     public function myOrderList()
     {
-        $status = request()->get('status', 'all');
+        
         if (request()->isAjax()) {
             $status = request()->post('status', 'all');
             $condition['buyer_id'] = $this->uid;
@@ -460,6 +460,7 @@ class Order extends BaseController
             $order_list = $order->getOrderList($page_index, PAGESIZE, $condition, 'create_time desc');
             return $order_list;
         } else {
+            $status = request()->get('status', 'all');
             $this->assign("status", $status);
             return view($this->style . 'Order/myOrderList');
         }
