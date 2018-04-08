@@ -25,17 +25,13 @@
 
 <div class="pay-type-item">
 	<div class="pay-item-list" id="pay-type">{:lang('member_payment_method')}
-	{if condition="$pay_config['wchat_pay_config']['is_use']==1"} 
-		<span id="pay-text" style="float: right;margin-right: 20px;">{:lang('wechat_payment')}</span>
+		<!-- <span id="pay-text" style="float: right;margin-right: 20px;">{:lang('wechat_payment')}</span>
 		<input type="hidden" id="pay_config" value="1">
-	{elseif condition="$pay_config['ali_pay_config']['is_use']==1"}
 		<span id="pay-text" style="float: right;margin-right: 20px;">{:lang('alipay')}</span>
 		<input type="hidden" id="pay_config" value="1">
-	{else}
 		<span style="float: right;margin-right: 20px;"></span>
 		<input type="hidden" id="pay_config" value="0">
-	{/if}
-		<span style="float:right" class="jiantou"></span>
+		<span style="float:right" class="jiantou"></span> -->
 	</div>
 	<div class="codes">
 			<!-- 快捷支付 -->

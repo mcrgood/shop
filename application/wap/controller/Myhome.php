@@ -297,10 +297,7 @@ class Myhome extends Controller
         if($result['rspCode'] == 'M000000'){ //请求接口成功
             $resXml = $payment->decrypt($result['p3DesXmlPara']);
             $resArr = xmlToArray($resXml);
-            $orderDetails = $resArr['body']['orderDetails'];
-            dump($result);
-            dump($resXml);
-            dump($resArr);
+            $orderDetails = $resArr['body']['orderDetails']['orderDetail'];
             foreach($orderDetails as $k => $v){
                 if($v['ordersType'] == 3){
                     $orderDetails[$k]['ordersType'] = '+';
@@ -308,8 +305,6 @@ class Myhome extends Controller
                    $orderDetails[$k]['ordersType'] = '-';
                 }
             }
-            dump($orderDetails);
-            die;
             $this->assign('orderDetails',$orderDetails);
             return view($this->style . 'Myhome/deal');
         }else{ //请求接口失败
