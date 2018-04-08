@@ -198,9 +198,6 @@ class EasyPayment
 
 
 
-
-
-
      public function encrypt($input){//数据加密
          $size = mcrypt_get_block_size(MCRYPT_3DES,MCRYPT_MODE_CBC);
          $input = $this->pkcs5_pad($input, $size);

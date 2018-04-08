@@ -77,15 +77,13 @@ maximum-scale=1.0, user-scalable=no"/>
   	<div class="pay-detail">	
   		<ul>
   		{volist name="orderDetails" id="v"}
-  			{if $v.orderState eq 10}
-		  		<li>
-		  			<div class="money">
-		  				<span>订单号:<em>{$v.ipsBillNo}</em></span>
-		  				<label>{$v.createTime}</label>
-		  			</div>
-		  			<div class="money-detail">{$v.ordersType}{$v.orderAmount}</div>
-		  		</li>
-	  		{/if}
+	  		<li>
+	  			<div class="money">
+	  				<span>订单号:<em>{$v.ipsBillNo}</em></span>
+	  				<label>{$v.createTime}</label>
+	  			</div>
+	  			<div class="money-detail">{$v.ordersType}{$v.orderAmount}</div>
+	  		</li>
 	  	{/volist}	
   		</ul>
   	</div>
