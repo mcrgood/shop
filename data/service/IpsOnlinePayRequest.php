@@ -73,7 +73,7 @@ class IpsOnlinePayRequest extends Log
         $sReqXml .= $this->buildBody($para_temp);
         $sReqXml .= "</GateWayReq>";
         $sReqXml .= "</Ips>";
-        Log::DEBUG("扫码支付请求报文:" . $sReqXml);
+        //Log::DEBUG("扫码支付请求报文:" . $sReqXml);
         return $sReqXml;
     }
     /**
