@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<script type="text/javascript" src="__YUDING__/js/jquery.min.js"></script>
+<title>提交订单</title>
+<style>
+*{margin: 0;padding: 0;}
+ul{list-style: none}
+.big{margin: 0 auto;}
+.content_1{width: 100%;height: 120px;background: #e6e6e6;padding: 20px 0;}
+.first{
+	width: 94%;
+	margin:auto;
+	height: 60px;
+	background: #fff;
+}
+.first h4{
+	width: 96%;
+	margin: 0 2%;
+	height: 30px;
+	line-height: 30px;
+	color:#000;
+}
+.first span{
+	width: 96%;
+	margin: 0 2%;
+	height: 30px;
+	line-height: 30px;
+	color:#4d4d4d;
+}
+.second{
+	width: 94%;
+	margin:auto;
+	height: 60px;
+	background: #fff;
+}
+.second h4{
+	width: 96%;
+	border-top:2px solid #e6e6e6;
+	margin: 0 2%;
+	height: 30px;
+	line-height: 30px;
+	color:#000;
+}
+.second span{
+	width: 96%;
+	margin: 0 2%;
+	height: 30px;
+	line-height: 30px;
+	color:#4d4d4d;
+	letter-spacing: 1px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.content_2{
+	width: 100%;
+	background: #e6e6e6;
+	height: auto;
+}
+.content2_1{
+	width: 94%;
+	margin:auto;
+	background: #fff;
+	height: auto;
+}
+.content2_1 .area{
+	display: block;
+	height: 50px;
+	font-size: 18px;
+	line-height: 50px;
+	width: 94%;
+	margin:auto;
+	background: #fff;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color:#000;
+}
+.food{
+	width: 100%;
+	height: auto;
+	background: #f5f5f5;
+	margin:auto;
+}
+.food ul li{
+	height: 80px;
+	width: 96%;
+	padding-top: 10px;
+	padding: 0 2%;
+}
+.food ul li img{
+	display: inline-block;
+	float: left; 
+	margin-top: 5px;
+}
+.food_menu{
+	display: inline-block;
+	float: left;
+	height: auto;
+	width: 45%;
+	padding-left: 10px;
+}
+.food_menu h4{
+	display: block;
+	height: 30px;
+	line-height: 30px;
+	color: #000;
+	width: 100%;
+	letter-spacing: 2px;
+}
+.food_menu label{
+	display: block;
+	height: 30px;
+	line-height: 30px;
+	width: 100%;
+}
+.food_money{
+	display: inline-block;
+	float: right;
+	height: auto;
+	width: 30%;
+	text-align: right;
+	margin-top: 5px;
+}
+.food_money h5{
+	height: 30px;
+    display: inline-block;
+    font-size: 20px;
+    color:#ff5454;
+    width: 100%;
+    text-align: right;
+}
+@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+  .food_money h5{
+	height: 30px;
+    display: inline-block;
+    font-size: 20px;
+    color:#ff5454;
+    width: 100%;
+    text-align: left;
+}
+.second span{
+	letter-spacing: 0px;
+	}
+}
+
+.food_money label{
+	color:#ff5454;
+	font-size: 15px
+}
+.youhui{
+	width: 100%;
+	height: 50px;
+	background: #fff;
+}
+.youhui span{
+	display: inline-block;
+	width: 45%;
+	height: 50px;
+	line-height: 50px;
+	font-size: 16px;
+	float: left;
+	padding-left: 3%;
+	color: #4d4d4d;
+}
+.youhui span:nth-child(2){
+	text-align: right;
+	color: #999999;
+	padding-right: 3%;
+
+}
+#youhui_1{
+	width: 100%;
+	height: auto;
+	display: none;
+}
+#youhui_1 li{
+	height: 50px;
+	width: 96%;
+	padding-top: 5px;
+	padding: 0 2%;
+	font-size: 18px;
+	line-height: 50px;
+}
+#youhui_2{
+	width: 100%;
+	height: auto;
+	display: none;
+}
+#youhui_2 li{
+	height: 50px;
+	width: 96%;
+	padding-top: 5px;
+	padding: 0 2%;
+	font-size: 18px;
+	line-height: 50px;
+}
+.sum{
+	width: 100%;
+	height: 40px;
+}
+.sum span{
+	height: 40px;
+	font-size: 18px;
+	line-height: 40px;
+	display: block;
+	float: right;
+	width: 25%;
+	color: #333333;
+	font-weight: bold;
+	text-align: center;
+}
+.sum span:first-child{
+	color:#ff5454;
+}
+.footer{display:flex;width:100%;z-index:3;bottom:0px;color:#f03c03;background:#fff;line-height:35px;font-size:15px;border-top:1px solid #e2e2e2;height: 35px;position: absolute;} 
+.footer .left{float:left;width: 65%;text-align: right;background: #d43b2e;color:#fff;height: 35px;padding-right: 5%;line-height:35px;}  
+.footer .right{float:right;width: 30%;height: 35px;}  
+.footer .right .disable{background:#eae28d;}  
+.footer .xhlbtn{display:block;text-align:center;line-height:35px;background-color:#F03C03;padding:0 15px;color:#000;text-decoration: none;height: 35px;font-weight: bold;}  
+</style>
+</head>
+<script type="text/javascript">
+	window.onload = function(){
+		var oList = document.getElementById('list');
+        var aLi = oList.getElementsByTagName('li');
+        for( var i=0; i<aLi.length; i++){
+                fnTab(i);
+            }
+         function fnTab(b){
+                var oSt = aLi[b].getElementsByTagName('em')[0];
+                var oEm = aLi[b].getElementsByTagName('span')[0];
+                var oSum = document.getElementById('sum');
+                var oSum2 = document.getElementById('totalpriceshow');
+                var aSpan =oSum.getElementsByTagName('span')[0];
+
+                var ss = Number(oSt.innerHTML);
+                var mm = parseFloat(oEm.innerHTML);
+                    if( true){
+                        ss = ss;
+                    }
+                    aSpan.innerHTML = '￥'+ss*mm*aLi.length+'.00';
+                    oSum2.innerHTML= aSpan.innerHTML
+                    oSt.innerHTML = ss;
+                };
+
+        var oYhj = document.getElementById('yhj');
+        var oYhj2 = document.getElementById('yhj2'); 
+        var oDiv = document.getElementById('youhui_1');
+        var oDiv2 = document.getElementById('youhui_2');
+
+        var onOff = true;
+
+        yhj.onclick = function(){
+        	if(onOff){
+        	oDiv.style.display = 'block';
+        	onOff = false;
+        }else{
+        	oDiv.style.display = 'none';
+        	onOff = true;
+        }
+        }; 
+         oYhj2.onclick = function(){
+        	if(onOff){
+        	oDiv2.style.display = 'block';
+        	onOff = false;
+        }else{
+        	oDiv2.style.display = 'none';
+        	onOff = true;
+        }
+        }; 
+              
+            };
+
+</script>
+<body>
+<div class="big">
+<form id="form1">
+	<div class="content_1">
+		<div class="first">
+			<h4>先生</h4>
+			<span>15170123175</span>
+		</div>
+		<div class="second">
+			<h4>先生</h4>
+			<span>2017年2月10晚上20:30(908 豪华大包间)</span>
+		</div>
+	</div>
+	<div class="content_2">
+		<div class="content2_1">
+			<span class="area">{$row}</span>
+			<div class="food">
+				<ul id="list">
+					<li>
+						<img src="images/youyu_03.png" width="60px" height="60px">
+						<div class="food_menu">
+							<h4>铁板鱿鱼</h4><label>x<em>1</em></label>
+						</div>
+						<div class="food_money">
+						<h5>￥<span>56<span> <label> .00</label></h5>
+						</div>
+					</li>
+					<li>
+						<img src="images/youyu_03.png" width="60px" height="60px">
+						<div class="food_menu">
+							<h4>铁板鱿鱼</h4><label>x<em>1</em></label>
+						</div>
+						<div class="food_money">
+						<h5>￥<span>56<span> <label> .00</label></h5>
+						</div>
+					</li>
+					<li>
+						<img src="images/youyu_03.png" width="60px" height="60px">
+						<div class="food_menu">
+							<h4>铁板鱿鱼</h4><label>x<em>1</em></label>
+						</div>
+						<div class="food_money">
+							<h5>￥<span>56<span> <label> .00</label></h5>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- <div class="youhui" id="yhj">
+				<span>商家优惠券</span>
+				<span>暂无可用</span>
+			</div>
+			<div id="youhui_1">
+				<ul>
+					<li>diyizhang</li>
+				</ul>
+			</div>
+			<div class="youhui" style=" border-bottom:dotted 1px #000;" id="yhj2">
+				<span>商家优惠券</span>
+				<span>暂无可用</span>
+			</div>
+			<div id="youhui_2">
+				<ul>
+					<li>diyizhang</li>
+				</ul>
+			</div> -->
+			<div class="sum" id="sum">
+				<span ></span><span>小计:</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer"> 
+			<div class="left">
+			<span id="cartN">
+	     　<b>合计:</b><span id="totalpriceshow"></span></span>元  
+			</div>  
+			<div class="right">  
+				<a id="btnselect" class="xhlbtn  disable">去结算</a>  
+			</div>   
+		</div>
+	</form>
+</body>
+</html>
+

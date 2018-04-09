@@ -5,8 +5,14 @@ $(function () {
     $("#left li:first-child").addClass("active");
     var e;
     $('.con-actives').delegate('.add','click',function(){
-        $(".subFly").show();
-        var n = $(this).prev().text();
+        var n = $(this).prev().text()-0;//获取当前点击的数量
+        if(n == 0){
+          $(".subFly").show(); 
+        }else{
+             $(".shopcart-list").show();
+        }
+        var parent = $(this).parent();
+        var name=parent.parent().children("h4").text();
         var num;
         if(n==0){
             num =1
@@ -15,8 +21,7 @@ $(function () {
         }
         $(".ad").prev().text(num);
         e = $(this).prev();
-        var parent = $(this).parent();
-        var name=parent.parent().children("h4").text()
+       
         var price = parseFloat(parent.prev().children("b:nth-child(2)").text());
         var src = $(this).parent().parent().prev().children()[0].src;
         console.log(name,price,src);
@@ -28,7 +33,8 @@ $(function () {
         var dataIcon=$(this).parent().parent().children("h4").attr("data-icon");
         $(".subName dd p:first-child").attr("data-icon",dataIcon)
     });
-    $(".minus").click(function (){
+
+    $('.con-actives').delegate('.minus','click',function(){
         $('.shopcart-list').show();
 
     });
@@ -65,14 +71,33 @@ $(function () {
             e.css("display","inline-block");
             e.prev().css("display","inline-block")
         }
-        var m = $(".subName dd:nth-child(2) p:nth-child(1)").text();
+        var m = $(".subName dd:nth-child(2) p:nth-child(1)").text();//当前选择物品名称
         var taste = $(".subChose .m-active").text();
-        var acount =n;
+        var acount = n;  //选择的数量
         var sum =parseFloat($(".subName dd p:nth-child(2) span:nth-child(2)").text())*acount;
         var price =parseFloat($(".subName dd p:nth-child(2) span:nth-child(2)").text());
         var dataIconN = $(this).parent().children(".subName").children("dd").children("p:first-child").attr("data-icon")
         var data=[m,taste,sum,acount,price,dataIconN];
-        add(data);
+        var htmls = $('.list-content>ul').html();
+        if(htmls != ''){
+            var aaa = 0;
+            $('.food').each(function(i,v){
+               var names =  $(v).find('.accountName').text();
+                   if(m == names){
+                        aaa = 1;
+                        var yuan_num = $(v).find('#unit-price').text(); //获取之前已选择的数量
+                        var total_num = (yuan_num-0)+(acount-0);
+                        $(v).find('#unit-price').text(total_num); //把总数量追加当前位置
+                        var total_money = danjia*(total_num-0);
+                        $(v).find('.accountPrice').text(total_money);//把总价格追加当前位置
+                   }
+                })
+            if(aaa == 0){
+                add(data);
+            }
+        }else{
+            add(data);
+        }
 
     });
     $(".subChose dd").click(function(){
@@ -82,11 +107,10 @@ $(function () {
     //减的效果
     $(".ms").click(function () {
         var n = $(this).next().text();
-        console.log(n);
+        
         if(n>1){
             var num = parseFloat(n) - 1;
             $(this).next().text(num);//减1
-
             var danjia = $(this).nextAll(".price").text();//获取单价
             var a = $("#totalpriceshow").html();//获取当前所选总价
             $("#totalpriceshow").html((a * 1 - danjia * 1).toFixed(2));//计算当前所选总价
@@ -106,8 +130,7 @@ $(function () {
 
     function add(data) {
 
-        $(".list-content>ul").append( '<li class="food"><div><span class="accountName" data-icon="'+data[5]+'">'+data[0]+'</span><span>'+data[1]+'</span></div><div><span>￥</span><span class="accountPrice">'+data[2]+'</span></div><div class="btn"><button class="ms2" style="display: inline-block;"><strong></strong></button> <i style="display: inline-block;">'+data[3]+'</i><button class="ad2"> <strong></strong></button><i style="display: none;">'+data[4]+'</i></div></li>');
-
+        $(".list-content>ul").append( '<li class="food"><div><span class="accountName" data-icon="'+data[5]+'">'+data[0]+'</span><span>'+data[1]+'</span></div><div><span>￥</span><span class="accountPrice">'+data[2]+'</span></div><div class="btn"><button class="ms2" style="display: inline-block;"><strong></strong></button> <i id="unit-price" style="display: inline-block;">'+data[3]+'</i><button class="ad2"> <strong></strong></button><i class="danjia_1" style="display: none;">'+data[4]+'</i></div></li>');
         var display = $(".shopcart-list.fold-transition").css('display');
         if(display=="block"){
             $("document").click(function(){
@@ -122,7 +145,13 @@ $(function () {
     
         $(document).on('click','.ad2',function(){
             var n = parseInt($(this).prev().text())+1;
-
+             var nam = $(this).parents('.food').find('.accountName').text();  //获取当前减少数量物品的名称
+            $('.con-actives>li').each(function(i,v){
+                var nnam = $(v).find('h4').text();
+                if(nam == nnam){
+                   $(v).find('#nums').text(n); 
+                }
+            })
             $(this).prev().text(n);
             var p = parseFloat($(this).next().text());
             $(this).parent().prev().children("span:nth-child(2)").text(p*n);
@@ -132,30 +161,41 @@ $(function () {
             if (n == 0) {
                 $(".shopcart-list").hide();
             }
+
         });
+
         $(document).on('click','.ms2',function(){
-            var a = parseInt($(".ad2").next().text());
-            
-            console.log(a);
-            var n = parseInt($(this).next().text())-1;
-           console.log(n);
-            var s = parseFloat($("#totalpriceshow").text());
-           console.log(s);
+
+            // var a = parseFloat($(".ad2").next().html());//单价
+            var danjia = parseFloat($(this).siblings('.danjia_1').text());
+            var n = parseInt($(this).next().html()-1);//个数
+           //console.log(n);
+            var nam = $(this).parents('.food').find('.accountName').text();  //获取当前减少数量物品的名称
+            $('.con-actives>li').each(function(i,v){
+                var nnam = $(v).find('h4').text();
+                if(nam == nnam){
+                   $(v).find('#nums').text(n); 
+                }
+            })
+            var s = parseFloat($("#totalpriceshow").html());//总计
+           //console.log(s);
+           
             if (n == 0) {
                 $(this).parent().parent().remove();
-                $(".up1").hide()
+                $(".up1").hide();
+                $(".minus").hide();
+                $(".minus").next().hide();
             }
-            $(this).next().text(n);
+            $(this).next().html(n);
            
-            $(this).parent().prev().children("span:nth-child(2)").text(a*n);
-            console.log(a*n);
-            $("#totalcountshow").text(parseInt($("#totalcountshow").text())-1);
-            $("#totalpriceshow").text(s-a);
-            if(parseFloat($("#totalcountshow").text())==0){
+            $(this).parent().prev().children("span:nth-child(2)").html(parseFloat(danjia*n));
+            //console.log(a*n);
+            $("#totalcountshow").html(parseInt($("#totalcountshow").html())-1);
+            $("#totalpriceshow").html(parseFloat(s-danjia));
+            if(parseFloat($("#totalcountshow").html())==0){
                 $(".shopcart-list").hide();
             }
         });
-
 
 
 
@@ -182,6 +222,7 @@ $(function () {
         $(".subFly").hide();
     });
     $(".footer>.left").click(function(){
+        $('')
         var content = $(".list-content>ul").html();
         if(content!=""){
             $(".shopcart-list.fold-transition").toggle();
@@ -284,10 +325,5 @@ $(function () {
         });
     });
     
-    //ajax提交结算信息
-    $("#btnselect").click(function(){
-        var type = $(".lefts").val();
-        var nums = $("#nums").text();
-        alert(nums)
-    });  
+ 
 });

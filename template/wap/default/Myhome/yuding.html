@@ -9,6 +9,7 @@
 <title>订单</title>
 <link rel="stylesheet" href="__YUDING__/css/style.css">
 <link rel="stylesheet" href="__YUDING__/css/laydate.css">
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
 </head>
 <style type="text/css">
 input[type=button], input[type=submit], input[type=file], button { cursor: pointer; -webkit-appearance: none; } 
@@ -56,7 +57,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
             已选：<span id="cartN"><span id="totalcountshow">0</span>份　总计：￥<span id="totalpriceshow">0</span></span>元  
         </div>  
         <div class="right">  
-            <a id="btnselect" class="xhlbtn  disable" href="javascript:void(0)">去结算</a>  
+            <a id="btnselect" class="xhlbtn  disable" href="javascript:void(0)">提交订单</a>  
         </div>   
     </div>
 </div>
@@ -209,5 +210,36 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         <p>这是第三个页面</p>
     </div>
 </div>
+<script>
+    //ajax提交结算信息
+    $("#btnselect").click(function(){
+            var name_arr = [];
+            var price_arr = [];
+            var nums_arr = [];
+        $('.food').each(function(i,v){
+            var name = $(v).find(".accountName").text();//获取菜单名
+            var price = $(v).find(".accountPrice").text();//获取价格
+            var nums = $(v).find("#unit-price").text();//获取数量
+            name_arr[i] =name;
+            price_arr[i] =price;
+            nums_arr[i] =nums;
+           
+        })
+        // alert(name_arr);
+        // alert(price_arr);
+        // alert(nums_arr);
+        // return;
+         var data = {"name_arr":name_arr,"price_arr":price_arr,"nums_arr":nums_arr};
+            var url = "{:url('Myhome/order')}";
+            $.post(url,data,function(res){
+                console.log(res);
+                if(res.status==1){
+                    window.location.href='{:__URL(\'APP_MAIN/Myhome/order\',\'userid=\'.$ids)}'
+                }else{
+                    layer.msg(res.msg, {icon: 5,time: 5000});
+                }
+            },'json')
+    }); 
+</script>
 </body>
 </html>
