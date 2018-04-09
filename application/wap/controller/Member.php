@@ -103,20 +103,27 @@ class Member extends BaseController
         return $retval;
     }
 
+
+
     /*
      * 单店B2C版
      */
     public function memberIndex()
     {
-        $user_name = session('user_name');
-        $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode');
-        if(!$user_qrcode){
+        $user_name = session('user_name'); //获取登录会员的用户名（手机号）
+        $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode'); //通过手机号查询出该会员是否有推广码
+        if(!$user_qrcode && $user_name){ //没有推广码的话创建一张
             $url = __URL('wap/login/index?referee_phone=' . $user_name);
             $user_qrcode_img = getShopQRcode($url, 'upload/user_qrcode', 'user_qrcode_' . $user_name);
             $this->create($url, $user_qrcode_img, '       客旺旺会员推广码');
             db('sys_user')->where('user_name',$user_name)->update(['user_qrcode' => $user_qrcode_img]);
         }
+
         $member = new MemberService();
+        if($user_name){
+            $member->send_moneys($user_name); //调用推荐人返佣金方法
+        }
+
         $platform = new Platform();
         // 基本信息行级显示菜单项
         $member_menu_arr = array(

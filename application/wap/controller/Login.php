@@ -207,7 +207,7 @@ class Login extends Controller
                 if(!session('user_name')){
                     session('user_name',$user_name);
                 }
-                if(!cookie('user_name')){
+                if(!cookie('user_name') || session('user_name') != cookie('user_name')){
                     cookie('user_name',$user_name,3600*24*30);
                     cookie('password',$password,3600*24*30);
                 }
@@ -617,6 +617,8 @@ class Login extends Controller
             
             return AjaxReturn($retval);
         } else {
+            $referee_phone = input('param.referee_phone', ''); // 判断地址栏是否有推荐人手机号（扫码客旺旺会员推荐码时会有）
+            $this->assign("referee_phone", $referee_phone);
             $this->getWchatBindMemberInfo();
             $config = new WebConfig();
             $instanceid = 0;

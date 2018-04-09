@@ -71,7 +71,115 @@
 	<script type="text/javascript"
 			src="__TEMP__/{$style}/public/js/jquery.js"></script>
 	<script src="__STATIC__/js/load_bottom.js" type="text/javascript"></script>
-	<script type="text/javascript">
+
+</head>
+<body>
+<div class="center">
+	{include file='wap/default/urlModel'/}
+	<div class="nk_reg_logo">
+		<img src="__TEMP__/{$style}/public/images/login.png?1.0" />
+		<!--<a href="{:__URL('APP_MAIN')}">-->
+		<!--<div class="back-home">{:lang('home_page')}</div>-->
+		<!--</a>-->
+	</div>
+
+
+
+	<!-- <a href="APP_MAIN/login"><div class="banner_login">
+		<span >登录</span>
+	</div></a>
+	<a href="APP_MAIN/login/register"><div class="banner_register" >
+		<span >注册</span>
+	</div></a> -->
+
+
+	<div class="reg-box">
+		<!-- <form id="regForm" action="APP_MAIN/login/register" method="post" onsubmit="return check()"> -->
+
+		<!-- </form> -->
+		<!-- <form action="" method="post"> -->
+
+		<div id="nk_text2" >
+
+			<div id="nk_text2" style="display:block; ">
+
+				<div class="nk-cont" style="margin-top:45px;">
+					<label><span  style="padding-right:20px;">{:lang('cell_phone_number')}</span><input type="text"name="mobile" id="mobile" placeholder="{:lang('please_enter_your_cell_phone_number')}" onchange="check_mobile_is_has();"><i class="right_login_mobile" style="margin-right: 6px;">
+					</i>
+					</label>
+				</div>
+				{if condition="$code_config['pc'] eq 1"}
+				<div class="nk-cont" >
+					<label><span  style="padding-right:14px;">{:lang('member_verification_code')}</span>
+						<input type="text" name="captcha" id="captcha"  placeholder="{:lang('please_enter_verification_code')}">
+						<img class="verifyimg" style="width:75px!important;float: right;margin: 4px;" src=" {:__URL('SHOP_MAIN/captcha')}" onclick="this.src='{:__URL('SHOP_MAIN/captcha')}'"  alt="captcha" style="vertical-align: middle; cursor: pointer; height: 35px;" />
+					</label>
+				</div>
+				{/if}
+
+				<div class="nk-cont">
+					<label><span  style="padding-right:14px;">{:lang('dynamic_code')}</span>
+						<input type="text" name="motify" placeholder="{:lang('please_enter_the_mobile_phone_dynamic_code')}" id="verify_code" style="width:41%">
+						<input type="button" style="padding:4px;width: 73px;background-color: #fff;" id="sendOutCode" value="{:lang('get_dynamic_code')}">
+					</label>
+				</div>
+
+				<div class="reg-cont">
+					<label for="password"><span style="padding-right:32px;">{:lang('password')}</span><input
+							class="" type="password" name="password" id="password_mobile"
+							placeholder="{:lang('please_enter_your_account_password')}"> <i class="right_login_pass"> </i>
+					</label>
+				</div>
+				<div class="reg-cont">
+					<label for="cfpassword"><span style="padding-right:8px;">{:lang('member_confirm_password')}</span><input
+							class="" type="password" name="cfpassword" id="cfpassword_mobile"
+							placeholder="{:lang('please_confirm_the_account_password')}"> <i class="right_login_cfpass">
+					</i>
+					</label>
+				</div>
+                {if $referee_phone eq false}
+                <div class="reg-cont">
+                    <label for="cfpassword"><span style="padding-right:8px;">{:lang('referee_phone')}</span><input
+                            class=""  type="number" name="referee_phone" id="referee_phone"
+                            placeholder="{:lang('please_enter_referee_phone')}"> <i class="right_login_cfpass">
+                    </i>
+                    </label>
+                </div>
+                {/if}
+				<button id="login-button-mobile" class="lang-btn" onclick="register_mobile()">{:lang('register')}</button>
+				<div class="nk_loginlogin" style="margin-top:15px;"><a href="{:__URL('APP_MAIN/login/index')}">{:lang('existing_account')},{:lang('logon_immediately')}</a></div>
+			</div>
+
+			<!-- </form> -->
+			<!-- <div id="member" class="news-title pt-60 pb-50">
+                <h5 class="t-c f-24">使用以下账号登录</h5>
+            </div> -->
+			<input type="hidden" value="1" id="mobile_config"/>
+
+
+
+
+
+
+
+
+
+
+		</div>
+		<!-- <div class="nk_loginlogin" style="margin-top:70px;"><a href="APP_MAIN/login/index">已有账号？立即登录</a></div>  -->
+	</div>
+	<!-- <div class="footer" style="min-height: 86px;" id="bottom_copyright" >
+		<div class="copyright">
+			<div class="ft-copyright">
+				<img src="__TEMP__/{$style}/public/images/logo_copy.png" style="width:110px;" id="copyright_logo_wap"><br>
+				<a href="javascript:;" target="_blank" id="copyright_companyname"></a>
+			</div>
+		</div>
+	</div> -->
+	<input type="hidden" id="mobile_is_has" value="1">
+</div>
+</body>
+    <script type="text/javascript">
         var APPMAIN='APP_MAIN';
         var STATIC = "__STATIC__";
 
@@ -108,9 +216,12 @@
                 }
             });
         }
-
+        
         function register_mobile(){
-            var referee_phone = $('#referee_phone').val();
+            var referee_phone = "{$referee_phone}";
+            if(referee_phone == ''){
+                referee_phone = $('#referee_phone').val();
+            }
             var mobile = $("#mobile").val();
             var vertification = $("#captcha").val();
             var password_mobile = $("#password_mobile").val();
@@ -336,110 +447,5 @@
             return is_true;
         }
 
-	</script>
-</head>
-<body>
-<div class="center">
-	{include file='wap/default/urlModel'/}
-	<div class="nk_reg_logo">
-		<img src="__TEMP__/{$style}/public/images/login.png?1.0" />
-		<!--<a href="{:__URL('APP_MAIN')}">-->
-		<!--<div class="back-home">{:lang('home_page')}</div>-->
-		<!--</a>-->
-	</div>
-
-
-
-	<!-- <a href="APP_MAIN/login"><div class="banner_login">
-		<span >登录</span>
-	</div></a>
-	<a href="APP_MAIN/login/register"><div class="banner_register" >
-		<span >注册</span>
-	</div></a> -->
-
-
-	<div class="reg-box">
-		<!-- <form id="regForm" action="APP_MAIN/login/register" method="post" onsubmit="return check()"> -->
-
-		<!-- </form> -->
-		<!-- <form action="" method="post"> -->
-
-		<div id="nk_text2" >
-
-			<div id="nk_text2" style="display:block; ">
-
-				<div class="nk-cont" style="margin-top:45px;">
-					<label><span  style="padding-right:20px;">{:lang('cell_phone_number')}</span><input type="text"name="mobile" id="mobile" placeholder="{:lang('please_enter_your_cell_phone_number')}" onchange="check_mobile_is_has();"><i class="right_login_mobile" style="margin-right: 6px;">
-					</i>
-					</label>
-				</div>
-				{if condition="$code_config['pc'] eq 1"}
-				<div class="nk-cont" >
-					<label><span  style="padding-right:14px;">{:lang('member_verification_code')}</span>
-						<input type="text" name="captcha" id="captcha"  placeholder="{:lang('please_enter_verification_code')}">
-						<img class="verifyimg" style="width:75px!important;float: right;margin: 4px;" src=" {:__URL('SHOP_MAIN/captcha')}" onclick="this.src='{:__URL('SHOP_MAIN/captcha')}'"  alt="captcha" style="vertical-align: middle; cursor: pointer; height: 35px;" />
-					</label>
-				</div>
-				{/if}
-
-				<div class="nk-cont">
-					<label><span  style="padding-right:14px;">{:lang('dynamic_code')}</span>
-						<input type="text" name="motify" placeholder="{:lang('please_enter_the_mobile_phone_dynamic_code')}" id="verify_code" style="width:41%">
-						<input type="button" style="padding:4px;width: 73px;background-color: #fff;" id="sendOutCode" value="{:lang('get_dynamic_code')}">
-					</label>
-				</div>
-
-				<div class="reg-cont">
-					<label for="password"><span style="padding-right:32px;">{:lang('password')}</span><input
-							class="" type="password" name="password" id="password_mobile"
-							placeholder="{:lang('please_enter_your_account_password')}"> <i class="right_login_pass"> </i>
-					</label>
-				</div>
-				<div class="reg-cont">
-					<label for="cfpassword"><span style="padding-right:8px;">{:lang('member_confirm_password')}</span><input
-							class="" type="password" name="cfpassword" id="cfpassword_mobile"
-							placeholder="{:lang('please_confirm_the_account_password')}"> <i class="right_login_cfpass">
-					</i>
-					</label>
-				</div>
-                <div class="reg-cont">
-                    <label for="cfpassword"><span style="padding-right:8px;">{:lang('referee_phone')}</span><input
-                            class="" type="number" name="referee_phone" id="referee_phone"
-                            placeholder="{:lang('please_enter_referee_phone')}"> <i class="right_login_cfpass">
-                    </i>
-                    </label>
-                </div>
-				<button id="login-button-mobile" class="lang-btn" onclick="register_mobile()">{:lang('register')}</button>
-				<div class="nk_loginlogin" style="margin-top:15px;"><a href="{:__URL('APP_MAIN/login/index')}">{:lang('existing_account')},{:lang('logon_immediately')}</a></div>
-			</div>
-
-			<!-- </form> -->
-			<!-- <div id="member" class="news-title pt-60 pb-50">
-                <h5 class="t-c f-24">使用以下账号登录</h5>
-            </div> -->
-			<input type="hidden" value="1" id="mobile_config"/>
-
-
-
-
-
-
-
-
-
-
-		</div>
-		<!-- <div class="nk_loginlogin" style="margin-top:70px;"><a href="APP_MAIN/login/index">已有账号？立即登录</a></div>  -->
-	</div>
-	<!-- <div class="footer" style="min-height: 86px;" id="bottom_copyright" >
-		<div class="copyright">
-			<div class="ft-copyright">
-				<img src="__TEMP__/{$style}/public/images/logo_copy.png" style="width:110px;" id="copyright_logo_wap"><br>
-				<a href="javascript:;" target="_blank" id="copyright_companyname"></a>
-			</div>
-		</div>
-	</div> -->
-	<input type="hidden" id="mobile_is_has" value="1">
-</div>
-</body>
+    </script>
 </html>

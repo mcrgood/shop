@@ -308,7 +308,7 @@ return [
     'member_describe'                => '描述',
     'member_time'                    => '时间',
     'member_no_balance_yet'          => '您暂时还没有余额哦',
-    'member_input_balance'           => '请输入充值金额',
+    'member_input_balance'           => '请输入金额',
     'member_submit'                  => '提交',
     'member_amount_can_not_empty'    => '充值金额不能为空',
     'member_amount_greater_zero'    => '充值金额必须大于0',

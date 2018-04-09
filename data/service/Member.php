@@ -2283,4 +2283,41 @@ class Member extends User implements IMember
             return false;
         }
     }
+
+        /*
+     *  给符合条件的会员推荐人返佣金  =>  屈华俊 2018-04-09
+     */
+
+    public function send_moneys($user_name){
+        // 查询出该用户已完成的订单（最近30天的）
+        $start_time = time()-3600*24*30; //查出一个月前的日期
+        $where['user_name'] = $user_name;
+        $where['order_status'] = 4; //订单状态为已完成
+        $where['pay_status'] = 2; //订单支付状态为易已支付
+        $where['pay_money'] = ['neq',0]; //付款金额不等于0
+        $where['is_send_money'] = 0; //未送佣金的订单
+        $where['create_time'] = ['between',[$start_time, time()]]; //一个月范围时间内
+        $list = db('ns_order')->where($where)->field('pay_money,user_name,is_send_money,order_id')->select();
+        if($list){
+            foreach($list as $k => $v){
+                $referee_phone = db('sys_user')->where('user_name',$v['user_name'])->value('referee_phone'); //查出会员的推荐人
+                if($referee_phone){ //存在推荐人
+                    $uid = db('sys_user')->where('user_name',$referee_phone)->value('uid');
+                    $is_vip = db('ns_member_account')->where('uid',$uid)->value('is_vip');
+                    if($is_vip == 1){ //推荐人是VIP，返佣金为付款金额的6%
+                        $send_money = $v['pay_money']*0.06;
+                    }else{ //不是VIP， 返佣金为付款金额的3%
+                        $send_money = $v['pay_money']*0.03;
+                    }
+                    $result = db('ns_member_account')->where('uid',$uid)->setInc('balance',$send_money); //返相对应的佣金给推荐人
+                    if($result){
+                        db('ns_order')->where('order_id',$v['order_id'])->update(['is_send_money' => 1]); //把该订单状态改成已返佣金状态
+                    }
+
+                }else{ //没有推荐人
+                    db('ns_order')->where('order_id',$v['order_id'])->update(['is_send_money' => -1]);//把该订单状态改成没有推荐人状态
+                }
+            }
+        }
+    }
 }
