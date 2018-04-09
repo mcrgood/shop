@@ -48,14 +48,15 @@ class IpsOnlinePayRequest extends Log
             // $soapClient->decode_utf8 = false;
             
             $para = $this->buildRequestPara($para_temp);
-            $wsdl = $this->ipspay_config['PostUrl'];    
+            $wsdl = $this->ipspay_config['PostUrl'];
+            libxml_disable_entity_loader(false);
             $client = new \SoapClient($wsdl);
             $sReqXml = $client->scanPay($para);
              
-            Log::DEBUG("扫码支付请求返回报文:" . $sReqXml);
+            //Log::DEBUG("扫码支付请求返回报文:" . $sReqXml);
             return $sReqXml;
         } catch (Exception $e) {
-            Log::ERROR("扫码支付请求异常:" . $e);
+            //Log::ERROR("扫码支付请求异常:" . $e);
         }
        return null;
     }
