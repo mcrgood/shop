@@ -85,13 +85,7 @@
 			</div> -->
 		{/if} 
 
-		{if condition="$pay_config['wchat_pay_config']['is_use']==1"} 
-		<input type="hidden" id="pay_type" value="3"> 
-		{elseif condition="$pay_config['ali_pay_config']['is_use']==1"}
-		<input type="hidden" id="pay_type" value="2"> 
-		{else}
-		<input type="hidden" id="pay_type" value="0">
-		{/if}
+		<input type="hidden" id="pay_type" value="0"> 
 		<input type="hidden" id="out_trade_no" value="{$pay_value.out_trade_no}">
 	</div>
 	<div style="padding: 10px 0px;">{:lang('payer')}<span style="float:right;">{$member_info["user_info"]['nick_name']}</span></div>
@@ -109,7 +103,6 @@
 var __IMG__ = '__TEMP__/{$style}/public/images';
 function calculate() {
 	var pay_type = $("#pay_type").val();
-	alert(pay_type);return;
 	var out_trade_no = $("#out_trade_no").val();
 	if (pay_type == 0) {
 		//快捷支付
@@ -191,6 +184,14 @@ $(".kuaijie").click(function() {
 // 		showBox("{:lang('the_merchant_does_not_configure_payment_methods')}");
 // 	}
 // }
+// 
+// {if condition="$pay_config['wchat_pay_config']['is_use']==1"} 
+		// <input type="hidden" id="pay_type" value="3"> 
+		// {elseif condition="$pay_config['ali_pay_config']['is_use']==1"}
+		// <input type="hidden" id="pay_type" value="2"> 
+		// {else}
+		// <input type="hidden" id="pay_type" value="0">
+		// {/if}
 
 </script>
 {/block}
