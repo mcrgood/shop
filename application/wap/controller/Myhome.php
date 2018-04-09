@@ -1052,6 +1052,7 @@ class Myhome extends Controller
         $userid = db("ns_shop_menu")->where("userid",$ids)->column("cateid");//得到关联分类id
         $where['listid'] = ['in',$userid];
         $list = db("ns_shop_usercate")->where($where)->select();
+        $this->assign("ids",$ids);
         $this->assign("list",$list);
 
         if (request()->isAjax()) {
@@ -1109,6 +1110,30 @@ class Myhome extends Controller
                 $info = ['status'=>0,'list'=>'当前分类下无商品'];
             }
             return $info;
+        }
+    }
+
+    //订单表来了  张行飞
+    public function order(){
+        if(request()->isAjax()){
+            $row = input("post.");
+            if(empty($row)){
+                $info = ["status"=>0,'msg'=>"请选择订单信息"];
+            }else{
+                $list = [];
+                foreach ($row['name_arr'] as $k => $v) {
+                    $list[$k] = array_column($row,$k);
+                }
+                $info = ["status"=>1,'msg'=>""]; 
+            }
+            return $info; 
+        }else{
+            //查询店名
+            $id = input("get.userid");
+            $row = db("ns_shop_message")->where("id",$id)->value("names");
+            dump(session("name",$data1));
+            $this->assign("row",$row);
+            return view($this->style . 'Myhome/order');
         }
     }
     /**
