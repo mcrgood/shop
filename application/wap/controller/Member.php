@@ -784,7 +784,6 @@ class Member extends BaseController
     public function logOut()
     {
         session('user_name',null);
-        cookie('password',null);
         $member = new MemberService();
         $member->Logout();
         return AjaxReturn(1);

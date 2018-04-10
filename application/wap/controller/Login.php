@@ -247,10 +247,10 @@ class Login extends Controller
             }
             $_SESSION['login_pre_url'] = $pre_url;  //上一次浏览的页面
         }
-        if(cookie('password') && !$_SESSION['login_pre_url']){  //有session直接跳转
+        if(session('user_name') && !$_SESSION['login_pre_url']){  //有session直接跳转
             $redirect = __URL(__URL__ . "/wap/member/index");
             $this->redirect($redirect);exit;
-        }elseif(cookie('password') && $_SESSION['login_pre_url']){
+        }elseif(session('user_name') && $_SESSION['login_pre_url']){
             $redirect = $_SESSION['login_pre_url'];
             $this->redirect($redirect);exit;  //跳转到上一次记录的页面
         }

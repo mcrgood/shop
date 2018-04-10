@@ -124,7 +124,7 @@ class Myhome extends Controller
             }
             return $retval;
         }
-        if( cookie('password') ){
+        if( session('mobile') ){
             $this->redirect(__URL__ . "/wap/myhome/yingshou");exit;
         }
         $pre_url = '';
@@ -556,7 +556,6 @@ class Myhome extends Controller
 	public function out(){
         Session::set('business_id', "");
         Session::set('mobile', "");
-        cookie('password',null);
         $redirect = __URL(__URL__ . "/wap/myhome/login");
 		return $this->redirect($redirect);
 	}
