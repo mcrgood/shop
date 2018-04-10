@@ -43,7 +43,7 @@ class WxPayNotify
                 $paymentResult = $_REQUEST['paymentResult'];
                 Log::DEBUG("微信支付返回报文:" . $paymentResult);
                 
-                $xmlResult = new SimpleXMLElement($paymentResult);
+                $xmlResult = simplexml_load_string($paymentResult);
                 $strSignature = $xmlResult->WxPayRsp->head->Signature;
                 $rspCode = $xmlResult->WxPayRsp->head->RspCode;
                 if($rspCode == "000000")

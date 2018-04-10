@@ -52,7 +52,7 @@ maximum-scale=1.0, user-scalable=no"/>
                 <li>
                     <span class="set-title">订单金额金额</span>
                     <span>
-                        <input type="text"  id="OrdAmt" name ="OrdAmt" class="set-input" value="0.02"/>
+                        <input type="text"  id="OrdAmt" name ="OrdAmt" class="set-input" value="{$orderInfo['pay_money']}"/>
                     </span>
                 </li>
             </ul>
@@ -68,7 +68,7 @@ maximum-scale=1.0, user-scalable=no"/>
                 <li>
                     <span class="set-title">商品名称</span>
                     <span>
-                        <input type="text"  id="GoodsName" name ="GoodsName" class="set-input" value="测试商品"/>
+                        <input type="text"  id="GoodsName" name ="GoodsName" class="set-input" value="{$orderInfo['goodsName']}"/>
                     </span>
                 </li>
             </ul>
@@ -118,7 +118,7 @@ maximum-scale=1.0, user-scalable=no"/>
                 <li>
                     <span class="set-title">收货人地址</span>
                     <span>
-                        <input type="text"  id="ReachAddress" name ="ReachAddress" class="set-input" value="联发广场"/>
+                        <input type="text"  id="ReachAddress" name ="ReachAddress" class="set-input" value="{$address|default=''}"/>
                     </span>
                 </li>
             </ul>
@@ -126,7 +126,7 @@ maximum-scale=1.0, user-scalable=no"/>
                 <li>
                     <span class="set-title">收货人姓名</span>
                     <span>
-                        <input type="text"  id="ReachBy" name ="ReachBy" class="set-input" value="小黄"/>
+                        <input type="text"  id="ReachBy" name ="ReachBy" class="set-input" value="{$datas['receiver_name']|default=''}"/>
                     </span>
                 </li>
             </ul>
@@ -134,7 +134,7 @@ maximum-scale=1.0, user-scalable=no"/>
                 <li>
                     <span class="set-title">买家留言</span>
                     <span>
-                        <input type="text"  id="Attach" name ="Attach" class="set-input" value="this is merchant attach"/>
+                        <input type="text"  id="Attach" name ="Attach" class="set-input" value="{$datas['buyer_message']|default=''}"/>
                     </span>
                 </li>
             </ul>
