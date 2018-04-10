@@ -90,6 +90,7 @@ class Myhome extends Controller
     //商家登录
     public function login()
     {
+
         $city_id = '124';  //城市ID
         $city_num = db('sys_city')->where('city_id',$city_id)->value('city_num');  //通过城市ID查询出区号
         $rand = getRandNum();    //获取随机12位数字
@@ -123,7 +124,7 @@ class Myhome extends Controller
             }
             return $retval;
         }
-        if(session('mobile') ){
+        if( cookie('password') ){
             $this->redirect(__URL__ . "/wap/myhome/yingshou");exit;
         }
         $pre_url = '';
@@ -555,6 +556,7 @@ class Myhome extends Controller
 	public function out(){
         Session::set('business_id', "");
         Session::set('mobile', "");
+        cookie('password',null);
         $redirect = __URL(__URL__ . "/wap/myhome/login");
 		return $this->redirect($redirect);
 	}

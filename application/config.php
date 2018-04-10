@@ -375,19 +375,6 @@ return [
         'MsgId' => ""
 
     ],
-    //线上扫码配置数据
-    'online_pay_data'=>[
-         'Version' =>'v1.0.0',  
-        //商戶號
-        'MerCode' =>'205754',  //ADMIN  Kwang2018
-        //交易賬戶號
-        'Account' =>'2057540011',
-        //商戶證書
-        'MerCert' =>'z6r9z84rodeEX80pzVRNLj4ECzjDYtQRuvYO6ArFye5clC6HnUNxu7QEluSrmjcAXQ1AEh6ffErNf3KKGTXCyzDUPr9BbWx3UxHgf3ORlC5C8M7aHRyMqWXkULs4HP50',
-        //请求地址
-        'PostUrl' =>'https://thumbpay.e-years.com/psfp-webscan/services/scan?wsdl'
-        
-    ],
     //手机快捷支付配置数据
     'phonefastpay_data'=>[
          'Version' =>'v1.0.0',  
@@ -413,6 +400,24 @@ return [
         'RetType' => "1",
         //服务器S2S通知页面路径
         'ServerUrl' =>'http://mall.jxqkw8.com/index.php?s=/wap/Phonefastpay/ServerUrl',
+
+    ],
+    //微商支付配置数据
+    'wx_pay_data'=>[
+         'Version' =>'v1.0.0',  
+        //商戶號
+        'MerCode' =>'205754',  //ADMIN  Kwang2018
+        //交易賬戶號
+        'Account' =>'2057540029',
+        //商戶證書
+        'MerCert' =>'z6r9z84rodeEX80pzVRNLj4ECzjDYtQRuvYO6ArFye5clC6HnUNxu7QEluSrmjcAXQ1AEh6ffErNf3KKGTXCyzDUPr9BbWx3UxHgf3ORlC5C8M7aHRyMqWXkULs4HP50',
+        //请求地址
+        'PostUrl' =>'https://thumbpay.e-years.com/psfp-webscan/onlinePay.do',
+        //服务器S2S通知页面路径
+        'S2Snotify_url' =>'http://mall.jxqkw8.com/index.php?s=/wap/WeiShangPay/S2Snotify_url',
+        //页面跳转同步通知页面路径
+        'return_url' =>'http://mall.jxqkw8.com/index.php?s=/wap/WeiShangPay/return_url',
+        'MsgId' =>''
 
     ],
   
