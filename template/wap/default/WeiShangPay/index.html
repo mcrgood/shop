@@ -10,11 +10,12 @@ maximum-scale=1.0, user-scalable=no"/>
  <script src="__STATIC__/source/jquery-1.7.1.js"></script>  
 </head>
 <body>
-    <form id="callAjaxForm">  
-        <div class="haeder-tittle">
-            <span>微信支付页面
+    <div class="haeder-tittle">
+            <span>跳转微信支付页面
             </span>
         </div>
+    <form id="callAjaxForm" style="display: none;">  
+        
         <div class="roll-out-container">
             <ul>
                 <li>
@@ -156,9 +157,9 @@ maximum-scale=1.0, user-scalable=no"/>
 </body>
 <script type="text/javascript">
 $(function(){
-var app = "APP_MAIN";
-
-    
+    setTimeout(function(){
+        $('#submit').trigger('click');
+    },100)
 })
 function onSuccess(data, status)  
 {  
