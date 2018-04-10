@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<link href="__STATIC__/source/showLoading.css" rel="stylesheet" />
+<link href="__STATIC__/source/style-05.css" rel="stylesheet" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, 
+maximum-scale=1.0, user-scalable=no"/>
+<title>微信订单支付返回页面</title>
+</head>
+<body>
+	<form id="form1">
+		<div class="roll-out-container">
+			<ul>
+				<li><span class="set-title">交易结果:</span> 
+				<span class="set-label"> <label id="Message"><?php echo $message?></label>
+				</span></li>
+			</ul>
+		</div>
+		<div class="roll-out-container">
+			<ul>
+				<li><span class="set-title">商户号:</span> <span
+					class="set-label"> <label id="MerCode"><?php echo $MerCode?></label>
+				</span></li>
+			</ul>
+		</div>
+		<div class="roll-out-container">
+			<ul>
+				<li><span class="set-title">商户账户号:</span> <span class="set-label">
+				 <label id="Account"><?php echo $Account?></label>
+				</span></li>
+			</ul>
+		</div>
+		<div class="roll-out-container">
+			<ul>
+				<li><span class="set-title">商户订单号:</span> <span class="set-label"> 
+				<label id="MerBillNo"><?php echo $merBillNo?></label>
+				</span></li>
+			</ul>
+		</div>
+        <div class="roll-out-container">
+			<ul>
+				<li><span class="set-title">IPS订单号:</span> <span class="set-label"> 
+				<label id="IpsBillNo"><?php echo $IpsBillNo?></label>
+				</span></li>
+			</ul>
+		</div>
+		<div class="roll-out-container">
+			<ul>
+				<li><span class="set-title">金额</span> <span class="set-label"> 
+				<label id="OrdAmt"><?php echo $ordAmt?></label>
+				</span></li>
+			</ul>
+		</div>
+	</form>
+</body>
+</html>

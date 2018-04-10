@@ -207,7 +207,7 @@ class Login extends Controller
                 if(!session('user_name')){
                     session('user_name',$user_name);
                 }
-                if(!cookie('user_name') || session('user_name') != cookie('user_name')){
+                if(!cookie('user_name') || !cookie('password')){
                     cookie('user_name',$user_name,3600*24*30);
                     cookie('password',$password,3600*24*30);
                 }
@@ -251,7 +251,8 @@ class Login extends Controller
             $redirect = __URL(__URL__ . "/wap/member/index");
             $this->redirect($redirect);exit;
         }elseif(session('user_name') && $_SESSION['login_pre_url']){
-            header("Location: ".$_SESSION['login_pre_url']);exit;  //跳转到上一次记录的页面
+            $redirect = $_SESSION['login_pre_url'];
+            $this->redirect($redirect);exit;  //跳转到上一次记录的页面
         }
 
         $config = new WebConfig();

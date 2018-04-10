@@ -2286,6 +2286,12 @@ opacity
 	padding:5px 0;
 	width: 100%;
 }
+.codes .kuaijie{
+	background: #fff;
+	border-bottom: 1px solid #e5e5e5;
+	padding:5px 0;
+	width: 100%;
+}
 .wchat-photo {
 	margin: 3%;
 	display: inline-block;
@@ -2356,6 +2362,10 @@ opacity
 		text-align: right;
 }
 #wchatpay {
+	width: 10%;
+	display: inline-block;
+}
+#kjzf {
 	width: 10%;
 	display: inline-block;
 }

@@ -39,8 +39,15 @@
 			<img  src="__TEMP__/{$style}/public/images/kuaijie.png"  class="wchat-photo">
 			<span class="wchat-title">{:lang('phone_fastpay')}</span>
 			
-			<span id="wchatpay"><img  src="__TEMP__/{$style}/public/images/segou.png"></span> 
+			<span id="kjzf"><img  src="__TEMP__/{$style}/public/images/segou.png"></span> 
 		</div>
+		<!-- 微信支付 -->
+		<div class="wchat-weixin">
+				<img src="__TEMP__/{$style}/public/images/weifu.png" class="wchat-photo">
+				<span class="wchat-title">{:lang('wechat_payment')}</span>
+			<span id="wchatpay"><img src="__TEMP__/{$style}/public/images/hgou.png"></span> 
+		</div>	
+		
 		<!-- 支付宝 -->
 		{if $business_id eq 0}
 		<div class="ali-pay">
@@ -48,7 +55,7 @@
 			<span class="ali-item">{:lang('alipay')}</span>
 			<span id="alipay"><img src="__TEMP__/{$style}/public/images/hgou.png"></span>
 		</div>
-		{/if}	
+		{/if}
 		<!-- 余额支付 -->
 		<div class="balance_pay">
 			<img src="__TEMP__/{$style}/public/images/balance_pay.png" class="ali-photo">
@@ -56,6 +63,7 @@
 			
 			<span id="balance"><img  src="__TEMP__/{$style}/public/images/hgou.png"></span>
 		</div>
+		
 		<!-- 余额支付需要密码 -->
 		<div class="log-cont" style="display: none;border:none;">
 			<label for="password">{:lang("password")}&nbsp;&nbsp;&nbsp;&nbsp;<input
@@ -66,11 +74,11 @@
 		{if condition="$pay_config['ali_pay_config']['is_use'] eq 1 && $pay_config['wchat_pay_config']['is_use'] eq 1"}
 			
 		{elseif condition="$pay_config['wchat_pay_config']['is_use']==1"}
-			<div class="wchat-weixin">
+			<!-- <div class="wchat-weixin">
 					<img src="__TEMP__/{$style}/public/images/weifu.png" class="wchat-photo">
 					<span class="wchat-title">{:lang('wechat_payment')}</span>
 				<span id="wchatpay"><img src="__TEMP__/{$style}/public/images/segou.png"></span> 
-			</div>
+			</div> -->
 		{elseif condition="$pay_config['ali_pay_config']['is_use']==1"} 
 			<!-- <div class="ali-pay">
 				<img src="__TEMP__/{$style}/public/images/zhifu.png" class="ali-photo">
@@ -132,40 +140,58 @@ function calculate() {
 	}else if(pay_type == 2){
 		//支付宝
 		window.location.href = __URL("APP_MAIN/pay/alipay?no=" + out_trade_no);
-	}else if(pay_type == -1){
-		showBox("{:lang('the_merchant_does_not_configure_payment_methods')}");
+	}else if(pay_type == 3){
+		//微信支付
+		window.location.href = __URL("APP_MAIN/WeiShangPay/index?out_trade_no=" + out_trade_no);
 	}
+	
 }
-
+//余额支付
 $(".balance_pay").click(function() {
 	$(".shade").hide();
 	$(".popup").hide();
 	$("#pay_type").val(1);
-	$("#balance").html("<img src='" + __IMG__ + "/segou.png'>");
-	$("#alipay").html("<img src='" + __IMG__ + "/hgou.png'>");
-	$("#wchatpay").html("<img src='" + __IMG__ + "/hgou.png'>");
+	$("#balance").html("<img src='" + __IMG__ + "/segou.png'>");//余额
+	$("#alipay").html("<img src='" + __IMG__ + "/hgou.png'>"); // 支付宝
+	$("#kjzf").html("<img src='" + __IMG__ + "/hgou.png'>");//快捷
+	$("#wchatpay").html("<img src='" + __IMG__ + "/hgou.png'>");//微信
 	$("#pay-text").html("{:lang('alipay')}");
 	$('.log-cont').css({"display":"block"});
 })
-
+//支付宝
 $(".ali-pay").click(function() {
 	$(".shade").hide();
 	$(".popup").hide();
 	$("#pay_type").val(2);
-	$("#balance").html("<img src='" + __IMG__ + "/hgou.png'>");
-	$("#alipay").html("<img src='" + __IMG__ + "/segou.png'>");
-	$("#wchatpay").html("<img src='" + __IMG__ + "/hgou.png'>");
+	$("#balance").html("<img src='" + __IMG__ + "/hgou.png'>");//余额
+	$("#alipay").html("<img src='" + __IMG__ + "/segou.png'>");// 支付宝
+	$("#kjzf").html("<img src='" + __IMG__ + "/hgou.png'>");//快捷
+	$("#wchatpay").html("<img src='" + __IMG__ + "/hgou.png'>");//微信
 	$("#pay-text").html("{:lang('alipay')}");
 	$('.log-cont').css({"display":"none"});
 })
-
+//快捷支付
 $(".kuaijie").click(function() {
 	$(".shade").hide();
 	$(".popup").hide();
 	$("#pay_type").val(0);
-	$("#balance").html("<img src='" + __IMG__ + "/hgou.png'>");
-	$("#alipay").html("<img src='" + __IMG__ + "/hgou.png'>");
-	$("#wchatpay").html("<img src='" + __IMG__ + "/segou.png'>");
+	$("#balance").html("<img src='" + __IMG__ + "/hgou.png'>");//余额
+	$("#alipay").html("<img src='" + __IMG__ + "/hgou.png'>");// 支付宝
+	$("#kjzf").html("<img src='" + __IMG__ + "/segou.png'>");//快捷
+	$("#wchatpay").html("<img src='" + __IMG__ + "/hgou.png'>");//微信
+	$("#pay-text").html("{:lang('wechat_payment')}");
+	$('.log-cont').css({"display":"none"});
+
+})
+//微信支付
+$(".wchat-weixin").click(function() {
+	$(".shade").hide();
+	$(".popup").hide();
+	$("#pay_type").val(3);
+	$("#balance").html("<img src='" + __IMG__ + "/hgou.png'>"); //余额
+	$("#alipay").html("<img src='" + __IMG__ + "/hgou.png'>");// 支付宝
+	$("#kjzf").html("<img src='" + __IMG__ + "/hgou.png'>"); //快捷
+	$("#wchatpay").html("<img src='" + __IMG__ + "/segou.png'>"); //微信
 	$("#pay-text").html("{:lang('wechat_payment')}");
 	$('.log-cont').css({"display":"none"});
 

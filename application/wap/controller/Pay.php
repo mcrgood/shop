@@ -88,6 +88,7 @@ class Pay extends Controller
         $business_id = input('param.business_id');
         if($business_id){
             $names = db('ns_shop_message')->where('userid',$business_id)->value('names');
+            $names = '【'.$names.'】';
             $this->assign('names',$names);
         }
         $this->assign('business_id',$business_id);
