@@ -229,27 +229,27 @@ ul{list-style: none}
 </head>
 <script type="text/javascript">
 	window.onload = function(){
-		var oList = document.getElementById('list');
-        var aLi = oList.getElementsByTagName('li');
-        for( var i=0; i<aLi.length; i++){
-                fnTab(i);
-            }
-         function fnTab(b){
-                var oSt = aLi[b].getElementsByTagName('em')[0];
-                var oEm = aLi[b].getElementsByTagName('span')[0];
-                var oSum = document.getElementById('sum');
-                var oSum2 = document.getElementById('totalpriceshow');
-                var aSpan =oSum.getElementsByTagName('span')[0];
+		// var oList = document.getElementById('list');
+  //       var aLi = oList.getElementsByTagName('li');
+  //       for( var i=0; i<aLi.length; i++){
+  //               fnTab(i);
+  //           }
+  //        function fnTab(b){
+  //               var oSt = aLi[b].getElementsByTagName('em')[0];
+  //               var oEm = aLi[b].getElementsByTagName('span')[0];
+  //               var oSum = document.getElementById('sum');
+  //               var oSum2 = document.getElementById('totalpriceshow');
+  //               var aSpan =oSum.getElementsByTagName('span')[0];
 
-                var ss = Number(oSt.innerHTML);
-                var mm = parseFloat(oEm.innerHTML);
-                    if( true){
-                        ss = ss;
-                    }
-                    aSpan.innerHTML = '￥'+ss*mm*aLi.length+'.00';
-                    oSum2.innerHTML= aSpan.innerHTML
-                    oSt.innerHTML = ss;
-                };
+  //               var ss = Number(oSt.innerHTML);
+  //               var mm = parseFloat(oEm.innerHTML);
+  //                   if( true){
+  //                       ss = ss;
+  //                   }
+  //                   aSpan.innerHTML = '￥'+ss*mm*aLi.length+'.00';
+  //                   oSum2.innerHTML= aSpan.innerHTML
+  //                   oSt.innerHTML = ss;
+  //               };
 
         var oYhj = document.getElementById('yhj');
         var oYhj2 = document.getElementById('yhj2'); 
@@ -276,55 +276,36 @@ ul{list-style: none}
         	onOff = true;
         }
         }; 
-              
-            };
-
+    };
 </script>
 <body>
 <div class="big">
 <form id="form1">
 	<div class="content_1">
 		<div class="first">
-			<h4>先生</h4>
-			<span>15170123175</span>
+			<h4>{$row.name}</h4>
+			<span>{$row.iphone}</span>
 		</div>
 		<div class="second">
-			<h4>先生</h4>
-			<span>2017年2月10晚上20:30(908 豪华大包间)</span>
+			<span>{$row.time}</span>
 		</div>
 	</div>
 	<div class="content_2">
 		<div class="content2_1">
-			<span class="area">{$row}</span>
+			<span class="area">{$row.names}</span>
 			<div class="food">
 				<ul id="list">
+				{volist name="list" id="v"}
 					<li>
 						<img src="images/youyu_03.png" width="60px" height="60px">
 						<div class="food_menu">
-							<h4>铁板鱿鱼</h4><label>x<em>1</em></label>
+							<h4>{$v.0}</h4><label>x<em>{$v.1}</em></label>
 						</div>
 						<div class="food_money">
-						<h5>￥<span>56<span> <label> .00</label></h5>
+						<h5>￥<span>{$v.2}<span></h5>
 						</div>
 					</li>
-					<li>
-						<img src="images/youyu_03.png" width="60px" height="60px">
-						<div class="food_menu">
-							<h4>铁板鱿鱼</h4><label>x<em>1</em></label>
-						</div>
-						<div class="food_money">
-						<h5>￥<span>56<span> <label> .00</label></h5>
-						</div>
-					</li>
-					<li>
-						<img src="images/youyu_03.png" width="60px" height="60px">
-						<div class="food_menu">
-							<h4>铁板鱿鱼</h4><label>x<em>1</em></label>
-						</div>
-						<div class="food_money">
-							<h5>￥<span>56<span> <label> .00</label></h5>
-						</div>
-					</li>
+				{/volist}
 				</ul>
 			</div>
 			<!-- <div class="youhui" id="yhj">
@@ -346,7 +327,7 @@ ul{list-style: none}
 				</ul>
 			</div> -->
 			<div class="sum" id="sum">
-				<span ></span><span>小计:</span>
+				<span></span><span>小计:</span>
 			</div>
 		</div>
 	</div>
@@ -361,6 +342,19 @@ ul{list-style: none}
 			</div>   
 		</div>
 	</form>
+	<script>
+		//购物车数量
+        $(document).ready(function(){
+        	var total = 0;
+        	$("#list li").each(function(i,v){
+        		var price = $(v).find('span').text();
+        		total += (price-0);
+        	})
+        	$("#sum").find('span').eq(0).text(total);
+        	$("#totalpriceshow").text(total);
+        })
+        
+	</script>
 </body>
 </html>
 

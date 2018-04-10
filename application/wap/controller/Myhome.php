@@ -1046,6 +1046,8 @@ class Myhome extends Controller
     {
         //查询左侧菜单栏
         $ids = input('param.userid',0); //商户ID
+        $row = db("ns_shop_message")->where("id",$ids)->value("names");
+        $this->assign("row",$row);
         if($ids == 0){
             $this->error('页面过期，请重新提交',__URL(__URL__ . '/wap/dingwei/index/cat/1'));
         }
@@ -1117,22 +1119,74 @@ class Myhome extends Controller
     public function order(){
         if(request()->isAjax()){
             $row = input("post.");
-            if(empty($row)){
-                $info = ["status"=>0,'msg'=>"请选择订单信息"];
+            if(!$row['name_arr']||!$row['name_arr']||!$row['name_arr']||!$row['user']||!$row['tel']){
+                $info = ["status"=>0,'msg'=>"请选择订单信息或填写姓名电话"];
             }else{
-                $list = [];
-                foreach ($row['name_arr'] as $k => $v) {
-                    $list[$k] = array_column($row,$k);
+                // $list = [];
+                // foreach ($row['name_arr'] as $k => $v) {
+                //     $list[$k] = array_column($row,$k);
+                // }
+                // $info = ["status"=>1,'msg'=>""];
+                $add_time = time();
+                $sid = time().rand(1000,9999);//生成订单号
+                $name_arr = implode("|",$row['name_arr']);
+                $nums_arr = implode("|",$row['nums_arr']);
+                $price_arr = implode("|",$row['price_arr']);
+                $data['sid'] = $sid;
+                $data['goodsname'] = $name_arr;
+                $data['goodsnum'] = $nums_arr;
+                $data['goodsprice'] = $price_arr;
+                $data['shop_id'] = $row['userid'];
+                $data['name'] = $row['user'];
+                $data['num'] = $row['num'];
+                $data['iphone'] = $row['tel'];
+                $data['time'] = $row['test5'];//预定时间
+                $data['add_time'] = $add_time;//预定时的时间
+                $data['message'] = $row['message'];
+                //获取商品图片
+                // dump($name_arr);die;
+                // $name = explode("|", $name_arr);
+                // $where['userid'] = ['in',$userids];
+                // $listimg =  
+                $list = db("ns_goods_yuding")->insert($data);
+                if($list){
+                    $info = [
+                        "status" => 1,
+                        "sid" => $sid
+                    ];
+                }else{
+                    $info = [
+                        "status" => 0,
+                    ];
                 }
-                $info = ["status"=>1,'msg'=>""]; 
             }
             return $info; 
         }else{
-            //查询店名
-            $id = input("get.userid");
-            $row = db("ns_shop_message")->where("id",$id)->value("names");
-            dump(session("name",$data1));
+            //查询订单信息
+            $sid = input("param.sid");
+            $row = db("ns_goods_yuding")->alias("a")->join("ns_shop_message m",'a.shop_id=m.id')->where("sid",$sid)->field('a.*,m.names')->find();
+            $goods[0] = explode('|', $row['goodsname']);
+            $goods[1] = explode('|', $row['goodsnum']);
+            $goods[2] = explode('|', $row['goodsprice']);
+            $list = [];
+            foreach ($goods[0] as $k => $v) {
+                $list[$k] = array_column($goods,$k);
+            }
+            foreach($list as $k => $v){
+                if($v[2]){
+                    if(strpos($v[2],'.') ){
+                        $list[$k][2] = $v[2].'0';
+                    }else{
+                        $list[$k][2] = $v[2].'.00';
+                    }
+                }
+            }
             $this->assign("row",$row);
+            $this->assign("list",$list);
+            //获取商品图片
+            $sid = input("param.sid");
+            $shop_ids = db("ns_goods_yuding")->where("sid",$sid)->value("shop_id");
+            
             return view($this->style . 'Myhome/order');
         }
     }

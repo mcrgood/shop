@@ -112,7 +112,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 <script type="text/javascript" src="__YUDING__/js/vue.min.js"></script>
 <!-- ajax页面 -->
 <script type="text/javascript">
-        var userid = "{$Request.param.userid}";
+    var userid = "{$Request.param.userid}";
     $(".lefts").click(function(){
         var cateid = $(this).val();
         getList(cateid,userid);
@@ -123,7 +123,6 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
             url:"{:url('Myhome/yudingcate')}",
             data:{"cateid":cateid,"userid":userid},
             success:function(data){
-                console.log(data);
                 var html = '';
                 if(data.status==1){
                     for(var i = 0; i < data["list"].length; i++){
@@ -154,23 +153,25 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 </div>
     <div class="m-box second-content"><!--包间-->
         <div class="bigest">
-            <div class="seller"><span>中华大酒店</span></div>
+            <div class="seller"><span>{$row}</span></div>
             <form id="form" class="common">
-                <span>姓名:  <input type="text" name="username" id="user"/></span>
-                <span>人数:  <input type="number" name="renshu" id="num" value="" /></span>
-                <span>联系电话:  <input type="tel" name="dianhua" id="tel" /></span>
+                <span>预定姓名:  <input type="text" name="username" id="user"/></span>
+                <span>预定人数:  <input type="number" name="renshu" id="num" value="" /></span>
+                <span>预定电话:  <input type="tel" name="dianhua" id="tel" /></span>
             <div class="time">
-                <span>定用时间: <input type="text" id="test1" placeholder="请选择" /></span>           
+                <span>预定时间: <input type="test1" id="test5" placeholder="请选择" /></span>           
             </div>
         <script src="__YUDING__/js/laydate.js"></script>
         <script>
-            lay('#version').html('-v'+ laydate.v);
-            //执行一个laydate实例
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
             laydate.render({
-                elem: '#test1' //指定元素
+                elem: '#test5'
+                ,type: 'datetime'
             });
+        })
         </script>   
-        <textarea rows="3" cols="50" placeholder="详细时间" style="outline:none;margin-top:10px;font-size:15px;border:1px solid #cccccc;margin-left:10%;width:80%;"></textarea>
+        <textarea rows="3" cols="50" placeholder="预定要求，可不填" style="outline:none;margin-top:10px;font-size:15px;border:1px solid #cccccc;margin-left:10%;width:80%;" id="message"></textarea>
         <div class="make">
             <span>定制包间</span>
             <div id="order_1" onclick="showtext()">可定制 ></div>
@@ -200,9 +201,9 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
             </ul>
         </div>
     </div>
-    <div class="last">
-        <input type="submit" value="确认" id="submit_button"/>
-    </div>
+    <!-- <div class="last">
+        <input type="button" value="返回主页" class="first-li" />
+    </div> -->
         </form> 
          </div>
 </div>
@@ -213,9 +214,15 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 <script>
     //ajax提交结算信息
     $("#btnselect").click(function(){
-            var name_arr = [];
-            var price_arr = [];
-            var nums_arr = [];
+        var userid = "{$Request.param.userid}";
+        var user = $("#user").val();//预订人姓名
+        var num = $("#num").val();//预定人数
+        var tel = $("#tel").val();//预定电话
+        var message = $("#message").val();//预定要求
+        var test5 = $("#test5").val();//预定时间
+        var name_arr = [];
+        var price_arr = [];
+        var nums_arr = [];
         $('.food').each(function(i,v){
             var name = $(v).find(".accountName").text();//获取菜单名
             var price = $(v).find(".accountPrice").text();//获取价格
@@ -225,20 +232,16 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
             nums_arr[i] =nums;
            
         })
-        // alert(name_arr);
-        // alert(price_arr);
-        // alert(nums_arr);
-        // return;
-         var data = {"name_arr":name_arr,"price_arr":price_arr,"nums_arr":nums_arr};
-            var url = "{:url('Myhome/order')}";
-            $.post(url,data,function(res){
-                console.log(res);
-                if(res.status==1){
-                    window.location.href='{:__URL(\'APP_MAIN/Myhome/order\',\'userid=\'.$ids)}'
-                }else{
-                    layer.msg(res.msg, {icon: 5,time: 5000});
-                }
-            },'json')
+        var data = {"name_arr":name_arr,"price_arr":price_arr,"nums_arr":nums_arr,"userid":userid,"user":user,"num":num,"tel":tel,"test5":test5,"message":message};
+        var url = "{:url('Myhome/order')}";
+        $.post(url,data,function(res){
+            console.log(res);
+            if(res.status==1){
+                window.location.href = "{:__URL('APP_MAIN/myhome/order')}?sid="+res.sid;
+            }else{
+                layer.msg(res.msg, {icon: 5,time: 3000});
+            }
+        },'json')
     }); 
 </script>
 </body>
