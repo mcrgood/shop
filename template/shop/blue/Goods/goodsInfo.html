@@ -74,13 +74,19 @@
 							<span class="price" style="display:block;">{:lang('original_cost')}</span>
 							<font class="market-price">￥{$goods_info.market_price}</font>
 					</div>
+
 					<div class="realy-price">
 						<div class="now-prices">
 							<span class="price">{:lang('goods_selling_price')}</span>
-							{if $goods_info.price neq 0}<strong class="p-price second-color" id="price">￥{$goods_info.promotion_price}</strong>{/if}
+							{if $goods_info.price neq 0}
+								<strong class="p-price second-color" id="price">￥{$goods_info.promotion_price}</strong>
+							{/if}
 							
 							{if condition="$goods_info.point_exchange_type==1 && $goods_info.point_exchange>0"}
-								<strong class="p-price second-color" style="font-size:15px;" id="member_point">{if $goods_info.price neq 0}+{/if}{$goods_info.point_exchange}{:lang('goods_integral')}</strong>
+								<strong class="p-price second-color" style="font-size:15px;" id="member_point">
+								{if $goods_info.price neq 0}+{/if}
+								{$goods_info.point_exchange}{:lang('goods_integral')}
+								</strong>
 							{/if}
 						</div>
 						<!-- <div class="depreciate">
