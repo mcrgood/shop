@@ -122,8 +122,8 @@ class Member extends BaseController
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
         $package = $jssdk->getSignPackage();
         $userinfo = $jssdk->getOpenid($package['url']);
-        if($userinfo){ //获取会员的微信头像和昵称
-            $userRow = db('sys_user')->where('user_name',$user_name)->find();
+        $userRow = db('sys_user')->where('user_name',$user_name)->find(); //查出登录会员的基本信息栏
+        if($userinfo && !$userRow['nick_name'] || !$userRow['user_headimg']){ //获取会员的微信头像和昵称
             if(!$userRow['nick_name'] || !$userRow['user_headimg']){
                 if($userRow['nick_name'] != $userinfo->nickname || $userRow['user_headimg'] != $userinfo->headimgurl){
                     $data['nick_name'] = $userinfo->nickname;
