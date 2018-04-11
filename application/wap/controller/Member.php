@@ -113,7 +113,7 @@ class Member extends BaseController
         $user_name = session('user_name'); //获取登录会员的用户名（手机号）
         $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode'); //通过手机号查询出该会员是否有推广码
         if(!$user_qrcode && $user_name){ //没有推广码的话创建一张
-            $url = __URL('wap/login/index?referee_phone=' . $user_name);
+            $url = __URL(__URL__ .'/wap/login/index?referee_phone=' . $user_name);
             $user_qrcode_img = getShopQRcode($url, 'upload/user_qrcode', 'user_qrcode_' . $user_name);
             $this->create($url, $user_qrcode_img, '       客旺旺会员推广码');
             db('sys_user')->where('user_name',$user_name)->update(['user_qrcode' => $user_qrcode_img]);
@@ -1211,10 +1211,18 @@ class Member extends BaseController
     public function recharge()
     {
         // business_id 存在的话为线下扫码跳转支付
+        $uid = $this->uid;
         $business_id = input('param.business_id',0);
         if($business_id){
             $names = db('ns_shop_message')->where('userid',$business_id)->value('names');    
-            $this->assign("names", $names);
+            $this->assign("names", $names); //查出商家的店铺名称
+            $data['uid'] = $uid;
+            $data['business_id'] = $business_id;
+            $row = db('ns_business_member')->where($data)->find(); //查会员是不是这个店铺的会员
+            if(!$row){ //如果不是就新增商家会员表
+                $data['create_time'] = time();
+                db('ns_business_member')->insert($data);
+            }
         }
         $this->assign("business_id", $business_id);
         $pay = new UnifyPay();

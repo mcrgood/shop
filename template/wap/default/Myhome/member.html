@@ -41,61 +41,30 @@
 	</div>
 	<div class="search">
 		<div class="search_1">
-			<input type="submit" value="" class="search_btn"/>
-			<input class="search_input" type="text" placeholder="请输入会员手机号、姓名关键字进行搜索" onfocus="if (placeholder =='请输入会员手机号、姓名关键字进行搜索'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入会员手机号、姓名关键字进行搜索'}"/>
+			<input type="button" value="" class="search_btn"/>
+			<input class="search_input" type="text" placeholder="昵称 / 手机号" onfocus="if (placeholder =='请输入会员手机号、姓名关键字进行搜索'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入会员手机号、姓名关键字进行搜索'}"/>
 		</div>
-		<div class="user"><span>共10位会员</span></div>
+		<div class="user"><span>共{$count}位会员</span></div>
 	</div>
 	<div class="users_1">
 		<ul id="content_news_list">
+		{volist name="list" id="v"}
 			<li>
 				<div id="contents">
-					<img src="__INDEX__/images/tx_03.png"/>
+					<img src="{$v.user_headimg}"/>
 					<div class="users_2">
-						<h4>用户名1</h4>
-						<span>15170123175</span>
+						<h4>{$v.nick_name}</h4>
+						<span>{$v.user_name}</span>
 					</div>
 				</div>
 			</li>
-			<li>
-				<div id="contents">
-					<img src="__INDEX__/images/tx_03.png"/>
-					<div class="users_2">
-						<h4>用户名2</h4>
-						<span>15170123175</span>
-					</div>
-				</div>
-			</li>
+		{/volist}
 		</ul>
 	</div>
 	<script type="text/javascript">
-        $(function(){
-
-            $("input[type=text]").change(function () {
-                var searchText = $(this).val();//获取输入的搜索内容
-                var $searchLi = "";//预备对象，用于存储匹配出的li
-
-                if (searchText != "") {
-
-                    //获取所有匹配的li
-                    $searchLi = $("#content_news_list").find('#contents:contains('+ searchText +')').parent();
-                    //将内容清空
-                    $("#content_news_list").html("");
-                }
-
-                //将获取的元素追加到列表中
-                $("#content_news_list").html($searchLi).clone();
-
-                //判断搜索内容是否有效，若无效，输出not find
-                if ($searchLi.length <= 0) {
-                    $("#content_news_list").html("<li>not find</li>")
-                }
-            })
-
-            $("input[type=submit]").click(function () {
-                $("searchText").change();
-            })
-        })
+	$(function(){
+		alert(1)
+	})
 	</script>
 </div>
 </body>

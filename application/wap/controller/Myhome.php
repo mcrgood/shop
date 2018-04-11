@@ -472,7 +472,7 @@ class Myhome extends Controller
         $state = db('ns_shop_message')->where('userid',$business_id)->value('state');
         if(!$qrcode && $state == 1){ 
             $shop_qrcode_num = '0791'.$rand;
-            $url = __URL('wap/member/recharge?business_id=' . $business_id);
+            $url = __URL(__URL__ .'/wap/member/recharge?business_id=' . $business_id);
             $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $business_id);
             $this->create($url, $shop_qrcode,"    NO.".$shop_qrcode_num);
             $data['shop_qrcode'] = $shop_qrcode;
@@ -524,6 +524,18 @@ class Myhome extends Controller
     }
     public function member(){
         $this->check_login();
+        $list = db('ns_business_member')->alias('b')
+        ->join('sys_user u','u.uid = b.uid','left')
+        ->field('u.user_name,u.nick_name,u.user_headimg')
+        ->where('b.business_id',$this->business_id)->select();
+        foreach($list as $k => $v){
+            if(!$v['user_headimg']){
+                $list[$k]['user_headimg'] = '__INDEX__/images/tx_03.png';
+            }
+        }
+        $count = db('ns_business_member')->where('business_id',$this->business_id)->count();
+        $this->assign('count',$count);
+        $this->assign('list',$list);
         return view($this->style . 'Myhome/member');
     }
     public function message(){
