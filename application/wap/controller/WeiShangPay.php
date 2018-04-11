@@ -38,15 +38,15 @@ class WeiShangPay extends BaseController
 			->join('ns_order_goods g','g.order_id = p.type_alis_id','left')
 			->where('p.out_trade_no',$out_trade_no)->value('goods_name');
 			$orderInfo['goodsName'] = mb_substr($goodsName,0,36,'utf-8') . '...'; //查出商品名称并且截取40字符以内
-			$datas = db('ns_order')->alias('o')
-			->field('province_name,city_name,district_name,receiver_address,receiver_name,buyer_message')
-			->join('sys_province p','p.province_id = o.receiver_province','left')
-			->join('sys_city c','c.city_id = o.receiver_city','left')
-			->join('sys_district d','d.district_id = o.receiver_district','left')
-			->where('o.out_trade_no',$out_trade_no)->find();
-			$address = $datas['province_name'].$datas['city_name'].$datas['district_name'].$datas['receiver_address'];
-			$this->assign('address',$address);
-			$this->assign('datas',$datas);
+			// $datas = db('ns_order')->alias('o')
+			// ->field('province_name,city_name,district_name,receiver_address,receiver_name,buyer_message')
+			// ->join('sys_province p','p.province_id = o.receiver_province','left')
+			// ->join('sys_city c','c.city_id = o.receiver_city','left')
+			// ->join('sys_district d','d.district_id = o.receiver_district','left')
+			// ->where('o.out_trade_no',$out_trade_no)->find();
+			// $address = $datas['province_name'].$datas['city_name'].$datas['district_name'].$datas['receiver_address'];
+			// $this->assign('address',$address);
+			// $this->assign('datas',$datas);
 		}elseif($row['type'] == 4){  //商城余额充值
 			$orderInfo['goodsName'] = $row['pay_body'];
 		}elseif($row['type'] == 5){  //线下扫码支付

@@ -94,7 +94,7 @@
             <td><span>*</span>详细地址</td><td><input type="text" placeholder="请输入店铺详细街道门牌号" name="address" value="{$shopinfo.address}"  id="address"/></td>
         </tr>
             <tr>
-                <td colspan="2"><div style=" width:100%; height:6rem;" id="allmap"></div></td>
+                <td colspan="2"><div style=" width:100%; height:8rem;" id="allmap"></div></td>
             </tr>
         <tr>
             <td><span>*</span>商家电话</td><td><input type="text" placeholder="请输入手机号或固定电话（例:079188888888）" name="tel" id="tel" value="{$shopinfo.tel}" /></td>
@@ -735,7 +735,8 @@
 
                 jingdu = longitude;
                 weidu = latitude;
-                //layer.msg(jingdu);
+                // layer.msg(jingdu);
+                // layer.msg(weidu);
                 var map = new BMap.Map("allmap");
                 // map.enableScrollWheelZoom(true);
                 // map.disableDragging();
@@ -755,9 +756,10 @@
                         var addComp = rs.addressComponents;
                         // layer.msg(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
 
-                        $("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
-                        $("#sheng").val(addComp.province);
-                        $("#shi").val(addComp.city);
+                        // $("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
+                        $("#address").val(addComp.street +addComp.streetNumber);
+                        // $("#sheng").val(addComp.province);
+                        // $("#shi").val(addComp.city);
                         $("#jingdu").val(pt.lng);
                         $("#weidu").val(pt.lat);
                     });
@@ -781,9 +783,9 @@
                     geoc.getLocation(pt, function(rs){
                         var addComp = rs.addressComponents;
                         // layer.msg(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
-                        $("#address").val(addComp.province +addComp.city +addComp.district +addComp.street +addComp.streetNumber);
-                        $("#sheng").val(addComp.province);
-                        $("#shi").val(addComp.city);
+                        $("#address").val(addComp.street +addComp.streetNumber);
+                        // $("#sheng").val(addComp.province);
+                        // $("#shi").val(addComp.city);
                     });
 
                 });
