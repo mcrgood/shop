@@ -220,7 +220,7 @@ ul{list-style: none}
 .sum span:first-child{
 	color:#ff5454;
 }
-.footer{display:flex;width:100%;z-index:3;bottom:0px;color:#f03c03;background:#fff;line-height:35px;font-size:15px;border-top:1px solid #e2e2e2;height: 35px;position: absolute;} 
+.footer{width:100%;z-index:3;bottom:0px;color:#f03c03;background:#fff;line-height:35px;font-size:15px;border-top:1px solid #e2e2e2;height: 35px;position: fixed;} 
 .footer .left{float:left;width: 65%;text-align: right;background: #d43b2e;color:#fff;height: 35px;padding-right: 5%;line-height:35px;}  
 .footer .right{float:right;width: 30%;height: 35px;}  
 .footer .right .disable{background:#eae28d;}  
@@ -280,7 +280,6 @@ ul{list-style: none}
 </script>
 <body>
 <div class="big">
-<form id="form1">
 	<div class="content_1">
 		<div class="first">
 			<h4>{$row.name}</h4>
@@ -297,7 +296,7 @@ ul{list-style: none}
 				<ul id="list">
 				{volist name="list" id="v"}
 					<li>
-						<img src="images/youyu_03.png" width="60px" height="60px">
+						<img src="{$v.goodsimg}" width="60px" height="60px">
 						<div class="food_menu">
 							<h4>{$v.0}</h4><label>x<em>{$v.1}</em></label>
 						</div>
@@ -341,7 +340,6 @@ ul{list-style: none}
 				<a id="btnselect" class="xhlbtn  disable">去结算</a>  
 			</div>   
 		</div>
-	</form>
 	<script>
 		//购物车数量
         $(document).ready(function(){
@@ -353,7 +351,15 @@ ul{list-style: none}
         	$("#sum").find('span').eq(0).text(total);
         	$("#totalpriceshow").text(total);
         })
-        
+        //订单提交ajax
+        $("#btnselect").click(function(){
+        	var sid = "{$Request.param.sid}";
+        	var url = "{:url('Myhome/orderpay')}";
+        	var data = {"sid":sid};
+        	$.post(url,data,function(res){
+
+        	},'json')
+        })
 	</script>
 </body>
 </html>

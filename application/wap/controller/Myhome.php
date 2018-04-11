@@ -1194,13 +1194,27 @@ class Myhome extends Controller
                     }
                 }
             }
+            // dump($list);die;
+            
+            //获取商品图片
+            $shop_ids = db("ns_goods_yuding")->where("sid",$sid)->value("shop_id");//获取店铺ID
+            $where['userid'] = $shop_ids;
+            foreach ($list as $k => $v) {
+                $where['goodsname'] = $v[0];
+                $list[$k]['goodsimg'] = db("ns_shop_menu")->where($where)->value('goodsimg');//查出当前店铺的所有菜单名
+            }
             $this->assign("row",$row);
             $this->assign("list",$list);
-            //获取商品图片
-            $sid = input("param.sid");
-            $shop_ids = db("ns_goods_yuding")->where("sid",$sid)->value("shop_id");
-            
             return view($this->style . 'Myhome/order');
+        }
+    }
+    //订单支付
+    public function orderpay(){
+        if(request()->isAjax()){
+            $id = input("post.sid");
+            dump($id);
+            $ordermessage = db("ns_goods_yuding")->where("sid",$id)->find();
+            dump($ordermessage);die;
         }
     }
     /**
