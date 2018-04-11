@@ -113,7 +113,7 @@ class Member extends BaseController
         $user_name = session('user_name'); //获取登录会员的用户名（手机号）
         $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode'); //通过手机号查询出该会员是否有推广码
         if(!$user_qrcode && $user_name){ //没有推广码的话创建一张
-            $url = __URL(__URL__ .'/wap/login/index?referee_phone=' . $user_name);
+            $url = __URL(__URL__ .'/wap/login/register?referee_phone=' . $user_name);
             $user_qrcode_img = getShopQRcode($url, 'upload/user_qrcode', 'user_qrcode_' . $user_name);
             $this->create($url, $user_qrcode_img, '       客旺旺会员推广码');
             db('sys_user')->where('user_name',$user_name)->update(['user_qrcode' => $user_qrcode_img]);
