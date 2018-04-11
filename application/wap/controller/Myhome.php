@@ -524,18 +524,38 @@ class Myhome extends Controller
     }
     public function member(){
         $this->check_login();
-        $list = db('ns_business_member')->alias('b')
-        ->join('sys_user u','u.uid = b.uid','left')
-        ->field('u.user_name,u.nick_name,u.user_headimg')
-        ->where('b.business_id',$this->business_id)->select();
-        foreach($list as $k => $v){
-            if(!$v['user_headimg']){
-                $list[$k]['user_headimg'] = '__INDEX__/images/tx_03.png';
+        if(request()->isAjax()){
+            $search_text = input('post.search_text', '');
+            $business_id = input('post.business_id', '');
+            $where['b.business_id'] = $business_id;
+            if($search_text){
+                $where['u.nick_name|u.user_name'] = ['like', "%".$search_text."%"];
             }
+            $list = db('ns_business_member')->alias('b')
+            ->join('sys_user u','u.uid = b.uid','left')
+            ->field('u.user_name,u.nick_name,u.user_headimg')
+            ->where($where)->select(); //查出该店铺下的所有会员
+            $count = db('ns_business_member')->alias('b')
+            ->join('sys_user u','u.uid = b.uid','left')
+            ->field('u.user_name,u.nick_name,u.user_headimg')
+            ->where($where)->count(); // 查出所有会员总数量
+            if($list){
+                $info = [
+                    'status' =>1,
+                    'list' =>$list,
+                    'count' =>$count
+                ];
+            }else{
+                $info = [
+                    'status' =>0,
+                    'list' =>'',
+                    'count' =>$count
+                ];
+            }
+            return $info;
         }
-        $count = db('ns_business_member')->where('business_id',$this->business_id)->count();
-        $this->assign('count',$count);
-        $this->assign('list',$list);
+        
+        $this->assign('business_id',$this->business_id);
         return view($this->style . 'Myhome/member');
     }
     public function message(){

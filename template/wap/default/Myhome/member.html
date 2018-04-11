@@ -37,34 +37,52 @@
 	<div class="header">
 		<div class="header_left"><a href="{:__URL('APP_MAIN/Myhome/yingshou')}" > < </a></div>
 		<div class="header_center">会员</div>
-		<div class="header_right"><a href="" >筛选</a></div>
+		<div class="header_right"><a onclick="findMember()">查找</a></div>
 	</div>
 	<div class="search">
 		<div class="search_1">
 			<input type="button" value="" class="search_btn"/>
 			<input class="search_input" type="text" placeholder="昵称 / 手机号" onfocus="if (placeholder =='请输入会员手机号、姓名关键字进行搜索'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入会员手机号、姓名关键字进行搜索'}"/>
 		</div>
-		<div class="user"><span>共{$count}位会员</span></div>
+		<div class="user"><span>共<span class="count"></span>位会员</span></div>
 	</div>
 	<div class="users_1">
 		<ul id="content_news_list">
-		{volist name="list" id="v"}
-			<li>
-				<div id="contents">
-					<img src="{$v.user_headimg}"/>
-					<div class="users_2">
-						<h4>{$v.nick_name}</h4>
-						<span>{$v.user_name}</span>
-					</div>
-				</div>
-			</li>
-		{/volist}
+		
 		</ul>
 	</div>
 	<script type="text/javascript">
-	$(function(){
-		
-	})
+		$(function(){
+			getList()
+		})
+		var business_id = "{$business_id}";
+		function findMember(){  //搜索
+			var search_text = $('.search_input').val();
+			getList(search_text)
+		}
+
+		function getList(search_text){
+			var url = "{:__URL('APP_MAIN/myhome/member')}";
+			var data = {business_id:business_id,search_text:search_text};
+			$.post(url,data,function(res){
+				var html = '';
+				if(res.status == 1){
+					for(var i=0;i<res.list.length;i++){
+						html +='<li>';
+						html +='<div id="contents">';
+						html +='<img src="__INDEX__/images/tx_03.png"/>';
+						html +='<div class="users_2">';
+						html +='<h4>'+res["list"][i]["nick_name"]+'</h4>';
+						html +='<span>'+res["list"][i]["user_name"]+'</span>';
+						html +='</div>';
+						html +='</div>';
+						html +='</li>';
+					}
+				}
+					$('#content_news_list').empty().append(html);
+					$('.count').text(res.count);
+			},'json')
+		}
 	</script>
 </div>
 </body>
