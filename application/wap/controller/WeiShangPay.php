@@ -16,6 +16,7 @@
 namespace app\wap\controller;
 use data\service\WxPaySubmit as WxPaySubmit;
 use data\service\WxPayNotify as WxPayNotify;
+use data\service\HandleOrder as HandleOrder;
 /**
  * 微商支付
  * 创建人：屈华俊
@@ -140,8 +141,9 @@ class WeiShangPay extends BaseController
 		if ($verify_result) { // 验证成功
 		    
 		    $paymentResult = $_REQUEST['paymentResult'];
-		    $xmlResult = simplexml_load_string($paymentResult);
-		    $status = $xmlResult->WxPayRsp->body->Status;
+		    $xmlRes = xmlToArray($paymentResult);
+		    // $status = $xmlResult->WxPayRsp->body->Status;
+		    $status = $xmlRes['WxPayRsp']['body']['Status'];
 		    if($status == "Y")
 		    {
 		        $merBillNo = $xmlResult->WxPayRsp->body->MerBillno;
@@ -155,6 +157,8 @@ class WeiShangPay extends BaseController
 		        $this->assign('IpsBillNo',$IpsBillNo);
 		        $this->assign('ordAmt',$ordAmt);
 		        $message = "支付成功";
+		        $HandleOrder = new HandleOrder();
+		        // $HandleOrder->handle();
 		    }elseif($status == "N")
 		    {
 		        $message = "交易失败";
