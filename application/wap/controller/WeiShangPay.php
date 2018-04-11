@@ -58,6 +58,7 @@ class WeiShangPay extends BaseController
 		$ipspay_config = config('wx_pay_data');
 		$this->assign('orderInfo',$orderInfo);
 		$this->assign('ipspay_config',$ipspay_config);
+		$this->assign('out_trade_no',$out_trade_no);
 		return view($this->style . 'WeiShangPay/index');
 	}
 	//微信支付API
@@ -70,7 +71,7 @@ class WeiShangPay extends BaseController
 		//商户账户号
 		$Account = $post_data['Account'];
 		//商户订单号
-		$MerBillno = $post_data['MerBillno'];
+		$MerBillno = $post_data['out_trade_no'];
 		//订单金额金额
 		$OrdAmt = $post_data['OrdAmt'];
 		//订单时间
@@ -146,18 +147,22 @@ class WeiShangPay extends BaseController
 		    $status = $xmlRes['WxPayRsp']['body']['Status'];
 		    if($status == "Y")
 		    {
-		        $merBillNo = $xmlResult->WxPayRsp->body->MerBillno;
-		        $MerCode = $xmlResult->WxPayRsp->body->MerCode;
-		        $Account = $xmlResult->WxPayRsp->body->Account;
-		        $IpsBillNo = $xmlResult->WxPayRsp->body->IpsBillNo;
-		        $ordAmt = $xmlResult->WxPayRsp->body->OrdAmt;
-		        $this->assign('merBillNo',$merBillNo);
-		        $this->assign('MerCode',$MerCode);
-		        $this->assign('Account',$Account);
-		        $this->assign('IpsBillNo',$IpsBillNo);
-		        $this->assign('ordAmt',$ordAmt);
+		    	$merBillNo = $xmlRes['WxPayRsp']['body']['MerBillno'];
+		    	dump($xmlRes);
+		    	dump($merBillNo);
+		    	die;
+		        // $merBillNo = $xmlResult->WxPayRsp->body->MerBillno;
+		        // $MerCode = $xmlResult->WxPayRsp->body->MerCode;
+		        // $Account = $xmlResult->WxPayRsp->body->Account;
+		        // $IpsBillNo = $xmlResult->WxPayRsp->body->IpsBillNo;
+		        // $ordAmt = $xmlResult->WxPayRsp->body->OrdAmt;
+		        // $this->assign('merBillNo',$merBillNo);
+		        // $this->assign('MerCode',$MerCode);
+		        // $this->assign('Account',$Account);
+		        // $this->assign('IpsBillNo',$IpsBillNo);
+		        // $this->assign('ordAmt',$ordAmt);
 		        $message = "支付成功";
-		        $HandleOrder = new HandleOrder();
+		        // $HandleOrder = new HandleOrder();
 		        // $HandleOrder->handle();
 		    }elseif($status == "N")
 		    {
