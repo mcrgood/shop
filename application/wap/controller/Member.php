@@ -119,19 +119,18 @@ class Member extends BaseController
             $this->create($url, $user_qrcode_img, '       客旺旺会员推广码');
             db('sys_user')->where('user_name',$user_name)->update(['user_qrcode' => $user_qrcode_img]);
         }
-        $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
-        $package = $jssdk->getSignPackage();
-        $userinfo = $jssdk->getOpenid($package['url']);
+        
         $userRow = db('sys_user')->where('user_name',$user_name)->find(); //查出登录会员的基本信息栏
-        if($userinfo && !$userRow['nick_name'] || !$userRow['user_headimg']){ //获取会员的微信头像和昵称
-            if(!$userRow['nick_name'] || !$userRow['user_headimg']){
-                if($userRow['nick_name'] != $userinfo->nickname || $userRow['user_headimg'] != $userinfo->headimgurl){
-                    $data['nick_name'] = $userinfo->nickname;
-                    $data['user_headimg'] = $userinfo->headimgurl;
-                    db('sys_user')->where('user_name',$user_name)->update($data);
-                }
-            }
+         //获取会员的微信头像和昵称
+        if(!$userRow['nick_name'] || !$userRow['user_headimg']){
+            $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
+            $package = $jssdk->getSignPackage();
+            $userinfo = $jssdk->getOpenid($package['url']);
+            $data['nick_name'] = $userinfo->nickname;
+            $data['user_headimg'] = $userinfo->headimgurl;
+            db('sys_user')->where('user_name',$user_name)->update($data);
         }
+       
         $member = new MemberService();
         if($user_name){
             $member->send_moneys($user_name); //调用推荐人返佣金方法
