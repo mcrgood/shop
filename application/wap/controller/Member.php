@@ -964,7 +964,9 @@ class Member extends BaseController
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
         $package = $jssdk->getSignPackage();
         $this->assign('signPackage', $package);
-        
+        $userinfo = $jssdk->getOpenid($package['url']);
+        dump($userinfo);die;
+
         return view($this->style . "Member/myqrcode");
     }
 
