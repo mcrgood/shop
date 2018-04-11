@@ -31,7 +31,7 @@ class Jssdk {
     }
     
   }
-
+  //获取用户信息
   public function getOpenid($url){
     
     //判断是在微信里面打开

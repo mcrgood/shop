@@ -31,6 +31,7 @@ use data\service\Weixin;
 use think\Request;
 use think;
 use think\Session;
+use data\extend\org\wechat\Jssdk;
 header("content-type:text/html; charset=utf-8");
 /**
  * 会员
@@ -113,7 +114,7 @@ class Member extends BaseController
         $user_name = session('user_name'); //获取登录会员的用户名（手机号）
         $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode'); //通过手机号查询出该会员是否有推广码
         if(!$user_qrcode && $user_name){ //没有推广码的话创建一张
-            $url = __URL(__URL__ .'/wap/login/index?referee_phone=' . $user_name);
+            $url = __URL(__URL__ .'/wap/login/register?referee_phone=' . $user_name);
             $user_qrcode_img = getShopQRcode($url, 'upload/user_qrcode', 'user_qrcode_' . $user_name);
             $this->create($url, $user_qrcode_img, '       客旺旺会员推广码');
             db('sys_user')->where('user_name',$user_name)->update(['user_qrcode' => $user_qrcode_img]);
@@ -958,9 +959,14 @@ class Member extends BaseController
         $instance_id = $this->instance_id;
         $this->assign("shop_id", $instance_id);
         // 分享
-        $ticket = $this->getShareTicket();
-        $this->assign("signPackage", $ticket);
-        
+        // $ticket = $this->getShareTicket();
+        // $this->assign("signPackage", $ticket);
+        $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
+        $package = $jssdk->getSignPackage();
+        $this->assign('signPackage', $package);
+        $userinfo = $jssdk->getOpenid($package['url']);
+        dump($userinfo);die;
+
         return view($this->style . "Member/myqrcode");
     }
 
@@ -1006,6 +1012,7 @@ class Member extends BaseController
         // 分享
         $ticket = $this->getShareTicket();
         $this->assign("signPackage", $ticket);
+
         return view($this->style . "Member/myqrcode");
     }
 
