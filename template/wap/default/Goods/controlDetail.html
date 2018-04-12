@@ -80,12 +80,15 @@ input{appearance:none;-moz-appearance:none;-webkit-appearance:none;outline: none
 	<input type="hidden" id="end_time" value="{$goods_detail['promotion_detail']['end_time'] | getTimeStampTurnTime}"/>
 	<div class="goods-price">
 		<div class="current-price activity-price">
-			<span><img src="__TEMP__/{$style}/public/images/pi.png" alt=""></span><i class="js-goods-price price">{$goods_detail.point_exchange}</i>
-			<span class="price-title js-price-title">{:lang('goods_discount')}</span>
-		</div>
-		{if condition="$goods_detail.market_price>0"}
+			<!-- <span><img src="__TEMP__/{$style}/public/images/pi.png" alt=""></span><i class="js-goods-price price">{$goods_detail.point_exchange}</i>
+			<span class="price-title js-price-title">{:lang('goods_discount')}</span> -->
+			¥{if condition="$goods_detail.market_price>0"}
 		<em class="original-price">{$goods_detail.market_price}</em>
-		{/if}
+		{/if} 
+		</div>
+		<!-- {if condition="$goods_detail.market_price>0"}
+		<em class="original-price">{$goods_detail.market_price}</em>
+		{/if} -->
 		<div class="font-size-12 overview-countdown js-activity-tips started" data-status="started">
 			<div class="countdown-title">{:lang('distance_ends')}</div>
 				<div class="js-discount-time countdown" data-countdown="3542691">
