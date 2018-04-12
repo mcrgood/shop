@@ -262,10 +262,10 @@ input{appearance:none;-moz-appearance:none;-webkit-appearance:none;outline: none
 			</span>
 			
 			<div class="pro-info">
-				<!-- <div class="show-price" {if condition="$goods_detail.market_price==0"}style="display:none;"{/if}>
+				<div class="show-price" {if condition="$goods_detail.market_price==0"}style="display:none;"{/if}>
 					<span class="price" style="display:block;">{:lang('original_cost')}</span>
-					<font class="market-price">￥{$goods_detail.promotion_price}</font>
-				</div> -->
+					<font class="market-price" style="color:red;text-decoration:line-through">￥{$goods_detail.promotion_price}</font>
+				</div>
 				<p class="name" >{$goods_detail.goods_name}</p>
 				<p class="pro-price" >
 				{if $goods_detail.price neq 0}
