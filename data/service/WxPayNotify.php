@@ -34,7 +34,7 @@ class WxPayNotify
     }
 
     //微信支付验证状态
-    function verifyReturn(){
+    public function verifyReturn(){
         try {
             if(empty($_REQUEST)) {
                 return false;

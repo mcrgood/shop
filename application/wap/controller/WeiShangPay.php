@@ -124,7 +124,7 @@ class WeiShangPay extends BaseController
 		// //建立请求
 		$ipspaySubmit = new WxPaySubmit();
 		$html_text = $ipspaySubmit->buildRequestForm($parameter);
-		echo $html_text;
+		return $html_text;
 
 	}
 
