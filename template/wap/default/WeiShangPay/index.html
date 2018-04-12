@@ -14,7 +14,7 @@ maximum-scale=1.0, user-scalable=no"/>
             <span>跳转微信支付页面
             </span>
         </div>
-    <form id="callAjaxForm">  
+    <form id="callAjaxForm" action="{:url('WeiShangPay/IpsPayApi')}" method="post">  
         
         <div class="roll-out-container">
             <ul>
@@ -156,31 +156,31 @@ maximum-scale=1.0, user-scalable=no"/>
     </form>
 </body>
 <script type="text/javascript">
-function onSuccess(data, status)  
-{  
-	document.getElementsByTagName("body")[0].innerHTML = data;
-	document.forms['ipspaysubmit'].submit()
-}  
+// function onSuccess(data, status)  
+// {  
+// 	document.getElementsByTagName("body")[0].innerHTML = data;
+// 	document.forms['ipspaysubmit'].submit()
+// }  
 
-function onError(data, status)  
-{  
-    // handle an error 
-    alert(data); 
-}   
-$(document).ready(function() {  
-    $("#submit").click(function(){  
-        var formData = $("#callAjaxForm").serialize();  
-        $.ajax({  
-            type: "POST",  
-            url: "{:__URL('APP_MAIN/WeiShangPay/IpsPayApi')}",
-            cache: false,  
-            data: formData,  
-            success: onSuccess,  
-            error: onError 
-        });  
-        return false;  
-    });  
-});  
+// function onError(data, status)  
+// {  
+//     // handle an error 
+//     alert(data); 
+// }   
+// $(document).ready(function() {  
+//     $("#submit").click(function(){  
+//         var formData = $("#callAjaxForm").serialize();  
+//         $.ajax({  
+//             type: "POST",  
+//             url: "{:__URL('APP_MAIN/WeiShangPay/IpsPayApi')}",
+//             cache: false,  
+//             data: formData,  
+//             success: onSuccess,  
+//             error: onError 
+//         });  
+//         return false;  
+//     });  
+// });  
 
 var inDate = document.getElementById("OrdTime");
 var billExp = document.getElementById("BillExp");

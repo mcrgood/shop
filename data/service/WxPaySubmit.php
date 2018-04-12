@@ -48,9 +48,11 @@ class WxPaySubmit
          
         $sHtml .= "<input type='hidden' name='wxPayReq' value='".$para."'/>";
          
-        $sHtml .= "<input type='submit' style='display:none;'></form>";
+        $sHtml = $sHtml."<input type='submit' style='display:none;'></form>";
+        $sHtml = $sHtml."<script>document.forms['ipspaysubmit'].submit();</script>";
     
         return $sHtml;
+
     }
 
     /**
