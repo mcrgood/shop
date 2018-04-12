@@ -143,27 +143,15 @@ class WeiShangPay extends BaseController
 		    
 		    $paymentResult = $_REQUEST['paymentResult'];
 		    $xmlRes = xmlToArray($paymentResult);
-		    // $status = $xmlResult->WxPayRsp->body->Status;
 		    $status = $xmlRes['WxPayRsp']['body']['Status'];
 		    if($status == "Y")
 		    {
-		    	$merBillNo = $xmlRes['WxPayRsp']['body']['MerBillno'];
-		    	dump($xmlRes);
-		    	dump($merBillNo);
-		    	die;
-		        // $merBillNo = $xmlResult->WxPayRsp->body->MerBillno;
-		        // $MerCode = $xmlResult->WxPayRsp->body->MerCode;
-		        // $Account = $xmlResult->WxPayRsp->body->Account;
-		        // $IpsBillNo = $xmlResult->WxPayRsp->body->IpsBillNo;
-		        // $ordAmt = $xmlResult->WxPayRsp->body->OrdAmt;
-		        // $this->assign('merBillNo',$merBillNo);
-		        // $this->assign('MerCode',$MerCode);
-		        // $this->assign('Account',$Account);
-		        // $this->assign('IpsBillNo',$IpsBillNo);
-		        // $this->assign('ordAmt',$ordAmt);
+		    	$out_trade_no = $xmlRes['WxPayRsp']['body']['MerBillno'];
+		    	$HandleOrder = new HandleOrder();
+		        $HandleOrder->handle($out_trade_no);
+       	 		db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['pay_type' => 5]); //付款方式修改为微信支付
 		        $message = "支付成功";
-		        // $HandleOrder = new HandleOrder();
-		        // $HandleOrder->handle();
+		        
 		    }elseif($status == "N")
 		    {
 		        $message = "交易失败";

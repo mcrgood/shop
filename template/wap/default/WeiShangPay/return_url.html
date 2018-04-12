@@ -1,57 +1,75 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-<link href="__STATIC__/source/showLoading.css" rel="stylesheet" />
-<link href="__STATIC__/source/style-05.css" rel="stylesheet" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, 
-maximum-scale=1.0, user-scalable=no"/>
-<title>微信订单支付返回页面</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>{:lang('pay')}</title>
+<script src="__TEMP__/{$style}/public/js/jquery.js"></script>
+<style>
+body{padding:0;margin:0;}
+article{
+	text-align: center;
+	margin:20px auto;
+}
+article h3{
+	font-weight: normal;
+	color:#373737;
+	font-family: "{:lang('microsoft_yahei')}", "Helvetica Neue", Helvetica, Arial,sans-serif;
+}
+article p{
+	color:#00C12C;
+	font-family: "{:lang('microsoft_yahei')}", "Helvetica Neue", Helvetica, Arial,sans-serif;
+}
+article button{
+	border:0;
+	background: #01C12D;
+	color:#ffffff;
+	border-radius: 3px;
+	padding:10px;
+	width:90%;
+	font-size:16px;
+	outline: none;
+	font-family: "{:lang('microsoft_yahei')}", "Helvetica Neue", Helvetica, Arial,sans-serif;
+	margin:15px 0;
+}
+.other-view{max-width: 90%;width:90%;margin-top:30px;}
+</style>
 </head>
 <body>
-	<form id="form1">
-		<div class="roll-out-container">
-			<ul>
-				<li><span class="set-title">交易结果:</span> 
-				<span class="set-label"> <label id="Message"><?php echo $message?></label>
-				</span></li>
-			</ul>
+{if condition="$status==-1"}
+<div style="position: absolute;width: 100%;height: 100%;background: rgba(0,0,0,0.8);text-align: center;">
+<img src="__TEMP__/{$style}/public/css/pay/other_view.png" class="other-view "/>
+</div>
+{else/}
+<article>
+		<div class="pay-block">
+			<img src="__TEMP__/{$style}/public/css/pay/pay_success.png"/>
 		</div>
-		<div class="roll-out-container">
-			<ul>
-				<li><span class="set-title">商户号:</span> <span
-					class="set-label"> <label id="MerCode"><?php echo $MerCode?></label>
-				</span></li>
-			</ul>
+		<h3>{:lang('the_payment_successful')}</h3>
+		{notempty name="$order_no"}
+		<p>{:lang('order_number')}{$order_no}</p>
+		{/notempty}
+		<!-- <div class="pay-block">
+			<img src="__TEMP__/{$style}/public/css/pay/pay_error.png"/>
 		</div>
-		<div class="roll-out-container">
-			<ul>
-				<li><span class="set-title">商户账户号:</span> <span class="set-label">
-				 <label id="Account"><?php echo $Account?></label>
-				</span></li>
-			</ul>
-		</div>
-		<div class="roll-out-container">
-			<ul>
-				<li><span class="set-title">商户订单号:</span> <span class="set-label"> 
-				<label id="MerBillNo"><?php echo $merBillNo?></label>
-				</span></li>
-			</ul>
-		</div>
-        <div class="roll-out-container">
-			<ul>
-				<li><span class="set-title">IPS订单号:</span> <span class="set-label"> 
-				<label id="IpsBillNo"><?php echo $IpsBillNo?></label>
-				</span></li>
-			</ul>
-		</div>
-		<div class="roll-out-container">
-			<ul>
-				<li><span class="set-title">金额</span> <span class="set-label"> 
-				<label id="OrdAmt"><?php echo $ordAmt?></label>
-				</span></li>
-			</ul>
-		</div>
-	</form>
+		<h3>{:lang('payment_failed')}</h3>
+		{notempty name="$order_no"}
+		<p style="color:#FF3C3C;">{:lang('order_number')}{$order_no}</p>
+		{/notempty} -->
+	<button onclick="enterOrderList()">{:lang('access_member_center')}</button>
+{/if}
+</article>
+<script>
+function enterOrderList(){
+	if($(window).width()<768){
+		//手机端
+		window.location.href = '{:__URL('APP_MAIN/member')}';
+	}else{
+		//PC端
+		window.location.href = '{:__URL('SHOP_MAIN/member')}';
+	}
+}
+
+</script>
 </body>
 </html>
