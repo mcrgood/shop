@@ -299,6 +299,12 @@ class Myhome extends Controller
             $resXml = $payment->decrypt($result['p3DesXmlPara']);
             $resArr = xmlToArray($resXml);
             $orderDetails = $resArr['body']['orderDetails']['orderDetail'];
+            if($orderDetails){
+                $status = 1;
+            }else{
+                $status = 0;
+            }
+            $this->assign('status',$status);
             $this->assign('orderDetails',$orderDetails);
             return view($this->style . 'Myhome/deal');
         }else{ //请求接口失败
@@ -306,6 +312,7 @@ class Myhome extends Controller
             $this->assign('msg',$msg);
             return view($this->style . 'Myhome/emptyOrdersList');
         }
+
     }
    
 
@@ -430,7 +437,6 @@ class Myhome extends Controller
                     $info['user_tel'] = $mobile;
                     $info['user_password'] = MD5($password);
                     $info['referee_phone'] = $referee_phone;
-                    $info['nick_name'] = $mobile;
                     $info['is_member'] = 1;     // 1 是前台会员，必须添加，否则无法正常登录
                     $result = db('sys_user')->insertGetId($info);
                     if($result){
@@ -462,10 +468,23 @@ class Myhome extends Controller
         }
         return view($this->style . 'Myhome/findpasswd');
     }
-
+    //商家账单营收页面
     public function yingshou(){
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
+        $condition['pay_status'] = 1; //pay_status=1 是已付款状态
+        $condition['type'] = 5; //type=5是扫码付款状态
+        $condition['business_id'] = $business_id;
+        $today_start_time = strtotime(date('Y-m-d')); //今天开始的时间戳
+        $today_end_time = strtotime(date('Y-m-d'))+86400; //今天结束的时间戳
+        $condition['create_time'] = ['between',[$today_start_time,$today_end_time]];
+        $total_money = db('ns_order_payment')->where($condition)->sum('pay_money'); //今日营收金额
+        $money_count = db('ns_order_payment')->where($condition)->count(); //今日营收总数量
+        if(!$total_money){
+            $total_money = '0.00';
+        }
+        $this->assign('total_money', $total_money);
+        $this->assign('money_count', $money_count);
         $rand = getRandNum();    //获取随机12位数字
          //查询该商户是否有二维码，如果没有就自动生成
         $qrcode = db('ns_shop_message')->where('userid',$business_id)->value('shop_qrcode');

@@ -65,12 +65,17 @@
 			var url = "{:__URL('APP_MAIN/myhome/member')}";
 			var data = {business_id:business_id,search_text:search_text};
 			$.post(url,data,function(res){
+				console.log(res);
 				var html = '';
 				if(res.status == 1){
 					for(var i=0;i<res.list.length;i++){
 						html +='<li>';
 						html +='<div id="contents">';
-						html +='<img src="__INDEX__/images/tx_03.png"/>';
+						if(res["list"][i]["user_headimg"] != ''){
+							html +='<img src="'+res["list"][i]["nick_name"]+'"/>';
+						}else{
+							html +='<img src="__INDEX__/images/tx_03.png"/>';
+						}
 						html +='<div class="users_2">';
 						html +='<h4>'+res["list"][i]["nick_name"]+'</h4>';
 						html +='<span>'+res["list"][i]["user_name"]+'</span>';
