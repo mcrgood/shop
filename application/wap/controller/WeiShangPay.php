@@ -37,7 +37,7 @@ class WeiShangPay extends BaseController
 			$goodsName = db('ns_order_payment')->alias('p')
 			->join('ns_order_goods g','g.order_id = p.type_alis_id','left')
 			->where('p.out_trade_no',$out_trade_no)->value('goods_name');
-			$orderInfo['goodsName'] = mb_substr($goodsName,0,34,'utf-8') . '...'; //查出商品名称并且截取40字符以内
+			$orderInfo['goodsName'] = mb_substr($goodsName,0,36,'utf-8'); //查出商品名称并且截取40字符以内
 			// $datas = db('ns_order')->alias('o')
 			// ->field('province_name,city_name,district_name,receiver_address,receiver_name,buyer_message')
 			// ->join('sys_province p','p.province_id = o.receiver_province','left')

@@ -417,7 +417,7 @@ return [
         'S2Snotify_url' =>'http://mall.jxqkw8.com/index.php?s=/wap/WeiShangPay/S2Snotify_url',
         //页面跳转同步通知页面路径
         'return_url' =>'http://mall.jxqkw8.com/index.php?s=/wap/WeiShangPay/return_url',
-        'MsgId' =>''
+        'MsgId' =>'00001'
 
     ],
   
