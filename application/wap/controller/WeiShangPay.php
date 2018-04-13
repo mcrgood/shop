@@ -26,39 +26,39 @@ class WeiShangPay extends BaseController
 {
 	//微信支付页面
 	public function index(){
-		$out_trade_no = input('param.out_trade_no',0);
-		if($out_trade_no == 0){
-			$this->error('订单参数错误，请重新提交！');
-		}
-		$row = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find(); //获取付款方式
-		$orderInfo['pay_money'] = $row['pay_money'];
-		// dump($row);die;
-		if($row['type'] == 1){ //线上商城订单
-			$goodsName = db('ns_order_payment')->alias('p')
-			->join('ns_order_goods g','g.order_id = p.type_alis_id','left')
-			->where('p.out_trade_no',$out_trade_no)->value('goods_name');
-			$orderInfo['goodsName'] = mb_substr($goodsName,0,36,'utf-8'); //查出商品名称并且截取40字符以内
-			// $datas = db('ns_order')->alias('o')
-			// ->field('province_name,city_name,district_name,receiver_address,receiver_name,buyer_message')
-			// ->join('sys_province p','p.province_id = o.receiver_province','left')
-			// ->join('sys_city c','c.city_id = o.receiver_city','left')
-			// ->join('sys_district d','d.district_id = o.receiver_district','left')
-			// ->where('o.out_trade_no',$out_trade_no)->find();
-			// $address = $datas['province_name'].$datas['city_name'].$datas['district_name'].$datas['receiver_address'];
-			// $this->assign('address',$address);
-			// $this->assign('datas',$datas);
-		}elseif($row['type'] == 4){  //商城余额充值
-			$orderInfo['goodsName'] = $row['pay_body'];
-		}elseif($row['type'] == 5){  //线下扫码支付
-			$names = db('ns_order_payment')->alias('p')
-			->join('ns_shop_message g','g.userid = p.business_id','left')
-			->where('p.out_trade_no',$out_trade_no)->value('names');
-			$orderInfo['goodsName'] = '向【'.$names.'】付款'; //查出线下商家店铺名称
-		}
+		// $out_trade_no = input('param.out_trade_no',0);
+		// if($out_trade_no == 0){
+		// 	$this->error('订单参数错误，请重新提交！');
+		// }
+		// $row = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find(); //获取付款方式
+		// $orderInfo['pay_money'] = $row['pay_money'];
+		// // dump($row);die;
+		// if($row['type'] == 1){ //线上商城订单
+		// 	$goodsName = db('ns_order_payment')->alias('p')
+		// 	->join('ns_order_goods g','g.order_id = p.type_alis_id','left')
+		// 	->where('p.out_trade_no',$out_trade_no)->value('goods_name');
+		// 	$orderInfo['goodsName'] = mb_substr($goodsName,0,36,'utf-8'); //查出商品名称并且截取40字符以内
+		// 	// $datas = db('ns_order')->alias('o')
+		// 	// ->field('province_name,city_name,district_name,receiver_address,receiver_name,buyer_message')
+		// 	// ->join('sys_province p','p.province_id = o.receiver_province','left')
+		// 	// ->join('sys_city c','c.city_id = o.receiver_city','left')
+		// 	// ->join('sys_district d','d.district_id = o.receiver_district','left')
+		// 	// ->where('o.out_trade_no',$out_trade_no)->find();
+		// 	// $address = $datas['province_name'].$datas['city_name'].$datas['district_name'].$datas['receiver_address'];
+		// 	// $this->assign('address',$address);
+		// 	// $this->assign('datas',$datas);
+		// }elseif($row['type'] == 4){  //商城余额充值
+		// 	$orderInfo['goodsName'] = $row['pay_body'];
+		// }elseif($row['type'] == 5){  //线下扫码支付
+		// 	$names = db('ns_order_payment')->alias('p')
+		// 	->join('ns_shop_message g','g.userid = p.business_id','left')
+		// 	->where('p.out_trade_no',$out_trade_no)->value('names');
+		// 	$orderInfo['goodsName'] = '向【'.$names.'】付款'; //查出线下商家店铺名称
+		// }
+		// $this->assign('orderInfo',$orderInfo);
+		// $this->assign('out_trade_no',$out_trade_no);
 		$ipspay_config = config('wx_pay_data');
-		$this->assign('orderInfo',$orderInfo);
 		$this->assign('ipspay_config',$ipspay_config);
-		$this->assign('out_trade_no',$out_trade_no);
 		return view($this->style . 'WeiShangPay/index');
 	}
 	//微信支付API
