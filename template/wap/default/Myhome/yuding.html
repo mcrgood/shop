@@ -20,7 +20,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
     <ul>
         <li class="first-li active"><span>点菜</span></li>
         <li class="second-li"><span>包间</span></li>
-        <li class="second-li"><span>商家</span></li>
+        <li class="third-li"><span>商家</span></li>
     </ul>
 </div>
 
@@ -235,11 +235,16 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         var data = {"name_arr":name_arr,"price_arr":price_arr,"nums_arr":nums_arr,"userid":userid,"user":user,"num":num,"tel":tel,"test5":test5,"message":message};
         var url = "{:url('Myhome/order')}";
         $.post(url,data,function(res){
-            console.log(res);
             if(res.status==1){
                 window.location.href = "{:__URL('APP_MAIN/myhome/order')}?sid="+res.sid;
-            }else{
-                layer.msg(res.msg, {icon: 5,time: 3000});
+            }else if(res.status==2){
+                layer.msg(res.msg, {time: 2000});
+                setTimeout(function(){
+                    $('.second-li').trigger('click');
+                },2000)
+            }
+            else{
+                layer.msg(res.msg, {time: 2000});
             }
         },'json')
     }); 

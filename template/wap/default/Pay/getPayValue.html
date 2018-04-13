@@ -55,14 +55,17 @@
 			<span class="ali-item">{:lang('alipay')}</span>
 			<span id="alipay"><img src="__TEMP__/{$style}/public/images/hgou.png"></span>
 		</div>
-		{/if}
 		<!-- 余额支付 -->
+		{if $type eq 0}
 		<div class="balance_pay">
 			<img src="__TEMP__/{$style}/public/images/balance_pay.png" class="ali-photo">
 			<span class="ali-item">{:lang('balance_pay')}</span>
 			
 			<span id="balance"><img  src="__TEMP__/{$style}/public/images/hgou.png"></span>
 		</div>
+		{/if}
+		{/if}
+
 		
 		<!-- 余额支付需要密码 -->
 		<div class="log-cont" style="display: none;border:none;">
@@ -104,10 +107,7 @@
 	<button class="alipay" type="button" onclick="calculate()">{:lang('confirm_payment')}￥{$pay_value.pay_money}</button>
 </section>
 <script>
-	var type = "{$Request.param.type}";
-	if(type && type == 'recharge'){
-		$('.balance_pay').css({"display":"none"});
-	}
+
 var __IMG__ = '__TEMP__/{$style}/public/images';
 function calculate() {
 	var pay_type = $("#pay_type").val();

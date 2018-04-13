@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="format-detection" content="telephone=no">
 <script type="text/javascript" src="__YUDING__/js/jquery.min.js"></script>
+<script src="__STATIC__/layui/layui.all.js"></script>
 <title>提交订单</title>
 <style>
 *{margin: 0;padding: 0;}
@@ -258,24 +259,24 @@ ul{list-style: none}
 
         var onOff = true;
 
-        yhj.onclick = function(){
-        	if(onOff){
-        	oDiv.style.display = 'block';
-        	onOff = false;
-        }else{
-        	oDiv.style.display = 'none';
-        	onOff = true;
-        }
-        }; 
-         oYhj2.onclick = function(){
-        	if(onOff){
-        	oDiv2.style.display = 'block';
-        	onOff = false;
-        }else{
-        	oDiv2.style.display = 'none';
-        	onOff = true;
-        }
-        }; 
+        // yhj.onclick = function(){
+        // 	if(onOff){
+        // 	oDiv.style.display = 'block';
+        // 	onOff = false;
+        // }else{
+        // 	oDiv.style.display = 'none';
+        // 	onOff = true;
+        // }
+        // }; 
+        //  oYhj2.onclick = function(){
+        // 	if(onOff){
+        // 	oDiv2.style.display = 'block';
+        // 	onOff = false;
+        // }else{
+        // 	oDiv2.style.display = 'none';
+        // 	onOff = true;
+        // }
+        // }; 
     };
 </script>
 <body>
@@ -291,7 +292,7 @@ ul{list-style: none}
 	</div>
 	<div class="content_2">
 		<div class="content2_1">
-			<span class="area">{$row.names}</span>
+			<span class="area">【{$row.names}】</span>
 			<div class="food">
 				<ul id="list">
 				{volist name="list" id="v"}
@@ -301,7 +302,7 @@ ul{list-style: none}
 							<h4>{$v.0}</h4><label>x<em>{$v.1}</em></label>
 						</div>
 						<div class="food_money">
-						<h5>￥<span>{$v.2}<span></h5>
+						<h5>￥<span>{$v.danjia}<span></h5>
 						</div>
 					</li>
 				{/volist}
@@ -346,7 +347,8 @@ ul{list-style: none}
         	var total = 0;
         	$("#list li").each(function(i,v){
         		var price = $(v).find('span').text();
-        		total += (price-0);
+        		var num = $(v).find('em').text();
+        		total += (price-0)*(num-0);
         	})
         	$("#sum").find('span').eq(0).text(total);
         	$("#totalpriceshow").text(total);
@@ -354,10 +356,21 @@ ul{list-style: none}
         //订单提交ajax
         $("#btnselect").click(function(){
         	var sid = "{$Request.param.sid}";
-        	var url = "{:url('Myhome/orderpay')}";
-        	var data = {"sid":sid};
+        	var totalPrice = $('#totalpriceshow').text();
+        	var url = "{:url('Myhome/orderPay')}";
+        	var data = {"sid":sid,totalPrice:totalPrice};
         	$.post(url,data,function(res){
-
+        		if(res.status == 1){
+        			layer.msg(res.msg,{time:1200});
+        			setTimeout(function(){
+        				window.location.href = "{:__URL('APP_MAIN/pay/getpayvalue')}?business_id="+res.business_id+"&type=yuding&out_trade_no="+res.out_trade_no;
+        			},1200)
+        		}else{
+        			layer.msg(res.msg,{time:3000});
+        			setTimeout(function(){
+        				window.location.href = "{:__URL('APP_MAIN/dingwei/index')}";
+        			},3000)
+        		}
         	},'json')
         })
 	</script>

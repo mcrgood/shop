@@ -293,6 +293,7 @@ width: 100%;height:480px;overflow: auto;margin:0;display: none;
         </div>
     </div>
 <!-- //预定测试，测试号之前用之前的 原来：book-yuding-> -->
+
 <div class="order">
    {if $row.business_status eq 1}
     <button onclick="javascript:window.location.href='{:__URL(\'APP_MAIN/Myhome/book\',\'userid=\'.$row.userid)}'">去预定</button>
@@ -300,7 +301,9 @@ width: 100%;height:480px;overflow: auto;margin:0;display: none;
    <button disabled style="background-color: #cccccc;" onclick="javascript:window.location.href='{:__URL(\'APP_MAIN/Myhome/book\',\'userid=\'.$row.userid)}'">去预定</button>
    {/if}
 </div>
-<!-- <!-- //预定测试，测试号之前用之后的 -->
+
+<!-- //预定测试，测试好之前用之后的 -->
+
 <!-- <div class="order">
    {if $row.business_status eq 1}
     <button onclick="javascript:window.location.href='{:__URL(\'APP_MAIN/Myhome/yuding\',\'userid=\'.$row.id)}'">去预定</button>

@@ -85,13 +85,21 @@ class Pay extends Controller
     public function getPayValue()
     {
         // business_id 存在的话为线下扫码跳转支付
-        $business_id = input('param.business_id');
+        $business_id = input('param.business_id', 0);
+        $type = input('param.type', '');
         if($business_id){
             $names = db('ns_shop_message')->where('userid',$business_id)->value('names');
             $names = '【'.$names.'】';
             $this->assign('names',$names);
         }
+        //付款来源假如为线上充值，就无法使用余额支付
+        if($type == 'recharge'){
+            $type = 1;
+        }else{
+            $type = 0;
+        }
         $this->assign('business_id',$business_id);
+        $this->assign('type',$type);
         $out_trade_no = request()->get('out_trade_no', '');
         if (empty($out_trade_no)) {
             $this->error("没有获取到支付信息");
