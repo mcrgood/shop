@@ -71,10 +71,18 @@ $(function() {
 		$('.number').each(function(i,v){
 			var wwb = $(v).find('.goods_integral').attr('data-point');
 			var num = $(v).find('.succ_amount').text();
-			var xiaoji = (wwb*num-0);
-			total += xiaoji;
+			if(wwb && num){
+				var xiaoji = (wwb*num-0);
+				total += xiaoji;
+			}
+			
 		})
-		$('#wangwangbi').text(total);
+		if(total != 0){
+			$('#wangwangbi').text(total+'旺旺币');
+		}else{
+			$('#wangwangbi').text('');
+			$('.jiahao').text('');
+		}
 	})
 
 
@@ -417,7 +425,7 @@ function cart_succ(obj, shop_id) {
 		$(this).attr("is_check", "yes");
 		$(this).css("background-image", "url(" + cart2 + ")");
 	})
-	updateMoney(true);
+	
 	var total = 0;
 	$('.number').each(function(i,v){
 		var wwb = $(v).find('.goods_integral').attr('data-point');
@@ -425,12 +433,9 @@ function cart_succ(obj, shop_id) {
 		var xiaoji = (wwb*num-0);
 		total += xiaoji;
 	})
-	$('#wangwangbi').text(total);
+	$('#wangwangbi').text(total+'旺旺币');
 
-	var orderprice = $('#orderprice').text();
-	if(orderprice == 0){
-		$('.moneys').css({'display':'none'});
-	}
+	updateMoney(true);
 }
 
 // 更新价格,flag：true，编辑操作，显示价格信息，false：删除操作，隐藏价格信息
@@ -448,7 +453,24 @@ function updateMoney(flag) {
 		var num_count = sum_num();//数量
 		var num = "结算(" + num_count + ")";
 		var integral = get_integral();//积分
-		$("#orderprice").text(money);
+		if(money && integral){ //当金额和积分都有的时候，出现加号
+			$(".jiahao").text('+');
+		}
+		if(money == 0 && integral){
+			$(".jiahao").text('');
+		}
+		if(integral != 0){
+			$('#wangwangbi').text(integral+'旺旺币');
+		}else{
+			$('#wangwangbi').text('');
+			$('.jiahao').text('');
+		}
+		if(money != 0){
+			$("#orderprice").text(money);
+		}else{
+			$("#orderprice").text('');
+			$(".yang").text('');
+		}
 		$("#settlement").text(num);
 		//$("#orderintegral").text("+"+integral+"积分");
 		if (num_count > 0) {
@@ -459,15 +481,17 @@ function updateMoney(flag) {
 	}
 }
 
+			
 //计算积分
 function get_integral(){
 	var integral = 0;
 	$(".cart-list-li").each(function() {
 		var is_check = $(this).find(".checkbox").attr("is_check");
 		if (is_check == 'yes') {
-			var temp = $(this).find("span[name='goods_integral']").attr("data-point");
-			if(temp != undefined &&temp　!= ""){
-				integral += parseInt(temp);
+			var nums = $(this).find('.succ_amount').text();
+			var prices = $(this).find('.goods_integral').attr('data-point');
+			if(nums && prices){
+				integral += (nums*prices);
 			}
 		}
 	});

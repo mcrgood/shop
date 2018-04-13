@@ -167,7 +167,7 @@ class WeiShangPay extends BaseController
 	}
 
 	//服务器S2S通知页面路径
-	public function S2Snotify_url(){
+	public function s2snotify_url(){
 		$ipspayNotify = new WxPayNotify();
 		$verify_result = $ipspayNotify->verifyReturn();
 		        /***
