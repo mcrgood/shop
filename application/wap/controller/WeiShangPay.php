@@ -23,11 +23,10 @@ use data\service\HandleOrder as HandleOrder;
  * 创建人：屈华俊
  * 创建时间：2018-04-10 10:15:00
  */
-class WeiShangPay extends BaseController
+class WeiShangPay extends Controller
 {
 	//微信支付页面
 	public function index(){
-		
 		// $orderInfo['pay_money'] = $row['pay_money'];
 		// if($row['type'] == 1){ //线上商城订单
 		// 	$goodsName = db('ns_order_payment')->alias('p')
@@ -42,6 +41,7 @@ class WeiShangPay extends BaseController
 		// 	->where('p.out_trade_no',$out_trade_no)->value('names');
 		// 	$orderInfo['goodsName'] = '向【'.$names.'】付款'; //查出线下商家店铺名称
 		// }
+		return view('wap/default/WeiShangPay/index');
 	}
 
 	//微信支付API
@@ -158,8 +158,7 @@ class WeiShangPay extends BaseController
 		} else {
 		    $message = "支付失败";
 		}
-		$this->assign('message',$message);
-		return view($this->style . 'WeiShangPay/return_url');
+		// return view($this->style . 'WeiShangPay/return_url');
 	}
 
 	//服务器S2S通知页面路径
