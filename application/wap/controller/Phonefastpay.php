@@ -25,8 +25,8 @@ use data\service\WxPayNotify as WxPayNotify;
 
 /**
  * 移动端支付控制器
- * 创建人：王永杰
- * 创建时间：2017年2月6日 11:01:19
+ * 创建人：屈华俊
+ * 创建时间：2018年4月10日 11:01:19
  */
 class Phonefastpay extends BaseController
 {
