@@ -1,8 +1,8 @@
+{extend name="wap/default/base" /}
 {block name="resources"}
 <!-- <link rel="stylesheet" href="__TEMP__/{$style}/public/css/order.css"> -->
 <!-- <link rel="stylesheet" type="text/css" href="__TEMP__/{$style}/public/css/member_index.css"> -->
 <link rel="stylesheet" href="__TEMP__/{$style}/public/css/pay/get_pay_value.css"/>
-<script src="__STATIC__/js/jquery.min.js"></script>
 {/block}
 
 
@@ -51,11 +51,11 @@
 		
 		<!-- 支付宝 -->
 		{if $business_id eq 0}
-		<div class="ali-pay">
+		<!-- <div class="ali-pay">
 			<img src="__TEMP__/{$style}/public/images/zhifu.png" class="ali-photo">
 			<span class="ali-item">{:lang('alipay')}</span>
 			<span id="alipay"><img src="__TEMP__/{$style}/public/images/hgou.png"></span>
-		</div>
+		</div> -->
 		<!-- 余额支付 -->
 		{if $type eq 0}
 		<div class="balance_pay">
