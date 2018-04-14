@@ -27,8 +27,6 @@ class WeiShangPay extends BaseController
 {
 	//微信支付页面
 	public function index(){
-		$num = '123456789';
-		$this->assign('num',$num);
 		// $orderInfo['pay_money'] = $row['pay_money'];
 		// if($row['type'] == 1){ //线上商城订单
 		// 	$goodsName = db('ns_order_payment')->alias('p')
