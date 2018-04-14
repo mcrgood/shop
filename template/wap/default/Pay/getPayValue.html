@@ -34,7 +34,6 @@
 		<span style="float:right" class="jiantou"></span> -->
 	</div>
 	<div class="codes">
-    	<a href="{:url('WeiShangPay/wx_pay_api')}" style="color:red;font-size:20px;">我是WAP模块，点击我跳转到微信付款</a>
     	<button type="button" onclick="win_open()">点击跳转微信</button>
 			<!-- 快捷支付 -->
 		<div class="kuaijie">
@@ -124,10 +123,7 @@ function calculate() {
 		window.location.href = __URL("APP_MAIN/pay/alipay?no=" + out_trade_no);
 	}else if(pay_type == 3){
 		//微信支付
-		// location.href = __URL("APP_MAIN/Phonefastpay/wx_pay_api");
-		// window.location.href = '{:__URL("APP_MAIN/Phonefastpay/wx_pay_api")}';
-		window.location.href = '{:__URL("APP_MAIN/WeiShangPay/wx_pay_api")}';
-		// $('.woshiweixin').trigger('click');
+		window.location.href = '{:__URL("APP_MAIN/WeiShangPay/index")}';
 	}
 	
 }
@@ -183,7 +179,7 @@ $(".wchat-weixin").click(function() {
 })
 
 function win_open(){
-	window.location.href = '{:__URL("APP_MAIN/WeiShangPay/wx_pay_api")}';
+	window.location.href = '{:__URL("APP_MAIN/WeiShangPay/index")}';
 }
 
 // function calculate() {      之前的代码
