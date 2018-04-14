@@ -93,8 +93,7 @@ function calculate() {
 	var out_trade_no = $("#out_trade_no").val();
 	if (pay_type == 0) {
 		//快捷支付
-		// window.location.href = __URL("APP_MAIN/Phonefastpay/IpsPayApi?out_trade_no=" + out_trade_no);
-		window.location.href = __URL("APP_MAIN/Phonefastpay/wx_pay_api");
+		window.location.href = __URL("APP_MAIN/Phonefastpay/IpsPayApi?out_trade_no=" + out_trade_no);
 	} else if (pay_type == 1) {
 		//余额支付
 		var pwd = $('#password').val();
@@ -119,12 +118,11 @@ function calculate() {
 		},'json')
 	}else if(pay_type == 2){
 		//支付宝
-		// window.location.href = __URL("APP_MAIN/pay/alipay?no=" + out_trade_no);
-		window.location.href = __URL("APP_MAIN/Phonefastpay/wx_pay_api");
+		window.location.href = __URL("APP_MAIN/pay/alipay?no=" + out_trade_no);
 	}else if(pay_type == 3){
 		//微信支付
 		// location.href = __URL("APP_MAIN/Phonefastpay/wx_pay_api");
-		location.href = '{:__URL("APP_MAIN/Phonefastpay/wx_pay_api")}';
+		window.location.href = '{:__URL("APP_MAIN/Phonefastpay/wx_pay_api")}';
 	}
 	
 }
