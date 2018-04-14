@@ -285,4 +285,8 @@ class Index extends BaseController
     public function yuanxiao(){
             return view($this->style. "yuanxiao");
     }
+    //分享经济
+    public function fenxiang(){
+             return view($this->style. "fenxiang");
+    }
 }
