@@ -44,11 +44,11 @@ class WeiShangPay extends BaseController
 		// }
 	}
 	//微信支付API
-	public function IpsPayApi(){
-		$out_trade_no = input('param.out_trade_no',0); //获取地址栏订单号
-		if($out_trade_no == 0){
-			$this->error('订单参数错误，请重新提交！');
-		}
+	public function ipsPayApi(){
+		// $out_trade_no = input('param.out_trade_no',0); //获取地址栏订单号
+		// if($out_trade_no == 0){
+		// 	$this->error('订单参数错误，请重新提交！');
+		// }
 		// if(session('out_trade_no')){
 		// 	session('out_trade_no',null);
 		// }
