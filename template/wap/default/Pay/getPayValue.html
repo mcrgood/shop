@@ -142,7 +142,7 @@ function calculate() {
 		window.location.href = __URL("APP_MAIN/pay/alipay?no=" + out_trade_no);
 	}else if(pay_type == 3){
 		//微信支付
-		window.location.href = __URL("APP_MAIN/WeiShangPay/index?out_trade_no=" + out_trade_no);
+		window.location.href = __URL("APP_MAIN/WeiShangPay/IpsPayApi?out_trade_no=" + out_trade_no);
 	}
 	
 }
