@@ -34,6 +34,8 @@
 		<span style="float:right" class="jiantou"></span> -->
 	</div>
 	<div class="codes">
+    	<a href="{:url('WeiShangPay/wx_pay_api')}" style="color:red;font-size:20px;">我是WAP模块，点击我跳转到微信付款</a>
+    	<button type="button" onclick="win_open()">点击跳转微信</button>
 			<!-- 快捷支付 -->
 		<div class="kuaijie">
 			<img  src="__TEMP__/{$style}/public/images/kuaijie.png"  class="wchat-photo">
@@ -77,6 +79,7 @@
 
 		<input type="hidden" id="pay_type" value="0"> 
 		<input type="hidden" id="out_trade_no" value="{$pay_value.out_trade_no}">
+
 	</div>
 	<div style="padding: 10px 0px;">{:lang('payer')}<span style="float:right;">{$member_info["user_info"]['nick_name']}</span></div>
 </div>
@@ -123,8 +126,8 @@ function calculate() {
 		//微信支付
 		// location.href = __URL("APP_MAIN/Phonefastpay/wx_pay_api");
 		// window.location.href = '{:__URL("APP_MAIN/Phonefastpay/wx_pay_api")}';
-		// window.location.href = '{:__URL("APP_MAIN/Phonefastpay/tiaozhuan")}';
-		win_open();
+		window.location.href = '{:__URL("APP_MAIN/WeiShangPay/wx_pay_api")}';
+		// $('.woshiweixin').trigger('click');
 	}
 	
 }
@@ -180,7 +183,7 @@ $(".wchat-weixin").click(function() {
 })
 
 function win_open(){
-	window.open('{:__URL("APP_MAIN/Phonefastpay/tiaozhuan")}');
+	window.location.href = '{:__URL("APP_MAIN/WeiShangPay/wx_pay_api")}';
 }
 
 // function calculate() {      之前的代码
