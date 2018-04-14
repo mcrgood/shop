@@ -22,6 +22,7 @@
 }
 </style>
 <script type="text/javascript">
+
 window.onerror = function() {
 	return true;
 }
@@ -80,7 +81,7 @@ function calculateRecharge(){
 <div id="main" class="detail-main">
 	<div class="payment"><span>{:lang('member_amount_money')}</span><input class="pay-money" id="pay_money"  type="number" placeholder ="{:lang('member_input_balance')}" onblur="check_pay_money(this)"></div>
 	<input type="hidden" id="pay_no" value="{$pay_no}">
-	<a href="{:url('Phonefastpay/wx_pay_api')}" style="color:red;font-size:40px;">点击我跳转到微信付款</a>
+	<a href="{:url('Phonefastpay/tiaozhuan')}" style="color:red;font-size:40px;">点击我跳转到微信付款</a>
 	<section class="s-btn" style="position: fixed; left: 0; right: 0; bottom: 0; height: 50px; padding: 0; z-index: 5;">
 	<button class="alipay" type="button" onclick="calculateRecharge()">{:lang('confirm_payment')}</button>
 	</section>

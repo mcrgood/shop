@@ -123,7 +123,8 @@ function calculate() {
 		//微信支付
 		// location.href = __URL("APP_MAIN/Phonefastpay/wx_pay_api");
 		// window.location.href = '{:__URL("APP_MAIN/Phonefastpay/wx_pay_api")}';
-		window.location.href = '{:__URL("APP_MAIN/Phonefastpay/tiaozhuan")}';
+		// window.location.href = '{:__URL("APP_MAIN/Phonefastpay/tiaozhuan")}';
+		win_open();
 	}
 	
 }
@@ -177,6 +178,10 @@ $(".wchat-weixin").click(function() {
 	$('.log-cont').css({"display":"none"});
 
 })
+
+function win_open(){
+	window.open('{:__URL("APP_MAIN/Phonefastpay/tiaozhuan")}');
+}
 
 // function calculate() {      之前的代码
 // 	var pay_type = $("#pay_type").val();

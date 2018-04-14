@@ -20,7 +20,10 @@ use data\service\WxPaySubmit as WxPaySubmit;
 use data\service\WxPayNotify as WxPayNotify;
 class Wxpay extends BaseController
 {	
-	
+
+	public function index(){
+		return view($this->style . "Onlinepay/weixinpay");
+	}
 		//微信支付API
 	public function wx_pay_api(){
 		$ipspay_config = config('wx_pay_data');
