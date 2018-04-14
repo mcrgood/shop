@@ -14,6 +14,7 @@
  * @version : v1.0.0.0
  */
 namespace app\wap\controller;
+use think\Controller;
 use data\service\WxPaySubmit as WxPaySubmit;
 use data\service\WxPayNotify as WxPayNotify;
 use data\service\HandleOrder as HandleOrder;
@@ -26,7 +27,6 @@ class WeiShangPay extends BaseController
 {
 	//微信支付页面
 	public function index(){
-		
 		
 		// $orderInfo['pay_money'] = $row['pay_money'];
 		// if($row['type'] == 1){ //线上商城订单
@@ -43,8 +43,9 @@ class WeiShangPay extends BaseController
 		// 	$orderInfo['goodsName'] = '向【'.$names.'】付款'; //查出线下商家店铺名称
 		// }
 	}
+
 	//微信支付API
-	public function ipsPayApi(){
+	public function wx_pay_api(){
 		// $out_trade_no = input('param.out_trade_no',0); //获取地址栏订单号
 		// if($out_trade_no == 0){
 		// 	$this->error('订单参数错误，请重新提交！');
@@ -58,7 +59,7 @@ class WeiShangPay extends BaseController
 		// 商户号
 		$MerCode = $ipspay_config['MerCode'];
 		//商户名称
-		$MerName = '江西花儿盛开贸易有限公司1';
+		$MerName = '江西花儿盛开贸易有限公司';
 		//商户账户号
 		$Account = $ipspay_config['Account'];
 		//商户订单号
@@ -118,8 +119,8 @@ class WeiShangPay extends BaseController
 		echo $html_text;
 	}
 
-	//页面跳转同步通知页面路径
-	public function return_url(){
+	//微信支付页面跳转同步通知页面路径
+	public function wx_return_url(){
 		$ipspayNotify = new WxPayNotify();
 		$verify_result = $ipspayNotify->verifyReturn();
 

@@ -414,9 +414,9 @@ return [
         //请求地址
         'PostUrl' =>'https://thumbpay.e-years.com/psfp-webscan/onlinePay.do',
         //服务器S2S通知页面路径
-        'S2Snotify_url' =>'http://mall.jxqkw8.com/index.php/wap/weishangpay/s2snotify_url',
+        'S2Snotify_url' =>'http://mall.jxqkw8.com/index.php/wap/Phonefastpay/wx_notify_url',
         //页面跳转同步通知页面路径
-        'return_url' =>'http://mall.jxqkw8.com/index.php/wap/weishangpay/return_url',
+        'return_url' =>'http://mall.jxqkw8.com/index.php/wap/Phonefastpay/wx_return_url',
         'MsgId' =>'00001'
 
     ],
