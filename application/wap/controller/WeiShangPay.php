@@ -62,7 +62,7 @@ class WeiShangPay extends BaseController
 		//商户账户号
 		$Account = $ipspay_config['Account'];
 		//商户订单号
-		$MerBillno = $out_trade_no;
+		$MerBillno = 'Mer'.date('YmdHis');
 		//订单金额金额
 		$OrdAmt = '0.02';
 		//订单时间
@@ -116,7 +116,6 @@ class WeiShangPay extends BaseController
 		$ipspaySubmit = new WxPaySubmit();
 		$html_text = $ipspaySubmit->buildRequestForm($parameter);
 		echo $html_text;
-
 	}
 
 	//页面跳转同步通知页面路径
