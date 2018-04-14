@@ -30,9 +30,12 @@ class WeiShangPay extends BaseController
 		if($out_trade_no == 0){
 			$this->error('订单参数错误，请重新提交！');
 		}
+		if(session('out_trade_no')){
+			session('out_trade_no',null);
+		}
+		session('out_trade_no',$out_trade_no); //把当前订单号存在session中
 		$row = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find(); //获取付款方式
 		$orderInfo['pay_money'] = $row['pay_money'];
-		// dump($row);die;
 		if($row['type'] == 1){ //线上商城订单
 			$goodsName = db('ns_order_payment')->alias('p')
 			->join('ns_order_goods g','g.order_id = p.type_alis_id','left')
@@ -56,7 +59,6 @@ class WeiShangPay extends BaseController
 			$orderInfo['goodsName'] = '向【'.$names.'】付款'; //查出线下商家店铺名称
 		}
 		$this->assign('orderInfo',$orderInfo);
-		$this->assign('out_trade_no',$out_trade_no);
 		$ipspay_config = config('wx_pay_data');
 		$this->assign('ipspay_config',$ipspay_config);
 		return view($this->style . 'WeiShangPay/index');
@@ -146,10 +148,14 @@ class WeiShangPay extends BaseController
 		    $status = $xmlRes['WxPayRsp']['body']['Status'];
 		    if($status == "Y")
 		    {
-		    	$out_trade_no = $xmlRes['WxPayRsp']['body']['MerBillno'];
+		    	$out_trade_no = session('out_trade_no');
 		    	$HandleOrder = new HandleOrder();
 		        $HandleOrder->handle($out_trade_no);
        	 		db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['pay_type' => 5]); //付款方式修改为微信支付
+       	 		session('out_trade_no',null);
+       	 		dump($out_trade_no);
+       	 		dump(session('out_trade_no'));
+       	 		die;
 		        $message = "支付成功";
 		        
 		    }elseif($status == "N")

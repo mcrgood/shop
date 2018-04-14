@@ -45,7 +45,7 @@ maximum-scale=1.0, user-scalable=no"/>
                 <li>
                     <span class="set-title">商户订单号</span>
                     <span>
-                        <input type="text"  id="MerBillno" name ="MerBillno" class="set-input" value="{$out_trade_no}"/>
+                        <input type="text"  id="MerBillno" name ="MerBillno" class="set-input" value=""/>
                     </span>
                 </li>
             </ul>
@@ -211,7 +211,7 @@ Date.prototype.format = function (format) {
     }
     return format;
 };
-// out_MerTrade_no.value = 'Mer'+ new Date().format("yyyyMMddhhmmss");
+out_MerTrade_no.value = 'Mer'+ new Date().format("yyyyMMddhhmmss");
 inDate.value = new Date().format('yyyy-MM-dd hh:mm:ss');
 billExp.value = new Date().addHours(1).format('yyyy-MM-dd hh:mm:ss');
 </script>
