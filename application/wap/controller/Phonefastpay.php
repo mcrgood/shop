@@ -346,8 +346,11 @@ class Phonefastpay extends BaseController
 		}
 	}
 
-
-
+	//跳转到微信支付
+	public function tiaozhuan(){
+		$url = __URL(__URL__.'/wap/Phonefastpay/wx_pay_api');
+		$this->redirect($url);
+	}
 }
 
    
