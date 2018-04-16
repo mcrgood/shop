@@ -607,7 +607,15 @@ class Login extends Controller
                     $uid = db('sys_user')->where('user_tel',$mobile)->value('uid');
                     $infos['uid'] = $uid;
                     $infos['point'] = 10;
-                    db('ns_member_account')->insert($infos);
+                    $res = db('ns_member_account')->insert($infos);
+                    if($res){
+                        $datas['uid'] = $uid;
+                        $datas['number'] = 10;
+                        $datas['text'] = '注册赠送积分';
+                        $datas['create_time'] = time();
+                        $datas['from_type'] = 12; //from_type=12为注册赠送旺旺币
+                        db('ns_member_account_records')->insert($datas);
+                    }
 
                 // 微信的会员绑定
                 if (empty($user_name)) {

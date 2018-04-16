@@ -26,6 +26,7 @@ class HandleOrder{
             $customerCode = db('ns_business_open')->where('userid',$business_id)->value('customerCode'); //商家的客户号
             $ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio'); //查出该商家设置分账金额比例
             $money = (100-$ratio)*0.01*$pay_money;  //应该转给商家的金额
+            db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['business_money' =>$money]);//把这次付款商家应得的金额存入表中
             $payment = new EasyPayment();
             $resArray = $payment->transfer($customerCode, $money); //向商家转账相应的金额
             $gold = db('ns_wwb')->where('userid',$business_id)->value('gold'); //查出该商家设置赠送旺旺币的比例

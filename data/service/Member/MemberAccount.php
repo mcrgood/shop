@@ -461,6 +461,15 @@ class MemberAccount extends BaseService
             case 20:
                 $type_name = '评论';
                 break;
+            case 12:
+                $type_name = '会员注册';
+                break;
+            case 10:
+                $type_name = '消费赠送';
+                break;
+            case 11:
+                $type_name = '返佣金额';
+                break;
             default:
                 $type_name = '';
                 break;

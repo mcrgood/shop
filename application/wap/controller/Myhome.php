@@ -442,7 +442,15 @@ class Myhome extends Controller
                     if($result){
                         $aa['uid'] = $result;
                         $aa['point'] = 10;
-                        db('ns_member_account')->insert($aa);
+                        $rr = db('ns_member_account')->insert($aa);
+                        if($rr){
+                            $datas['uid'] = $result;
+                            $datas['number'] = 10;
+                            $datas['text'] = '注册赠送积分';
+                            $datas['create_time'] = time();
+                            $datas['from_type'] = 12; //from_type=12为注册赠送旺旺币
+                            db('ns_member_account_records')->insert($datas);
+                        }
                     }
                 }
                 return $info = [
@@ -472,13 +480,14 @@ class Myhome extends Controller
     public function yingshou(){
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
+        $ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio');
         $condition['pay_status'] = 1; //pay_status=1 是已付款状态
         $condition['type'] = 5; //type=5是扫码付款状态
         $condition['business_id'] = $business_id;
         $today_start_time = strtotime(date('Y-m-d')); //今天开始的时间戳
         $today_end_time = strtotime(date('Y-m-d'))+86400; //今天结束的时间戳
         $condition['create_time'] = ['between',[$today_start_time,$today_end_time]];
-        $total_money = db('ns_order_payment')->where($condition)->sum('pay_money'); //今日营收金额
+        $total_money = db('ns_order_payment')->where($condition)->sum('business_money'); //今日已付款金额
         $money_count = db('ns_order_payment')->where($condition)->count(); //今日营收总数量
         if(!$total_money){
             $total_money = '0.00';

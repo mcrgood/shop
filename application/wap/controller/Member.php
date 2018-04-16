@@ -564,6 +564,7 @@ class Member extends BaseController
         $condition['nmar.account_type'] = 1;
         // 查看用户在该商铺下的积分消费流水
         $member_point_list = $this->user->getAccountList(1, 0, $condition);
+        // dump($member_point_list);die;
         // 查看积分总数
         $member = new MemberService();
         $menber_info = $member->getMemberDetail($shop_id);
