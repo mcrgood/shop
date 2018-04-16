@@ -304,6 +304,9 @@ class Myhome extends Controller
             }else{
                 $status = 0;
             }
+            dump($status);
+            dump($resArr);
+            dump($orderDetails);die;
             $this->assign('status',$status);
             $this->assign('orderDetails',$orderDetails);
             return view($this->style . 'Myhome/deal');
