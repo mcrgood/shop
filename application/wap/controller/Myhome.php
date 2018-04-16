@@ -280,6 +280,10 @@ class Myhome extends Controller
     }
     //用户查询账单页面
     public function queryOrdersList(){
+        $arr = ['ips'=>111,'coll' => 156];
+        $count = count($arr);
+        dump($count);
+        dump($arr);die;
         $this->check_login();
         $userid = $this->business_id;
         $customerCode = db('ns_business_open')->where('userid',$userid)->value('customerCode');
@@ -299,16 +303,11 @@ class Myhome extends Controller
             $resXml = $payment->decrypt($result['p3DesXmlPara']);
             $resArr = xmlToArray($resXml);
             $orderDetails = $resArr['body']['orderDetails']['orderDetail'];
-            if($orderDetails){
-                $status = 1;
-            }else{
-                $status = 0;
+            $totalCount = $resArr['body']['totalCount'];
+            if($totalCount > 0){
+                $this->assign('orderDetails',$orderDetails);
             }
-            dump($status);
-            dump($resArr);
-            dump($orderDetails);die;
-            $this->assign('status',$status);
-            $this->assign('orderDetails',$orderDetails);
+            $this->assign('totalCount',$totalCount);
             return view($this->style . 'Myhome/deal');
         }else{ //请求接口失败
             $msg = $result['rspMsg'];

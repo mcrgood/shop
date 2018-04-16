@@ -76,23 +76,33 @@ maximum-scale=1.0, user-scalable=no"/>
   <div class="big">
   	<div class="pay-detail">	
   		<ul>
-  		{if $status eq 1}
+  		{if $totalCount eq 1}
+	  		<li>
+	  			<div class="money">
+	  				<span>订单号:<em>{$orderDetails.ipsBillNo}</em></span>
+	  				<label>{$orderDetails.createTime}</label>
+	  			</div>
+	  			{if $orderDetails.ordersType eq 3}
+	  			<div class="money-detail" style="color:#03bc01;">+{$orderDetails.orderAmount}</div>
+	  			{elseif $orderDetails.ordersType eq 4/}
+	  			<div class="money-detail" >-{$orderDetails.orderAmount}</div>
+	  			{/if}
+	  		</li>
+  		{elseif $totalCount gt 1/}
   			{volist name="orderDetails" id="v"}
-	  			{if $v.orderState eq 10}
-		  		<li>
-		  			<div class="money">
-		  				<span>订单号:<em>{$v.ipsBillNo}</em></span>
-		  				<label>{$v.createTime}</label>
-		  			</div>
-		  			{if $v.ordersType eq 3}
-		  			<div class="money-detail" style="color:#03bc01;">+{$v.orderAmount}</div>
-		  			{elseif $v.ordersType eq 4/}
-		  			<div class="money-detail" >-{$v.orderAmount}</div>
-		  			{/if}
-		  		</li>
-		  		{/if}
-		  	{/volist}	
-  		{else/}
+  			<li>
+	  			<div class="money">
+	  				<span>订单号:<em>{$v.ipsBillNo}</em></span>
+	  				<label>{$v.createTime}</label>
+	  			</div>
+	  			{if $v.ordersType eq 3}
+	  			<div class="money-detail" style="color:#03bc01;">+{$v.orderAmount}</div>
+	  			{elseif $v.ordersType eq 4/}
+	  			<div class="money-detail" >-{$v.orderAmount}</div>
+	  			{/if}
+	  		</li>
+	  		{/volist}
+  		{elseif $totalCount eq 0/}
   			<li>
 	  			<div class="money">
 	  				<span>暂无相关交易记录!</span>
