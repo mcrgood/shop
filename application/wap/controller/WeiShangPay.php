@@ -25,36 +25,33 @@ use data\service\HandleOrder as HandleOrder;
  */
 class WeiShangPay extends BaseController
 {
-	//微信支付页面
-	public function index(){
-		// $orderInfo['pay_money'] = $row['pay_money'];
-		// if($row['type'] == 1){ //线上商城订单
-		// 	$goodsName = db('ns_order_payment')->alias('p')
-		// 	->join('ns_order_goods g','g.order_id = p.type_alis_id','left')
-		// 	->where('p.out_trade_no',$out_trade_no)->value('goods_name');
-		// 	$orderInfo['goodsName'] = mb_substr($goodsName,0,36,'utf-8'); //查出商品名称并且截取40字符以内
-		// }elseif($row['type'] == 4){  //商城余额充值
-		// 	$orderInfo['goodsName'] = $row['pay_body'];
-		// }elseif($row['type'] == 5){  //线下扫码支付
-		// 	$names = db('ns_order_payment')->alias('p')
-		// 	->join('ns_shop_message g','g.userid = p.business_id','left')
-		// 	->where('p.out_trade_no',$out_trade_no)->value('names');
-		// 	$orderInfo['goodsName'] = '向【'.$names.'】付款'; //查出线下商家店铺名称
-		// }
-		return view('wap/default/WeiShangPay/index');
-	}
+
 
 	//微信支付API
 	public function wx_pay_api(){
-		// $out_trade_no = input('param.out_trade_no',0); //获取地址栏订单号
-		// if($out_trade_no == 0){
-		// 	$this->error('订单参数错误，请重新提交！');
-		// }
-		// if(session('out_trade_no')){
-		// 	session('out_trade_no',null);
-		// }
-		// session('out_trade_no',$out_trade_no); //把当前订单号存在session中
-		// $row = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find(); //获取付款方式
+		$out_trade_no = input('param.out_trade_no',0); //获取地址栏订单号
+		if($out_trade_no == 0){
+			$this->error('订单参数错误，请重新提交！');
+		}
+		if(session('out_trade_no')){
+			session('out_trade_no',null);
+		}
+		session('out_trade_no',$out_trade_no); //把当前订单号存在session中
+		$row = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find(); //获取付款方式
+		$pay_money = $row['pay_money'];
+		if($row['type'] == 1){ //线上商城订单
+			$goodsName = db('ns_order_payment')->alias('p')
+			->join('ns_order_goods g','g.order_id = p.type_alis_id','left')
+			->where('p.out_trade_no',$out_trade_no)->value('goods_name');
+			$goodsName = mb_substr($goodsName,0,36,'utf-8'); //查出商品名称并且截取40字符以内
+		}elseif($row['type'] == 4){  //商城余额充值
+			$goodsName = $row['pay_body'];
+		}elseif($row['type'] == 5){  //线下扫码支付
+			$names = db('ns_order_payment')->alias('p')
+			->join('ns_shop_message g','g.userid = p.business_id','left')
+			->where('p.out_trade_no',$out_trade_no)->value('names');
+			$goodsName = '向【'.$names.'】付款'; //查出线下商家店铺名称
+		}
 		$ipspay_config = config('wx_pay_data');
 		// 商户号
 		$MerCode = $ipspay_config['MerCode'];
@@ -65,11 +62,11 @@ class WeiShangPay extends BaseController
 		//商户订单号
 		$MerBillno = 'Mer'.date('YmdHis');
 		//订单金额金额
-		$OrdAmt = '0.02';
+		$OrdAmt = $pay_money;
 		//订单时间
 		$OrdTime = date('Y-m-d H:i:s');
 		//商品名称
-		$GoodsName = '我在测试';
+		$GoodsName = $goodsName;
 		//商品数量
 		$GoodsCount = 1;
 		//支付币种
@@ -137,12 +134,12 @@ class WeiShangPay extends BaseController
 		    $status = $xmlRes['WxPayRsp']['body']['Status'];
 		    if($status == "Y")
 		    {
-		    	$out_trade_no = $xmlRes['WxPayRsp']['body']['MerBillno'];
-		    	// $out_trade_no = session('out_trade_no');
+		    	// $out_trade_no = $xmlRes['WxPayRsp']['body']['MerBillno'];
+		    	$out_trade_no = session('out_trade_no');
 		    	$HandleOrder = new HandleOrder();
 		        $HandleOrder->handle($out_trade_no);
        	 		db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['pay_type' => 5]); //付款方式修改为微信支付
-       	 		session('out_trade_no',null);
+       	 		session('out_trade_no',null); //订单处理完成后清空session里面的订单号
        	 		dump($out_trade_no);
        	 		dump(session('out_trade_no'));
        	 		die;
@@ -158,7 +155,7 @@ class WeiShangPay extends BaseController
 		} else {
 		    $message = "支付失败";
 		}
-		// return view($this->style . 'WeiShangPay/return_url');
+		return view($this->style . 'WeiShangPay/return_url');
 	}
 
 	//服务器S2S通知页面路径

@@ -125,7 +125,7 @@ function calculate() {
 		window.location.href = __URL("APP_MAIN/pay/alipay?no=" + out_trade_no);
 	}else if(pay_type == 3){
 		//微信支付
-		location.href = '{:__URL("APP_MAIN/WeiShangPay/wx_pay_api")}';
+		window.location.href = '{:__URL("APP_MAIN/WeiShangPay/wx_pay_api")}?out_trade_no='+ out_trade_no;
 	}
 	
 }
