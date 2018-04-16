@@ -960,17 +960,19 @@ class Myhome extends Controller
     //自动发送预定消息
     public function send_yuding_msg_auto(){
         if(request()->isAjax()){
+        $iphone = input('post.iphone');
+        $id = input('post.id'); //商家ID
+        $reserve = db('ns_goods_reserve')->alias('a')
+        ->join('ns_wwb w','a.shop_id = w.userid','left')
+        ->join('ns_shop_message m','m.userid = a.shop_id','left')
+        ->where('a.id',$id)
+        ->find();
+        return $reserve;
         $times = '4月10日 18:00';
         $names = '红谷滩烧烤店';
         $address = '联发广场9楼';
         $tel = '13612345678';
         $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names."地址:".$address."美食热线:".$tel."，欢迎莅临品鉴，全体员工恭候您的光临！";
-            $iphone = input('post.iphone');
-            $id = input('post.id');
-            $msg_status = db('ns_goods_reserve')->alias('a')
-            ->join('ns_wwb w','a.shop_id = w.userid','left')
-            ->where('a.id',$id)
-            ->value('msg_status');
             if($iphone && $msg_status == 1){     //msg_status=1   为自动发送短信
                 $clapi  = new ChuanglanSmsApi();
                 $result = $clapi->sendSMS($iphone, $message);

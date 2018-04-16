@@ -25,7 +25,7 @@
 		.users_1{width: 90%;height: auto;margin: 0 5%;}
 		.users_1 ul{list-style: none;}
 		.users_1 ul li{width: 95%;height: 60px;margin: auto;border-bottom: 1px solid #e4dfdf;margin-top: 10px;padding-left: 5%;}
-		.users_1 ul li img{width: 50px;height: 50px;display: inline-block;float: left;}
+		.users_1 ul li img{width: 50px;height: 50px;display: inline-block;float: left;border-radius: 50%;}
 		.users_2{width:77% ;height: 60px;display: inline-block;float: left;padding-left: 10px;}
 		.users_2 h4{font-size: 16px;color: #5a5959;height: 25px;line-height: 25px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;width: 45%;}
 		.users_2 span{color: #999999;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;font-size: 15px;height: 25px;line-height: 25px;width: 100%;}
@@ -72,7 +72,7 @@
 						html +='<li>';
 						html +='<div id="contents">';
 						if(res["list"][i]["user_headimg"] != ''){
-							html +='<img src="'+res["list"][i]["nick_name"]+'"/>';
+							html +='<img src="'+res["list"][i]["user_headimg"]+'"/>';
 						}else{
 							html +='<img src="__INDEX__/images/tx_03.png"/>';
 						}
