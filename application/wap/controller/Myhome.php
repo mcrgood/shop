@@ -280,10 +280,6 @@ class Myhome extends Controller
     }
     //用户查询账单页面
     public function queryOrdersList(){
-        $arr = ['ips'=>111,'coll' => 156];
-        $count = count($arr);
-        dump($count);
-        dump($arr);die;
         $this->check_login();
         $userid = $this->business_id;
         $customerCode = db('ns_business_open')->where('userid',$userid)->value('customerCode');
