@@ -489,7 +489,7 @@ class Myhome extends Controller
          //查询该商户是否有二维码，如果没有就自动生成
         $qrcode = db('ns_shop_message')->where('userid',$business_id)->value('shop_qrcode');
         $state = db('ns_shop_message')->where('userid',$business_id)->value('state');
-        if(!$qrcode && $state == 1){ 
+        if(!$qrcode && $state == 1){
             $shop_qrcode_num = '0791'.$rand;
             $url = __URL(__URL__ .'/wap/member/recharge?business_id=' . $business_id);
             $shop_qrcode = getShopQRcode($url, 'upload/shop_qrcode', 'shop_qrcode_' . $business_id);
