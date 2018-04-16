@@ -22,7 +22,7 @@ class HandleOrder{
          //假如business_id 不等于0，说明是扫码付款
         $business_id = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id');  //商家ID
         $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出付款的金额
-        if($business_id != 0 && $pay_money){  //扫码付款
+        if($business_id != 0 && $pay_money >= 0.1){  //扫码付款
             $customerCode = db('ns_business_open')->where('userid',$business_id)->value('customerCode'); //商家的客户号
             $ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio'); //查出该商家设置分账金额比例
             $money = (100-$ratio)*0.01*$pay_money;  //应该转给商家的金额

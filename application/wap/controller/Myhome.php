@@ -961,13 +961,11 @@ class Myhome extends Controller
     public function send_yuding_msg_auto(){
         if(request()->isAjax()){
         $iphone = input('post.iphone');
-        $id = input('post.id'); //商家ID
-        $reserve = db('ns_goods_reserve')->alias('a')
+        $id = input('post.id');
+        $msg_status = db('ns_goods_reserve')->alias('a')
         ->join('ns_wwb w','a.shop_id = w.userid','left')
-        ->join('ns_shop_message m','m.userid = a.shop_id','left')
         ->where('a.id',$id)
-        ->find();
-        return $reserve;
+        ->value('msg_status');
         $times = '4月10日 18:00';
         $names = '红谷滩烧烤店';
         $address = '联发广场9楼';

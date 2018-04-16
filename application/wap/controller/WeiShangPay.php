@@ -140,9 +140,6 @@ class WeiShangPay extends BaseController
 		        $HandleOrder->handle($out_trade_no);
        	 		db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['pay_type' => 5]); //付款方式修改为微信支付
        	 		session('out_trade_no',null); //订单处理完成后清空session里面的订单号
-       	 		dump($out_trade_no);
-       	 		dump(session('out_trade_no'));
-       	 		die;
 		        $message = "支付成功";
 		        
 		    }elseif($status == "N")
