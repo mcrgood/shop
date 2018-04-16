@@ -960,6 +960,11 @@ class Myhome extends Controller
     //自动发送预定消息
     public function send_yuding_msg_auto(){
         if(request()->isAjax()){
+        $times = '4月10日 18:00';
+        $names = '红谷滩烧烤店';
+        $address = '联发广场9楼';
+        $tel = '13612345678';
+        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names."地址:".$address."美食热线:".$tel."，欢迎莅临品鉴，全体员工恭候您的光临！";
             $iphone = input('post.iphone');
             $id = input('post.id');
             $msg_status = db('ns_goods_reserve')->alias('a')
@@ -968,7 +973,7 @@ class Myhome extends Controller
             ->value('msg_status');
             if($iphone && $msg_status == 1){     //msg_status=1   为自动发送短信
                 $clapi  = new ChuanglanSmsApi();
-                $result = $clapi->sendSMS($iphone, '【花儿盛开】您好,这是[自动]发送预定的短信');
+                $result = $clapi->sendSMS($iphone, $message);
                 if(!is_null(json_decode($result))){
                     $output=json_decode($result,true);
                     if(isset($output['code'])  && $output['code']=='0'){
@@ -1006,6 +1011,11 @@ class Myhome extends Controller
     //商家点击确定后发送预定消息
     public function send_yuding_msg_manual(){
         if(request()->isAjax()){
+        $times = '4月10日 18:00';
+        $names = '红谷滩烧烤店';
+        $address = '联发广场9楼';
+        $tel = '13612345678';
+        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names."地址:".$address."美食热线:".$tel."，欢迎莅临品鉴，全体员工恭候您的光临！";
             $iphone = input('post.iphone');
             $id = input('post.id');
             $msg_status = db('ns_goods_reserve')->alias('a')
@@ -1014,7 +1024,7 @@ class Myhome extends Controller
             ->value('msg_status');
             if($iphone && $msg_status == 2){     //msg_status=1   为自动发送短信
                 $clapi  = new ChuanglanSmsApi();
-                $result = $clapi->sendSMS($iphone, '【花儿盛开】您好,这是[手动]发送预定的短信');
+                $result = $clapi->sendSMS($iphone, $message);
                 if(!is_null(json_decode($result))){
                     $output=json_decode($result,true);
                     if(isset($output['code'])  && $output['code']=='0'){
