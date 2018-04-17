@@ -28,7 +28,7 @@ class Dingwei extends BaseController{
         $where['leixing'] = array('eq',$leixing_id);
         $this->assign('leixing_id', $leixing_id);
         $this->assign('con_cateid', $con_cateid);
-        $cate_list = db('ns_consumption')->where('con_pid',$leixing_id)->select();
+        $cate_list = db('ns_consumption')->where('con_pid',0)->select();
         $this->assign('cate_list', $cate_list);
         return view($this->style . 'Dingwei/index');
 	}
@@ -157,4 +157,23 @@ class Dingwei extends BaseController{
 		$shopInfo = db('shop')->find(input('shop_id'));
 		return $this->fetch('',['shopres'=>$shopInfo]);
 	}
+    //点击获取二级分类列表
+    public function getSecondCate(){
+            if(request()->isAjax()){
+                $cateid = input('post.val');
+                $list = db('ns_consumption')->where('con_pid',$cateid)->select();
+                if($list){
+                    $info = [
+                       'status' =>1,
+                       'list' =>$list 
+                    ];
+                }else{
+                    $info = [
+                       'status' =>0,
+                       'list' =>'' 
+                    ];
+                }
+                return $info;
+            }
+    }
 }

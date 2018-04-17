@@ -205,6 +205,24 @@
     // });
 
 </script>
+<style type="text/css">
+.nav_right{
+    width: 60%;
+    z-index: 99;
+    float: right;
+    height: 600px;
+    background: rgba(253,250,250,0.5);
+    
+}
+.nav_right a{
+    display: block;
+    width: 100%;
+    height: 65px;
+    line-height: 65px;
+    font-size: 0.4rem;
+    text-align: center;
+}
+</style>
 <div class="top-kong"></div>
 <div class="top">
 <a href="{:url('indexx/indexx')}" class="top-a1"></a>
@@ -231,9 +249,17 @@
 
 <ul class="supermarket-main">
 {volist name="cate_list" id="v"}
-	<li style="width:142%;letter-spacing: 1px;padding:0;"><a href="{:url('dingwei/index',['cat'=>$Request.param.cat,'con_cateid'=>$v['con_cateid']])}">{$v.con_cate_name}</a></li>
+	<li style="width:142%;letter-spacing: 1px;padding:0;"><a class="con_cateid" value="{$v.con_cateid}">{$v.con_cate_name}</a></li>
 {/volist}
 </ul>
+
+<div class="nav_right">
+                   
+               <!--  <div class="sub hide" data-id="2">
+                        <a href="">2</a>
+                </div> -->
+                
+ </div>
 
 <ul class="supermarket-main1">
 <!-- <li><a href="">222222222</a></li>
@@ -248,4 +274,24 @@
 </div>
 
 </body>
+<script>
+    $(function(){
+        $('.con_cateid').click(function(){
+            $('.nav_right').show();
+            var html ='';
+            val = $(this).attr('value');
+            var data = {val:val};
+            var url = "{:url('Dingwei/getSecondCate')}";
+            $.post(url,data,function(res){
+                console.log(res)
+                if(res.status == 1){
+                    for(var i=0;i<res.list.length;i++){
+                        html +='<a href="">'+res["list"][i]["con_cate_name"]+'</a>';
+                    }
+                }
+                $('.nav_right').empty().append(html);
+            },'json')
+        })
+    })
+</script>
 </html>

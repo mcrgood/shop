@@ -71,12 +71,14 @@ $(document).ready(function(){
     $(".supermarket-li-1").css("display","block");  
     $(".supermarket-main1").css("display","none");
     $(".supermarket-li-2").css("display","none");
+
   });      
 });
 $(document).ready(function(){
    $(".supermarket-li-1").click(function(){ 
     $(".supermarket-main").css("display","none");  
     $(".supermarket-li-1").css("display","none");
+      $('.nav_right').hide();
   });      
 });
 
