@@ -97,7 +97,7 @@
 	/*历史*/
 	#contents{width: 100%;height: auto;margin: 0 auto}
 	.search_1{width: 90%;margin: 0 5%;height: 30px;border: 1px solid #e4dfdf;border-radius: 11px;background-color: #fff;margin-bottom: 10px;}
-	.search_btn{width: 10%;height: 30px; background: url(images/search_03.png) left no-repeat;background-size:25px;background-position-x:10px;display: inline-block;border: none;float: left;outline: none;}
+	.search_btn{width: 12%;height: 30px; background: url(__STATIC__/images/search_03.png) left no-repeat;background-size:25px;background-position-x:10px;display: inline-block;border: none;float: right;outline: none;}
 	.search_input{width: 82%;border: none;outline: none;height: 30px;font-size: 14px;color:#999999;display: inline-block;float: left;padding-left: 5px;}
 
 
@@ -155,47 +155,43 @@
 
 	<div class="m-box second-content">
 		<div class="first_content_1">
-			<div class="search_1"><input type="submit" value="" class="search_btn"/><input class="search_input" type="text" placeholder="请输入历史时间进行搜索 例:18/1/1" onfocus="if (placeholder=='请输入历史时间进行搜索 例:18/1/1'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入历史时间进行搜索 例:18/1/1'}"/>
+			<div class="search_1"><input type="submit" value="" class="search_btn"/><input class="search_input" type="text" placeholder="姓名 \ 电话" />
 			</div>
 			<ul id="content_news_list">
-                {foreach name="list" id="v"}
                 <li>
                     <div class="inform"><h4>预定通知</h4><span>{$v.add_time}</span></div>
                     <div class="inform_content"><p>{$v.names}&nbsp;预定人数&nbsp;<span style="color:red;">{$v.num}人</span><br />时间:{$v.time}</p></div>
                     <div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.iphone}</span></div>
                 </li>
-                {/foreach}
 			</ul>
 		</div>
 	</div>
 	<script type="text/javascript">
         $(function(){
-
-            $("input[type=text]").change(function () {
-                var searchText = $(this).val();//获取输入的搜索内容
-                var $searchLi = "";//预备对象，用于存储匹配出的li
-
-                if (searchText != "") {
-
-                    //获取所有匹配的li
-                    $searchLi = $("#content_news_list").find('#contents:contains('+ searchText +')').parent();
-                    //将内容清空
-                    $("#content_news_list").html("");
-                }
-
-                //将获取的元素追加到列表中
-                $("#content_news_list").html($searchLi).clone();
-
-                //判断搜索内容是否有效，若无效，输出not find
-                if ($searchLi.length <= 0) {
-                    $("#content_news_list").html("<li>not find</li>")
-                }
-            })
-
+        	getList();
             $("input[type=submit]").click(function () {
-                $("searchText").change();
+            	var search_input = $('.search_input').val();
+            	getList(search_input);
             })
         })
+        function getList(search_input){
+        	var url = "{:url('Myhome/message')}";
+        	var data = {search_input:search_input};
+        	$.post(url,data,function(res){
+        		console.log(res)
+        		var html = '';
+        		if(res.status ==1){
+        			for(var i=0; i<res.list.length;i++){
+        				html +='<li>';
+        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["add_time"]+'</span></div>';
+        				html +='<div class="inform_content"><p>'+res["list"][i]["names"]+'&nbsp;预定人数&nbsp;<span style="color:red;">'+res["list"][i]["num"]+'人</span><br />时间:'+res["list"][i]["time"]+'</p></div>';
+        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["iphone"]+'</span></div>';
+        				html +='</li>';
+        			}
+        		}
+        		$('#content_news_list').empty().append(html);
+        	},'json')
+        }
 	</script>
 </div>
 </body>

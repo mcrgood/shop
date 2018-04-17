@@ -112,10 +112,12 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 <script type="text/javascript" src="__YUDING__/js/vue.min.js"></script>
 <!-- ajax页面 -->
 <script type="text/javascript">
+
     var userid = "{$Request.param.userid}";
     $(".lefts").click(function(){
         var cateid = $(this).val();
         getList(cateid,userid);
+       
     })
     function getList(cateid,userid){
         $.ajax({
@@ -133,7 +135,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
                         html += '<p class="list2"><b>￥</b><b>'+data["list"][i]['goodsprice']+'</b></p>';
                         html += '<div class="btn">';
                         html += '<button class="minus"><strong></strong></button>';
-                        html += '<i id="nums">0</i>';
+                        html += '<i class="nums">0</i>';
                         html += '<button class="add"><strong></strong></button>';
                         html += '<i class="price">'+data["list"][i]['goodsprice']+'</i>';
                         html += '</div>';

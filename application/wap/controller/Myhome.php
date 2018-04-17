@@ -584,28 +584,47 @@ class Myhome extends Controller
     }
     public function message(){
         $this->check_login();
-        db("ns_goods_reserve")->where("shop_id",$this->business_id)->update(["state"=>1]);
-        $where['shop_id'] = $this->business_id;
-        $list = db('ns_goods_reserve')->field('a.*,m.names,w.msg_status')
+        if(request()->isAjax()){
+            $search_input = input('post.search_input', '');
+            if($search_input){
+                $where['a.name|a.iphone'] = ['like',"%".$search_input."%"];
+            }
+            $where['m.userid'] = $this->business_id;
+            $list = db('ns_goods_yuding')
+            ->field('a.*,m.names,w.msg_status')
             ->alias('a')
-            ->join('ns_shop_message m','a.shop_id=m.userid','left')
-            ->join('ns_wwb w','w.userid = a.shop_id','left')
-            ->order('id desc')
+            ->join('ns_shop_message m','a.shop_id=m.id','left')
+            ->join('ns_wwb w','w.userid = m.userid','left')
+            ->order('a.add_time desc')
             ->where($where)
             ->select();
-        // dump($list);die;
+            if($list){
+                foreach($list as $k => $v){
+                    $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
+                }  
+                $info = ['status'=>1,'list'=>$list];
+            }else{
+                $info = ['status'=>0,'list'=>''];
+            }
+            return $info;
+        }
+        db("ns_goods_yuding")
+        ->alias('g')
+        ->join('ns_shop_message m','m.id=g.shop_id','left')
+        ->where("m.userid",$this->business_id)
+        ->update(["status"=>1]);
+        $list = db('ns_goods_yuding')
+        ->field('a.*,m.names,w.msg_status')
+        ->alias('a')
+        ->join('ns_shop_message m','a.shop_id=m.id','left')
+        ->join('ns_wwb w','w.userid = m.userid','left')
+        ->order('a.add_time desc')
+        ->where('m.userid',$this->business_id)
+        ->select();
         foreach($list as $k => $v){
             $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
-        }    
-        // dump($list);die;
-
-//        $count = db('ns_goods_reserve')->field('a.*,m.names')
-//            ->alias('a')
-//            ->join('ns_shop_message m','a.shop_id=m.userid','left')
-//            ->where($where)
-//            ->count();
-        $this->assign('list', $list);
-       // $this->assign('count', $count);
+        }  
+        $this->assign('list',$list);  
         return view($this->style . 'Myhome/message');
     }
     //退出登录
@@ -982,7 +1001,7 @@ class Myhome extends Controller
                 if(!is_null(json_decode($result))){
                     $output=json_decode($result,true);
                     if(isset($output['code'])  && $output['code']=='0'){
-                        db('ns_goods_reserve')->where('id',$id)->update(['is_msg_send'=>1]);
+                        db('ns_goods_reserve')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
                         return $result = [
                             'status' => 0,
                             'message' => "恭喜您，操作成功！"
@@ -1016,24 +1035,26 @@ class Myhome extends Controller
     //商家点击确定后发送预定消息
     public function send_yuding_msg_manual(){
         if(request()->isAjax()){
-        $times = '4月10日 18:00';
-        $names = '红谷滩烧烤店';
-        $address = '联发广场9楼';
-        $tel = '13612345678';
-        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names."地址:".$address."美食热线:".$tel."，欢迎莅临品鉴，全体员工恭候您的光临！";
             $iphone = input('post.iphone');
             $id = input('post.id');
-            $msg_status = db('ns_goods_reserve')->alias('a')
-            ->join('ns_wwb w','a.shop_id = w.userid','left')
-            ->where('a.id',$id)
-            ->value('msg_status');
-            if($iphone && $msg_status == 2){     //msg_status=1   为自动发送短信
+            $yuding = db('ns_goods_yuding')
+            ->alias('g')
+            ->field('g.*,m.names,m.address,m.tel')
+            ->join('ns_shop_message m','g.shop_id = m.id','left')
+            ->where('g.id',$id)->find();
+            
+            $times = date('m月d日 H:i',strtotime($yuding['time'])); //预定的时间
+            $names = '【'.$yuding['names'].'】'; //商家店铺名
+            $address = $yuding['address']; //商家店铺地址
+            $tel = $yuding['tel']; //商家店铺联系电话
+            $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.".地址:".$address.".美食热线:".$tel.".欢迎莅临品鉴，全体员工恭候您的光临！";
+            if($iphone){     
                 $clapi  = new ChuanglanSmsApi();
                 $result = $clapi->sendSMS($iphone, $message);
                 if(!is_null(json_decode($result))){
                     $output=json_decode($result,true);
                     if(isset($output['code'])  && $output['code']=='0'){
-                        db('ns_goods_reserve')->where('id',$id)->update(['is_msg_send'=>1]);
+                        db('ns_goods_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
                         return $result = [
                             'status' => 0,
                             'message' => "恭喜您，操作成功！"

@@ -149,7 +149,7 @@ $(function () {
             $('.con-actives>li').each(function(i,v){
                 var nnam = $(v).find('h4').text();
                 if(nam == nnam){
-                   $(v).find('#nums').text(n); 
+                   $(v).find('.nums').text(n); 
                 }
             })
             $(this).prev().text(n);
@@ -174,17 +174,22 @@ $(function () {
             $('.con-actives>li').each(function(i,v){
                 var nnam = $(v).find('h4').text();
                 if(nam == nnam){
-                   $(v).find('#nums').text(n); 
+                   $(v).find('.nums').text(n); 
                 }
+
             })
             var s = parseFloat($("#totalpriceshow").html());//总计
            //console.log(s);
            
             if (n == 0) {
-                $(this).parent().parent().remove();
-                $(".up1").hide();
-                $(".minus").hide();
-                $(".minus").next().hide();
+                $(this).parents('.food').remove();
+                $('.con-actives>li').each(function(i,v){
+                    var nnam = $(v).find('h4').text();
+                    if(nam == nnam){
+                       $(v).find('.nums').hide(); 
+                       $(v).find('.minus').hide(); 
+                    }
+                })
             }
             $(this).next().html(n);
            
