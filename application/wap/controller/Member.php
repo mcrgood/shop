@@ -112,6 +112,7 @@ class Member extends BaseController
     public function memberIndex()
     {
         $user_name = session('user_name'); //获取登录会员的用户名（手机号）
+
         $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode'); //通过手机号查询出该会员是否有推广码
         if(!$user_qrcode && $user_name){ //没有推广码的话创建一张
             $url = __URL(__URL__ .'/wap/login/register?referee_phone=' . $user_name);

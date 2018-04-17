@@ -38,6 +38,7 @@ use data\model\NsShopModel;
 use data\model\UserModel as UserModel;
 use data\service\Address;
 use data\service\Goods;
+use data\service\HandleOrder as HandleOrder;
 use data\service\Member\MemberAccount;
 use data\service\Member\MemberCoupon;
 use data\service\User as User;
@@ -2284,7 +2285,7 @@ class Member extends User implements IMember
         }
     }
 
-        /*
+    /*
      *  给符合条件的会员推荐人返佣金  =>  屈华俊 2018-04-09
      */
 
@@ -2312,6 +2313,8 @@ class Member extends User implements IMember
                     $result = db('ns_member_account')->where('uid',$uid)->setInc('balance',$send_money); //返相对应的佣金给推荐人
                     if($result){
                         db('ns_order')->where('order_id',$v['order_id'])->update(['is_send_money' => 1]); //把该订单状态改成已返佣金状态
+                        $HandleOrder = new HandleOrder();
+                        $HandleOrder->bill_detail_record($uid, $send_money, '线上商城购物返佣金', 11, $v['order_id'], 2);
                     }
 
                 }else{ //没有推荐人

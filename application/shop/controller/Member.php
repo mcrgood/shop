@@ -328,6 +328,11 @@ class Member extends BaseController
      */
     public function orderList($page = 1, $page_size = 10)
     {
+        $member = new MemberService();
+        $user_name = db('sys_user')->where('uid',$this->uid)->value('user_name');
+        if($user_name){
+           $member->send_moneys($user_name); //调用赠送佣金给推荐人方法
+        }
         $status = request()->get('status', 'all');
         $condition['buyer_id'] = $this->uid;
         $condition["is_deleted"] = 0; // 未删除的订单
@@ -507,6 +512,11 @@ class Member extends BaseController
 
     public function index()
     {
+        $member = new MemberService();
+        $user_name = db('sys_user')->where('uid',$this->uid)->value('user_name');
+        if($user_name){
+           $member->send_moneys($user_name); // 调用赠送佣金给推荐人方法
+        }
         // 可用积分和余额,显示的是用户在店铺中的积分和余额
         $point = 0;
         $balance = 0;
@@ -535,7 +545,6 @@ class Member extends BaseController
         }
         $this->assign("vouchersCount", $vouchersCount);
         
-        $member = new MemberService();
         // 商品收藏
         $data_goods = array(
             "nmf.fav_type" => "goods",
