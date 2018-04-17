@@ -51,6 +51,7 @@ $(function(){
 
 			if(!str){
 				alert("身份证号码必填");
+				$('#idcard').focus();
 				return false;
 			}
 			if(!cards.exec(str)&&!card.exec(str)){
@@ -60,6 +61,7 @@ $(function(){
 			var checked = $('#check').is(':checked');
 			if(!checked){
 				alert("进口产品必须同意条款");
+				$('#check').focus();
 				return false;
 			}
 		}
