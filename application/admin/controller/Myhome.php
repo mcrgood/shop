@@ -5,6 +5,7 @@ use Qiniu\json_decode;
 use think\Config;
 use think\Db;
 use data\service\Supplier;
+use data\service\HandleOrder as HandleOrder;
 use think\Request;
 use data\service\MyhomeService as MyhomeService;
 use think\Upload;//文件上传
@@ -360,12 +361,17 @@ class Myhome extends BaseController
 				$iphone = db('ns_goods_login')->where('id',$userid)->value('iphone');
 				$thisRow = db('sys_user')->where('user_tel',$iphone)->find();
 				if($thisRow['referee_phone'] && $thisRow['is_get_referee'] == 0){
-					db('ns_member_account')
+					$aa = db('ns_member_account')
                     ->alias('m')
                     ->join('sys_user u','u.uid = m.uid','left')
                     ->where('u.user_tel',$thisRow['referee_phone'])
                     ->setInc('point',40);
-                    db('sys_user')->where('user_tel',$iphone)->update(['is_get_referee'=>1]);
+                    $bb = db('sys_user')->where('user_tel',$iphone)->update(['is_get_referee'=>1]);
+                    if($aa && $bb){
+                    	$uid = db('sys_user')->where('user_tel',$thisRow['referee_phone'])->value('uid');
+                    	$HandleOrder = new HandleOrder();
+                    	$HandleOrder->bill_detail_record($uid, 40, '商家入驻审核通过返佣', 11, $id);
+                    }
 				}
 					
 				$res = [

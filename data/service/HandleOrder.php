@@ -39,18 +39,27 @@ class HandleOrder{
             ->value('uid');
             $referee_money = $pay_money*0.25*0.15*$ratio*0.01; //计算出给推荐人的佣金
             if($sendGold){ //赠送旺旺币给买单消费的会员账号下   
-                db('ns_member_account')->where('uid',$uid)->setInc('point',$sendGold);
+                $res = db('ns_member_account')->where('uid',$uid)->setInc('point',$sendGold);
+                if($res){ //添加旺旺币赠送记录
+                    $this->bill_detail_record($uid, $sendGold, '线下店铺消费赠送积分', 10);
+                }
             }
             $user_referee_phone = db('sys_user')->where('uid',$uid)->value('referee_phone'); //查出会员的推荐人手机号
             if($user_referee_phone){
                 $user_referee_uid = db('sys_user')->where('user_name',$user_referee_phone)->value('uid'); 
-                db('ns_member_account')->where('uid',$user_referee_uid)->setInc('balance',$referee_money); //赠送佣金给会员的推荐人
+                $result = db('ns_member_account')->where('uid',$user_referee_uid)->setInc('balance',$referee_money); //赠送佣金给会员的推荐人
+                if($result){
+                    $this->bill_detail_record($user_referee_uid, $referee_money, '线下店铺消费返佣金', 11, 0, 2);
+                }
             }
             $iphone = db('ns_goods_login')->where('id',$business_id)->value('iphone'); //查到商家的手机号
             $business_referee_phone = db('sys_user')->where('user_name',$iphone)->value('referee_phone'); //查出商家的推荐人手机号
             if($business_referee_phone){
                 $business_referee_uid = db('sys_user')->where('user_name',$business_referee_phone)->value('uid'); 
-                db('ns_member_account')->where('uid',$business_referee_uid)->setInc('balance',$referee_money); //赠送佣金给商家的推荐人
+                $result = db('ns_member_account')->where('uid',$business_referee_uid)->setInc('balance',$referee_money); //赠送佣金给商家的推荐人
+                if($result){
+                    $this->bill_detail_record($business_referee_uid, $referee_money, '线下店铺消费赠返佣金', 11, 0, 2);
+                }
             }
 
         }else{ // 非扫码付款
@@ -69,5 +78,16 @@ class HandleOrder{
         $data['pay_status'] = 1;
         $data['pay_time'] = time();
         db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
+    }
+    //账单明细记录
+    public function bill_detail_record($uid, $number, $text, $from_type, $data_id =0, $account_type =1){
+         $datas['uid'] = $uid; //会员ID
+         $datas['number'] = $number; //变化的金额数字
+         $datas['text'] = $text; //mark备注
+         $datas['from_type'] = $from_type; //产生方式
+         $datas['account_type'] = $account_type; //账户类型（1:积分，2:余额）
+         $datas['data_id'] = $data_id; //相关表的数据ID主键
+         $datas['create_time'] = time(); //创建时间
+         db('ns_member_account_records')->insert($datas);
     }
 }

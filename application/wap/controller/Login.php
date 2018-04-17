@@ -23,6 +23,7 @@ use data\service\Member as Member;
 use data\service\Shop;
 use data\service\User;
 use data\service\WebSite as WebSite;
+use data\service\HandleOrder as HandleOrder;
 use data\service\Weixin;
 use think\Controller;
 use think\Session;
@@ -609,12 +610,8 @@ class Login extends Controller
                     $infos['point'] = 10;
                     $res = db('ns_member_account')->insert($infos);
                     if($res){
-                        $datas['uid'] = $uid;
-                        $datas['number'] = 10;
-                        $datas['text'] = '注册赠送积分';
-                        $datas['create_time'] = time();
-                        $datas['from_type'] = 12; //from_type=12为注册赠送旺旺币
-                        db('ns_member_account_records')->insert($datas);
+                        $HandleOrder = new HandleOrder();
+                        $HandleOrder->bill_detail_record($uid, 10, '注册赠送积分', 12);
                     }
 
                 // 微信的会员绑定

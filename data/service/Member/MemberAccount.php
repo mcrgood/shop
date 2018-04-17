@@ -468,7 +468,7 @@ class MemberAccount extends BaseService
                 $type_name = '消费赠送';
                 break;
             case 11:
-                $type_name = '返佣金额';
+                $type_name = '获得返佣';
                 break;
             default:
                 $type_name = '';

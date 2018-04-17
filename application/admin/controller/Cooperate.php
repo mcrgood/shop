@@ -29,7 +29,7 @@ class Cooperate extends BaseController{
             else
                 return $result = ['error' => 1, 'message' => "提交失败"];
         }
-        return view($this->style . 'cooperate/c_shop'); 
+        return view($this->style . 'Cooperate/c_shop'); 
 	}
     //合作商家页面
     public function c_shop(){
@@ -57,7 +57,7 @@ class Cooperate extends BaseController{
         if(!$shopinfo)
             $this->error('没有查找到相关信息！');
         $this->assign('shopinfo', $shopinfo);
-        return view($this->style . "cooperate/c_shop_detail");
+        return view($this->style . "Cooperate/c_shop_detail");
     }
 	public function  c_partern()
     {
@@ -90,7 +90,7 @@ class Cooperate extends BaseController{
 
         }
         
-        return view($this->style . 'cooperate/c_partern');
+        return view($this->style . 'Cooperate/c_partern');
     }
     //合作伙伴
     public function c_parternList(){
@@ -116,7 +116,7 @@ class Cooperate extends BaseController{
         if(!$shopinfo)
             $this->error('没有查找到相关信息！');
         $this->assign('shopinfo', $shopinfo);
-        return view($this->style . "cooperate/c_partern_detail");
+        return view($this->style . "Cooperate/c_partern_detail");
     }
 
 }

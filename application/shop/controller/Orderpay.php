@@ -19,9 +19,9 @@ use think\Cookie;
 use data\service\IpsPaySubmit as IpsPaySubmit;
 use data\service\IpsPayNotify as IpsPayNotify;
 /**
- * 首页控制器
- * 创建人：王永杰
- * 创建时间：2017年2月6日 11:01:19
+ * PC端支付
+ * 创建人：屈华俊
+ * 创建时间：2018年3月22日 11:01:19
  */
 class Orderpay extends BaseController
 {

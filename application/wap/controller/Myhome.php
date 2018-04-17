@@ -8,6 +8,7 @@ use think\Controller;
 use think\Db;
 use think\Session;
 use data\service\EasyPayment as EasyPayment;
+use data\service\HandleOrder as HandleOrder;
 use data\extend\org\wechat\Jssdk;
 use data\extend\chuanglan\ChuanglanSmsApi;
 use \data\extend\QRcode as QRcode;
@@ -442,12 +443,9 @@ class Myhome extends Controller
                         $aa['point'] = 10;
                         $rr = db('ns_member_account')->insert($aa);
                         if($rr){
-                            $datas['uid'] = $result;
-                            $datas['number'] = 10;
-                            $datas['text'] = '注册赠送积分';
-                            $datas['create_time'] = time();
-                            $datas['from_type'] = 12; //from_type=12为注册赠送旺旺币
-                            db('ns_member_account_records')->insert($datas);
+                            $HandleOrder = new HandleOrder();
+                            $HandleOrder->bill_detail_record($result, 10, '注册赠送积分', 12);
+                           
                         }
                     }
                 }
