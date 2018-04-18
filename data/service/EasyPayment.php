@@ -128,10 +128,10 @@ class EasyPayment
  
     }
     //4.5 转账接口
-    public function transfer($customerCode, $transferAmount){
+    public function transfer($AcctNo, $customerCode, $transferAmount){
          $reqIp = request()->ip();   //获取客户端IP
          $reqDate = date("Y-m-d H:i:s",time());
-         $body="<body><merBillNo></merBillNo><transferType>2</transferType><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>".$customerCode."</customerCode><transferAmount>".$transferAmount."</transferAmount><collectionItemName>商户营业额</collectionItemName><remark></remark></body>";
+         $body="<body><merBillNo></merBillNo><transferType>2</transferType><merAcctNo>".$AcctNo."</merAcctNo><customerCode>".$customerCode."</customerCode><transferAmount>".$transferAmount."</transferAmount><collectionItemName>商户营业额</collectionItemName><remark></remark></body>";
          $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
          $transferReqXml="<?xml version='1.0' encoding='utf-8'?><transferReqXml>".$head.$body."</transferReqXml>";
          Log::DEBUG("转账接口请求明文:" . $transferReqXml);  //未加密的日志

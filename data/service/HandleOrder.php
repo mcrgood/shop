@@ -20,8 +20,10 @@ class HandleOrder{
     //处理支付成功后的分账情况
     public function handle($out_trade_no){
          //假如business_id 不等于0，说明是扫码付款
-        $business_id = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id');  //商家ID
-        $pay_money = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('pay_money'); //查询出付款的金额
+        $payInfo = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find();
+        $business_id = $payInfo['business_id']; //商家ID
+        $pay_money = $payInfo['pay_money']; //查询出付款的金额
+        $pay_type = $payInfo['pay_type']; //查出付款方式
         if($business_id != 0 && $pay_money >= 0.1){  //扫码付款
             $customerCode = db('ns_business_open')->where('userid',$business_id)->value('customerCode'); //商家的客户号
             $ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio'); //查出该商家设置分账金额比例
@@ -75,9 +77,7 @@ class HandleOrder{
                 db('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
             }
         }
-        $data['pay_status'] = 1;
-        $data['pay_time'] = time();
-        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
+        
     }
     //账单明细记录
     public function bill_detail_record($uid, $number, $text, $from_type, $data_id =0, $account_type =1){

@@ -140,6 +140,10 @@ class Phonefastpay extends BaseController
 		    if ($status == "Y") {
 		    	//查询到付款的订单号
 		        $out_trade_no = $xmlRes['GateWayRsp']['body']['Attach'];
+		        $data['pay_status'] = 1; //pay_status=1为已付款
+		        $data['pay_time'] = time();
+		        $data['pay_type'] = 1; //pay_type=1为快捷支付
+		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
 		        //处理分账
 		        $HandleOrder = new HandleOrder();
 		        $HandleOrder->handle($out_trade_no);

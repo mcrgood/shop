@@ -134,11 +134,13 @@ class WeiShangPay extends BaseController
 		    $status = $xmlRes['WxPayRsp']['body']['Status'];
 		    if($status == "Y")
 		    {
-		    	// $out_trade_no = $xmlRes['WxPayRsp']['body']['MerBillno'];
 		    	$out_trade_no = session('out_trade_no');
+		    	$data['pay_status'] = 1; //pay_status=1为已付款
+		        $data['pay_time'] = time();
+		        $data['pay_type'] = 5; //pay_type=5为微信支付
+		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
 		    	$HandleOrder = new HandleOrder();
 		        $HandleOrder->handle($out_trade_no);
-       	 		db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['pay_type' => 5]); //付款方式修改为微信支付
        	 		session('out_trade_no',null); //订单处理完成后清空session里面的订单号
 		        $message = "支付成功";
 		        
