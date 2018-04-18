@@ -162,22 +162,22 @@ class Dingwei extends BaseController{
 	}
     //点击获取二级分类列表
     public function getSecondCate(){
-            if(request()->isAjax()){
-                $cateid = input('post.val');
-                $list = db('ns_consumption')->where('con_pid',$cateid)->select();
-                if($list){
-                    $info = [
-                       'status' =>1,
-                       'list' =>$list 
-                    ];
-                }else{
-                    $info = [
-                       'status' =>0,
-                       'list' =>'' 
-                    ];
-                }
-                return $info;
+        if(request()->isAjax()){
+            $cateid = input('post.val');
+            $list = db('ns_consumption')->where('con_pid',$cateid)->select();
+            if($list){
+                $info = [
+                   'status' =>1,
+                   'list' =>$list 
+                ];
+            }else{
+                $info = [
+                   'status' =>0,
+                   'list' =>'' 
+                ];
             }
+            return $info;
+        }
     }
    
 }

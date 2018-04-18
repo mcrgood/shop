@@ -27,6 +27,7 @@
     var leixing_id = "{$leixing_id}";
     var con_cateid = "{$con_cateid}";
     var urls = "{:url('Dingwei/getSecondCate')}";
+    var dingwei_url = '{:url("Dingwei/index")}';
 
     wx.config({
         debug: false,
@@ -65,7 +66,7 @@
             
   //线上数据！要测试的话从这开始往下注释
 
-    // 页数
+    //页数
     var page = 0;
     // 每页展示个数
     var size = 4;
@@ -288,6 +289,7 @@
 
 </body>
 <script>
+    // 一级菜单获取id
     $(function(){
             $('.con_cateid').click(function(){
             val = $(this).attr('value');
@@ -300,7 +302,7 @@
                 console.log(res)
                 if(res.status == 1){
                     for(var i=0;i<res.list.length;i++){
-                        html +='<a href="">'+res["list"][i]["con_cate_name"]+'</a>';
+                        html +='<a href="'+dingwei_url+'?cat='+res["list"][i]["con_pid"]+'&con_cateid='+res["list"][i]["con_cateid"]+'">'+res["list"][i]["con_cate_name"]+'</a>';
                     }
                 }
                 $('.nav_right').empty().append(html);

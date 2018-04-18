@@ -79,7 +79,7 @@ $(document).ready(function(){
    		// console.log(res)
         if(res.status == 1){
             for(var i=0;i<res.list.length;i++){
-                html +='<a href="">'+res["list"][i]["con_cate_name"]+'</a>';
+               html +='<a href="'+dingwei_url+'?cat='+res["list"][i]["con_pid"]+'&con_cateid='+res["list"][i]["con_cateid"]+'">'+res["list"][i]["con_cate_name"]+'</a>';
             }
         }
         $('.nav_right').empty().append(html);
