@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="__INDEX__/dropload/dist/dropload.css">
 <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
 <script src="__INDEX__/js/swiper.min.js"></script>
-<script src="__INDEX__/js/js.js"></script>
 <!-- UC强制全屏 -->
     <meta name="full-screen" content="yes">
     <!-- QQ强制全屏 -->
@@ -20,12 +19,15 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <!--引入上拉加载js  -->
 <script src="__INDEX__/dropload/dist/dropload.min.js"></script> 
+<script src="__INDEX__/js/js.js"></script>
 <script type="text/javascript">
     //配置信息验证接口
     var latitude ;
     var longitude;
     var leixing_id = "{$leixing_id}";
     var con_cateid = "{$con_cateid}";
+    var urls = "{:url('Dingwei/getSecondCate')}";
+
     wx.config({
         debug: false,
         appId: '<?php echo $signPackage["appId"];?>',
@@ -62,7 +64,7 @@
                  longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180
                  
     // 页数
-    var page = 0;
+   /* var page = 0;
     // 每页展示个数
     var size = 4;
 
@@ -117,7 +119,7 @@
             });
         }
     });
-    
+    */
    // /////////////////////////
             },
             cancel: function (res){
@@ -131,64 +133,64 @@
 
 //     //上拉加载数据
    
-//     $(function(){
-//     // 页数
-//     var page = 0;
-//     // 每页展示个数
-//     var size = 4;
+    $(function(){
+    // 页数
+    var page = 0;
+    // 每页展示个数
+    var size = 4;
 
-//     // dropload
-//     $('.content').dropload({
-//         scrollArea : window,
-//         loadDownFn : function(me){
-//             page++;    //第一次page=1
-//             // 拼接HTML
-//              var html = '';
-//             $.ajax({
-//                 type: 'GET',
-//                 url: '{:url("dingwei/getData")}?page='+page+'&size='+size,
-//                 data:{jingdu: 35.3535, weidu: 35.3535, leixing_id: leixing_id,con_cateid:con_cateid},
-//                 dataType: 'json',
-//                 success: function(data){
-//                     if(data.message.length > 0 && page <= data.pages && data.state ==1){
-//                        for(var i = 0;i < data["message"].length;i++){
-//                             html +='<li style="border-bottom: 1px solid #cccccc;">';
-//                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["id"]+'">';
-//                             html +='<img src="'+data["message"][i]["thumb"]+'"/>';
-//                             html +='</a>';
-//                             html +='<span style="float:right;font-size:0.72rem;color:red;">'+data["message"][i]["gold"]+'</span>';
-//                             html += '店名：' +data["message"][i]["names"]+  '<br/>';
-//                             html += '地址：' +data["message"][i]["address"]+ '<br />';
-//                             html += '距离：'+data["message"][i]["distance"]+' km <br />';
-//                             // html +='电话：' +data["message"][i]["tel"]+'<br/>'; 
-//                             html +='<span style="color:#ff5803;">'+data["message"][i]["business_status"]+' <span>';
-//                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["id"]+'" class="merchant-ul-a">>>更多详情</a>';
-//                             html +='</li>';
-//                         }
-//                     // 如果没有数据
-//                     }else{
-//                         // 锁定
-//                         me.lock();
-//                         // 无数据
-//                         me.noData();
-//                     }
-//                     // 为了测试，延迟1秒加载
-//                     setTimeout(function(){
-//                         // 插入数据到页面，放到最后面
-//                         $('.merchant-ul').append(html);
-//                         // 每次数据插入，必须重置
-//                         me.resetload();
-//                     },700);
-//                 },
-//                 error: function(xhr, type){
-//                     alert('Ajax error!');
-//                     // 即使加载出错，也得重置
-//                     me.resetload();
-//                 }
-//             });
-//         }
-//     });
-// });
+    // dropload
+    $('.content').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+            page++;    //第一次page=1
+            // 拼接HTML
+             var html = '';
+            $.ajax({
+                type: 'GET',
+                url: '{:url("dingwei/getData")}?page='+page+'&size='+size,
+                data:{jingdu: 35.3535, weidu: 35.3535, leixing_id: leixing_id,con_cateid:con_cateid},
+                dataType: 'json',
+                success: function(data){
+                    if(data.message.length > 0 && page <= data.pages && data.state ==1){
+                       for(var i = 0;i < data["message"].length;i++){
+                            html +='<li style="border-bottom: 1px solid #cccccc;">';
+                            html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["id"]+'">';
+                            html +='<img src="'+data["message"][i]["thumb"]+'"/>';
+                            html +='</a>';
+                            html +='<span style="float:right;font-size:0.72rem;color:red;">'+data["message"][i]["gold"]+'</span>';
+                            html += '店名：' +data["message"][i]["names"]+  '<br/>';
+                            html += '地址：' +data["message"][i]["address"]+ '<br />';
+                            html += '距离：'+data["message"][i]["distance"]+' km <br />';
+                            // html +='电话：' +data["message"][i]["tel"]+'<br/>'; 
+                            html +='<span style="color:#ff5803;">'+data["message"][i]["business_status"]+' <span>';
+                            html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["id"]+'" class="merchant-ul-a">>>更多详情</a>';
+                            html +='</li>';
+                        }
+                    // 如果没有数据
+                    }else{
+                        // 锁定
+                        me.lock();
+                        // 无数据
+                        me.noData();
+                    }
+                    // 为了测试，延迟1秒加载
+                    setTimeout(function(){
+                        // 插入数据到页面，放到最后面
+                        $('.merchant-ul').append(html);
+                        // 每次数据插入，必须重置
+                        me.resetload();
+                    },700);
+                },
+                error: function(xhr, type){
+                    alert('Ajax error!');
+                    // 即使加载出错，也得重置
+                    me.resetload();
+                }
+            });
+        }
+    });
+});
 
  //上面为本地测试加载数据↑
  
@@ -206,12 +208,22 @@
 
 </script>
 <style type="text/css">
+.container_big{
+    height: 100%;
+    width: 100%;
+}
+.container_1{
+    height: 400px;
+    z-index: 999;
+    width: 100%;
+    display: none;
+    position: absolute;
+}
 .nav_right{
-    width: 60%;
-    z-index: 99;
+    width: 50%;
     float: right;
-    height: 600px;
-    background: rgba(253,250,250,0.5);
+    height: 400px;
+    background: #f7f6f6;
     
 }
 .nav_right a{
@@ -221,6 +233,10 @@
     line-height: 65px;
     font-size: 0.4rem;
     text-align: center;
+    letter-spacing: .1rem;
+}
+.backcolor{
+    background: #f7f6f6;
 }
 </style>
 <div class="top-kong"></div>
@@ -243,45 +259,40 @@
 {/switch}
 </li>
 <li class="supermarket-li1" onclick="dingwei();">附近</li>
-<li class="supermarket-li-1"></li>
-<li class="supermarket-li-2"></li>
-</ul>
-
-<ul class="supermarket-main">
-{volist name="cate_list" id="v"}
-	<li style="width:142%;letter-spacing: 1px;padding:0;"><a class="con_cateid" value="{$v.con_cateid}">{$v.con_cate_name}</a></li>
-{/volist}
-</ul>
-
-<div class="nav_right">
-                   
-               <!--  <div class="sub hide" data-id="2">
-                        <a href="">2</a>
-                </div> -->
-                
- </div>
-
-<ul class="supermarket-main1">
-<!-- <li><a href="">222222222</a></li>
-<li><a href="">222222222</a></li> -->
 </ul>
 </div>
 
+<div class="container_big">
+    <div class="container_1">
+    <ul class="supermarket-main">
+    {volist name="cate_list" id="v"}
+    	<li style="height:66.5px;"><a class="con_cateid" value="{$v.con_cateid}">{$v.con_cate_name}</a></li>
+    {/volist}
+    </ul>
 
+    <div class="nav_right"></div>
+    </div>
 
-<div class="content">
-    <ul class="merchant-ul"></ul>
+    <!-- <ul class="supermarket-main1">
+    <li><a href="">222222222</a></li>
+    <li><a href="">222222222</a></li>
+    </ul> -->
+
+    <div class="content">
+        <ul class="merchant-ul"></ul>
+    </div>
 </div>
 
 </body>
 <script>
     $(function(){
-        $('.con_cateid').click(function(){
-            $('.nav_right').show();
-            var html ='';
+            $('.con_cateid').click(function(){
             val = $(this).attr('value');
+            $('.con_cateid').removeClass('backcolor');
+            $(this).addClass('backcolor');
+            var html ='';
             var data = {val:val};
-            var url = "{:url('Dingwei/getSecondCate')}";
+            var url = urls;
             $.post(url,data,function(res){
                 console.log(res)
                 if(res.status == 1){
@@ -294,4 +305,5 @@
         })
     })
 </script>
+
 </html>

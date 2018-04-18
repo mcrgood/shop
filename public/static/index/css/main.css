@@ -110,7 +110,7 @@
 
 /**********************附近商家******************/
 
-.supermarket-title{margin:.38rem 0; border:1px solid #dcdcdc; border-right:none;overflow:hidden}
+.supermarket-title{margin:.38rem 0; border:1px solid #dcdcdc; border-right:none;overflow:hidden;margin-bottom: 0px;}
 
 .supermarket-title li{ width:49.9%; float:left; border-right:1px solid #dcdcdc; text-align:center; font-size:.38rem; line-height:1.13rem; height:1.13rem; overflow:hidden; background:url(../images/xiala1.png) no-repeat 70% .62rem; background-size:.15rem .15rem;}
 
@@ -118,9 +118,9 @@
 
 .supermarket-li-2{position:absolute; left:50%; top:0; opacity:0;display:none;}
 
-.supermarket-main,.supermarket-main1{ width:18%; background:#fff; position: absolute; left:18%; top:103%; overflow:hidden; display:none; z-index:99;}
+.supermarket-main,.supermarket-main1{ width:50%; background:#fff;float: left; left:18%; top:103%; overflow:hidden; display:none; z-index:99;}
 
-.supermarket-main li,.supermarket-main1 li{ width:145%; letter-spacing: 1px;height:1rem; line-height:1.01rem; font-size:.45rem;padding:0 .38rem; border-bottom:2px solid #dcdcdc;margin-left: -21%;}
+.supermarket-main li,.supermarket-main1 li{ width:100%; letter-spacing: .1rem;line-height:66.5px; font-size:.45rem;}
 
 .supermarket-main li a,.supermarket-main1 li a{ display:block; text-align: center;}
 
@@ -136,7 +136,7 @@
 
 
 
-.merchant-ul{ width:100%; overflow:hidden; margin-top:.75rem;}
+.merchant-ul{ width:100%; overflow:hidden;}
 
 .merchant-ul li{ padding-left:4.3rem; padding-bottom:.25rem; margin-bottom:.25rem; position:relative;  overflow:hidden; font-size:.38rem; color:#646464; line-height:.72rem;}
 

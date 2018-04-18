@@ -66,7 +66,25 @@ function ling(num,time_start,time_end,condition,jine){
 
 //下拉
 $(document).ready(function(){
-   $(".supermarket-li").click(function(){ 
+   $(".supermarket-li").click(function(){
+   	 $('.con_cateid').each(function(i,v){
+   	 	if($(v).attr('value') == leixing_id){
+   	 		$(v).addClass('backcolor');
+   	 	}
+   	 })
+   	var html ='';
+    var data = {val:leixing_id};
+    var url = urls;
+   	$.post(url,data,function(res){
+   		// console.log(res)
+        if(res.status == 1){
+            for(var i=0;i<res.list.length;i++){
+                html +='<a href="">'+res["list"][i]["con_cate_name"]+'</a>';
+            }
+        }
+        $('.nav_right').empty().append(html);
+    },'json')
+   	$('.container_1').toggle();
     $(".supermarket-main").css("display","block");  
     $(".supermarket-li-1").css("display","block");  
     $(".supermarket-main1").css("display","none");
@@ -78,7 +96,6 @@ $(document).ready(function(){
    $(".supermarket-li-1").click(function(){ 
     $(".supermarket-main").css("display","none");  
     $(".supermarket-li-1").css("display","none");
-      $('.nav_right').hide();
   });      
 });
 

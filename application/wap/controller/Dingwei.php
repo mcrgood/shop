@@ -176,4 +176,5 @@ class Dingwei extends BaseController{
                 return $info;
             }
     }
+   
 }
