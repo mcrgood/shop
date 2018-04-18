@@ -415,7 +415,7 @@ class Myhome extends BaseController
 	            $page_index = request()->post("page_index", 1);
 	            $page_size = request()->post('page_size', PAGESIZE);
 	            $search_text = request()->post('search_text', '');
-	            $condition['type|name|s.names'] = ['LIKE',"%".$search_text."%"];
+	            $condition['leixing|names|sid'] = ['LIKE',"%".$search_text."%"];
 	            $member = new MyhomeService();
 	            $list = $member->getYuDingList($page_index, $page_size, $condition, $order = '');
 	            return $list;
@@ -429,11 +429,11 @@ class Myhome extends BaseController
 			$id = input('post.id');
 			//dump($id);die;
 			$where['id'] = array('in', $id);
-			$r = db("ns_goods_reserve")->where($where)->delete();
+			$r = db("ns_goods_yuding")->where($where)->delete();
 			if (!$r) {
 				return false;
 			}else {
-		                return $r;
+		        return $r;
 			}
 		}
 	}
@@ -444,9 +444,9 @@ class Myhome extends BaseController
 		if($id==0){
 			$this->error("没有获取到用户信息");
 		}else{
-			$row = db("ns_goods_reserve")
+			$row = db("ns_goods_yuding")
 			->alias('g')
-			->join('ns_shop_message s','g.shop_id=s.userid','LEFT')
+			->join('ns_shop_message s','g.shop_id=s.id','LEFT')
 			->where('g.id',$id)
 			->find();
 			$this->assign('row',$row);

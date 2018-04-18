@@ -22,7 +22,7 @@
 		</th>
 		<div>
 			<th width="20%">
-				<input type="text" name="keyword" id ='search_text' placeholder="类型 / 店名 / 姓名" class="input-common"/>
+				<input type="text" name="keyword" id ='search_text' placeholder="类型 / 店名 / 姓名 / 订单号" class="input-common"/>
 				<input type="button" onclick="searchData()" value="搜索" class="btn-common"/>
 			</th>
 		</div>
@@ -39,9 +39,10 @@
 			</th>
 			<th>类型</th>
 			<th>店名</th>
-			<th>姓名</th>
+			<th>订单号</th>
+			<th>预订人姓名</th>
 			<th>预订时间</th>
-			<th>人数</th>
+			<th>预订人数</th>
 			<th>预订电话</th>
 			<th>操作</th>
 		</tr>
@@ -66,8 +67,21 @@
 				for (var i = 0; i < data["data"].length; i++) {
 					html += '<tr align="center">';
 					html += '<td><input name="id" type="checkbox" value="'+ data["data"][i]["id"]+'" ></td>';
-					html += '<td>'+ data["data"][i]["type"] +'</td>'
+					if(data["data"][i]["leixing"]==1){
+						html += '<td>餐饮</td>';
+					}else if(data["data"][i]["leixing"]==2){
+						html += '<td>酒店</td>';
+					}else if(data["data"][i]["leixing"]==3){
+						html += '<td>养生</td>';
+					}else if(data["data"][i]["leixing"]==4){
+						html += '<td>KTV</td>';
+					}else if(data["data"][i]["leixing"]==5){
+						html += '<td>汽车</td>';
+					}else if(data["data"][i]["leixing"]==6){
+						html += '<td>其他</td>';
+					}
 					html += '<td>'+data["data"][i]["names"]+'</td>';
+					html += '<td>'+data["data"][i]["sid"]+'</td>';
 					html += '<td>'+ data["data"][i]["name"] +'</td>';
 					html += '<td>'+ data["data"][i]["time"] +'</td>';
 					html += '<td>'+ data["data"][i]["num"] +'</td>';

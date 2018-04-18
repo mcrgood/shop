@@ -21,7 +21,7 @@ use data\model\BaseModel as BaseModel;
  *
  */
 class NsMyhomeModel extends BaseModel {
-    protected $table = 'ns_goods_reserve';
+    protected $table = 'ns_goods_yuding';
     protected $rule = [
         'id'  =>  '',
     ];
@@ -44,8 +44,8 @@ class NsMyhomeModel extends BaseModel {
     {
         //设置查询视图
         $viewObj = $this->alias('a')
-        ->join('ns_shop_message s','a.shop_id = s.userid','left')
-        ->field('a.*,s.names');
+        ->join('ns_shop_message s','a.shop_id = s.id','left')
+        ->field('a.*,s.names,s.leixing');
         $list = $this->viewPageQuery($viewObj, $page_index, $page_size, $condition, $order);
         return $list;
     }
@@ -58,8 +58,8 @@ class NsMyhomeModel extends BaseModel {
     public function getMyhomeCount($condition)
     {
         $viewObj = $this->alias('a')
-        ->join('ns_shop_message s','a.shop_id = s.userid','left')
-        ->field('a.*,s.names');
+        ->join('ns_shop_message s','a.shop_id = s.id','left')
+        ->field('a.*,s.names,s.leixing');
         $count = $this->viewCount($viewObj,$condition);
         return $count;
     }
