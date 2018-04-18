@@ -40,30 +40,33 @@ class HandleOrder{
             ->where('p.out_trade_no',$out_trade_no)
             ->value('uid');
             $referee_money = $pay_money*0.25*0.15*$ratio*0.01; //计算出给推荐人的佣金
+            $referee_money = sprintf("%.2f",$referee_money) // 佣金只保留小数点后2位
             if($sendGold){ //赠送旺旺币给买单消费的会员账号下   
                 $res = db('ns_member_account')->where('uid',$uid)->setInc('point',$sendGold);
                 if($res){ //添加旺旺币赠送记录
                     $this->bill_detail_record($uid, $sendGold, '线下店铺消费赠送积分', 10);
                 }
             }
-            $user_referee_phone = db('sys_user')->where('uid',$uid)->value('referee_phone'); //查出会员的推荐人手机号
-            if($user_referee_phone){
-                $user_referee_uid = db('sys_user')->where('user_name',$user_referee_phone)->value('uid'); 
-                $result = db('ns_member_account')->where('uid',$user_referee_uid)->setInc('balance',$referee_money); //赠送佣金给会员的推荐人
-                if($result){
-                    $this->bill_detail_record($user_referee_uid, $referee_money, '线下店铺消费返佣金', 11, 0, 2);
+            if($referee_money >=0.01){
+                $user_referee_phone = db('sys_user')->where('uid',$uid)->value('referee_phone'); //查出会员的推荐人手机号
+                if($user_referee_phone){
+                    $user_referee_uid = db('sys_user')->where('user_name',$user_referee_phone)->value('uid'); 
+                    $result = db('ns_member_account')->where('uid',$user_referee_uid)->setInc('balance',$referee_money); //赠送佣金给会员的推荐人
+                    if($result){
+                        $this->bill_detail_record($user_referee_uid, $referee_money, '线下店铺消费返佣金', 11, 0, 2);
+                    }
+                }
+                $iphone = db('ns_goods_login')->where('id',$business_id)->value('iphone'); //查到商家的手机号
+                $business_referee_phone = db('sys_user')->where('user_name',$iphone)->value('referee_phone'); //查出商家的推荐人手机号
+                if($business_referee_phone){
+                    $business_referee_uid = db('sys_user')->where('user_name',$business_referee_phone)->value('uid'); 
+                    $result = db('ns_member_account')->where('uid',$business_referee_uid)->setInc('balance',$referee_money); //赠送佣金给商家的推荐人
+                    if($result){
+                        $this->bill_detail_record($business_referee_uid, $referee_money, '线下店铺消费赠返佣金', 11, 0, 2);
+                    }
                 }
             }
-            $iphone = db('ns_goods_login')->where('id',$business_id)->value('iphone'); //查到商家的手机号
-            $business_referee_phone = db('sys_user')->where('user_name',$iphone)->value('referee_phone'); //查出商家的推荐人手机号
-            if($business_referee_phone){
-                $business_referee_uid = db('sys_user')->where('user_name',$business_referee_phone)->value('uid'); 
-                $result = db('ns_member_account')->where('uid',$business_referee_uid)->setInc('balance',$referee_money); //赠送佣金给商家的推荐人
-                if($result){
-                    $this->bill_detail_record($business_referee_uid, $referee_money, '线下店铺消费赠返佣金', 11, 0, 2);
-                }
-            }
-
+            
         }else{ // 非扫码付款
             //ns_order表中有这条订单号码，就是商城购物
             $orderRow = db('ns_order')->where('out_trade_no',$out_trade_no)->find();
