@@ -136,7 +136,7 @@
 
 
 
-.merchant-ul{ width:100%; overflow:hidden;}
+.merchant-ul{ width:100%; overflow:hidden;margin-top: 20px;}
 
 .merchant-ul li{ padding-left:4.3rem; padding-bottom:.25rem; margin-bottom:.25rem; position:relative;  overflow:hidden; font-size:.38rem; color:#646464; line-height:.72rem;}
 
