@@ -128,11 +128,11 @@ class EasyPayment
  
     }
     //4.5 转账接口
-    public function transfer($AcctNo, $customerCode, $transferAmount){
+    public function transfer($customerCode, $transferAmount){
          //转账的账户根据付款方式的不同传入不同的账户交易号
          $reqIp = request()->ip();   //获取客户端IP
          $reqDate = date("Y-m-d H:i:s",time());
-         $body="<body><merBillNo></merBillNo><transferType>2</transferType><merAcctNo>".$AcctNo."</merAcctNo><customerCode>".$customerCode."</customerCode><transferAmount>".$transferAmount."</transferAmount><collectionItemName>商户营业额</collectionItemName><remark></remark></body>";
+         $body="<body><merBillNo></merBillNo><transferType>2</transferType><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>".$customerCode."</customerCode><transferAmount>".$transferAmount."</transferAmount><collectionItemName>商户营业额</collectionItemName><remark></remark></body>";
          $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
          $transferReqXml="<?xml version='1.0' encoding='utf-8'?><transferReqXml>".$head.$body."</transferReqXml>";
          Log::DEBUG("转账接口请求明文:" . $transferReqXml);  //未加密的日志
@@ -178,15 +178,11 @@ class EasyPayment
     }
 
     //4.8 订单查询接口
-    public function queryOrdersList($customerCode, $ordersType, $startTime, $endTime, $pay_type){
-         if($pay_type == 5){ //微信支付
-            $AcctNo = '2057540029';
-         }elseif($pay_type == 1){ //快捷支付
-            $AcctNo = '2057540011';
-         }   
+    public function queryOrdersList($customerCode, $ordersType, $startTime, $endTime){
+        
          $reqIp = request()->ip();   //获取客户端IP
          $reqDate = date("Y-m-d H:i:s",time());
-         $body="<body><merAcctNo>".$AcctNo."</merAcctNo><customerCode>".$customerCode."</customerCode><ordersType>".$ordersType."</ordersType><merBillNo></merBillNo><ipsBillNo></ipsBillNo><startTime>".$startTime."</startTime><endTime>".$endTime."</endTime><currrentPage></currrentPage><pageSize></pageSize></body>";
+         $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>".$customerCode."</customerCode><ordersType>".$ordersType."</ordersType><merBillNo></merBillNo><ipsBillNo></ipsBillNo><startTime>".$startTime."</startTime><endTime>".$endTime."</endTime><currrentPage></currrentPage><pageSize></pageSize></body>";
          $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
          $queryOrderReqXml="<?xml version='1.0' encoding='utf-8'?><queryOrderReqXml>".$head.$body."</queryOrderReqXml>";
          Log::DEBUG("订单查询接口明文:" . $queryOrderReqXml);  //未加密的日志

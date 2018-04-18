@@ -290,12 +290,11 @@ class Myhome extends Controller
     //用户查询账单接口API
     public function queryOrdersList_api(){
         $customerCode = input('post.customerCode');
-        $pay_type = input('post.pay_type');
         $ordersType = input('post.ordersType');
         $startTime = input('post.startTime');
         $endTime = input('post.endTime');
         $payment = new EasyPayment();
-        $result = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime, $pay_type);
+        $result = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime);
         if($result['rspCode'] == 'M000000'){ //请求接口成功
             $resXml = $payment->decrypt($result['p3DesXmlPara']);
             $resArr = xmlToArray($resXml);
@@ -611,13 +610,15 @@ class Myhome extends Controller
             }
             return $info;
         }
+        $map['m.userid'] = $this->business_id;
+        $map['p.pay_status'] = 1;
         db("ns_goods_yuding")
         ->alias('g')
         ->join('ns_shop_message m','m.id=g.shop_id','left')
-        ->where("m.userid",$this->business_id)
-        ->update(["status"=>1]);
-        $map['m.userid'] = $this->business_id;
-        $map['p.pay_status'] = 1;
+        ->join('ns_order_payment p','p.out_trade_no = g.sid','left')
+        ->where($map)
+        ->update(["status"=>1]); //把消息状态修改成已读
+
         $list = db('ns_goods_yuding')
         ->field('a.*,m.names,w.msg_status')
         ->alias('a')

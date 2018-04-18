@@ -23,19 +23,13 @@ class HandleOrder{
         $payInfo = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find();
         $business_id = $payInfo['business_id']; //商家ID
         $pay_money = $payInfo['pay_money']; //查询出付款的金额
-        $pay_type = $payInfo['pay_type']; //查出付款方式
         if($business_id != 0 && $pay_money >= 0.1){  //扫码付款
             $customerCode = db('ns_business_open')->where('userid',$business_id)->value('customerCode'); //商家的客户号
             $ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio'); //查出该商家设置分账金额比例
             $money = (100-$ratio)*0.01*$pay_money;  //应该转给商家的金额
             db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['business_money' =>$money]);//把这次付款商家应得的金额存入表中
-            if($pay_type == 1){ //快捷支付
-                $AcctNo = '2057540011';
-            }elseif($pay_type == 5){ //微信支付
-                $AcctNo = '2057540029';
-            }
             $payment = new EasyPayment();
-            $resArray = $payment->transfer($AcctNo, $customerCode, $money); //向商家转账相应的金额
+            $resArray = $payment->transfer($customerCode, $money); //向商家转账相应的金额
             $gold = db('ns_wwb')->where('userid',$business_id)->value('gold'); //查出该商家设置赠送旺旺币的比例
             $sendGold = round($gold*0.01*$pay_money);  //应该赠送给会员的旺旺币数量
             
