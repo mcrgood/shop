@@ -11,36 +11,7 @@
 <script src="__TEMP__/{$style}/public/js/jquery-1.9.1.min.js"></script>
 <script src="__STATIC__/layui/layui.all.js"></script>
 <script>
-// $(function(){
-// 	$('.submit_st').click(function(){
-// 		var username = $('.username').val();
-// 		var idCard = $('.idCard').val();
-// 		var phone = $('.phone').val();
-// 		if(!username){
-// 			layer.msg('请输入姓名',{time:1200});return false;
-// 		}
-// 		if(!idCard){
-// 			layer.msg('请输入身份证号',{time:1200});return false;
-// 		}
-// 		if(!phone){
-// 			layer.msg('请输入手机号',{time:1200});return false;
-// 		}
-// 		if(!isNaN(username)){
-// 			layer.msg('请输入正确的姓名',{time:1200});return false;
-// 		}
-// 		var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
-// 		var cards = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;
-// 		if(!card.test(idCard) && !cards.test(idCard)){
-// 			layer.msg('请输入正确的身份证号',{time:1200});return false;
-// 		}
-// 		var regs = /^1[3456789]{1}\d{9}$/;
-// 		if(!regs.test(phone)){
-// 			layer.msg('请输入正确的手机号',{time:1200});return false;
-// 		}
-		
 
-// 	})
-// })
 </script>
 <style>
 *{margin: 0;padding: 0;}
@@ -58,14 +29,14 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 	width: 90%;
 	margin: auto;
 	box-shadow: 3px 2px 2px #888888;
-	height: 310px;
+	height: 340px;
 	border: 1px solid #dddddd;
 	text-align: center;
 	font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
 }
 .content form{
 	width: 100%;
-	height: 240px;
+	height: 280px;
 	border-bottom:1px solid #e8e5e5;
 	background: #f5f7f9;
 	text-align: center;
@@ -106,6 +77,12 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 	border-radius: 5px;
 	margin-top: 20px;
 }
+.payT{
+	width: 58%;
+	padding: 10px 0;
+	margin-left: 4%;
+	font-size: 1rem;
+}
 </style>
 </head>
 <body>
@@ -121,6 +98,12 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
   					<option value="" selected>全部</option>
   					<option value="3">收款</option>
   					<option value="4">提现</option>
+  				</select>
+  			</div>
+  			<div class="payT">交易方式:
+  				<select name="pay_type" class="pay_type">
+  					<option value="5">微信支付</option>
+  					<option value="1">快捷支付</option>
   				</select>
   			</div>
   			<span style="color:red;font-size:14px;line-height:17px;">注：起始日期不填，默认为 30 天前的日期。结束日期不填，默认为当天日期，日期间距须小于一个月</span>

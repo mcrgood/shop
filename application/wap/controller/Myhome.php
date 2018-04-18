@@ -291,11 +291,12 @@ class Myhome extends Controller
     //用户查询账单接口API
     public function queryOrdersList_api(){
         $customerCode = input('post.customerCode');
+        $pay_type = input('post.pay_type');
         $ordersType = input('post.ordersType');
         $startTime = input('post.startTime');
         $endTime = input('post.endTime');
         $payment = new EasyPayment();
-        $result = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime);
+        $result = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime, $pay_type);
         if($result['rspCode'] == 'M000000'){ //请求接口成功
             $resXml = $payment->decrypt($result['p3DesXmlPara']);
             $resArr = xmlToArray($resXml);
@@ -480,6 +481,7 @@ class Myhome extends Controller
         $condition['pay_status'] = 1; //pay_status=1 是已付款状态
         $condition['type'] = 5; //type=5是扫码付款状态
         $condition['business_id'] = $business_id;
+        $condition['business_money'] = ['>',0];
         $today_start_time = strtotime(date('Y-m-d')); //今天开始的时间戳
         $today_end_time = strtotime(date('Y-m-d'))+86400; //今天结束的时间戳
         $condition['create_time'] = ['between',[$today_start_time,$today_end_time]];
