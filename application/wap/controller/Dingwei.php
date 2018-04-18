@@ -103,13 +103,16 @@ class Dingwei extends BaseController{
     public function catdetail(){
         ob_clean();
 		$id = input('param.id');
+        $cateids = db("ns_shop_menu")->where("userid",$id)->column("cateid");
+        $status = $cateids ? '1': '0';
 		$row = db("ns_shop_message")
         ->alias('s')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
         ->where('s.id',$id)
         ->field('s.*,w.business_status')
         ->find();
-		$this->assign('row',$row);
+        $this->assign('row',$row);
+		$this->assign('status',$status);
         //轮播图查询
 		return view($this->style . 'Dingwei/catdetail');
 	}

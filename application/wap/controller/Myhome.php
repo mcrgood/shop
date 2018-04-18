@@ -1127,24 +1127,11 @@ class Myhome extends Controller
         $this->assign('userid', $userid);
         return view($this->style . 'Myhome/book');
     }
-    // 以前
+
 
     //现在
     public function yuding()
     {
-        //查询左侧菜单栏
-        $ids = input('param.userid',0); //商户ID
-        $row = db("ns_shop_message")->where("id",$ids)->value("names");
-        $this->assign("row",$row);
-        if($ids == 0){
-            $this->error('页面过期，请重新提交',__URL(__URL__ . '/wap/dingwei/index/cat/1'));
-        }
-        $userid = db("ns_shop_menu")->where("userid",$ids)->column("cateid");//得到关联分类id
-        $where['listid'] = ['in',$userid];
-        $list = db("ns_shop_usercate")->where($where)->select();
-        $this->assign("ids",$ids);
-        $this->assign("list",$list);
-
         if (request()->isAjax()) {
             $name = request()->post('username', '');
             $iphone = request()->post('phone', '');
@@ -1178,8 +1165,17 @@ class Myhome extends Controller
                 return $result = ['error' => 1, 'message' => "提交失败"];
 
         }
-        $userid = request()->get('userid', 0);
-        $this->assign('userid', $userid);
+        //查询左侧菜单栏
+        $ids = input('param.userid',0); //商户ID
+        if($ids == 0){
+            $this->error('页面过期，请重新提交',__URL(__URL__ . '/wap/dingwei/index/cat/1'));
+        }
+        $names = db("ns_shop_message")->where("id",$ids)->value("names"); //查询店铺名称
+        $cateid = db("ns_shop_menu")->where("userid",$ids)->column("cateid");//得到关联分类id
+        $where['listid'] = ['in',$cateid];
+        $list = db("ns_shop_usercate")->where($where)->select();
+        $this->assign("list",$list);
+        $this->assign("names",$names);
         return view($this->style . 'Myhome/yuding');
     }
 

@@ -33,10 +33,7 @@ class WeiShangPay extends BaseController
 		if($out_trade_no == 0){
 			$this->error('订单参数错误，请重新提交！');
 		}
-		if(session('out_trade_no')){
-			session('out_trade_no',null);
-		}
-		session('out_trade_no',$out_trade_no); //把当前订单号存在session中
+		
 		$row = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find(); //获取付款方式
 		$pay_money = $row['pay_money'];
 		if($row['type'] == 1){ //线上商城订单
@@ -60,7 +57,7 @@ class WeiShangPay extends BaseController
 		//商户账户号
 		$Account = $ipspay_config['Account'];
 		//商户订单号
-		$MerBillno = 'Mer'.date('YmdHis');
+		$MerBillno = $out_trade_no;
 		//订单金额金额
 		$OrdAmt = $pay_money;
 		//订单时间
@@ -134,14 +131,13 @@ class WeiShangPay extends BaseController
 		    $status = $xmlRes['WxPayRsp']['body']['Status'];
 		    if($status == "Y")
 		    {
-		    	$out_trade_no = session('out_trade_no');
+		    	$out_trade_no = $xmlRes['WxPayRsp']['body']['MerBillno'];
 		    	$data['pay_status'] = 1; //pay_status=1为已付款
 		        $data['pay_time'] = time();
 		        $data['pay_type'] = 5; //pay_type=5为微信支付
 		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
 		    	$HandleOrder = new HandleOrder();
 		        $HandleOrder->handle($out_trade_no);
-       	 		session('out_trade_no',null); //订单处理完成后清空session里面的订单号
 		        $message = "支付成功";
 		        
 		    }elseif($status == "N")
