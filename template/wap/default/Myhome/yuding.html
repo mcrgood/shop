@@ -157,9 +157,9 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         <div class="bigest">
             <div class="seller"><span>{$names}</span></div>
             <form id="form" class="common">
-                <span>预定姓名:  <input type="text" name="username" id="user" placeholder="请输入姓名"/></span>
+                <span>预定姓名:  <input type="text" name="username" id="user" placeholder="请输入姓名" /></span>
                 <span>预定人数:  <input type="number" name="renshu" id="num" value="" placeholder="请输入预定人数"/></span>
-                <span>预定电话:  <input type="tel" name="dianhua" id="tel" placeholder="请输入手机号" /></span>
+                <span>预定电话:  <input type="tel" name="dianhua" id="tel" placeholder="请输入手机号" value="{$row.user_name}" /></span>
             <div class="time">
                 <span>预定时间: <input type="test1" id="test5" placeholder="请选择预定时间" /></span>           
             </div>
@@ -216,6 +216,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 <script>
     //ajax提交结算信息
     $("#btnselect").click(function(){
+        var uid = "{$row.uid}";
         var userid = "{$Request.param.userid}";
         var user = $("#user").val();//预订人姓名
         var num = $("#num").val();//预定人数
@@ -234,7 +235,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
             nums_arr[i] =nums;
            
         })
-        var data = {"name_arr":name_arr,"price_arr":price_arr,"nums_arr":nums_arr,"userid":userid,"user":user,"num":num,"tel":tel,"test5":test5,"message":message};
+        var data = {"name_arr":name_arr,"price_arr":price_arr,"nums_arr":nums_arr,"userid":userid,"user":user,"num":num,"tel":tel,"test5":test5,"message":message,"uid":uid};
         var url = "{:url('Myhome/order')}";
         $.post(url,data,function(res){
             if(res.status==1){

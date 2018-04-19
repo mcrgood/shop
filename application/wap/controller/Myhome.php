@@ -1176,6 +1176,14 @@ class Myhome extends Controller
                 return $result = ['error' => 1, 'message' => "提交失败"];
 
         }
+        //判断是否登录
+        if($this->uid){
+            $uid = $this->uid;
+            $row = db("sys_user")->where("uid",$uid)->find();
+            $this->assign('row',$row);
+        }else{
+            $this->error('请先登录会员',__URL(__URL__ . '/wap/login/index'));  
+        }
         //查询左侧菜单栏
         $ids = input('param.userid',0); //商户ID
         if($ids == 0){
@@ -1244,6 +1252,7 @@ class Myhome extends Controller
                 $data['time'] = $row['test5'];//预定时间
                 $data['add_time'] = $add_time;//预定时的时间
                 $data['message'] = $row['message'];
+                $data['uid'] = $row['uid'];
                 //获取商品图片
                 // dump($name_arr);die;
                 // $name = explode("|", $name_arr);
