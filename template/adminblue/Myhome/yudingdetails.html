@@ -3,7 +3,7 @@
 {/block}
 {block name="main"}
 <style>
-	.clas{margin-bottom: }
+	.clas{margin-bottom:}
 </style>
 <form action="" >
 <div class="set-style" style="margin-bottom: 150px;">
@@ -29,12 +29,18 @@
 		<dt><span class="required"></span>订单详情：</dt>
 	</dl>
 	<dl>
-		<dt><span class="required"></span>预定类型：</dt>
-		<dd>
-			<p><input class="input-common" id="user_password" type="text" name="address" value="{$row.goodsname}" disabled="disabled"></p>
-		</dd>
+		<dt><span class="required"></span>预定类型</dt>
+		<dt><span class="required"></span>预定数量</dt>
+		<dt><span class="required"></span>预订价格(总价)</dt>
 	</dl>
+	{volist name="list" id="v"}
 	<dl>
+		<dt style="margin-left:-10px;"><span class="required"></span>{$v[0]}</dt>
+		<dt style="margin-left:-10px;"><span class="required"></span>{$v[1]}</dt>
+		<dt style="margin-left:-10px;"><span class="required"></span>{$v[2]}</dt>
+	</dl>
+	{/volist}
+	<!-- <dl>
 		<dt><span class="required"></span>预定数量：</dt>
 		<dd>
 			<p><input class="input-common" id="user_password" type="text" name="address" value="{$row.goodsnum}" disabled="disabled"></p>
@@ -45,7 +51,7 @@
 		<dd>
 			<p><input class="input-common" id="user_password" type="text" name="num" value="{$row.goodsprice}" disabled="disabled"></p>
 		</dd>
-	</dl>
+	</dl> -->
 	<dl>
 		<dt><span class="required"></span>预定时间：</dt>
 		<dd>

@@ -1282,7 +1282,6 @@ class Myhome extends Controller
                     }
                 }
             }
-            // dump($list);die;
             
             //获取商品图片
             $shop_ids = db("ns_goods_yuding")->where("sid",$sid)->value("shop_id");//获取店铺ID

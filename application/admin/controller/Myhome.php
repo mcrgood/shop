@@ -450,8 +450,19 @@ class Myhome extends BaseController
 			->where('g.id',$id)
 			->find();
 			$row['leixing'] = db('ns_consumption')->where('con_cateid',$row['leixing'])->value('con_cate_name');
+			$goods[0] = explode('|', $row['goodsname']);
+			$goods[1] = explode('|', $row['goodsnum']);
+			$goods[2] = explode('|', $row['goodsprice']);
+			$list = [];
+			foreach ($goods[0] as $k => $v) {
+				$list[$k] = array_column($goods,$k);
+			}
+			$this->assign('list',$list);
 			$this->assign('row',$row);
+			//预定详情菜单
+
 		}
+
 		return view($this->style."Myhome/yudingdetails");
 	}
 
