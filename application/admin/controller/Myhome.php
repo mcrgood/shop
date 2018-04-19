@@ -494,7 +494,88 @@ class Myhome extends BaseController
                 die;
         }
 	}
+	//选座系统
+	public function seat(){
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $condition['seatname'] = ['LIKE',"%".$search_text."%"];
+            $member = new MyhomeService();
+            $list = $member->getSeat($page_index, $page_size, $condition, $order = '');
+            return $list;
+	    }
+		return view($this->style . "Myhome/seat");
+	}
+	public function seatadd(){
+		if(request()->isAjax()){
+			$row = input('param.');
+			if(!$row){
+				$this->error("没有获取到用户信息");
+			}else{
+				$data['seatname'] = $row['seatname'];
+				$data['seatimg'] = str_replace("\\","/",$row['seatimg']);
+				$data['seatnum'] = $row['seatnum'];
+				$data['shopid'] = $row['shopid'];
+				if(!$row['seatname']||!$row['seatnum']||!$row['seatimg']){
+					$res = [
+						'status' => 0,
+						'msg' =>'请填写完整信息'
+					];
+				}else{
+					$have = db("ns_shop_seat")->where("seatname",$row['seatname'])->find();
+					if($have){
+						$res = [
+							'status' => 0,
+							'msg' =>'已存在,不能重复添加'
+						];
+					}else{
+						$id = db("ns_shop_seat")->insertGetId($data);
+						if($id){
+							$res = [
+								'status' => 1,
+								'msg' =>'新增成功'
+							];
+						}else{
+							$res = [
+								'status' => 0,
+								'msg' =>'新增失败'
+							];
+						}
+					}
+				}
+			}
+			return $res;
+		}
+		return view($this->style . "Myhome/seatadd");
+	}
 
+	//删除选座
+	public function seatDel(){
+		if(request()->isAjax()){
+			$id = input("post.seatid");
+			if($id){
+				$row = db("ns_shop_seat")->delete($id);
+				if($row){
+					$info = [
+						'status' => 1,
+						'msg' =>"删除成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"删除失败"
+					];
+				}
+			}else{
+				$info = [
+					'status' => 0,
+					'msg' =>"未获取删除信息"
+				];
+			}
+		}
+		return $info;
+	}
 	//菜单系统 张行飞
 	public function menu(){
 		if (request()->isAjax()) {

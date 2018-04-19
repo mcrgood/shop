@@ -29,6 +29,7 @@ use data\model\NsWwbListModel as NsWwbListModel;
 use data\model\NsGoodsCateList as NsGoodsCateList;
 use data\model\NsGoodsCateListdetail as NsGoodsCateListdetail;
 use data\model\NsMenulist as NsMenulist;
+use data\model\NsseatModel as NsseatModel;
 
 class MyhomeService extends BaseService{
 
@@ -47,6 +48,18 @@ class MyhomeService extends BaseService{
          foreach ($result['data'] as $k => $v) {
             $result['data'][$k]['leixing'] = db('ns_consumption')->where('con_cateid',$v['leixing'])->value('con_cate_name');
         }
+        return $result;
+    }
+    /**
+     * 选座系统
+     */
+    public function getSeat($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsseatModel();
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        //  foreach ($result['data'] as $k => $v) {
+        //     $result['data'][$k]['leixing'] = db('ns_consumption')->where('con_cateid',$v['leixing'])->value('con_cate_name');
+        // }
         return $result;
     }
     /**
