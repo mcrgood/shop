@@ -87,7 +87,7 @@ class Dingwei extends BaseController{
         $calculatedDistance = $earthRadius * $stepTwo;
         return round($calculatedDistance);
     }
-    function get_distance($from,$to,$km=true,$decimal=2){
+    public function get_distance($from,$to,$km=true,$decimal=2){
         sort($from);
         sort($to);
         $EARTH_RADIUS = 6370.996; // 地球半径系数
