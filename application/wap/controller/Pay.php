@@ -95,6 +95,8 @@ class Pay extends Controller
         //付款来源假如为线上充值，就无法使用余额支付
         if($type == 'recharge'){
             $type = 1;
+        }elseif($type == 'yuding'){
+            $type = 2;
         }else{
             $type = 0;
         }

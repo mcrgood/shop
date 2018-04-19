@@ -674,7 +674,6 @@ class Myhome extends Controller
             $address = input('post.address');
             $tel = input('post.tel');
             $business_scope = input('post.business_scope');
-            // dump($business_scope);die;
             $thumb = input('post.thumb');
             $thumb_inimg_one = input('post.thumb_inimg_one');//门店照片，用于商家页面轮播图
             $thumb_inimg_two = input('post.thumb_inimg_two');//门店照片，用于商家页面轮播图
@@ -690,8 +689,8 @@ class Myhome extends Controller
             $bank_phone = input('post.bank_phone');
             $thumb_yhk1 = input('post.thumb_yhk1');
             $thumb_yhk2 = input('post.thumb_yhk2');
-            $jingdu = input('jingdu');
-            $weidu = input('weidu');
+            $jingdu = input('post.jingdu');
+            $weidu = input('post.weidu');
             $business_hours = input('post.business_hours');
             $content = input('post.content');
             $data['userid'] = $business_id;
@@ -912,8 +911,8 @@ class Myhome extends Controller
             $bank_phone = input('post.bank_phone');
             $thumb_yhk1 = input('post.thumb_yhk1');
             $thumb_yhk2 = input('post.thumb_yhk2');
-            $jingdu = input('jingdu');
-            $weidu = input('weidu');
+            $jingdu = input('post.jingdu');
+            $weidu = input('post.weidu');
             $business_hours = input('post.business_hours');
             $content = input('post.content');
             $data['leixing'] = $leixing;
