@@ -35,7 +35,6 @@ class WeiShangPay extends BaseController
 		}
 		
 		$row = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find(); //获取付款方式
-		dump($row);die;
 		$pay_money = $row['pay_money'];
 		if($row['type'] == 1){ //线上商城订单
 			$goodsName = db('ns_order_payment')->alias('p')
