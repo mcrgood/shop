@@ -1247,6 +1247,7 @@ class Myhome extends Controller
                 $data['goodsprice'] = $price_arr;
                 $data['shop_id'] = $row['userid'];
                 $data['name'] = $row['user'];
+                $datas['realname'] = $row['user'];
                 $data['num'] = $row['num'];
                 $data['iphone'] = $row['tel'];
                 $data['time'] = $row['test5'];//预定时间
@@ -1258,6 +1259,7 @@ class Myhome extends Controller
                 // $name = explode("|", $name_arr);
                 // $where['userid'] = ['in',$userids];
                 // $listimg =  
+                $realname = db("sys_user")->where("uid",$row['uid'])->update($datas);
                 $list = db("ns_goods_yuding")->insert($data);
                 if($list){
                     $info = [
@@ -1291,7 +1293,8 @@ class Myhome extends Controller
                     }
                 }
             }
-            
+            //第一次填写姓名的时候 加入sys_user表中
+
             //获取商品图片
             $shop_ids = db("ns_goods_yuding")->where("sid",$sid)->value("shop_id");//获取店铺ID
             $where['userid'] = $shop_ids;

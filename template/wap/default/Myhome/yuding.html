@@ -157,7 +157,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         <div class="bigest">
             <div class="seller"><span>{$names}</span></div>
             <form id="form" class="common">
-                <span>预定姓名:  <input type="text" name="username" id="user" placeholder="请输入姓名" /></span>
+                <span>预定姓名:  <input type="text" name="username" id="user" placeholder="请输入姓名" value="{$row.realname}" /></span>
                 <span>预定人数:  <input type="number" name="renshu" id="num" value="" placeholder="请输入预定人数"/></span>
                 <span>预定电话:  <input type="tel" name="dianhua" id="tel" placeholder="请输入手机号" value="{$row.user_name}" /></span>
             <div class="time">
@@ -174,7 +174,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         })
         </script>   
         <textarea rows="3" cols="50" placeholder="预定要求，可不填" style="outline:none;margin-top:10px;font-size:15px;border:1px solid #cccccc;margin-left:10%;width:80%;" id="message"></textarea>
-        <div class="make">
+        <!-- <div class="make">
             <span>定制包间</span>
             <div id="order_1" onclick="showtext()">可定制 ></div>
         </div>
@@ -186,13 +186,13 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
                 <option value="http://"style="font-size:15px;height:30px;text-align:center">跳页面</option>
                 <option value="http://"style="font-size:15px;height:30px;text-align:center">跳页面</option>
             </select>
-        </div>
+        </div> -->
     <script type="text/javascript">
         function showtext(){    
             var mychar = document.getElementById("hide").style.display ="block";   
         };  
     </script>
-    <div class="tuijian">
+   <!--  <div class="tuijian">
         <span>推荐</span>
         <div class="tj_pic">
             <ul>
@@ -202,7 +202,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
                 <li><a href=""><img src="__YUDING__/img/pic_05.png" /></a></li>
             </ul>
         </div>
-    </div>
+    </div> -->
     <!-- <div class="last">
         <input type="button" value="返回主页" class="first-li" />
     </div> -->
