@@ -101,8 +101,6 @@ function calculate() {
 	} else if (pay_type == 1) {
 		//余额支付
 		var pwd = $('#password').val();
-		var out_trade_no = "{$Request.param.out_trade_no}";
-		
 
 		if(!pwd){
 			layer.msg('请输入支付密码',{time:1200});

@@ -109,6 +109,7 @@ class Pay extends Controller
         $pay_config = $pay->getPayConfig();
         $this->assign("pay_config", $pay_config);
         $pay_value = $pay->getPayInfo($out_trade_no);
+        // dump($pay_value['out_trade_no']);die;
         if (empty($pay_value)) {
             $this->error("订单主体信息已发生变动!", __URL(__URL__ . "/member/index"));
         }

@@ -35,6 +35,7 @@ class WeiShangPay extends BaseController
 		}
 		
 		$row = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find(); //获取付款方式
+		dump($row);die;
 		$pay_money = $row['pay_money'];
 		if($row['type'] == 1){ //线上商城订单
 			$goodsName = db('ns_order_payment')->alias('p')
@@ -43,7 +44,7 @@ class WeiShangPay extends BaseController
 			$goodsName = mb_substr($goodsName,0,36,'utf-8'); //查出商品名称并且截取40字符以内
 		}elseif($row['type'] == 4){  //商城余额充值
 			$goodsName = $row['pay_body'];
-		}elseif($row['type'] == 5){  //线下扫码支付
+		}elseif($row['type'] == 5 || $row['type'] == 6){  //type=5是线下扫码付款，6是线下预定消费
 			$names = db('ns_order_payment')->alias('p')
 			->join('ns_shop_message g','g.userid = p.business_id','left')
 			->where('p.out_trade_no',$out_trade_no)->value('names');

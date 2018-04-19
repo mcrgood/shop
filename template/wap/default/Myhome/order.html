@@ -360,6 +360,7 @@ ul{list-style: none}
         	var url = "{:url('Myhome/orderPay')}";
         	var data = {"sid":sid,totalPrice:totalPrice};
         	$.post(url,data,function(res){
+        		// console.log(res);return;
         		if(res.status == 1){
         			layer.msg(res.msg,{time:1200});
         			setTimeout(function(){
