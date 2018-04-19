@@ -449,6 +449,7 @@ class Myhome extends BaseController
 			->join('ns_shop_message s','g.shop_id=s.id','LEFT')
 			->where('g.id',$id)
 			->find();
+			$row['leixing'] = db('ns_consumption')->where('con_cateid',$row['leixing'])->value('con_cate_name');
 			$this->assign('row',$row);
 		}
 		return view($this->style."Myhome/yudingdetails");

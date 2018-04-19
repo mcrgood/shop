@@ -44,6 +44,9 @@ class MyhomeService extends BaseService{
     {
         $myhome = new NsMyhomeModel();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+         foreach ($result['data'] as $k => $v) {
+            $result['data'][$k]['leixing'] = db('ns_consumption')->where('con_cateid',$v['leixing'])->value('con_cate_name');
+        }
         return $result;
     }
     /**

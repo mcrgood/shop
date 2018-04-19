@@ -62,24 +62,13 @@
 			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text
 		},
 		success : function(data) {
+			console.log(data)
 			var html = '';
 			if (data["data"].length > 0) {
 				for (var i = 0; i < data["data"].length; i++) {
 					html += '<tr align="center">';
 					html += '<td><input name="id" type="checkbox" value="'+ data["data"][i]["id"]+'" ></td>';
-					if(data["data"][i]["leixing"]==1){
-						html += '<td>餐饮</td>';
-					}else if(data["data"][i]["leixing"]==2){
-						html += '<td>酒店</td>';
-					}else if(data["data"][i]["leixing"]==3){
-						html += '<td>养生</td>';
-					}else if(data["data"][i]["leixing"]==4){
-						html += '<td>KTV</td>';
-					}else if(data["data"][i]["leixing"]==5){
-						html += '<td>汽车</td>';
-					}else if(data["data"][i]["leixing"]==6){
-						html += '<td>其他</td>';
-					}
+					html += '<td>'+ data["data"][i]["leixing"]+'</td>';
 					html += '<td>'+data["data"][i]["names"]+'</td>';
 					html += '<td>'+data["data"][i]["sid"]+'</td>';
 					html += '<td>'+ data["data"][i]["name"] +'</td>';
