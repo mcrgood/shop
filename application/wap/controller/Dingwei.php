@@ -110,7 +110,7 @@ class Dingwei extends BaseController{
 		$row = db("ns_shop_message")
         ->alias('s')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
-        ->where('s.id',$id)
+        ->where('s.userid',$id)
         ->field('s.*,w.business_status')
         ->find();
         $this->assign('row',$row);
