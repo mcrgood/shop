@@ -24,7 +24,9 @@ class Dingwei extends BaseController{
         $this->assign('signPackage', $package);
 
         $leixing_id = input("param.cat",25);  //一级分类ID
+        $con_cate_name = db('ns_consumption')->where('con_cateid',$leixing_id)->value('con_cate_name');
         $con_cateid = input("param.con_cateid",0);  //二级分类ID
+        $this->assign('con_cate_name', $con_cate_name);
         $this->assign('leixing_id', $leixing_id);
         $this->assign('con_cateid', $con_cateid);
         $cate_list = db('ns_consumption')->where('con_pid',0)->select();

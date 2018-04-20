@@ -27,6 +27,7 @@
     var leixing_id = "{$leixing_id}";
     var con_cateid = "{$con_cateid}";
     var urls = "{:url('Dingwei/getSecondCate')}";
+    var dingwei_url = "{:url('Dingwei/index')}";
 
     wx.config({
         debug: false,
@@ -131,7 +132,7 @@
 
 
 
-// //     //上拉加载数据
+//     //上拉加载数据
    
 //     $(function(){
 //     // 页数
@@ -247,17 +248,7 @@
 
 <div class="supermarket-box">
 <ul class="supermarket-title">
-<li class="supermarket-li">
-{switch name="$Request.param.cat"}
-    {case value="1"}餐饮{/case}
-    {case value="2"}酒店{/case}
-    {case value="3"}养生{/case}
-    {case value="4"}KTV{/case}
-    {case value="5"}汽车{/case}
-    {case value="6"}其他{/case}
-    {default /}餐饮
-{/switch}
-</li>
+<li class="supermarket-li">{$con_cate_name}</li>
 <li class="supermarket-li1" onclick="dingwei();">附近</li>
 </ul>
 </div>
@@ -274,8 +265,6 @@
     </div>
 
     <ul class="supermarket-main1">
-    <li><a href="">222222222</a></li>
-    <li><a href="">222222222</a></li>
     </ul>
 
     <div class="content">
@@ -294,10 +283,9 @@
             var data = {val:val};
             var url = urls;
             $.post(url,data,function(res){
-                console.log(res)
                 if(res.status == 1){
                     for(var i=0;i<res.list.length;i++){
-                        html +='<a href="">'+res["list"][i]["con_cate_name"]+'</a>';
+                        html +='<a href="'+dingwei_url+'?cat='+res["list"][i]["con_pid"]+'&con_cateid='+res["list"][i]["con_cateid"]+'">'+res["list"][i]["con_cate_name"]+'</a>';
                     }
                 }
                 $('.nav_right').empty().append(html);

@@ -25,16 +25,16 @@
     text-align: center;
     color: #fff;
     }
-            #main{  
+     #main{  
             width: 100%;  
-            height: 500px;  
+            height: 250px;  
             margin: 0px auto;  
             position: relative;  
           
         }  
         #main .scollimg{  
             width: 100%;  
-            height: 500px;  
+            height: 250px;  
             position: relative;  
         }  
         #main .scollimg img{  
@@ -144,10 +144,10 @@
     <div class="swiper-pagination swiper-pagination-index"></div>
 </div> -->
     <div id="main">  
-        <div class="scollimg">  
-            <img src="images/1.jpg" alt="">  
-            <img src="images/2.jpg" alt="">  
-            <img src="images/3.jpg" alt="">  
+        <div class="scollimg">
+            <img src="__PUBLIC__/dengluyemian.png" width="100%" height="250">  
+            <img src="__PUBLIC__/shouyegundong.png" width="100%" height="250">  
+            <img src="__PUBLIC__/1516157576.jpg" width="100%" height="250">  
         </div>  
         <div class="btn">  
             <div id="btnleft"><div class="triangle"></div></div>  
@@ -224,9 +224,8 @@ var spans = container.getElementsByTagName('span');
     {volist name="list" id="v"}
         <li><a href="{:url('dingwei/index',['cat'=>$v['con_cateid']])}"><img src="{$v.con_img}" />{$v.con_cate_name}</a></li>
     {/volist}
-        
     </ul>
-    }
+    
 </div>
 <div class="kong"></div>
 <style type="text/css">

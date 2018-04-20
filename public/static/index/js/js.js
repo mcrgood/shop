@@ -76,7 +76,6 @@ $(document).ready(function(){
     var data = {val:leixing_id};
     var url = urls;
    	$.post(url,data,function(res){
-   		// console.log(res)
         if(res.status == 1){
             for(var i=0;i<res.list.length;i++){
                html +='<a href="'+dingwei_url+'?cat='+res["list"][i]["con_pid"]+'&con_cateid='+res["list"][i]["con_cateid"]+'">'+res["list"][i]["con_cate_name"]+'</a>';
@@ -101,10 +100,10 @@ $(document).ready(function(){
 
 $(document).ready(function(){
    $(".supermarket-li1").click(function(){ 
-    $(".supermarket-main1").css("display","block");  
-    $(".supermarket-li-2").css("display","block");  
-    $(".supermarket-main").css("display","none");
-    $(".supermarket-li-1").css("display","none");
+    // $(".supermarket-main1").css("display","block");  
+    // $(".supermarket-li-2").css("display","block");  
+    // $(".supermarket-main").css("display","none");
+    // $(".supermarket-li-1").css("display","none");
   });      
 });
 $(document).ready(function(){

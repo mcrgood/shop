@@ -12,12 +12,15 @@ class Indexx extends BaseController{
 //		//获取banner信息
 //		$banner = db("ns_goods_ad")->select();
 //		$this->assign('banner', $banner);
+        $list = db('ns_consumption')->where('con_pid',0)->select();
+        $this->assign('list',$list);
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
         $package = $jssdk->getSignPackage();
         $this->assign('signPackage', $package);
         // 首页轮播图
         $platform = new Platform();
         $plat_adv_list = $platform->getPlatformAdvPositionDetail(1175);
+        // dump($plat_adv_list);die;
         $this->assign('plat_adv_list', $plat_adv_list);
         //餐饮通用券
         $index_adv_one = $platform->getPlatformAdvPositionDetail(1170);
@@ -35,9 +38,7 @@ class Indexx extends BaseController{
         $index_adv_five = $platform->getPlatformAdvPositionDetail(1174);
         $this->assign('index_adv_five', $index_adv_five);
 
-        $list = db('ns_consumption')->where('con_pid',0)->select();
-        // dump($list);die;
-        $this->assign('list',$list);
+        
 		return view($this->style . 'Index/indexx');
 	}
 
