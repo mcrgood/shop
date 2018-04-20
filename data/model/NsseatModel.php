@@ -44,7 +44,7 @@ class NsseatModel extends BaseModel {
     {
         //设置查询视图
         $viewObj = $this->alias('a')
-        ->join('ns_shop_message s','a.shopid = s.id','left')
+        ->join('ns_shop_message s','a.shopid = s.userid','left')
         ->field('a.*,s.names');
         $list = $this->viewPageQuery($viewObj, $page_index, $page_size, $condition, $order);
         return $list;
@@ -58,7 +58,7 @@ class NsseatModel extends BaseModel {
     public function getMyhomeCount($condition)
     {
         $viewObj = $this->alias('a')
-        ->join('ns_shop_message s','a.shopid = s.id','left')
+        ->join('ns_shop_message s','a.shopid = s.userid','left')
         ->field('a.*,s.names');
         $count = $this->viewCount($viewObj,$condition);
         return $count;

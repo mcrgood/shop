@@ -44,7 +44,7 @@ class NsMenulist extends BaseModel {
     {
         //设置查询视图
         $viewObj = $this->alias('a')
-        ->join('ns_shop_message s','a.userid = s.id','left')
+        ->join('ns_shop_message s','a.userid = s.userid','left')
         ->join('ns_shop_usercate m','a.cateid = m.listid','left' )
         ->field('a.*,s.names,m.catename');
         $list = $this->viewPageQuery($viewObj, $page_index, $page_size, $condition, $order);
@@ -59,7 +59,7 @@ class NsMenulist extends BaseModel {
     public function getMyhomeCount($condition)
     {
         $viewObj = $this->alias('a')
-        ->join('ns_shop_message s','a.userid = s.id','left')
+        ->join('ns_shop_message s','a.userid = s.userid','left')
         ->join('ns_shop_usercate m','a.cateid = m.listid','left' )
         ->field('a.*,s.names,m.catename');
         $count = $this->viewCount($viewObj,$condition);

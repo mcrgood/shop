@@ -501,7 +501,9 @@ class Myhome extends BaseController
             $page_index = request()->post("page_index", 1);
             $page_size = request()->post('page_size', PAGESIZE);
             $search_text = request()->post('search_text', '');
+            $shopid = request()->post('shopid', '');
             $condition['seatname'] = ['LIKE',"%".$search_text."%"];
+            $condition['shopid'] = $shopid;
             $member = new MyhomeService();
             $list = $member->getSeat($page_index, $page_size, $condition, $order = '');
             return $list;
@@ -648,7 +650,7 @@ class Myhome extends BaseController
             $search_text = request()->post('search_text', '');
             $id = request()->post('id', '');
             $condition['a.goodsname'] = ['LIKE',"%".$search_text."%"];
-            $condition['a.userid'] = $id;
+            $condition['s.userid'] = $id;
             $member = new MyhomeService();
             $list = $member->getMenulist($page_index, $page_size, $condition, $order = '');
             return $list;
@@ -660,7 +662,7 @@ class Myhome extends BaseController
 	public function menuadd(){
 		//获取商家店名id
 		$id = input("get.id");
-		$dianname = db("ns_shop_message")->where("id",$id)->value("names");
+		$dianname = db("ns_shop_message")->where("userid",$id)->value("names");
 		//获取商品名称
 		$goodsname = db("ns_shop_usercatedetail")->select();
 		//获取商品分类

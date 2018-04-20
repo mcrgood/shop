@@ -52,13 +52,13 @@
 	<script type="text/javascript">
 
 	function LoadingInfo(page_index) {
-	var id = "{$Request.param.shopid}";
+	var shopid = "{$Request.param.shopid}";
 	var search_text = $("#search_text").val();
 	$.ajax({
 		type : "post",
 		url : "{:__URL('ADMIN_MAIN/myhome/seat')}",
 		data : {
-			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text,"id":id
+			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text,"shopid":shopid
 		},
 		success : function(data) {
 			console.log(data)
@@ -79,7 +79,7 @@
 						html += '<td><button onclick="seatstop('+data["data"][i]["seatid"]+',this)"><span style="color:red">使用中</span></button></td>'
 					}
 					html += '<td>';
-					html += '<a href="{:url("myhome/seatadd")}?shopid='+id+'&seatid='+data["data"][i]["seatid"]+' ">编辑</a>';
+					html += '<a href="{:url("myhome/seatadd")}?shopid='+shopid+'&seatid='+data["data"][i]["seatid"]+' ">编辑</a>';
 					html += '<a onclick="goodsDel('+data["data"][i]["seatid"]+')"><span style="color:green">删除</span></a>';
 					html += '</td>';
 					html += '</tr>';
