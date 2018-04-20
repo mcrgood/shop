@@ -25,87 +25,84 @@
     text-align: center;
     color: #fff;
     }
-    .banner {  
-    width:1250px;  
-    height:500px;  
-    margin:0px auto;  
-    position:relative;  
-    overflow:hidden;  
-    cursor:pointer;  
-}  
-.banner ul {  
-    list-style:none;  
-    width:700%;  
-    height:500px;  
-    position:absolute;  
-}  
-.banner ul li {  
-    width:1250px;  
-    height:500px;  
-    float:left;  
-}  
-.banner ul li img {  
-    width:100%;  
-    height:100%;  
-}  
-.banner .arrow .left,.banner .arrow .right {  
-    width:40px;  
-    height:80px;  
-    background:#000000;  
-    opacity:0.3;  
-    position:absolute;  
-    top:50%;  
-    transform:translateY(-50%);  
-    font-family:"宋体";  
-    font-size:52px;  
-    color:#fff;  
-    line-height:80px;  
-    text-align:center;  
-}  
-.arrow .left {  
-    left:0px;
-    display: none;  
-}  
-.arrow .right {  
-    right:0px;  
-    display: none;
-}  
-.banner .arrow {  
-    display:none;  
-}  
-/*鼠标经过盒子，让箭头显示出来*/  
-.banner:hover .arrow {  
-    display:block;  
-    cursor:pointer;  
-}  
-/*小圆点样式*/  
-  .banner ol {  
-    list-style:none;  
-    width:200px;  
-    height:20px;  
-    background:#222222;  
-    position:absolute;  
-    bottom:50px;  
-    left:50%;  
-    transform:translateX(-50%);  
-    /*opacity:0.3;  
-    */  
-    display: none;
-     border-radius:10px;  
-}  
-.banner ol li {  
-    width:10px;  
-    height:10px;  
-    background:#fff;  
-    border-radius:50%;  
-    float:left;  
-    margin-left:21px;  
-    margin-top:5px;  
-    cursor:pointer;  
-}  
-.banner ol .now {  
-    background:aqua;  
-} 
+            #main{  
+            width: 100%;  
+            height: 500px;  
+            margin: 0px auto;  
+            position: relative;  
+          
+        }  
+        #main .scollimg{  
+            width: 100%;  
+            height: 500px;  
+            position: relative;  
+        }  
+        #main .scollimg img{  
+            position: absolute;  
+            top: 0;  
+            left: 0;  
+        }  
+        #main .btn{  
+            display: none;
+            width: 730px;  
+            height: 220px;  
+            position: absolute;  
+            top:117px;  
+            left: 0;  
+        }  
+        #main .btn>div{  
+            width: 100px;  
+            height: 220px;  
+            background: #fff;  
+            opacity: 0;  
+        }  
+        #main .btn：hover>div{  
+            opacity: 0.35;  
+        }  
+        #main .btn #btnleft{  
+            position: absolute;  
+            top: 0;  
+            left: 0;  
+        }  
+        #main .btn #btnright{  
+            position: absolute;  
+            top: 0;  
+            right:0;  
+        }  
+        /*左右button里的三角形*/  
+        .triangle{  
+             margin-top: 50px;  
+            width: 0;  
+            height: 0;  
+            border-width:70px 40px;  
+            border-style: solid;  
+        }  
+  
+        #main .btn #btnleft .triangle{  
+            border-color: transparent #ccc transparent  transparent;  
+        }  
+        #main .btn #btnright .triangle{  
+            margin-left: 20px;  
+            border-color: transparent transparent transparent #ccc;  
+        }  
+        #main .item{  
+            position: absolute;  
+            bottom: 30px;  
+            left: 70px;  
+            width: 200px;  
+            height: 16px;  
+            display: none;
+        }  
+        #main .item span{  
+            width: 16px;  
+            height: 16px;  
+            background: #ccc;  
+            display: inline-block;  
+            border-radius: 50%;  
+        }  
+        #main .item span:hover{  
+            cursor: pointer;  
+        } 
 </style>
 <div class="top-kong"></div>
 <div class="top">
@@ -146,123 +143,82 @@
     </div>
     <div class="swiper-pagination swiper-pagination-index"></div>
 </div> -->
-<div class="banner">  
-    <ul>  
-        <li><img src="http://www.jq22.com/img/cs/500x300-1.png"></li>  
-        <li><img src="http://www.jq22.com/img/cs/500x300-2.png"></li>  
-        <li><img src="http://www.jq22.com/img/cs/500x300-3.png"></li>  
-        <li><img src="http://www.jq22.com/img/cs/500x300-4.png"></li>  
-        <li><img src="http://www.jq22.com/img/cs/500x300-5.png"></li>  
-        <li><img src="http://www.jq22.com/img/cs/500x300-6.png"></li>  
-        <!--在轮播图的最后面加上一张假的图片，就是第一张。目的，最后一张换成第一张的时候，用户察觉不到-->  
-        <li><img src="http://www.jq22.com/img/cs/500x300-1.png"></li>  
-    </ul>  
-    <div class="arrow">  
-        <span class="left"><</span>  
-        <span class="right">></span>  
-    </div>  
-    <!--存放小圆点的图片-->  
-    <ol>  
-        <li class="now"></li>  
-        <li></li>  
-        <li></li>  
-        <li></li>  
-        <li></li>  
-        <li></li>  
-    </ol>  
-</div> 
-<script>  
-$(function() {  
-    // 把要操作的对象先获取到  
-    var banner = $('.banner');  
-    var Left = $('.left'); // alert(Left.length);  
-    var Right = $('.right');  
-    var Ul = $('.banner ul'); // alert(Ul.length);  
-    var Width = $('.banner ul li').width(); //alert(Width);  
-    var Point = $('.banner ol li'); // alert(Point.length);  
-    var Index = 0; //用于记录点击的次数，图片的张数(计数器，记录了图片移动的张数)  
-  
-    //点击小圆点让图片移动  
-    $.each(Point, function(index, value) { //如果此处我没有用each循环来写，那么我便需要用$(this).index()方法来获取图片的下标  
-        //让点击的小圆点有class样式，其他li没有class样式  
-        Point.eq(index).on('click', function() {  
-            $(this).addClass('now').siblings().removeClass('now');  
-            Ul.stop().animate({  
-                'left': -index * Width  
-            });  
-            Index = index;  
-            console.log(Index);  
-            //alert(Index);  
-        })  
-    });  
-  
-    //  点击右箭头,ul往左跑  
-    Right.on('click', function() {  
-        //需要做一个判断，如果发现此时图片是最后一张图片，就不能继续执行了  
-        //让index是图片的张数减一的时候,让index不继续加  
-        if (Index >= 6) {  
-            //让index变成0  
-            Index = 0;  
-            //                  让ul的left值瞬间变成0  
-            Ul.css('left', 0);  
+    <div id="main">  
+        <div class="scollimg">  
+            <img src="images/1.jpg" alt="">  
+            <img src="images/2.jpg" alt="">  
+            <img src="images/3.jpg" alt="">  
+        </div>  
+        <div class="btn">  
+            <div id="btnleft"><div class="triangle"></div></div>  
+            <div id="btnright"><div class="triangle"></div></div>  
+        </div>  
+        <div class="item">  
+            <span></span>  
+            <span></span>  
+            <span></span>  
+        </div>  
+    </div>
+<script type="text/javascript">  
+   window.onload=function(){  
+             var container = document.getElementById('main');  
+autoMove(container);  
         }  
-        Index++;  
-        Ul.stop().animate({  
-            'left': -Index * Width  
-        });  
+        //轮播图函数  
+        function autoMove(container){  
+var imgs = container.getElementsByTagName('img');  
+var spans = container.getElementsByTagName('span');  
+            //每次轮播后样式  
+            /*轮播到哪个位置，就对哪个位置的图片样式进行设置，首先让所有的图片样式opacity变为0，然后对移动到的位置的样式进行设置opacity为1*/  
+            function InitMove(index){  
+                for(var i=0;i<imgs.length;i++){  
+                    imgs[i].style.opacity='0';  
+                    spans[i].style.background='#ccc';  
+                }  
+                imgs[index].style.opacity='1';  
+                spans[index].style.background='red';  
+            }  
+            //第一次初始化  
+            InitMove(0);  
+            //轮播过程的变换函数  
+            /*前面已经初始化了图片最开始看到的效果，接着轮播的话会隐藏第一张出现第二张  
+             *这里count从1开始（图片的初始化位置是count为0的情况），count=1执行一次Init*Move(count),使第一张隐藏第二张出现，依次执行。当count==imgs.leghth时由于*图片最后一张的位置是imgs.length-1,所以此时把count置为0；相当于轮播图轮回  
+             *依次重新开始。  
+             */  
+            var count=1;  
+            function fMove(){  
+                if(count==imgs.length){  
+                    count=0;  
+                }  
+                InitMove(count);  
+                count++;  
+            }  
+            //设置自动轮播定时器；  
+            var scollMove=setInterval(fMove,2500);  
   
-        if (Index == 6) {  
-            //因为在图片最后面添加了一张假图片，其实最后一张图片的时候，需要对应的是索引0的小圆点  
-            Point.eq(0).addClass('now').siblings().removeClass('now');  
   
-        } else {  
-            Point.eq(Index).addClass('now').siblings().removeClass('now');  
+            //点击移动图片；  
+            /*这里就是点击左右移动的button来让图片根据用户的点击左右移动；需要注意一点就*是每次点击左移动或右移动需要首先清除定时器，等移动完了在重新添加定时器不然的*话你点击移动后图片虽然该变了，但是由于定时器还没移动到这张图片上面，所以就需*要等待定时器移动到你移动到的那张图片上面让后才开始定时轮播。比如如果你从开始  
+            *就点击移动图片，一直移动到最后一张那么你就要等待两个定时器的时间才能看到自动*轮播。  
+            */  
+            var btnleft=document.getElementById('btnleft');  
+            var btnright=document.getElementById('btnright');  
+            btnleft.onclick=function(){  
+                clearInterval(scollMove);  
+                if(count==0){  
+                    count=imgs.length;  
+                }  
+                count--;  
+                InitMove(count);  
+                scollMove=setInterval(fMove,2500);  
+            };  
+            btnright.onclick=function(){  
+                clearInterval(scollMove);  
+                fMove();  
+                scollMove=setInterval(fMove,2500);  
+            }  
         }  
-  
-    })  
-  
-    //点击左箭头,让Ul往右跑  
-    Left.on('click', function() {  
-        if (Index <= 0) {  
-            //return; 此时不应该return,应该让index变成最大的值，left也变成最大的left  
-            Index = 6;  
-            Ul.css('left', -Index * Width);  
-        }  
-        Index--;  
-        Ul.stop().animate({  
-            'left': -Index * Width  
-        });  
-  
-        if (Index == 6) {  
-            //因为在图片最后面添加了一张假图片，其实最后一张图片的时候，需要对应的是索引0的小圆点  
-            Point.eq(0).addClass('now').siblings().removeClass('now');  
-        } else {  
-            Point.eq(Index).addClass('now').siblings().removeClass('now');  
-        }  
-  
-    })  
-  
-  
-  
-    //调取Right方法，使其自动播放  
-    var time = setInterval(function() {  
-        Right.click();  
-    }, 2000);  
-  
-    //鼠标移到banner中,自动播放停止  
-    banner.mouseenter(function() {  
-        clearInterval(time);  
-    });  
-  
-    // 鼠标移出banner中,自动播放开始  
-    banner.mouseleave(function() {  
-        time = setInterval(function() {  
-            Right.click();  
-        }, 2000);  
-    })  
-})  
-</script>  
-
+    </script>  
 <div class="index-menu">
     <ul class="index-menu-box">
     {volist name="list" id="v"}
