@@ -339,7 +339,8 @@ class Myhome extends BaseController
             	->join('sys_province p','p.province_id = a.sheng','left')
             	->join('sys_city c','c.city_id = a.shi','left')
             	->join('sys_district d','d.district_id = a.area','left')
-            	->find($id);
+            	->where('a.userid',$id)
+            	->find();
             $this->assign("row", $row);
 
 		return view($this->style . "Myhome/registerdetail");

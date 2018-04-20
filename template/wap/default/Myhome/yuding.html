@@ -180,7 +180,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         </div>
         <div id="hide">
             <select name="pageselect" id="sele" >
-                {volist name="list" id="v"}
+                {volist name="seat_list" id="v"}
                     <option value="{$v.seatid}" style="font-size:15px;height:30px;text-align:center">{$v.seatname}</option>
                 {/volist}
             </select>
@@ -194,8 +194,10 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         <span>推荐</span>
         <div class="tj_pic">
             <ul>
-                {volist name="list" id="v"}
-                    <li><a href="JavaScript:;"><img width="168.75" height="126.56" src="{$v.seatimg}" /></a></li>
+                {volist name="seat_list" id="v"}
+                {if $v.seatimg eq true}
+                    <li><img width="168.75" height="126.56" src="{$v.seatimg}"/></li>
+                {/if}
                 {/volist}
             </ul>
         </div>

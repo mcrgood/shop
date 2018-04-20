@@ -635,35 +635,6 @@ class Myhome extends Controller
         $this->assign('list',$list);  
         return view($this->style . 'Myhome/message');
     }
-
-    public function dingdan_detial(){
-        $id = input('param.id');
-        $row = db('ns_goods_yuding')
-        ->alias('a')
-        ->field('a.*,b.pay_type')
-        ->join('ns_order_payment b','b.out_trade_no = a.sid','left')
-        ->where('a.id',$id)->find();
-        switch ($row['pay_type']) {
-            case 1:
-               $row['pay_type'] = '快捷支付';
-                break;
-            case 5:
-                $row['pay_type'] = '微信支付';
-                break;
-        }
-        $row['goodsname'] = explode("|", $row['goodsname']);
-        $row['goodsnum'] = explode("|", $row['goodsnum']);
-        $row['goodsprice'] = explode("|", $row['goodsprice']);
-        foreach ($row['goodsname'] as $k => $v) {
-            $row['goods'][$k] = array_column($row,$k);
-        }
-        $row['add_time'] = date('Y-m-d H:i',$row['add_time']);
-        $this->assign('row',$row);
-        return view($this->style . 'Myhome/dingdan_detial');
-    }
-
-
-
     //退出登录
 	public function out(){
         Session::set('business_id', "");
@@ -698,11 +669,11 @@ class Myhome extends Controller
             if($result){
                 $this->error('用户已存在');
             }
+            $leixing = input('post.leixing');
             $names = input('post.names');
             $address = input('post.address');
             $tel = input('post.tel');
-            $business_scope = input('post.business_scope'); //经营范围
-            $leixing = db('ns_consumption')->where('con_cateid',$business_scope)->value('con_pid'); //所属经营类型
+            $business_scope = input('post.business_scope');
             $thumb = input('post.thumb');
             $thumb_inimg_one = input('post.thumb_inimg_one');//门店照片，用于商家页面轮播图
             $thumb_inimg_two = input('post.thumb_inimg_two');//门店照片，用于商家页面轮播图
@@ -727,6 +698,7 @@ class Myhome extends Controller
             $data['names'] = $names;
             $data['address'] = $address;
             $data['tel'] = $tel;
+            $dtat['business_scope'] = $business_scope;
             $data['thumb'] = $thumb;
             $data['thumb_inimg_one'] = $thumb_inimg_one;//门店照片，用于商家页面轮播图
             $data['thumb_inimg_two'] = $thumb_inimg_two;//门店照片，用于商家页面轮播图
@@ -920,8 +892,7 @@ class Myhome extends Controller
             if(!$result){
                 $this->error('用户不存在');
             }
-            $business_scope = input('post.business_scope'); //经营范围
-            $leixing = db('ns_consumption')->where('con_cateid',$business_scope)->value('con_pid'); //所属经营类型
+            $leixing = input('post.leixing');
             $names = input('post.names');
             $address = input('post.address');
             $tel = input('post.tel');
@@ -971,7 +942,6 @@ class Myhome extends Controller
             $data['weidu'] = $weidu;
             $data['state'] = 0;
             $data['business_hours'] = $business_hours;
-            $data['business_scope'] = $business_scope;  //经营范围
             $id = db('ns_shop_message')->where($condition)->update($data);
 
             if($id){
@@ -981,9 +951,6 @@ class Myhome extends Controller
             }
         }
 
-        $scope = db("ns_consumption")->where('con_pid',0)->select();
-        $this->assign('scope',$scope); //顶级分类
-
         $shopinfo = db("ns_shop_message")
         ->alias('s')
         ->field('p.province_name,c.city_name,d.district_name,s.*')
@@ -991,7 +958,6 @@ class Myhome extends Controller
         ->join('sys_city c','c.city_id=s.shi','left')
         ->join('sys_district d','d.district_id=s.area','left')
         ->where($condition)->find();
-        $shopinfo['scope_name'] = db('ns_consumption')->where('con_cateid',$shopinfo['business_scope'])->value('con_cate_name');
         // dump($shopinfo);die;
         if(!$shopinfo)
             $this->error('没有查找到相关信息！');
@@ -1029,10 +995,9 @@ class Myhome extends Controller
         $id = input('post.id'); //预定的信息ID
         $yuding = db('ns_goods_yuding')
         ->alias('g')
-        ->field('g.*,m.names,m.address,m.tel,w.msg_status,p.pay_status')
+        ->field('g.*,m.names,m.address,m.tel,w.msg_status')
         ->join('ns_shop_message m','g.shop_id = m.id','left')
         ->join('ns_wwb w','w.userid = m.userid','left')
-        ->join('ns_order_payment p','p.out_trade_no = g.sid','left')
         ->where('g.id',$id)->find();
         
         $times = date('m月d日 H:i',strtotime($yuding['time'])); //预定的时间
@@ -1040,7 +1005,7 @@ class Myhome extends Controller
         $address = $yuding['address']; //商家店铺地址
         $tel = $yuding['tel']; //商家店铺联系电话
         $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.".地址:".$address.".美食热线:".$tel.".欢迎莅临品鉴，全体员工恭候您的光临！";
-            if($iphone && $yuding['msg_status'] == 1 && $yuding['pay_status'] == 1){     //msg_status=1   为自动发送短信
+            if($iphone && $yuding['msg_status'] == 1){     //msg_status=1   为自动发送短信
                 $clapi  = new ChuanglanSmsApi();
                 $result = $clapi->sendSMS($iphone, $message);
                 if(!is_null(json_decode($result))){
@@ -1230,8 +1195,9 @@ class Myhome extends Controller
         $this->assign("list",$list);
         $this->assign("names",$names);
         //包间选择系统查询
-        $list = db("ns_shop_seat")->where("shopid",$ids)->select();
-        $this->assign("list",$list);
+        $seat_id = db("ns_shop_message")->where("id",$ids)->value('userid');
+        $seat_list = db("ns_shop_seat")->where("shopid",$seat_id)->select();
+        $this->assign("seat_list",$seat_list);
         return view($this->style . 'Myhome/yuding');
     }
 
