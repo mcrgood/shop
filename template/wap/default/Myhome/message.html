@@ -176,7 +176,6 @@
         	var url = "{:url('Myhome/message')}";
         	var data = {search_input:search_input};
         	$.post(url,data,function(res){
-        		console.log(res)
         		var html = '';
         		if(res.status ==1){
         			for(var i=0; i<res.list.length;i++){

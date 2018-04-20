@@ -40,8 +40,6 @@ class Dingwei extends BaseController{
         $con_cateid = input('param.con_cateid',0); //二级分类ID
         $page = input('param.page');   //第几页
         $size = input('param.size');   //每页的数据个数
-        // dump($leixing_id);
-        // dump($con_cateid);die;
         if($leixing_id && $con_cateid){
             $where['leixing'] = $leixing_id;
             $where['state'] = 1;

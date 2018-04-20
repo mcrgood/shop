@@ -35,6 +35,9 @@ class Indexx extends BaseController{
         $index_adv_five = $platform->getPlatformAdvPositionDetail(1174);
         $this->assign('index_adv_five', $index_adv_five);
 
+        $list = db('ns_consumption')->where('con_pid',0)->select();
+        // dump($list);die;
+        $this->assign('list',$list);
 		return view($this->style . 'Index/indexx');
 	}
 

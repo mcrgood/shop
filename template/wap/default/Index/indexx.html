@@ -265,13 +265,12 @@ $(function() {
 
 <div class="index-menu">
     <ul class="index-menu-box">
-        <li><a href="{:url('dingwei/index',['cat'=>1])}"><img src="__INDEX__/images/menu1.png" />餐饮</a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>2])}"><img src="__INDEX__/images/menu2.png" />酒店</a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>3])}"><img src="__INDEX__/images/menu3.png" />养生</a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>4])}"><img src="__INDEX__/images/menu4.png" />KTV </a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>5])}"><img src="__INDEX__/images/menu5.png" />汽车</a></li>
-        <li><a href="{:url('dingwei/index',['cat'=>6])}"><img src="__INDEX__/images/menu6.png" />其他</a></li>
+    {volist name="list" id="v"}
+        <li><a href="{:url('dingwei/index',['cat'=>$v['con_cateid']])}"><img src="{$v.con_img}" />{$v.con_cate_name}</a></li>
+    {/volist}
+        
     </ul>
+    }
 </div>
 <div class="kong"></div>
 <style type="text/css">
