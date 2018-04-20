@@ -174,36 +174,33 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         })
         </script>   
         <textarea rows="3" cols="50" placeholder="预定要求，可不填" style="outline:none;margin-top:10px;font-size:15px;border:1px solid #cccccc;margin-left:10%;width:80%;" id="message"></textarea>
-        <!-- <div class="make">
+        <div class="make">
             <span>定制包间</span>
             <div id="order_1" onclick="showtext()">可定制 ></div>
         </div>
         <div id="hide">
-            <select name="pageselect" id="sele" onchange="self.location.href=options[selectedIndex].value" >
-                <option value="" style="font-size:15px;height:30px;text-align:center">选择包间</option>
-                <option value="http://"style="font-size:15px;height:30px;text-align:center">跳百度</option>
-                <option value="http://"style="font-size:15px;height:30px;text-align:center">跳页面</option>
-                <option value="http://"style="font-size:15px;height:30px;text-align:center">跳页面</option>
-                <option value="http://"style="font-size:15px;height:30px;text-align:center">跳页面</option>
+            <select name="pageselect" id="sele" >
+                {volist name="list" id="v"}
+                    <option value="{$v.seatid}" style="font-size:15px;height:30px;text-align:center">{$v.seatname}</option>
+                {/volist}
             </select>
-        </div> -->
+        </div>
     <script type="text/javascript">
         function showtext(){    
             var mychar = document.getElementById("hide").style.display ="block";   
         };  
     </script>
-   <!--  <div class="tuijian">
+    <div class="tuijian">
         <span>推荐</span>
         <div class="tj_pic">
             <ul>
-                <li><a href=""><img src="__YUDING__/img/pic_03.png" /></a></li>
-                <li><a href=""><img src="__YUDING__/img/pic_05.png" /></a></li>
-                <li><a href=""><img src="__YUDING__/img/pic_03.png" /></a></li>
-                <li><a href=""><img src="__YUDING__/img/pic_05.png" /></a></li>
+                {volist name="list" id="v"}
+                    <li><a href="JavaScript:;"><img width="168.75" height="126.56" src="{$v.seatimg}" /></a></li>
+                {/volist}
             </ul>
         </div>
-    </div> -->
-    <!-- <div class="last">
+    </div>
+   <!--  <div class="last">
         <input type="button" value="返回主页" class="first-li" />
     </div> -->
         </form> 
@@ -223,6 +220,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         var tel = $("#tel").val();//预定电话
         var message = $("#message").val();//预定要求
         var test5 = $("#test5").val();//预定时间
+        var xuanzuo = $("#sele").val();//选座
         var name_arr = [];
         var price_arr = [];
         var nums_arr = [];
@@ -235,7 +233,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
             nums_arr[i] =nums;
            
         })
-        var data = {"name_arr":name_arr,"price_arr":price_arr,"nums_arr":nums_arr,"userid":userid,"user":user,"num":num,"tel":tel,"test5":test5,"message":message,"uid":uid};
+        var data = {"name_arr":name_arr,"price_arr":price_arr,"nums_arr":nums_arr,"userid":userid,"user":user,"num":num,"tel":tel,"test5":test5,"message":message,"uid":uid,"xuanzuo":xuanzuo};
         var url = "{:url('Myhome/order')}";
         $.post(url,data,function(res){
             if(res.status==1){

@@ -21,6 +21,7 @@
 {block name="main"}
 <div class="options-btn">
 	<button class="btn-common btn-small" onclick="addGoods()" id="addGoods">添加包间座位</button>
+	<!-- <button class="btn-common btn-small" onclick="addimg()" id="addimg">选座图库</button>  -->
 </div>
 <table class="mytable">
 	<tr>
@@ -66,15 +67,19 @@
 				for (var i = 0; i < data["data"].length; i++) {
 					html += '<tr align="center">';
 					html += '<td>'+ data["data"][i]["seatname"] +'</td>'
-					html += '<td> <img class="img" src="'+data["data"][i]["seatimg"]+'"> </td>';
+					if(!data["data"][i]["seatimg"]){
+						html += '<td>该类型图片已存在</td>';
+					}else{
+						html += '<td> <img class="img" src="'+data["data"][i]["seatimg"]+'"> </td>';
+					}
 					html += '<td>'+ data["data"][i]["seatnum"] +'</td>';
 					if(data["data"][i]["seatstatus"] == 1){
-						html += '<td><button onclick="stop('+data["data"][i]["seatid"]+',this)"><span style="color:green">已启用</span></button></td>'
+						html += '<td><button onclick="seatstop('+data["data"][i]["seatid"]+',this)"><span style="color:green">未使用</span></button></td>'
 					}else{
-						html += '<td><button onclick="stop('+data["data"][i]["seatid"]+',this)"><span style="color:red">已停用</span></button></td>'
+						html += '<td><button onclick="seatstop('+data["data"][i]["seatid"]+',this)"><span style="color:red">使用中</span></button></td>'
 					}
 					html += '<td>';
-					html += '<a href="{:url("myhome/menuedit")}?userid='+id+'&id='+data["data"][i]["menuid"]+' ">编辑</a>';
+					html += '<a href="{:url("myhome/seatadd")}?shopid='+id+'&seatid='+data["data"][i]["seatid"]+' ">编辑</a>';
 					html += '<a onclick="goodsDel('+data["data"][i]["seatid"]+')"><span style="color:green">删除</span></a>';
 					html += '</td>';
 					html += '</tr>';
@@ -97,10 +102,14 @@
 		var id = "{$Request.param.shopid}";
 		location.href = __URL("ADMIN_MAIN/myhome/seatadd?shopid="+id);
 	}
+	// function addimg(){
+	// 	var id = "{$Request.param.shopid}";
+	// 	location.href = __URL("ADMIN_MAIN/myhome/seatadd?shopid="+id);
+	// }
 	//是否启用或者停用
-	function stop(menuid,obj){
-		var data ={"menuid":menuid};
-		var url = "{:url('Myhome/stop')}";
+	function seatstop(seatid,obj){
+		var data ={"seatid":seatid};
+		var url = "{:url('Myhome/seatstop')}";
 		$.post(url,data,function(res){
 			if(res.status==1){
 				layer.msg(res.msg,{icon:6});

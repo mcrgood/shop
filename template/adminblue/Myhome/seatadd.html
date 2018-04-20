@@ -18,13 +18,13 @@
 	<dl id="one">
 		<dt><span class="color-red">*</span>预定类型:</dt>
 		<dd>
-			<input id="seatname" type="text" placeholder="请填写座位或者包间名称" class="input-common" />
+			<input id="seatname" type="text" placeholder="请填写座位或者包间名称" class="input-common" value="{$row.seatname|default=''}" />
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="color-red">*</span>使用人数:</dt>
 		<dd>
-			<input id="seatnum" type="text" placeholder="正常使用人数" class="input-common" value="{$row['catedetail']}" />
+			<input id="seatnum" type="text" placeholder="正常使用人数" class="input-common" value="{$row.seatnum|default=''}"/>
 		</dd>
 	</dl>
 	<dl>
@@ -32,11 +32,11 @@
 		<button type="button" class="layui-btn" id="test2" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
         </button>
 	</dl>
-	<img class="image image1111" src="{$row.shop_img|default=''}" alt="" id="seatimg">
-	<input type="hidden" class="hidden" value="{$row.did}">
+	<img class="image image1111" src="{$row.seatimg|default=''}" alt="" id="seatimg">
+	<input type="hidden" class="hidden" value="{$row.seatid}">
 	<dl>
 		<dt></dt>
-		<dd><button class="btn-common btn-big">{if $row.did eq true}修&nbsp;&nbsp;改{else if/}新&nbsp;&nbsp;增{/if}</button></dd>
+		<dd><button class="btn-common btn-big">{if $row.seatid eq true}修&nbsp;&nbsp;改{else if/}新&nbsp;&nbsp;增{/if}</button></dd>
 	</dl>
 </div>
 <script>

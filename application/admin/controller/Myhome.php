@@ -517,7 +517,7 @@ class Myhome extends BaseController
 				$data['seatimg'] = str_replace("\\","/",$row['seatimg']);
 				$data['seatnum'] = $row['seatnum'];
 				$data['shopid'] = $row['shopid'];
-				if(!$row['seatname']||!$row['seatnum']||!$row['seatimg']){
+				if(!$row['seatname']||!$row['seatnum']){
 					$res = [
 						'status' => 0,
 						'msg' =>'请填写完整信息'
@@ -530,26 +530,89 @@ class Myhome extends BaseController
 							'msg' =>'已存在,不能重复添加'
 						];
 					}else{
-						$id = db("ns_shop_seat")->insertGetId($data);
-						if($id){
-							$res = [
-								'status' => 1,
-								'msg' =>'新增成功'
-							];
+						if($row['did']){
+							$editid = db("ns_shop_seat")->where("seatid",$row['did'])->update($data);
+							if($editid){
+								$res = [
+									'status' => 1,
+									'msg' =>'修改成功'
+								];
+							}else{
+								$res = [
+									'status' => 0,
+									'msg' =>'修改失败'
+								];
+							}
 						}else{
-							$res = [
-								'status' => 0,
-								'msg' =>'新增失败'
-							];
+							$id = db("ns_shop_seat")->insertGetId($data);
+							if($id){
+								$res = [
+									'status' => 1,
+									'msg' =>'新增成功'
+								];
+							}else{
+								$res = [
+									'status' => 0,
+									'msg' =>'新增失败'
+								];
+							}
 						}
 					}
 				}
 			}
 			return $res;
+		}else{
+			$seatid = input('param.seatid');
+			if($seatid){
+				$row = db("ns_shop_seat")->where("seatid",$seatid)->find();
+				$this->assign("row",$row);
+			}else{
+				$this->assign("seatid",$seatid);
+			}
 		}
 		return view($this->style . "Myhome/seatadd");
 	}
-
+	//是否使用中
+	public function seatstop(){
+		if(request()->isAjax()){
+			$seatid = input("param.seatid");
+			$row = db("ns_shop_seat")->where("seatid",$seatid)->value("seatstatus");
+			if($row){
+				$data["seatstatus"] = 0;
+				$stop = db("ns_shop_seat")->where("seatid",$seatid)->update($data);
+				if($stop){
+					$info = [
+						'status' => 3,
+						'text' =>'使用中',
+						'cssa' =>'red',
+						'msg' =>"停用成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"停用失败"
+					];
+				}
+			}else{
+				$data["seatstatus"] = 1;
+				$qiyong = db("ns_shop_seat")->where("seatid",$seatid)->update($data);
+				if($qiyong){
+					$info = [
+						'status' => 1,
+						'text' =>'未使用',
+						'cssa' =>'green',
+						'msg' =>"启用成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"启用失败"
+					];
+				}
+			}
+			return $info;
+		}
+	}
 	//删除选座
 	public function seatDel(){
 		if(request()->isAjax()){

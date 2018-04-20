@@ -1229,6 +1229,9 @@ class Myhome extends Controller
         $list = db("ns_shop_usercate")->where($where)->select();
         $this->assign("list",$list);
         $this->assign("names",$names);
+        //包间选择系统查询
+        $list = db("ns_shop_seat")->where("shopid",$ids)->select();
+        $this->assign("list",$list);
         return view($this->style . 'Myhome/yuding');
     }
 
@@ -1288,6 +1291,7 @@ class Myhome extends Controller
                 $data['add_time'] = $add_time;//预定时的时间
                 $data['message'] = $row['message'];
                 $data['uid'] = $row['uid'];
+                $data['seat'] = $row['xuanzuo'];
                 //获取商品图片
                 // dump($name_arr);die;
                 // $name = explode("|", $name_arr);
