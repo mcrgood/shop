@@ -635,6 +635,38 @@ class Myhome extends Controller
         $this->assign('list',$list);  
         return view($this->style . 'Myhome/message');
     }
+    //预定订单详情
+    public function dingdan_detail(){
+        $id = input('param.id');
+        $row = db('ns_goods_yuding')
+        ->alias('a')
+        ->field('a.*,b.pay_type')
+        ->join('ns_order_payment b','b.out_trade_no = a.sid','left')
+        ->where('a.id',$id)->find();
+        switch ($row['pay_type']) {
+            case 1:
+               $row['pay_type'] = '快捷支付';
+                break;
+            case 5:
+                $row['pay_type'] = '微信支付';
+                break;
+        }
+        $row['goodsname'] = explode("|", $row['goodsname']);
+        $row['goodsnum'] = explode("|", $row['goodsnum']);
+        $row['goodsprice'] = explode("|", $row['goodsprice']);
+        foreach ($row['goodsprice'] as $k => $v) {
+            $row['goods'][$k] = array_column($row,$k);
+            $totalPrice += $v; //计算总价钱
+        }
+        $row['add_time'] = date('Y-m-d H:i',$row['add_time']);
+        $row['message'] = $row['message'] ? $row['message'] : 0;
+        $this->assign('totalPrice',$totalPrice);
+        $this->assign('row',$row);
+        return view($this->style . 'Myhome/dingdan_detail');
+    }
+
+
+
     //退出登录
 	public function out(){
         Session::set('business_id', "");

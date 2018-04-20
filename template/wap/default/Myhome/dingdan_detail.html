@@ -168,8 +168,8 @@ ul li{list-style: none;}
   		</ul>
   		</div>
   		<div class="pay_money">
-  			<span>总计:200</span>
-  			<span>实付:150</span>
+  			<span>总计:{$totalPrice}</span>
+  			<span>实付:{$totalPrice}</span>
   		</div>
   		<div class="pay_detial">
   			<ul>
@@ -185,10 +185,12 @@ ul li{list-style: none;}
   					<span>支付方式</span>
   					<span>{$row.pay_type}</span>
   				</li>
+         {if $row['message'] neq 0} 
           <li>
             <span>预定留言</span>
           </li>
           <p id="text">{$row.message}</p>
+          {/if}
   			</ul>
   		</div>
   	</div>
