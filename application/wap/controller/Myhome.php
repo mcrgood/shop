@@ -669,11 +669,11 @@ class Myhome extends Controller
             if($result){
                 $this->error('用户已存在');
             }
-            $leixing = input('post.leixing');
             $names = input('post.names');
             $address = input('post.address');
             $tel = input('post.tel');
-            $business_scope = input('post.business_scope');
+            $business_scope = input('post.business_scope'); //经营范围
+            $leixing = db('ns_consumption')->where('con_cateid',$business_scope)->value('con_pid'); //所属经营类型
             $thumb = input('post.thumb');
             $thumb_inimg_one = input('post.thumb_inimg_one');//门店照片，用于商家页面轮播图
             $thumb_inimg_two = input('post.thumb_inimg_two');//门店照片，用于商家页面轮播图
@@ -698,7 +698,6 @@ class Myhome extends Controller
             $data['names'] = $names;
             $data['address'] = $address;
             $data['tel'] = $tel;
-            $dtat['business_scope'] = $business_scope;
             $data['thumb'] = $thumb;
             $data['thumb_inimg_one'] = $thumb_inimg_one;//门店照片，用于商家页面轮播图
             $data['thumb_inimg_two'] = $thumb_inimg_two;//门店照片，用于商家页面轮播图
@@ -892,7 +891,8 @@ class Myhome extends Controller
             if(!$result){
                 $this->error('用户不存在');
             }
-            $leixing = input('post.leixing');
+            $business_scope = input('post.business_scope'); //经营范围
+            $leixing = db('ns_consumption')->where('con_cateid',$business_scope)->value('con_pid'); //所属经营类型
             $names = input('post.names');
             $address = input('post.address');
             $tel = input('post.tel');
@@ -942,6 +942,7 @@ class Myhome extends Controller
             $data['weidu'] = $weidu;
             $data['state'] = 0;
             $data['business_hours'] = $business_hours;
+            $data['business_scope'] = $business_scope; //经营范围
             $id = db('ns_shop_message')->where($condition)->update($data);
 
             if($id){
@@ -950,7 +951,8 @@ class Myhome extends Controller
                 $this->error('提交失败！');
             }
         }
-
+        $scope = db("ns_consumption")->where('con_pid',0)->select();
+        $this->assign('scope',$scope);
         $shopinfo = db("ns_shop_message")
         ->alias('s')
         ->field('p.province_name,c.city_name,d.district_name,s.*')
@@ -958,6 +960,8 @@ class Myhome extends Controller
         ->join('sys_city c','c.city_id=s.shi','left')
         ->join('sys_district d','d.district_id=s.area','left')
         ->where($condition)->find();
+        $shopinfo['scope_name'] = db('ns_consumption')->where('con_cateid',$shopinfo['business_scope'])->value('con_cate_name');
+        
         // dump($shopinfo);die;
         if(!$shopinfo)
             $this->error('没有查找到相关信息！');
