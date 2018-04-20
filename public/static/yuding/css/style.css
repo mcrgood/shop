@@ -1,18 +1,21 @@
 html,body,div,p,form,label,ul,li,dl,dt,dd,ol,img,button,b,em,strong,small,h1,h2,h3,h4,h5,h6{margin:0;padding:0;border:0;list-style:none;font-style:normal;}
-body{font-family:"Microsoft YaHei",SimHei,'Helvetica Neue',Arial,'Droid Sans',sans-serif;font-size:14px;color:#333;background:#f2f2f2;padding: 0;margin: 0 auto;}
 a, a.link{color:#666;text-decoration:none;font-weight:500;}
 a, a.link:hover{color:#666;}
 h1,h2,h3,h4,h5,h6{font-weight: normal;}
+html,body{
+    height: 100%;
+}
 .left-menu::-webkit-scrollbar {width: 0;}
 .tab-header{
     width: 100%;
     margin: 0px auto;
     height: 40px;
 	border-bottom: 1px solid #eae5e5;
+    height: 6%;
     
 }
 .tab-header ul{
-    height: 40px;
+    height: 6%;
     width: 100%;
     position: fixed;
     z-index: 999;
@@ -282,14 +285,21 @@ h1,h2,h3,h4,h5,h6{font-weight: normal;}
     clear: both;
     font-size: 32px;
 }
-.main{height: auto;
-    width: 100%;
-    margin: auto;}
-.left-menu{width:25%;left: 0px;background-color:#eee;position:fixed;overflow-y:scroll;height: 25rem;}
+.main{    width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+.left-menu{width:25%;
+    left: 0px;
+    background:#f2f2f2;
+    position:fixed;overflow-y:scroll;height:88%;}
 .left-menu ul li{line-height:60px;width:100%;text-align:center;font-size:14px;padding:3px 0;color:#333;border-bottom:1px dashed #ddd;}
 .left-menu ul li.active{color:#f34b3f !important;background-color:#fff;}
-.right-con{ display:none;width:75%;float:right;overflow-y:scroll;background:#fff;position:relative;height:25rem;}
-.con .con-active{display:block;    padding-bottom: 40px;}
+.right-con{ display:none;
+    width:75%;right: 0px;
+    overflow-y:scroll;background:#fff;
+    position:fixed;height:88%;}
+.con .con-active{display:block;}
 .right-con li{position:relative;height:100px;border-bottom:1px solid #e7eaeb;border-top:1px solid #fff;padding-bottom:8px;margin-bottom:2px;}
 .right-con li .menu-img{position:absolute;margin-left:10px;top:15px;border-radius:3px;cursor:pointer;}
 .right-con li .menu-img img{height:70px;width:70px;vertical-align:middle;border:0;}
@@ -307,7 +317,11 @@ h1,h2,h3,h4,h5,h6{font-weight: normal;}
 .right-con li .btn button.add,.subCount dd .btn button.ad{margin-left:-10px;}
 .right-con li .btn button.add strong,.btn button.ad strong,.list-content .btn button.ad2 strong{background:url(../img/add.png) no-repeat;background-size:22px 22px;}
 .right-con li .btn .price,.subCount dd .btn .price{display:none;}
-.footer{display:block;position:fixed;width:100%;z-index:3;bottom:0px;color:#fff;line-height:40px;font-size:15px;border-top:1px solid #e2e2e2;height:40px;}
+.footer{    position: fixed;
+    display:block;width:100%;z-index:9;
+    bottom:0px;color:#fff;line-height:40px;
+    font-size:15px;border-top:1px solid #e2e2e2;
+    height:6%;}
 .footer .left{float:left;width:75%;background:#da4e3c;text-align:center;position:relative;}
 .left .tupian{position:absolute;left: 7%;top: -32%;}
 @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5/SE */
@@ -561,9 +575,6 @@ button:focus{
 .time span{width: 100%;height: 50px;font-size: 18px;display: block;line-height: 50px;color: #1a1a1a;font-weight: bold;text-align:center;border-bottom: 1px solid #e2dede;}
 .time input{border:none;height:30px;width: 60%;font-size: 15px;color: #1a1a1a;padding-left: 5%;outline:none;}
 /*日期css*/
-body {
-    position: static;
-}
 #date{left:0px !important;}
 [name='jHsDate'] {
     position: absolute;

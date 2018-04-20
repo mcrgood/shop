@@ -27,8 +27,9 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 
 <!--切换的内容部分-->
 <div class="content">
+
     <div class="m-box first-content active">
-        <div class="main">
+  <div class="main">
     <div class="left-menu"  id="left">
         <ul>
             {volist name="list" id="v"}
@@ -49,19 +50,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         </div>
         <div class="list-content"><ul></ul></div>
     </div>
-</div>
-<div class="footer">  
-	<div class="left">
-		<div class="tupian">
-			<img src="__YUDING__/img/money_03.png"/>
-		</div>
-		已选：<span id="cartN"><span id="totalcountshow">0</span>份　总计：￥<span id="totalpriceshow">0</span></span>元  
-	</div>  
-	<div class="right">  
-		<a id="btnselect" class="xhlbtn  disable" href="javascript:void(0)">提交订单</a>  
-	</div>   
-</div>
-<div class="subFly">
+	<div class="subFly">
     <div class="up"></div>
     <div class="down">
         <a class="close" href="javascript:">
@@ -106,7 +95,21 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         </div>
     </div>
 </div>
-</form> 
+<div class="footer">  
+	<div class="left">
+		<div class="tupian">
+			<img src="__YUDING__/img/money_03.png"/>
+		</div>
+		已选：<span id="cartN"><span id="totalcountshow">0</span>份　总计：￥<span id="totalpriceshow">0</span></span>元  
+	</div>  
+	<div class="right">  
+		<a id="btnselect" class="xhlbtn  disable" href="javascript:void(0)">提交订单</a>  
+	</div>   
+</div>
+</div>
+</div>
+
+
 <script type="text/javascript" src="__YUDING__/js/jquery.min.js"></script>
 <script type="text/javascript" src="__YUDING__/js/add.js"></script>
 <script type="text/javascript" src="__YUDING__/js/vue.min.js"></script>
@@ -151,7 +154,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
     }
 </script>
 <!-- ajax页面 -->
-</div>
+
     <div class="m-box second-content"><!--包间-->
         <div class="bigest">
             <div class="seller"><span>{$names}</span></div>
