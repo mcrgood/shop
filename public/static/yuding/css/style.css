@@ -282,11 +282,13 @@ h1,h2,h3,h4,h5,h6{font-weight: normal;}
     clear: both;
     font-size: 32px;
 }
-.main{overflow:hidden;}
-.left-menu{width:25%;left: 0px;background-color:#eee;position:fixed;overflow-y:scroll;height: 30rem;}
+.main{height: auto;
+    width: 100%;
+    margin: auto;}
+.left-menu{width:25%;left: 0px;background-color:#eee;position:fixed;overflow-y:scroll;height: 25rem;}
 .left-menu ul li{line-height:60px;width:100%;text-align:center;font-size:14px;padding:3px 0;color:#333;border-bottom:1px dashed #ddd;}
 .left-menu ul li.active{color:#f34b3f !important;background-color:#fff;}
-.right-con{ display:none;width:75%;float:right;overflow-y:scroll;background:#fff;position:relative;height:30rem;}
+.right-con{ display:none;width:75%;float:right;overflow-y:scroll;background:#fff;position:relative;height:25rem;}
 .con .con-active{display:block;    padding-bottom: 40px;}
 .right-con li{position:relative;height:100px;border-bottom:1px solid #e7eaeb;border-top:1px solid #fff;padding-bottom:8px;margin-bottom:2px;}
 .right-con li .menu-img{position:absolute;margin-left:10px;top:15px;border-radius:3px;cursor:pointer;}
