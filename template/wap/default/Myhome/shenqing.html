@@ -63,7 +63,7 @@
 <form action="" method="post" enctype="multipart/form-data" onsubmit="return check();">
 
 	<table class="intake-tab">
-		<tr>
+		<!-- <tr>
 			<td width="18%"><span>*</span>选择分类</td><td width="80%">
 				<select name='leixing' id="category">
 					<option value="0"></option>
@@ -75,7 +75,7 @@
 					<option value="6">其他</option>
 				</select>
 			</td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td><span>*</span>商家名称</td><td><input type="text" placeholder="2-17个字，请输入" name="names" id="name" /></td>
 		</tr>
@@ -152,7 +152,6 @@
                     $('#con_cateid').val(con_cateid);
                     $('#fanwei').empty().text(info);
                     $('#oul_1').css({"display":"none"});
-                    // layer.msg($('#con_cateid').val());
                  })
             },'json')
         

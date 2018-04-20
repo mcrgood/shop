@@ -23,6 +23,15 @@
     #takepicture{width: 100% !important;height: 32px !important;border:none !important; background: url(__INDEX__/images/camera_03.png) no-repeat !important;display: inline-block !important;float: right !important;outline: none !important;padding-left: 0px !important;opacity: 0;}
     .images{width: 100%;height: auto;text-align: center;}
     #preview{max-width: 100%;height: auto;display: inline-block;margin:auto;}
+     #oul_1 li ul li{text-align: center;height: 30px;line-height: 30px;}
+    #oul_1 li label{    
+    width: 100%;
+    height: 35px;
+    display: block;
+    line-height: 35px;
+    color: #f53729;
+    font-size: 16px;
+}
 </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -54,7 +63,7 @@
 <form action="" method="post" enctype="multipart/form-data" onsubmit="return check();">
 
     <table class="intake-tab">
-        <tr>
+       <!--  <tr>
             <td width="18%"><span>*</span>选择分类</td><td width="80%">
                <select name='leixing' id="category">
                 <option value="1" {if condition="$shopinfo.leixing eq 1"}selected="selected"{/if}>餐饮</option>
@@ -65,7 +74,7 @@
                 <option value="6" {if condition="$shopinfo.leixing eq 6"}selected="selected"{/if}>其他</option>
             </select>
             </td>
-        </tr>
+        </tr> -->
         <tr>
             <td><span>*</span>商家名称</td><td><input type="text" placeholder="2-17个字，请输入" value="{$shopinfo.names}" name="names" id="name" /></td>
         </tr>
@@ -104,8 +113,8 @@
         </tr>
         <tr>
             <td width="18%"><span>*</span>营业范围</td><td width="80%" style="text-align:center">
-            <input id="con_cateid" name="business_scope" type="hidden" value="" />
-            <span id="fanwei" value="">请选择</span>
+            <input id="con_cateid" name="business_scope" type="hidden" value="{$shopinfo['business_scope']}" />
+            <span id="fanwei" value="">{$shopinfo['scope_name']|default='请选择'}</span>
                 <ul style="display:none" id="oul_1">
                     {volist name="scope" id="v"}  
                         <li>
@@ -174,7 +183,17 @@
     </div>
 </div>
  <script type="text/javascript">
+
     $(function(){
+
+        $('#fanwei').click(function(){
+            $(this).next().toggle(900);
+        });
+        $("#oul_1>li>label").click(function(){
+            $(this).next().toggle(700);
+        });
+
+        //选择营业范围
         $(".label1").on('click',function(){
             var values = $(this).attr('value');
             var url = "{:url('Myhome/findSecondCate')}";
@@ -346,6 +365,7 @@
                 var regs = /^1[3456789]{1}\d{9}$/;   //手机号正则
                 var phone_reg = /^0[1-9]{2,3}[1-9]\d{5,7}$/;  //座机号码正则
                 var business_hours = $('#business_hours').val();
+                var con_cateid = $('#con_cateid').val();
                 var category = $('#category').val();
                 var seleAreaNext = $('#seleAreaNext').val();
                 var seleAreaThird = $('#seleAreaThird').val();
@@ -422,6 +442,13 @@
             layer.msg('请输入营业时间');
 
             $("#business_hours").focus();
+
+            return false;
+        }
+        if(!con_cateid){
+            layer.msg('请选择营业范围');
+
+            $("#thumb").focus();
 
             return false;
         }

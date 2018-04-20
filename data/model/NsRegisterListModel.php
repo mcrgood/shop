@@ -21,7 +21,7 @@ use data\model\BaseModel as BaseModel;
  *
  */
 class NsRegisterListModel extends BaseModel {
-    protected $table = 'ns_goods_login';
+    protected $table = 'ns_shop_message';
     protected $rule = [
         'id'  =>  '',
     ];
@@ -44,7 +44,7 @@ class NsRegisterListModel extends BaseModel {
     {
         //设置查询视图
         $viewObj = $this->alias('a')
-        ->join('ns_shop_message s','a.id = s.userid','left')
+        ->join('ns_goods_login s','s.id = a.userid','left')
         ->field('a.*,s.*');
         $list = $this->viewPageQuery($viewObj, $page_index, $page_size, $condition, $order);
         return $list;
@@ -58,7 +58,7 @@ class NsRegisterListModel extends BaseModel {
     public function getRegisterCount($condition)
     {
         $viewObj = $this->alias('a')
-        ->join('ns_shop_message s','a.id = s.userid','left')
+        ->join('ns_goods_login s','s.id = a.userid','left')
         ->field('a.*,s.*');
         $count = $this->viewCount($viewObj,$condition);
         return $count;

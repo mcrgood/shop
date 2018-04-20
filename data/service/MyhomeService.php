@@ -70,27 +70,9 @@ class MyhomeService extends BaseService{
         $myhome = new NsRegisterListModel();
         $result = $myhome->getRegisterList($page_index, $page_size, $condition, $order);
         foreach ($result['data'] as $k => $v) {
-            if($result['data'][$k]['leixing']==1){
-                $v['leixing'] = '餐饮';
-            }elseif($result['data'][$k]['leixing']==2){
-                $v['leixing'] = '酒店';
-            }
-            elseif($result['data'][$k]['leixing']==3){
-                $v['leixing'] = '养生';
-            }
-            elseif($result['data'][$k]['leixing']==4){
-                $v['leixing'] = 'KTV';
-            }
-            elseif($result['data'][$k]['leixing']==5){
-                $v['leixing'] = '汽车';
-            }
-            elseif($result['data'][$k]['leixing']==6){
-                $v['leixing'] = '其他';
-            }
-            else{
-                $v['leixing'] = '出错X';
-            }
-        }
+            $result['data'][$k]['leixing'] = db('ns_consumption')->where('con_cateid',$v['leixing'])->value('con_cate_name');
+            $result['data'][$k]['business_scope'] = db('ns_consumption')->where('con_cateid',$v['business_scope'])->value('con_cate_name');
+        } 
         return $result;
     }
 
