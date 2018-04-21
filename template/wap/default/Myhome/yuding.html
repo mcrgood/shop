@@ -193,13 +193,13 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         };  
     </script>
     <div class="tuijian">
-        <span>选择场景</span>
+        <span>推荐</span>
         <div class="tj_pic">
             <ul>
                 {volist name="seat_list" id="v"}
-                    {if $v.seatimg eq true}
-                        <li><img width="168.75" height="126.56" src="{$v.seatimg}"/></li>
-                    {/if}
+                {if $v.seatimg eq true}
+                    <li><img width="168.75" height="126.56" src="{$v.seatimg}"/></li>
+                {/if}
                 {/volist}
             </ul>
         </div>
