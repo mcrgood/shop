@@ -1315,7 +1315,7 @@ class Myhome extends Controller
         }else{
             //查询订单信息
             $sid = input("param.sid");
-            $row = db("ns_goods_yuding")->alias("a")->join("ns_shop_message m",'a.shop_id=m.id')->where("sid",$sid)->field('a.*,m.names')->find();
+            $row = db("ns_goods_yuding")->alias("a")->join("ns_shop_message m",'a.shop_id=m.userid')->where("sid",$sid)->field('a.*,m.names')->find();
             $goods[0] = explode('|', $row['goodsname']);
             $goods[1] = explode('|', $row['goodsnum']);
             $goods[2] = explode('|', $row['goodsprice']);
@@ -1357,18 +1357,22 @@ class Myhome extends Controller
                 $info = ['status' => 0,'msg' => '订单信息有误，请重新提交！'];
             }else{
                 $ordermessage = db("ns_goods_yuding")->where("sid",$sid)->find(); //根据订单号查询订单详情
-                $business_id = db("ns_shop_message")->where("id",$ordermessage['shop_id'])->value('userid'); //商家ID
                 $data['out_trade_no'] = $sid; //订单号 唯一
                 $data['type'] = 6; //type=6为线下预定消费状态
                 $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
                 $data['pay_body'] = '线下预定消费'; 
                 $data['pay_detail'] = '线下预定消费';
                 $data['create_time'] = time();  //创建时间
-                $data['business_id'] = $business_id; //商家ID
+                $data['business_id'] = $ordermessage['shop_id']; //商家ID
                 $data['pay_money'] = $totalPrice; // 订单总金额
                 $res = db('ns_order_payment')->insert($data);
                 if($res !== false){
-                    $info = ['status' => 1,'msg' => '即将跳转付款页面！','out_trade_no' => $sid,'business_id' => $business_id];
+                    $info = [
+                        'status' => 1,
+                        'msg' => '即将跳转付款页面！',
+                        'out_trade_no' => $sid,
+                        'business_id' => $ordermessage['shop_id']
+                    ];
                 }else{
                     $info = ['status' => 0,'msg' => '订单信息有误，请重新提交！'];
                 }
