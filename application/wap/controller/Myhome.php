@@ -664,8 +664,15 @@ class Myhome extends Controller
         $this->assign('row',$row);
         return view($this->style . 'Myhome/dingdan_detail');
     }
+    //预定酒店页面
+    public function hotel(){
+        return view($this->style . 'Myhome/hotel');
+    }
 
-
+    //预定酒店详情页面
+    public function hotelorderDetail(){
+        return view($this->style . 'Myhome/hotelorderDetail');
+    }
 
     //退出登录
 	public function out(){
