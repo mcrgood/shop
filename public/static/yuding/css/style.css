@@ -9,49 +9,30 @@ html,body{
 .tab-header{
     width: 100%;
     margin: 0px auto;
-    height: 40px;
-	border-bottom: 1px solid #eae5e5;
-    height: 6%;
+    height: 41px;
+    background-color: #fff;
     
-}
-.tab-header ul{
-    height: 6%;
-    width: 100%;
-    position: fixed;
-    z-index: 999;
 }
 .tab-header ul li{
     list-style-type: none;
     float: left;
     width: 33.3%;
-    line-height: 40px;
+    line-height: 41px;
     cursor: pointer;
 	margin:auto;
 	text-align: center;
-	font-size:18px;
+	font-size:18px;    
 }
-
-
-.first-li{
-    background-color: #fff;
-}
-.second-li{
-    border-left: none;
-	background-color: #fff;
-}
-
 
 .content{
     margin: 0px auto;
+    width: 100%;
+    height: auto;
 }
-
 
 .first-content{
     color: #666666;
 }
-
-
-
 
 /*控制列表选项卡活动状态时的背景颜色*/
 .tab-header .active{
@@ -66,6 +47,7 @@ html,body{
 }
 .first-content.active, .second-content.active {
     display: block;
+    border-top: 1px solid #eae5e5;
 }
 .header {
     position: relative;
@@ -285,20 +267,29 @@ html,body{
     clear: both;
     font-size: 32px;
 }
-.main{    width: 100%;
-    height: auto;
+.main{    
+    width: 100%;
+    height: 100%;
     margin: 0 auto;
 }
-.left-menu{width:25%;
+.left-menu{
+    width:25%;
     left: 0px;
     background:#f2f2f2;
-    position:fixed;overflow-y:scroll;height:88%;}
+    position:fixed;
+    overflow:auto;
+    height:100%;
+}
 .left-menu ul li{line-height:60px;width:100%;text-align:center;font-size:14px;padding:3px 0;color:#333;border-bottom:1px dashed #ddd;}
 .left-menu ul li.active{color:#f34b3f !important;background-color:#fff;}
-.right-con{ display:none;
+.right-con{ 
+    display:none;
     width:75%;right: 0px;
-    overflow-y:scroll;background:#fff;
-    position:fixed;height:88%;}
+    overflow:auto;
+    background:#fff;
+    position:fixed;
+    height:100%;
+}
 .con .con-active{display:block;}
 .right-con li{position:relative;height:100px;border-bottom:1px solid #e7eaeb;border-top:1px solid #fff;padding-bottom:8px;margin-bottom:2px;}
 .right-con li .menu-img{position:absolute;margin-left:10px;top:15px;border-radius:3px;cursor:pointer;}
@@ -317,11 +308,18 @@ html,body{
 .right-con li .btn button.add,.subCount dd .btn button.ad{margin-left:-10px;}
 .right-con li .btn button.add strong,.btn button.ad strong,.list-content .btn button.ad2 strong{background:url(../img/add.png) no-repeat;background-size:22px 22px;}
 .right-con li .btn .price,.subCount dd .btn .price{display:none;}
-.footer{    position: fixed;
-    display:block;width:100%;z-index:9;
-    bottom:0px;color:#fff;line-height:40px;
-    font-size:15px;border-top:1px solid #e2e2e2;
-    height:6%;}
+.footer{    
+    position: fixed;
+    display:block;
+    width:100%;
+    z-index:9;
+    bottom:0px;
+    color:#fff;
+    line-height:40px;
+    font-size:15px;
+    border-top:1px solid #e2e2e2;
+    height:5%;
+}
 .footer .left{float:left;width:75%;background:#da4e3c;text-align:center;position:relative;}
 .left .tupian{position:absolute;left: 7%;top: -32%;}
 @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5/SE */
@@ -565,8 +563,8 @@ button:focus{
 .footer .pic img{width: 35px;height: 33px;margin-top: 3px;margin-left:5px;}
 
 /*包间*/
-.bigest{width: 100%;height: auto;margin: 0 auto;background:#f3f2f2;}
-.seller{width: 100%;height: 50px;margin: 0 auto;border-bottom: 1px solid #e2dede;}
+.bigest{width: 100%;height: auto;margin: 0 auto;background:#f3f2f2;padding-top: 10px;}
+.seller{display: none; width: 100%;height: 50px;margin: 0 auto;border-bottom: 1px solid #e2dede;}
 .seller span{width: 100%;height: 50px;font-size: 18px;display:block;line-height: 50px;color: #1a1a1a;font-weight: bold;text-align:center;}
 .common{width: 100%;height: auto;margin: 0 auto;border-bottom: 1px solid #e2dede;}
 .common span{width: 100%;height: 50px;font-size: 18px;display: block;line-height: 50px;color: #1a1a1a;font-weight: bold;text-align:center;border-bottom: 1px solid #e2dede;}
