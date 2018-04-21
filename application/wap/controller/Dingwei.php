@@ -16,7 +16,6 @@ use data\extend\org\wechat\Jssdk;
 
 class Dingwei extends BaseController{
 	public function index(){
-
 		ob_clean();//清除缓存
         //查出当前分类的东东(判断审核状态)
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");

@@ -185,7 +185,7 @@ ul li{list-style: none;}
   					<span>支付方式</span>
   					<span>{$row.pay_type}</span>
   				</li>
-         {if $row['message'] neq 0} 
+         {if $row.message eq true} 
           <li>
             <span>预定留言</span>
           </li>

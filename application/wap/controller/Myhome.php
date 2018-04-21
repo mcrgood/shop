@@ -659,7 +659,7 @@ class Myhome extends Controller
             $totalPrice += $v; //计算总价钱
         }
         $row['add_time'] = date('Y-m-d H:i',$row['add_time']);
-        $row['message'] = $row['message'] ? $row['message'] : 0;
+        // dump($row);die;
         $this->assign('totalPrice',$totalPrice);
         $this->assign('row',$row);
         return view($this->style . 'Myhome/dingdan_detail');
