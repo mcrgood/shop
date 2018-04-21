@@ -1231,8 +1231,7 @@ class Myhome extends Controller
         $this->assign("list",$list);
         $this->assign("names",$names);
         //包间选择系统查询
-        $seat_id = db("ns_shop_message")->where("id",$ids)->value('userid');
-        $seat_list = db("ns_shop_seat")->where("shopid",$seat_id)->select();
+        $seat_list = db("ns_shop_seat")->where("shopid",$ids)->select();
         $this->assign("seat_list",$seat_list);
         return view($this->style . 'Myhome/yuding');
     }
