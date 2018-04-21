@@ -22,7 +22,8 @@ a{
 .tab-header{
     width: 100%;
     margin: 0px auto;
-    height: 5.9%;
+    height: 6%;
+    background-color: #fff;
     
 }
 .tab-header ul li{
@@ -33,6 +34,30 @@ a{
 	font-size:1rem;
     background-color: #fff;
     height: 100%;
+}
+@media only  screen and (min-device-width:361px) and (max-device-width:480px){  /*奇葩安卓机(一般为这个)dpr统一为1 Nexus 5X,6p ,最后一个and可写可不写(不写测试有效)*/
+    .tab-header ul li{
+    line-height: 42px;
+}
+}
+@media (device-height:667px) and (-webkit-min-device-pixel-ratio:2){
+
+/* 兼容iphone6、iphone7、iphone8*/
+    .tab-header ul li{
+    line-height: 36px;
+}
+
+}
+@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5/SE */
+  .tab-header ul li{
+    line-height: 32px;
+}
+.footer .left{
+    line-height: 41px;
+}
+.footer .xhlbtn{
+    line-height: 41px !important;
+}
 }
 .tab-header ul li:nth-child(1){
     width: 23%;
@@ -48,7 +73,7 @@ a{
 }
 .content{
     width: 100%;
-    height: 94.1%;
+    height: 100%;
     margin: 0px auto;
 }
 .first-content{

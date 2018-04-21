@@ -15,6 +15,8 @@
 input[type=button], input[type=submit], input[type=file], button { cursor: pointer; -webkit-appearance: none; } 
 </style>
 <body>
+<!--切换的内容部分-->
+<div class="content">
 <!--列表切换的选项卡-->
 <div class="tab-header">
     <ul>
@@ -23,12 +25,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         <li class="third-li">评价</li>
     </ul>
 </div>
-
-
-<!--切换的内容部分-->
-<div class="content">
-
-    <div class="m-box first-content active" style="height:100%;">
+<div class="m-box first-content active" style="height:94%;">
   <div class="main">
     <div class="left-menu"  id="left">
         <ul>
@@ -95,17 +92,17 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         </div>
     </div>
 </div>
-<div class="footer">  
-	<div class="left">
-		<div class="tupian">
-			<img src="__YUDING__/img/money_03.png"/>
-		</div>
-		已选：<span id="cartN"><span id="totalcountshow">0</span>份　总计：￥<span id="totalpriceshow">0</span></span>元  
-	</div>  
-	<div class="right">  
-		<a id="btnselect" class="xhlbtn  disable" href="javascript:void(0)">提交订单</a>  
-	</div>   
 </div>
+<div class="footer">  
+    <div class="left">
+        <div class="tupian">
+            <img src="__YUDING__/img/money_03.png"/>
+        </div>
+        已选：<span id="cartN"><span id="totalcountshow">0</span>份　总计：￥<span id="totalpriceshow">0</span></span>元  
+    </div>  
+    <div class="right">  
+        <a id="btnselect" class="xhlbtn  disable" href="javascript:void(0)">提交订单</a>  
+    </div>   
 </div>
 </div>
 
@@ -155,7 +152,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 </script>
 <!-- ajax页面 -->
 
-    <div class="m-box second-content" style="height:100%;"><!--包间-->
+    <div class="m-box second-content" style="height:94%;"><!--包间-->
         <div class="bigest">
             <div class="seller"><span>{$names}</span></div>
             <form id="form" class="common">
@@ -210,7 +207,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         </form> 
          </div>
 </div>
-    <div class="m-box second-content" style="height:100%;">
+    <div class="m-box second-content" style="height:94%;">
         <p>这是第三个页面</p>
     </div>
 </div>
