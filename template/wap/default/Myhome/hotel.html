@@ -9,472 +9,45 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="format-detection" content="telephone=no">
 <script type="text/javascript" src="__STATIC__/js/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/swiper.min.js"></script>
 <script src="__PUBLIC__/static/layui/layui.all.js"></script>
+<link rel="stylesheet" href="__STATIC__/css/hotel.css" />
+<link rel="stylesheet" href="__STATIC__/css/swiper.min.css" />
 <style>
-* {
-  margin:0px;
-  padding:0px;
-}
-ul li {
-  list-style: none;
-}
-a{
-  text-decoration: none;
-  -webkit-tap-highlight-color:rgba(255,255,255,0);
-}
-input[type=button], input[type=submit], input[type=file],button { cursor: pointer; outline:none;-webkit-appearance: none; } 
-.content-top{
-  width: 100%;
-  height: auto;
-  margin: auto;
-}
-.banner {
-  width:100%;
-  height:200px;
-  margin:0 auto;
-  position:relative;
-  overflow:hidden;
-  cursor:pointer;
-}
-.banner ul {
-  list-style:none;
-  width:600%;
-  height:200px;
-  position:absolute;
-}
-.banner ul li {
-  width:500px;
-  height:200px;
-  float:left;
-  position: relative;
-}
-.banner ul li img {
-  width:100%;
-  height:100%;
-}
-.banner ul li span{
-  display: block;
-  position: absolute;
-  top: 80%;
-  left: 5%;
-  font-size: 1rem;
-  color: #fff;
-  z-index: 99;
-}
-.banner ul li em{
-  font-style: normal;
-  display: block;
-  position: absolute;
-  top: 80%;
-  right: 30%;
-  font-size: 1rem;
-  color: #fff;
-  z-index: 99;
-}
-.banner .arrow .left,.banner .arrow .right {
-  width:40px;
-  height:80px;
-  background:#000000;
-  opacity:0.3;
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-family:"宋体";
-  font-size:52px;
-  color:#fff;
-  line-height:80px;
-  text-align:center;
-}
-.arrow .left {
-  left:0px;
-}
-.arrow .right {
-  right:0px;
-}
-.banner .arrow {
-  display:none;
-}
-/*鼠标经过盒子，让箭头显示出来*/
-.banner:hover .arrow {
-  display:block;
-  cursor:pointer;
-}
-/*小圆点样式*/
-.banner ol {
-  display: none;
-  list-style:none;
-  width:200px;
-  height:20px;
-  background:#222222;
-  position:absolute;
-  bottom:50px;
-  left:50%;
-  transform:translateX(-50%);
-  /*opacity:0.3;
-  */
-        border-radius:10px;
-}
-.banner ol li {
-  width:10px;
-  height:10px;
-  background:#fff;
-  border-radius:50%;
-  float:left;
-  margin-left:21px;
-  margin-top:5px;
-  cursor:pointer;
-}
-.banner ol .now {
-  background:aqua;
-}
-/*上面的为轮播图css*/
-.comment_1{
-  width: 100%;
-  height: 80px;
-}
-.comment_1 .content-top{
-  width: 100%;
-  height: 50px;
-}
-.content-top span{
-  display: block;
-  float: left;
-  width: 45%;
-  color: #ff4444;
-  font: 1.1rem/50px '微软雅黑';
-  text-align: center;
-}
-.content-top span:nth-child(2){
-  text-align: left;
-}
-.content-top span i{
-  font-style: normal;
-  font-size: 1.4rem;
-}
-.content-bottom{
-  width: 95%;
-  height: 30px;
-  overflow: hidden;
-  padding-left: 5%;
-  border-bottom: 1px solid #ccc;
-}
-.content-bottom li{
-  display: inline-block;
-  width: 20%;
-  color: #ff4444;
-  font: .8rem/20px "微软雅黑";
-  border-radius: 8px;
-  background: #fff6f6;
-  text-align: center;
-}
-.order_big{
-  width: 100%;
-  height: 100%;
-  margin: auto;
-}
-.content-order{
-  width: 100%;
-  height: 60px;
-  margin: auto;
-  border-bottom: 1px solid #ccc;
-}
-.content-order .map_left{
-  height: 60px;
-  width: 70%;
-  -webkit-box-pack:center;
-  -webkit-box-align:center;
-  display: -webkit-box;
-  float: left;
-}
-.map_left span{
-    width: 100%;
-    line-height: 60px;
-    display: block;  
-    text-align: center;
-    font-size: 1rem;
-    color: #333333;
-}
-.map_right{
-  width: 25%;
-  height: 60px;
-  float: right;
-  -webkit-box-pack:center;
-  -webkit-box-align:center;
-  display: -webkit-box;
-
-}
-.map_right a{
-  display: block;
-  border-left: 1px solid #cccccc;
-  color: #ff8383;
-  padding-left: 10px;
-  background: #f9f8f1;
-}
-.order_time{
-  width: 100%;
-  height: 60px;
-  margin: auto;
-  border-bottom: 1px solid #ccc;
-}
-.time_left{
-  float: left;
-  width: 40%;
-  height: 60px;
-}
-.time_left span{
-  width: 95%;
-  padding-left: 5%;
-  display: block;
-  color: #999999;
-  font: .8rem/30px "微软雅黑";
-  text-align: center;
-}
-.time_left span:nth-child(2){
-  font-size: 1rem;
-  color: #000;
-}
-.time_right{
-  float: left;
-  width: 40%;
-  height: 60px;
-}
-.time_right span{
-  width: 95%;
-  padding-left: 5%;
-  display: block;
-  color: #999999;
-  font: .8rem/30px "微软雅黑";
-  text-align: center;
-}
-.time_right span:nth-child(2){
-  font-size: 1rem;
-  color: #000;
-}
-.time_over{
-  float: left;
-  width: 20%;
-  height: 60px;
-  -webkit-box-pack:center;
-  -webkit-box-align:center;
-  display: -webkit-box;
-}
-.time_over a{
-  color: #ff6363;
-}
-.order_room{
-  height: 130px;
-  width: 95%;
-  margin: auto;
-  padding-left: 5%;
-  border-bottom: 1px solid #ccc;
-}
-.order_singleroom{
-  width: 65%;
-  height:130px;
-  float: left; 
-}
-.order_singleroom span{
-  width: 100%;
-  display: block;
-  line-height: 20px;
-  margin-top: 13px;
-}
-.order_singleroom span:nth-child(1){
-  color: #000;
-  font-size: 1.2rem;
-}
-.order_singleroom span:nth-child(2){
-  color: #999999;
-  font-size: .9rem; 
-}
-.order_singleroom span:nth-child(3){
-  color: #eb5d25;
-  font-size: 1.3rem; 
-}
-.order_button{
-  width: 35%;
-  float: right;
-  height: 130px;
-}
-.order_button input{
-  width: 80%;
-  height: 40px;
-  background: #fe622f;
-  color: #fff;
-  outline: none;
-  border: none;
-  font-size: 1.2rem;
-  margin: 38% 10% 0 10%;
-  border-radius: 3px;
-}
-.special_room{
-  width: 100%;
-  text-align: center;
-  margin-top: 15%;
-}
-.order_button_2{
-  width: 35%;
-  float: right;
-  height: 130px;
-}
-.order_button_2 span{
+  .hotel_relax ul li span{
     display: block;
-    width: 80%;
-    font-size: 1rem;
-    color: #fe622f;
-    margin: auto;
-    line-height: 30px;
-}
-.order_button_2 input{
-  width: 80%;
-  height: 40px;
-  background: #fe622f;
-  color: #fff;
-  outline: none;
-  border: none;
-  font-size: 1.2rem;
-  border-radius: 3px;
-}
-.hotel_relax{
-  width: 100%;
-  height: 70px;
-  margin: auto;
-  border-bottom: 1px solid #ccc;
-}
-.hotel_relax ul{
-  width: 80%;
-  text-align: center;
-  float: left;
-}
-.hotel_relax ul li{
-  width: 20%;
-  display: inline-block;
-  height: 70px; 
-}
-.hotel_relax ul li span{
-  display: block;
-    height: 40px;
-    width: 100%;
-    background-image: url(__STATIC__/images/hotelimg/sjxq_03.png);
-    margin-top: 5px;
-}
-.hotel_relax ul li p{
-  font-size: .1rem;
-  color: #a9a9a9;
-}
-.hotel_relax a{
-  display: block;
-  width: 20%;
-  float: right;
-  height: 70px;
-  text-align: center;
-  line-height: 70px;
-  color: #ccc;
-  font-size: 1rem;
-}
-#item1{
-background-position: 0 5px;
-}
-#item2{
-background-position: 248px 3px;
-}
-#item3{
-background-position: 150px 4px; 
-}
-#item4{
-background-position: 56px 3px; 
-}
-.tuijian_hotel{
-  width: 100%;
-  height: auto;
-}
-.tuijian_span{
-  width: 95%;
-  padding-left: 5%;
-  display: block;
-  color: #666666;
-  font-size: 1rem;
-  height: 40px;
-  line-height: 40px;
-}
-.tuijian_hotel ul li{
-  width: 97%;
-  padding-left: 3%;
-  height: 130px;
-  border-bottom: 1px solid #ccc;
-}
-.tuijian_hotel ul li img{
-  width: 30%;
-  height: 110px;
-  float: left;
-  margin: 10px 0;
-}
-.tuijian_comment{
-  width: 55%;
-  height: 110px;
-  float: left;
-  padding: 10px 0;
-}
-.tuijian_comment span{
-  display: block;
-  float: left;
-  width: 97%;
-  padding-left: 3%;
-  font-size: .8rem;
-  line-height: 22px;
-}
-.tuijian_comment span:nth-of-type(1){
-  font-size: 1rem;
-}
-.tuijian_comment span:nth-of-type(2){
-  color:#a4bcd6; 
-}
-.tuijian_right{
-  width: 15%;
-  float: right;
-  height: 130px;
-  text-align: center;
-  -webkit-box-pack:center;
-  -webkit-box-align:center;
-  display: -webkit-box;
-}
-.tuijian_right span{
-  display: block;
-  width: 100%;
-  color: #fe5350;
-}
+      height: 40px;
+      width: 100%;
+      background-image: url(__STATIC__/images/hotelimg/sjxq_03.png);
+      margin-top: 5px;
+  }
 </style>
 </head>
 <body>
-<div class="content-top">
-  <div class="banner">
-    <ul>
-        <li><img src="http://www.jq22.com/img/cs/500x300-1.png"><span>联盟大酒店1</span><em>1/5</em></li>
-        <li><img src="http://www.jq22.com/img/cs/500x300-2.png"><span>联盟大酒店2</span><em>2/5</em></li>
-        <li><img src="http://www.jq22.com/img/cs/500x300-3.png"><span>联盟大酒店3</span><em>3/5</em></li>
-        <li><img src="http://www.jq22.com/img/cs/500x300-4.png"><span>联盟大酒店4</span><em>4/5</em></li>
-        <li><img src="http://www.jq22.com/img/cs/500x300-5.png"><span>联盟大酒店5</span><em>5/5</em></li>
-        <!--在轮播图的最后面加上一张假的图片，就是第一张。目的，最后一张换成第一张的时候，用户察觉不到-->
-        <li><img src="http://www.jq22.com/img/cs/500x300-1.png"><span>联盟大酒店5</span><em>1/5</em></li>
-    </ul>
-    <div class="arrow">
-        <span class="left">&lt;</span>
-        <span class="right">&gt;</span>
+ <!-- Swiper -->
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="__STATIC__/images/adv_position/jifenzhongxin.jpg" width="100%" /></div>
+      <div class="swiper-slide"><img src="__STATIC__/images/adv_position/wapjifenzhongxin.png" width="100%"/></div>
     </div>
-    <!--存放小圆点的图片-->
-    <ol>
-        <li class="now"></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ol>
-</div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
+  <!-- Initialize Swiper -->
+  <script>
+    var mySwiper = new Swiper('.swiper-container', {
+    autoplay:true,//等同于以下设置
+    autoplay: {
+    delay: 3000,
+    stopOnLastSlide: false,
+    disableOnInteraction: true,
+    },
+});
+  </script>
   <div class="comment_1">
     <div class="content-top">
-      <!-- <span><i>4.8</i>分，棒极了！</span>
-      <span>99条评论</span> -->
+      <span><i>4.8</i>分，棒极了！</span>
+      <span>99条评论</span>
     </div>
     <div class="content-bottom">
       <ul>
@@ -519,15 +92,13 @@ background-position: 56px 3px;
   <div class="order_time">
     <div class="time_left">
       <span>入住</span>
-      <span>04月17日</span>
+      <input type="text" id="startDate"  placeholder="请选择入住时间" />
     </div>
     <div class="time_right">
       <span>离店</span>
-      <span>04月18日</span>
+      <input type="text" id="endDate"  placeholder="请选择离店时间" />
     </div>
-    <div class="time_over">
-      <a href="">共1晚</a>
-    </div>
+   
   </div>
 
 
@@ -538,19 +109,10 @@ background-position: 56px 3px;
       <span>￥98</span>
     </div>
     <div class="order_button">
-      <input type="button" value="预订" />
+      <input type="button" value="预定" class="reserve" />
     </div>
 </div>
-<div class="order_room">
-    <div class="order_singleroom">
-      <span>豪华单人间</span>
-      <span>不含早|有窗<br/>入住当天十二点前免费取消</span>
-      <span>￥98</span>
-    </div>
-    <div class="order_button">
-      <input type="button" value="预订" />
-    </div>
-</div>
+
 <div class="order_room">
     <div class="order_singleroom">
       <span>豪华单人间</span>
@@ -559,149 +121,153 @@ background-position: 56px 3px;
     </div>
     <div class="order_button_2">
       <div class="special_room">
-      <span>16号满房</span>
-      <input type="button" value="预订" style="background:#cccccc;" />
+      <span>当天满房</span>
+      <input type="button" value="预订" class="reserve" disabled style="background-color: #cccccc;" />
       </div>
     </div>
 </div>
-<div class="order_room">
-    <div class="order_singleroom">
-      <span>豪华单人间</span>
-      <span>不含早|有窗<br/>入住当天十二点前免费取消</span>
-      <span>￥76</span>
-    </div>
-    <div class="order_button_2">
-      <div class="special_room">
-      <span>16号满房</span>
-      <input type="button" value="预订" style="background:#cccccc;" />
+<div class="footer">
+      <div class="footer_money">
+        <span>已选择&nbsp;<b class="nums" style="color:#cc0045">0</b>&nbsp;间房</span> 
       </div>
-    </div>
+      <div class="footer_btn" style="background-color: #cccccc;">
+        <input type="button" value="确定订单" disabled style="background-color: #cccccc;border:none;color:#fff;" />
+      </div>
+  </div> 
 </div>
-<div class="order_room">
-    <div class="order_singleroom">
-      <span>豪华单人间</span>
-      <span>不含早|有窗<br/>入住当天十二点前免费取消</span>
-      <span>￥76</span>
-    </div>
-    <div class="order_button_2">
-      <div class="special_room">
-      <span>16号满房</span>
-      <input type="button" value="预订" style="background:#cccccc;" />
-      </div>
-    </div>
+<div class="shadow">
+    <p>大河向东流</p>
+    <span>×</span>
+    <input type="button" name="" id="" value="关闭">
 </div>
-
-
-<!-- <div class="tuijian_hotel">
-  <span class="tuijian_span">推荐酒店</span>
-  <ul>
-    <li>
-      <img src="__STATIC__/images/hotelimg/jiudian_03.png">
-      <div class="tuijian_comment">
-        <span>南昌XXX主题酒店</span>
-        <span>4.8分挺好的服务不错</span>
-        <span>123条点评</span>
-        <span>经济型</span>
-        <span>距离您0.4公里</span>
-      </div>
-      <div class="tuijian_right">
-        <span>￥216</span>
-      </div>
-    </li>
-  </ul>
-</div> -->
-</div>
-
 <script>
-$(function() {
-    // 把要操作的对象先获取到
-    var banner = $('.banner');
-    var Left = $('.left'); // alert(Left.length);
-    var Right = $('.right');
-    var Ul = $('.banner ul'); // alert(Ul.length);
-    var Width = $('.banner ul li').width(); //alert(Width);
-    var Point = $('.banner ol li'); // alert(Point.length);
-    var Index = 0; //用于记录点击的次数，图片的张数(计数器，记录了图片移动的张数)
-
-    //点击小圆点让图片移动
-    $.each(Point, function(index, value) { //如果此处我没有用each循环来写，那么我便需要用$(this).index()方法来获取图片的下标
-        //让点击的小圆点有class样式，其他li没有class样式
-        Point.eq(index).on('click', function() {
-            $(this).addClass('now').siblings().removeClass('now');
-            Ul.stop().animate({
-                'left': -index * Width
-            });
-            Index = index;
-            console.log(Index);
-            //alert(Index);
-        })
-    });
-
-    //  点击右箭头,ul往左跑
-    Right.on('click', function() {
-        //需要做一个判断，如果发现此时图片是最后一张图片，就不能继续执行了
-        //让index是图片的张数减一的时候,让index不继续加
-        if (Index >= 6) {
-            //让index变成0
-            Index = 0;
-            //                让ul的left值瞬间变成0
-            Ul.css('left', 0);
-        }
-        Index++;
-        Ul.stop().animate({
-            'left': -Index * Width
+   layui.use('laydate', function(){
+        var laydate = layui.laydate;
+       laydate.render({ 
+          elem: '#startDate'
+          //,type: 'date' //默认，可不填
         });
-
-        if (Index == 6) {
-            //因为在图片最后面添加了一张假图片，其实最后一张图片的时候，需要对应的是索引0的小圆点
-            Point.eq(0).addClass('now').siblings().removeClass('now');
-
-        } else {
-            Point.eq(Index).addClass('now').siblings().removeClass('now');
-        }
-
-    })
-
-    //点击左箭头,让Ul往右跑
-    Left.on('click', function() {
-        if (Index <= 0) {
-            //return; 此时不应该return,应该让index变成最大的值，left也变成最大的left
-            Index = 6;
-            Ul.css('left', -Index * Width);
-        }
-        Index--;
-        Ul.stop().animate({
-            'left': -Index * Width
+       laydate.render({ 
+          elem: '#endDate'
+          //,type: 'date' //默认，可不填
         });
-
-        if (Index == 6) {
-            //因为在图片最后面添加了一张假图片，其实最后一张图片的时候，需要对应的是索引0的小圆点
-            Point.eq(0).addClass('now').siblings().removeClass('now');
-        } else {
-            Point.eq(Index).addClass('now').siblings().removeClass('now');
-        }
-
     })
+   var flag = true;
+   $('.reserve').click(function(){
+      var startDate = $('#startDate').val();
+      var endDate = $('#endDate').val();
+      if(flag){
+        $('.nums').text(1)
+        flag = false;
+      }else{
+        $('.nums').text(0)
+        flag = true;
+      }
+      var num = $('.nums').text();
+      if(num != 0){
+        $('.footer_btn').css({"background-color":"#fe622f"});
+        $('.footer_btn>input').css({"background-color":"#fe622f"});
+      }else{
+        $('.footer_btn').css({"background-color":"#cccccc"});
+        $('.footer_btn>input').css({"background-color":"#cccccc"});
+      }
+   })
+
+
+// 通过queryselector获取可点击的元素
 
 
 
-    //调取Right方法，使其自动播放
-    var time = setInterval(function() {
-        Right.click();
-    }, 3000);
 
-    //鼠标移到banner中,自动播放停止
-    banner.mouseenter(function() {
-        clearInterval(time);
-    });
+// $(function() {
+//     // 把要操作的对象先获取到
+//     var banner = $('.banner');
+//     var Left = $('.left'); // alert(Left.length);
+//     var Right = $('.right');
+//     var Ul = $('.banner ul'); // alert(Ul.length);
+//     var Width = $('.banner ul li').width(); //alert(Width);
+//     var Point = $('.banner ol li'); // alert(Point.length);
+//     var Index = 0; //用于记录点击的次数，图片的张数(计数器，记录了图片移动的张数)
 
-    // 鼠标移出banner中,自动播放开始
-    banner.mouseleave(function() {
-        time = setInterval(function() {
-            Right.click();
-        }, 3000);
-    })
-})
+//     //点击小圆点让图片移动
+//     $.each(Point, function(index, value) { //如果此处我没有用each循环来写，那么我便需要用$(this).index()方法来获取图片的下标
+//         //让点击的小圆点有class样式，其他li没有class样式
+//         Point.eq(index).on('click', function() {
+//             $(this).addClass('now').siblings().removeClass('now');
+//             Ul.stop().animate({
+//                 'left': -index * Width
+//             });
+//             Index = index;
+//             console.log(Index);
+//             //alert(Index);
+//         })
+//     });
+
+//     //  点击右箭头,ul往左跑
+//     Right.on('click', function() {
+//         //需要做一个判断，如果发现此时图片是最后一张图片，就不能继续执行了
+//         //让index是图片的张数减一的时候,让index不继续加
+//         if (Index >= 6) {
+//             //让index变成0
+//             Index = 0;
+//             //                让ul的left值瞬间变成0
+//             Ul.css('left', 0);
+//         }
+//         Index++;
+//         Ul.stop().animate({
+//             'left': -Index * Width
+//         });
+
+//         if (Index == 6) {
+//             //因为在图片最后面添加了一张假图片，其实最后一张图片的时候，需要对应的是索引0的小圆点
+//             Point.eq(0).addClass('now').siblings().removeClass('now');
+
+//         } else {
+//             Point.eq(Index).addClass('now').siblings().removeClass('now');
+//         }
+
+//     })
+
+//     //点击左箭头,让Ul往右跑
+//     Left.on('click', function() {
+//         if (Index <= 0) {
+//             //return; 此时不应该return,应该让index变成最大的值，left也变成最大的left
+//             Index = 6;
+//             Ul.css('left', -Index * Width);
+//         }
+//         Index--;
+//         Ul.stop().animate({
+//             'left': -Index * Width
+//         });
+
+//         if (Index == 6) {
+//             //因为在图片最后面添加了一张假图片，其实最后一张图片的时候，需要对应的是索引0的小圆点
+//             Point.eq(0).addClass('now').siblings().removeClass('now');
+//         } else {
+//             Point.eq(Index).addClass('now').siblings().removeClass('now');
+//         }
+
+//     })
+
+
+
+//     //调取Right方法，使其自动播放
+//     var time = setInterval(function() {
+//         Right.click();
+//     }, 3000);
+
+//     //鼠标移到banner中,自动播放停止
+//     banner.mouseenter(function() {
+//         clearInterval(time);
+//     });
+
+//     // 鼠标移出banner中,自动播放开始
+//     banner.mouseleave(function() {
+//         time = setInterval(function() {
+//             Right.click();
+//         }, 3000);
+//     })
+// })
 </script>
 </body>
 </html>

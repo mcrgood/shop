@@ -9,257 +9,24 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="format-detection" content="telephone=no">
 <script type="text/javascript" src="__STATIC__/js/jquery-1.8.1.min.js"></script>
-<style>
-*{margin: 0;padding: 0;}
-input[type=button], input[type=submit], input[type=file],button { cursor: pointer; outline:none;-webkit-appearance: none; -webkit-tap-highlight-color:rgba(255,0,0,0);} 
-a{-webkit-tap-highlight-color:rgba(255,255,255,0);text-decoration: none;}
-ul li{list-style: none;}
-.big{
-	width: 100%;
-	height: 100%;
-	margin: auto;
-}
-.header{
-	width: 94%;
-	padding:0 3%;
-	background: #ff5858;
-	height: 170px;
-	-webkit-box-pack:center;
-  	-webkit-box-align:center;
-  	display: -webkit-box;
-}
-.header .content{
-	width: 94%;
-	padding:0 3%;
-	height: 120px;
-	background: #fff;
-}
-.content span{
-	width: 100%;
-	display: block;
-	line-height: 35px;
-	font-size: 1rem;
-}
-.content span:nth-child(1){
-	color: #000;
-	font-size: 1.3rem;
-	line-height: 40px;
-}
-.header_middle{
-	width: 100%;
-	height: 80px;
-	padding: 10px 0;
-	margin: auto;
-	border-bottom: 1px solid #cccccc;
-}
-.gantanhao{
-	width: 10%;
-	height: 80px;
-	float: left;
-}
-.gantanhao span{
-	display: block;
-	height: 20px;
-	width: 20px;
-	border-radius: 50%;
-	border: 1px solid #ff9c20;
-	color: #ff9c20;
-	text-align: center;
-	font-size: 1.2rem;
-    line-height: 20px;
-    margin: auto;
-}
-.wran_text{
-	width: 90%;
-	float: left;
-	height: 80px;
-}
-.wran_text p{
-	font-size: 1rem;
-}
-.content_last{
-	width: 100%;
-	height: auto;
-	padding-top: 10px;
-	border-bottom: 1px solid #cccccc;
-	background: #f5f5f5;
-
-}
-.form_order{
-	width: 100%;
-	height: auto;
-	border-top: 1px solid #cccccc;
-}
-.form_order .first_common{
-	height: 40px;
-	background: #fff;
-	border-bottom: 1px solid #cccccc;
-	width: 100%;
-}
-.first_common span{
-	display: block;
-	height: 40px;
-	float: left;
-	line-height: 40px;
-}
-.first_common span:nth-child(1){
-	width: 20%;
-	color: #a7a7a7;
-	font-size: 1rem;
-	text-align: center;
-}
-.first_common span:nth-child(2){
-	width: 70%;
-	color: #000;
-	font-size: 1rem;
-}
-.first_common span:nth-child(3){
-	width: 10%;
-	color: #a7a7a7;
-	font-size: 1.3rem;
-	text-align: center;
-}
-.second_common{
-	height: 40px;
-	background: #fff;
-	border-bottom: 1px solid #cccccc;
-	width: 100%;
-}
-.second_common span{
-	width: 20%;
-	color: #a7a7a7;
-	font-size: 1rem;
-	text-align: center;
-	display: block;
-	height: 40px;
-	float: left;
-	line-height: 40px;
-}
-.second_common input{
-	outline: none;
-	border: none;
-	width: 70%;
-	font-size: 1rem;
-	height: 40px;
-	float: left;
-}
-.diyongquan{
-	height: 40px;
-	background: #fff;
-	border-bottom: 1px solid #cccccc;
-	width: 100%;
-}
-.diyongquan .diyong{
-	width: 25%;
-	float: left;
-	height: 40px;
-	-webkit-box-pack:center;
-  	-webkit-box-align:center;
-  	display: -webkit-box;
-}
-.diyong span:nth-child(1){
-	display: block;
-	height: 20px;
-	width: 20px;
-	color: #fff;
-	background: #fe7575;
-	line-height: 20px;
-	text-align: center;
-}
-.diyong span:nth-child(2){
-	width: 65%;
-	color: #a7a7a7;
-	font-size: 1rem;
-	text-align: center;
-	display: block;
-	height: 40px;
-	line-height: 40px;
-}
-.use_quan{
-	height: 40px;
-	background: #fff;
-	border-bottom: 1px solid #cccccc;
-	width: 50%;
-	float: right;
-	-webkit-box-pack:end;
-  	-webkit-box-align:center;
-  	display: -webkit-box;
-}
-.use_quan span{
-	width: 70%;
-	height: 40px;
-	text-align: center;
-	display: block;
-	color: #c9c9c9;
-	line-height: 40px;
-}
-.kong{
-	width: 100%;
-	height: 120px;
-	background: #f5f5f5;
-}
-#show_quan{
-	width:100%;   
-    height:0px;   
-    position:absolute;   
-    right:0;   
-    bottom:0px;  
-    background: #fff;
-    z-index: 99;
-    overflow: auto;
-}
-#show_quan li{
-	width: 100%;
-	height: 50px;
-	display: block;
-}
-.footer{
-	position: fixed;
-	bottom: 0px;
-	height: 60px;
-	width: 100%;
-}
-.footer_money{
-	width: 30%;
-	float: left;
-	height: 60px;
-	text-align: center;
-}
-.footer_money span{
-	display:block;
-	height:60px;
-	line-height:60px;
-	width: 100%;
-	font-size: 1rem;
-	color: #000;
-}
-.footer_money img{
-	float: left;
-    margin-top: 12px;
-    margin-left: 12px;
-}
-.footer_btn{
-	width: 50%;
-	float: right;
-	height: 60px;
-	text-align: center;
-
-}
-.footer_btn input{
-	width: 50%;
-	font-size: 1rem;
-	height: 40px;
-	text-align: center;
-	background: #fff;
-	color: #ff5858;
-	border: 1px solid #efefef;
-	border-radius: 12px;
-	margin-top: 10px;
-}
-</style>
+<link rel="stylesheet" href="__STATIC__/css/hotelDetail.css" />
 </head>
 <body>
 	<div class="big">
+		<div class="header">
+			<div class="content">
+				<span>豪华单人间</span>
+				<span>入住: 4-17 (今天)  离店: 4-18 (明天) 1晚</span>
+				<span>大床 |不含早| wifi</span>
+			</div>
+		</div>
+		<div class="header">
+			<div class="content">
+				<span>豪华单人间</span>
+				<span>入住: 4-17 (今天)  离店: 4-18 (明天) 1晚</span>
+				<span>大床 |不含早| wifi</span>
+			</div>
+		</div>
 		<div class="header">
 			<div class="content">
 				<span>豪华单人间</span>
@@ -280,24 +47,21 @@ ul li{list-style: none;}
 		</div>
 		<div class="content_last">
 			<div class="form_order">
-				<div class="first_common">
+				<!-- <div class="first_common">
 					<span>房间数</span>
 					<span>1间</span>
 					<span>></span>
-				</div>
+				</div> -->
 				<div class="second_common">
-					<span>入住人</span>
-					<input type="text" name="username" placeholder="每间需要填写一人姓名">
+					<span>入住姓名</span>
+					<input type="text" name="username" placeholder="预订人姓名">
 				</div>
 				<div class="second_common">
 					<span>联系手机</span>
 					<input type="text" name="phone" placeholder="用于接收短信">
 				</div>
-				<div class="first_common">
-					<span>预计到店</span>
-					<span>18:00之前 (不影响酒店留房)</span>
-				</div>
-				<div class="diyongquan">
+				
+				<!-- <div class="diyongquan">
 					<div class="diyong">
 						<span>券</span>
 						<span>抵用券</span>
@@ -305,8 +69,8 @@ ul li{list-style: none;}
 					<div class="use_quan">
 						<span>无可用抵用券 ></span>
 					</div>
-				</div>
-				<div class="kong">
+				</div> -->
+				<!-- <div class="kong">
 					<div id="show_quan">
 						<ul>
 							<li>1</li>
@@ -314,7 +78,7 @@ ul li{list-style: none;}
 							<li>3</li>
 						</ul>
 					</div>
-				</div>
+				</div> -->
 				 <script type="text/javascript">  
 				  $(function(){  
 				  	var flag = true;
