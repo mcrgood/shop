@@ -132,15 +132,28 @@ a{
 .right-con li .menu-img img{height:70px;width:70px;vertical-align:middle;border:0;}
 .right-con li .menu-txt{margin:15px 15px 15px 75px;padding-left:5%;}
 .right-con li .menu-txt h3{font-size:14px;margin-bottom:10px;margin-top:8px;}
-.right-con li .menu-txt p{font-style:normal;vertical-align:bottom;width: 85%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;color: #666666;}
+.right-con li .menu-txt p{
+    font-style:normal;
+    vertical-align:bottom;
+    width: 85%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #666666;}
 .right-con li .menu-txt p.list2 b{font-size:14px;color:#f00;}
-.right-con li .btn{background-color:transparent;position:absolute;right:0px;top:45%;cursor:pointer;padding:3px;height:38px;}
+.right-con li .btn{background-color:transparent;position:absolute;
+    right:0px;top:45%;cursor:pointer;padding:3px;height:38px;}
 .right-con li .btn button.minus,.subCount dd .btn button.ms{margin-right:-10px;display:none;}
-.right-con li .btn button,.subCount dd .btn button{width:40px;height:40px;border:0;background:transparent;padding:0;}
+.right-con li .btn button,.subCount dd .btn button{width:40px;
+    height:40px;border:0;background:transparent;padding:0;}
 .right-con li .btn button strong,.subCount dd .btn button strong
-{padding:5px 10px;font-size:15px;display:inline-block;text-indent:-100px;padding:5px 11px;height:12px;}
-.right-con li .btn button.minus strong,.btn button.ms strong,.list-content .btn button.ms2 strong{background:url(../img/minus.png) no-repeat;background-size:22px 22px;}
-.right-con li .btn i,.subCount dd .btn i,i{display:none;width:22px;text-align:center;font-style:normal;vertical-align:top;margin-top:11px;line-height:18px;}
+{padding:5px 10px;font-size:15px;display:inline-block;
+    text-indent:-100px;padding:5px 11px;height:12px;}
+.right-con li .btn button.minus strong,.btn button.ms strong,
+.list-content .btn button.ms2 strong{background:url(../img/minus.png) no-repeat;background-size:22px 22px;}
+.right-con li .btn i,.subCount dd .btn i,i{display:none;width:22px;
+    text-align:center;font-style:normal;vertical-align:top;
+    margin-top:11px;line-height:18px;}
 .right-con li .btn button.add,.subCount dd .btn button.ad{margin-left:-10px;}
 .right-con li .btn button.add strong,.btn button.ad strong,.list-content .btn button.ad2 strong{background:url(../img/add.png) no-repeat;background-size:22px 22px;}
 .right-con li .btn .price,.subCount dd .btn .price{display:none;}
@@ -391,7 +404,7 @@ button:focus{
 }
  .menu-txt .list1{height: 20px;line-height: 20px;font-size: 14px;}
 .right-con li .menu-txt p.list2 span{font-size:15px;color:#f00;}  
-.right-con li .menu-txt p.list2 b{font-size:22px;color:#f00;letter-spacing: 2px;}
+.right-con li .menu-txt p.list2 b{font-size:20px;color:#f00;letter-spacing: 2px;}
 .footer .pic{float: left;} 
 .footer .pic img{width: 35px;height: 33px;margin-top: 3px;margin-left:5px;}
 
