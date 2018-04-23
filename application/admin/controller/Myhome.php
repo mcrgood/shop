@@ -82,6 +82,90 @@ class Myhome extends BaseController
 	    }
 		return view($this->style . "Myhome/registerlist");
 	}
+	//商家酒店系统列表
+	public function hotel(){
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $business_id = request()->post('business_id', '');
+            $condition['room_type'] = ['LIKE',"%".$search_text."%"];
+            $condition['business_id'] = $business_id;
+            $member = new MyhomeService();
+            $list = $member->getHotelList($page_index, $page_size, $condition, $order = '');
+            return $list;
+	    }
+		return view($this->style . "Myhome/hotel");
+	}
+
+	//商家酒店房间添加
+	public function addRoom(){
+		if(request()->isAjax()){
+			$row = input('post.');
+			if(!$row){
+				$this->error("没有获取到用户信息");
+			}else{
+				$data['room_img'] = $row['room_img'];
+				$data['room_type'] = $row['room_type'];
+				$data['remark'] = $row['remark'];
+				$data['room_price'] = $row['room_price'];
+				$data['business_id'] = $row['business_id'];
+				$data['create_time'] = time();
+				if(!$row['room_type']||!$row['room_price'] || !$row['remark']){
+					$res = [
+						'status' => 0,
+						'msg' =>'请填写完整信息'
+					];
+				}else{
+					$where['room_type'] = $row['room_type'];
+					$where['room_id'] = ['<>',$row['room_id']];
+					$have = db("ns_hotel_room")->where($where)->find();
+					if($have){
+						$res = [
+							'status' => 0,
+							'msg' =>'房间类型已存在,不能重复添加'
+						];
+					}else{
+						if($row['room_id']){
+							$editid = db("ns_hotel_room")->where("room_id",$row['room_id'])->update($data);
+							if($editid){
+								$res = [
+									'status' => 1,
+									'msg' =>'修改成功'
+								];
+							}else{
+								$res = [
+									'status' => 0,
+									'msg' =>'修改失败'
+								];
+							}
+						}else{
+							$id = db("ns_hotel_room")->insertGetId($data);
+							if($id){
+								$res = [
+									'status' => 1,
+									'msg' =>'新增成功'
+								];
+							}else{
+								$res = [
+									'status' => 0,
+									'msg' =>'新增失败'
+								];
+							}
+						}
+					}
+				}
+			}
+			return $res;
+		}else{
+			$room_id = input('param.room_id',0);
+			if($room_id){
+				$row = db("ns_hotel_room")->where("room_id",$room_id)->find();
+				$this->assign("row",$row);
+			}
+		}
+		return view($this->style . "Myhome/addRoom");
+	}
 
 	//商家分类列表
 	// public function goods_index(){
@@ -616,6 +700,73 @@ class Myhome extends BaseController
 			return $info;
 		}
 	}
+
+	//商家酒店房间预定状态修改
+	public function roomStop(){
+		if(request()->isAjax()){
+			$room_id = input("param.room_id");
+			$room_status = db("ns_hotel_room")->where("room_id",$room_id)->value("room_status");
+			if($room_status == 0){
+				$stop = db("ns_hotel_room")->where("room_id",$room_id)->update(['room_status'=>1]);
+				if($stop){
+					$info = [
+						'status' => 3,
+						'text' =>'已住满',
+						'cssa' =>'red',
+						'msg' =>"停用成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"停用失败"
+					];
+				}
+			}else{
+				$qiyong = db("ns_hotel_room")->where("room_id",$room_id)->update(['room_status'=>0]);
+				if($qiyong){
+					$info = [
+						'status' => 1,
+						'text' =>'可预定',
+						'cssa' =>'green',
+						'msg' =>"启用成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"启用失败"
+					];
+				}
+			}
+			return $info;
+		}
+	}
+	//删除酒店房间
+	public function delRoom(){
+		if(request()->isAjax()){
+			$room_id = input("post.room_id");
+			if($room_id){
+				$row = db("ns_hotel_room")->delete($room_id);
+				if($row){
+					$info = [
+						'status' => 1,
+						'msg' =>"删除成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"删除失败"
+					];
+				}
+			}else{
+				$info = [
+					'status' => 0,
+					'msg' =>"未获取删除信息"
+				];
+			}
+		}
+		return $info;
+	}
+
 	//删除选座
 	public function seatDel(){
 		if(request()->isAjax()){

@@ -755,6 +755,7 @@
 
         //微信获取地理位置并拉取用户列表（用户允许获取用户的经纬度）
         wx.getLocation({
+            type: 'gcj02',
             success: function (res) {
 
                 var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90

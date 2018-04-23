@@ -30,6 +30,7 @@ use data\model\NsGoodsCateList as NsGoodsCateList;
 use data\model\NsGoodsCateListdetail as NsGoodsCateListdetail;
 use data\model\NsMenulist as NsMenulist;
 use data\model\NsseatModel as NsseatModel;
+use data\model\NsHotelList as NsHotelList;
 
 class MyhomeService extends BaseService{
 
@@ -161,6 +162,13 @@ class MyhomeService extends BaseService{
     public function getMenulist($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsMenulist();
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        return $result;
+    }
+     //获取商家酒店列表 屈华俊 2018-04-23
+    public function getHotelList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsHotelList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         return $result;
     }

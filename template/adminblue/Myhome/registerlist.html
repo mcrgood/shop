@@ -54,6 +54,7 @@
 			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text
 		},
 		success : function(data) {
+			console.log(data)
 			var html = '';
 			if (data["data"].length > 0) {
 				for (var i = 0; i < data["data"].length; i++) {
@@ -72,9 +73,11 @@
 						html += '<td style="color:black">重审中</td>';
 					}
 					html += '<td>';
-					html += '<a href="{:url("myhome/registerdetail")}?id='+data["data"][i]["id"]+' ">查看详情</a>';
+					html += '<a href="{:url("myhome/registerdetail")}?id='+data["data"][i]["userid"]+' ">查看详情</a>';
 					html += '<a href="{:url("myhome/seat")}?shopid='+data["data"][i]["userid"]+' "><span style="color:red">选座系统</span></a>';
-					html += '<a href="{:url("myhome/menu")}?id='+data["data"][i]["id"]+' "><span style="color:green">菜单系统</span></a>';
+					html +='<br/>';
+					html += '<a href="{:url("myhome/menu")}?id='+data["data"][i]["userid"]+' "><span style="color:green">菜单系统</span></a>';
+					html += '<a href="{:url("myhome/hotel")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">酒店系统</span></a>';
 					html += '</td>';
 					html += '</tr>';
 				}

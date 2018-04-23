@@ -666,6 +666,8 @@ class Myhome extends Controller
     }
     //预定酒店页面
     public function hotel(){
+        $room_list = db('ns_hotel_room')->select();
+        $this->assign('room_list',$room_list);
         return view($this->style . 'Myhome/hotel');
     }
 

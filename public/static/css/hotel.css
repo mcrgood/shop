@@ -9,7 +9,12 @@ a{
   text-decoration: none;
   -webkit-tap-highlight-color:rgba(255,255,255,0);
 }
-input[type=button], input[type=submit], input[type=file],button { cursor: pointer; outline:none;-webkit-appearance: none; } 
+input[type=button], input[type=submit], input[type=file],button { 
+  cursor: pointer; 
+  outline:none;
+  -webkit-appearance: none; 
+  -webkit-tap-highlight-color:rgba(255,0,0,0);
+} 
 /* .content-top{
   width: 100%;
   height: auto;
@@ -328,7 +333,7 @@ input[type=button], input[type=submit], input[type=file],button { cursor: pointe
   border: none;
   font-size: 1.2rem;
   margin: 38% 10% 0 10%;
-  border-radius: 3px;
+  border-radius: 10px;
   text-align: center;
 }
 .special_room{
@@ -357,7 +362,7 @@ input[type=button], input[type=submit], input[type=file],button { cursor: pointe
   outline: none;
   border: none;
   font-size: 1.2rem;
-  border-radius: 3px;
+  border-radius: 10px;
 }
 .hotel_relax{
   width: 100%;
@@ -526,17 +531,140 @@ background-position: 56px 3px;
   float: right;
   height: 60px;
   text-align: center;
+  border-radius: 12px;
 
 }
 .footer_btn input{
-  width: 50%;
+  width: 100%;
   font-size: 1.3rem;
-  height: 40px;
+  height: 60px;
   text-align: center;
   background: #fff;
   color: #ff5858;
   border: 1px solid #efefef;
   border-radius: 12px;
-  margin-top: 10px;
   font-weight: bold;
+}
+/*点击弹出层*/
+/* iCheck plugin Square skin, orange
+----------------------------------- */
+
+
+.icheckbox_square-orange {
+    background-position: 0 0;
+}
+    .icheckbox_square-orange.hover {
+        background-position: -24px 0;
+    }
+    .icheckbox_square-orange.checked {
+        background-position: -48px 0;
+    }
+    .icheckbox_square-orange.disabled {
+        background-position: -72px 0;
+        cursor: default;
+    }
+    .icheckbox_square-orange.checked.disabled {
+        background-position: -96px 0;
+    }
+
+.iradio_square-orange {
+    background-position: -120px 0;
+}
+    .iradio_square-orange.hover {
+        background-position: -144px 0;
+    }
+    .iradio_square-orange.checked {
+        background-position: -168px 0;
+    }
+    .iradio_square-orange.disabled {
+        background-position: -192px 0;
+        cursor: default;
+    }
+    .iradio_square-orange.checked.disabled {
+        background-position: -216px 0;
+    }
+
+/* HiDPI support */
+
+
+.fulled {  
+    width:100%;  
+    height:100%;  
+    position:fixed;  
+    top:0;  
+    left:0;  
+    background:rgba(216,210, 210,0.9);  
+    display:none;  
+}  
+.container {  
+    width:100%;  
+    height:600px;  
+}  
+.container a {  
+    text-decoration:none;  
+    color:#0099FF;  
+    line-height:100px;  
+    font-size:60px;  
+    text-align:center;  
+    display:block;  
+}  
+.fulled .fix-box {  
+    position:relative;  
+    margin: 53% 10%;  
+    width:80%;  
+    height:200px;    
+    border:2px solid pink;  
+    background: #fbe5e5;
+}  
+.fulled .fix-box .close {  
+    position:absolute;  
+    right:10px;  
+    top:0;  
+    color:#cc6648;  
+    cursor:pointer;  
+} 
+.fix-box span{
+  display: block;
+  text-align: center;
+}
+.select_num{
+  width: 100%;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
+.select_num input{
+  width: 10%;
+  -webkit-tap-highlight-color:rgba(255,0,0,0);
+}
+.qita{
+  width: 100%;
+  height: 40px;
+  -webkit-box-pack:center; /*水平方向:start 左 end 右*/
+
+  -webkit-box-align:center;/*垂直方向:start 左 end 右*/
+
+  display: -webkit-box;
+}
+.qita input{
+  outline: none;
+    padding-left: 8px;
+    font-size: 0.8rem;
+}
+.confirm{
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  margin-top: 1rem;
+}
+.confirm button{
+  width: 30%;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  background: #fe622f;
+  outline: none;
+  border:none;
+  border-radius: 8px;
 }

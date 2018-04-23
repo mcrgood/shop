@@ -20,14 +20,14 @@
 {/block}
 {block name="main"}
 <div class="options-btn">
-	<button class="btn-common btn-small" onclick="addGoods()" id="addGoods">添加包间座位</button>
+	<button class="btn-common btn-small" onclick="addRoom()" id="addRoom">添加酒店房间</button>
 	<!-- <button class="btn-common btn-small" onclick="addimg()" id="addimg">选座图库</button>  -->
 </div>
 <table class="mytable">
 	<tr>
 		<th width="20%">
 		<form action="" method="get">
-			<input type="text" name="keyword" id = 'search_text' placeholder="包间名" class="input-common"/>
+			<input type="text" name="keyword" id = 'search_text' placeholder="类型" class="input-common"/>
 			<input type="button" onclick="searchData()" value="搜索" class="btn-common"/>
 		</form>
 		</th>
@@ -36,10 +36,11 @@
 <table class="table-class">
 	<thead>
 		<tr>
-			<th>包间名</th>
-			<th>包间图</th>
-			<th>使用人数</th>
-			<th>是否使用</th>
+			<th>类型</th>
+			<th>单价</th>
+			<th>图片</th>
+			<th>描述</th>
+			<th>状态</th>
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -52,13 +53,13 @@
 	<script type="text/javascript">
 
 	function LoadingInfo(page_index) {
-	var shopid = "{$Request.param.shopid}";
+	var business_id = "{$Request.param.business_id}";
 	var search_text = $("#search_text").val();
 	$.ajax({
 		type : "post",
-		url : "{:__URL('ADMIN_MAIN/myhome/seat')}",
+		url : "{:__URL('ADMIN_MAIN/myhome/hotel')}",
 		data : {
-			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text,"shopid":shopid
+			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text,"business_id":business_id
 		},
 		success : function(data) {
 			console.log(data)
@@ -66,21 +67,22 @@
 			if (data["data"].length > 0) {
 				for (var i = 0; i < data["data"].length; i++) {
 					html += '<tr align="center">';
-					html += '<td>'+ data["data"][i]["seatname"] +'</td>'
-					if(!data["data"][i]["seatimg"]){
-						html += '<td>该类型图片已存在</td>';
+					html += '<td>'+ data["data"][i]["room_type"] +'</td>'
+					html += '<td>'+ data["data"][i]["room_price"] +'</td>';
+					if(!data["data"][i]["room_img"]){
+						html += '<td>暂时未添加图片</td>';
 					}else{
-						html += '<td> <img class="img" src="'+data["data"][i]["seatimg"]+'"> </td>';
+						html += '<td> <img class="img" src="'+data["data"][i]["room_img"]+'"> </td>';
 					}
-					html += '<td>'+ data["data"][i]["seatnum"] +'</td>';
-					if(data["data"][i]["seatstatus"] == 1){
-						html += '<td><button onclick="seatstop('+data["data"][i]["seatid"]+',this)"><span style="color:green">未使用</span></button></td>'
+					html += '<td>'+ data["data"][i]["remark"] +'</td>';
+					if(data["data"][i]["room_status"] == 0){
+						html += '<td><button onclick="roomStop('+data["data"][i]["room_id"]+',this)"><span style="color:green">可预定</span></button></td>'
 					}else{
-						html += '<td><button onclick="seatstop('+data["data"][i]["seatid"]+',this)"><span style="color:red">使用中</span></button></td>'
+						html += '<td><button onclick="roomStop('+data["data"][i]["room_id"]+',this)"><span style="color:red">已住满</span></button></td>'
 					}
 					html += '<td>';
-					html += '<a href="{:url("myhome/seatadd")}?shopid='+shopid+'&seatid='+data["data"][i]["seatid"]+' ">编辑</a>';
-					html += '<a onclick="goodsDel('+data["data"][i]["seatid"]+')"><span style="color:green">删除</span></a>';
+					html += '<a href="{:url("myhome/addRoom")}?business_id='+business_id+'&room_id='+data["data"][i]["room_id"]+' ">编辑</a>';
+					html += '<a onclick="goodsDel('+data["data"][i]["room_id"]+')"><span style="color:green">删除</span></a>';
 					html += '</td>';
 					html += '</tr>';
 				}
@@ -98,18 +100,18 @@
 		LoadingInfo(1);
 	}
 
-	function addGoods(){
-		var id = "{$Request.param.shopid}";
-		location.href = __URL("ADMIN_MAIN/myhome/seatadd?shopid="+id);
+	function addRoom(){
+		var business_id = "{$Request.param.business_id}";
+		location.href = __URL("ADMIN_MAIN/myhome/addRoom?business_id="+business_id);
 	}
 	// function addimg(){
 	// 	var id = "{$Request.param.shopid}";
 	// 	location.href = __URL("ADMIN_MAIN/myhome/seatadd?shopid="+id);
 	// }
 	//是否启用或者停用
-	function seatstop(seatid,obj){
-		var data ={"seatid":seatid};
-		var url = "{:url('Myhome/seatstop')}";
+	function roomStop(room_id,obj){
+		var data ={"room_id":room_id};
+		var url = "{:url('Myhome/roomStop')}";
 		$.post(url,data,function(res){
 			if(res.status==1){
 				layer.msg(res.msg,{icon:6});
@@ -129,21 +131,21 @@
 		},'json')
 	}
 	//删除
-	function goodsDel(seatid){
-		layer.confirm('确认要删除当前类型',{
+	function goodsDel(room_id){
+		layer.confirm('确认要删除吗？',{
 			btn: ['确定', '取消'],
             title: "客旺旺提醒您",
 		},function(){
-			var data = {"seatid":seatid};
-			var url = "{:url('Myhome/seatDel')}";
+			var data = {"room_id":room_id};
+			var url = "{:url('Myhome/delRoom')}";
 			$.post(url,data,function(res){
 				if(res.status==1){
-					layer.msg(res.msg,{icon:6});
+					layer.msg(res.msg,{icon:6,time:1000});
 					setTimeout(function(){
 						LoadingInfo(1);
                 	},150);
 				}else{
-					layer.msg(res.msg,{icon:5});
+					layer.msg(res.msg,{icon:5,time:1000});
 				}
 			},'json')
 		})
