@@ -129,38 +129,34 @@
       <span>{$v.room_type}</span>
       <!-- <span>不含早|有窗<br/>入住当天十二点前免费取消</span> -->
       <span>{$v.remark}</span>
-      <span>￥98</span>
+      <span>￥{$v.room_price}</span>
     </div>
+    {if $v.room_status eq 0}
     <div class="order_button">
-      <input type="button" value="预定" class="reserve" data-id="{$v.room_id}"/>
+      <input type="button" value="预定" class="reserve" status="" data-id="{$v.room_id}"/>
       <input type="hidden" class="hidden" value="" />
     </div>
-</div>
-{/volist}
-
-<!-- <div class="order_room">
-    <div class="order_singleroom">
-      <span>豪华单人间</span>
-      <span>不含早|有窗<br/>入住当天十二点前免费取消</span>
-      <span>￥76</span>
-    </div>
-    <div class="order_button_2">
+    {else/}
+     <div class="order_button_2">
       <div class="special_room">
       <span>当天满房</span>
       <input type="button" value="预订" class="reserve" disabled style="background-color: #cccccc;" />
       </div>
     </div>
-</div> -->
+    {/if}  
+</div>
+{/volist}
+
+
 <div class="fulled">  
   <div class="fix-box">  
     <p class="close">关闭</p><br/>
-    <span>请选择你需要的房间数量:</span> 
     <div class="select_num">
-        <input type="radio" name="iCheck" class="radio" value="1">1
+        <!-- <input type="radio" name="iCheck" class="radio" value="1">1
         <input type="radio" name="iCheck" class="radio" value="2">2
-        <input type="radio" name="iCheck" class="radio" value="3">3
+        <input type="radio" name="iCheck" class="radio" value="3">3 -->
     </div> 
-    <div class="qita">其他:<input type="number" placeholder="请输入数量"/></div>    
+    <div class="qita">数量:<input type="number"  placeholder="请输入数量"/></div>    
     <div class="confirm">
       <button>确定</button>
     </div>
@@ -201,20 +197,34 @@
    })
    //点击预定弹出层
    $(document).ready(function() {  
+    var total_room_num = 0;
+    var room_id;  //获取点击预定的房间类型ID,之后方便做处理
     $(".reserve").on("click", function(event) {
-      var room_id =  $(this).attr('data-id');  //获取点击预定的房间类型ID,之后方便做处理
         event.preventDefault();  
         $(".fulled").fadeIn();
-        var room_num = '';
-      $('.confirm>button').click(function(){
-        $('.select_num div').each(function(i,v){
-          if($(v).hasClass('checked')){
-            room_num = $(v).find('.radio').val();
+        room_id =  $(this).attr('data-id');
+    })
+     $('.confirm>button').click(function(){
+          var room_num = $("input[type='number']").val(); //预定数量
+          if(room_num!= ''){
+              $("input[type='number']").val('');
+              $('.reserve').each(function(i,v){
+                if($(v).attr('data-id')==room_id){
+                  $(v).val('已预订'+room_num);
+                  $(v).attr('status',room_num);
+                }
+                if(total_room_num != 0){
+                  total_room_num = 0;
+                }
+                if($(v).attr('status') != ''){
+                    total_room_num += ($(v).attr('status')-0);
+                }
+              })
           }
-        });
+    
+          $('.footer_money b').text(total_room_num);
           $(".fulled").hide();
-      })
-    })  
+      })  
     $(".close").on("click", function(event) {  
         if ($(event.target).is(".close") || $(event.target).is(".fix-box")) {  
             //alert(123)  

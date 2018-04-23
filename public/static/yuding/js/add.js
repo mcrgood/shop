@@ -12,7 +12,7 @@ $(function () {
              $(".shopcart-list").show();
         }
         var parent = $(this).parent();
-        var name=parent.parent().children("h4").text();
+        var name = $(this).parents('.menu-txt').find('.goodsnamess').text();
         var num;
         if(n==0){
             num =1
@@ -25,7 +25,7 @@ $(function () {
         var price = parseFloat(parent.prev().children("b:nth-child(2)").text());
         var src = $(this).parent().parent().prev().children()[0].src;
         console.log(name,price,src);
-        $(".subName dd p:nth-child(1)").html(name);
+        $(".subName .goodsName").html(name);
         $(".pce").text(price);
         $(".imgPhoto").attr('src',src);
         $(".price").text(price);
@@ -205,8 +205,8 @@ $(function () {
 
 
     function jss() {
-        var m = $("#totalcountshow").html();
-        if (m > 0) {
+        var mmm = $("#totalcountshow").html();
+        if (mmm > 0) {
             $(".right").find("a").removeClass("disable");
         } else {
             $(".right").find("a").addClass("disable");

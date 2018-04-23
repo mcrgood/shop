@@ -647,9 +647,11 @@ background-position: 56px 3px;
   display: -webkit-box;
 }
 .qita input{
-  outline: none;
+    outline: none;
     padding-left: 8px;
     font-size: 0.8rem;
+    border: none;
+    height: 30px;
 }
 .confirm{
   width: 100%;
