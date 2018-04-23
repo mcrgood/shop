@@ -16,7 +16,6 @@ use data\extend\org\wechat\Jssdk;
 
 class Dingwei extends BaseController{
 	public function index(){
-
 		ob_clean();//清除缓存
         //查出当前分类的东东(判断审核状态)
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
@@ -38,6 +37,8 @@ class Dingwei extends BaseController{
         ob_clean();//清除缓存
         $jingdu = input('param.jingdu');
         $weidu = input('param.weidu');
+        $jingdu = $jingdu+'0.012112';
+        $weidu = $weidu+'0.001513';
         $leixing_id = input('param.leixing_id'); //一级分类ID
         $con_cateid = input('param.con_cateid',0); //二级分类ID
         $page = input('param.page');   //第几页
