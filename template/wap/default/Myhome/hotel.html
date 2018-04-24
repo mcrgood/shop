@@ -173,6 +173,8 @@
 </div>
 
 <script>
+    var uid = "{$uid}";  //获取会员uid
+    var business_id = "{$business_id}";  //获取商家ID
    layui.use('laydate', function(){
         var laydate = layui.laydate;
        laydate.render({ 
@@ -188,17 +190,34 @@
   //点击确定订单
    $('.footer_btn>input').click(function(){
       var id_arr = new Array();
+      var num_arr = new Array();
       $('.reserve').each(function(i,v){
-        if($(v).attr('status') != ''){
-
+        if($(v).attr('status') != ''){ 
+            id_arr.push($(v).attr('data-id'));  //预定的酒店房间ID数组
+            num_arr.push($(v).attr('status'));  //预定的数量数组
         }
       })
       var startDate = $('#startDate').val(); //入住时间
       var endDate = $('#endDate').val(); //离店时间
-      var url = "";
-      var data = {};
+      var url = "{:url('Myhome/hotel_order')}";
+      var data = {
+        id_arr:id_arr,
+        startDate:startDate,
+        endDate:endDate,
+        num_arr:num_arr,
+        uid:uid,
+        business_id:business_id
+      };
       $.post(url,data,function(res){
-
+        console.log(res);
+          if(res.status == 1){
+            layer.msg(res.msg,{time:1200});
+            setTimeout(function(){
+              window.location.href = "{:__URL('APP_MAIN/Myhome/hotelorderdetail')}?out_trade_no="+res.out_trade_no;
+            },1200)
+          }else{
+            layer.msg(res.msg,{time:1200});
+          }
       },'json')
    })
    //点击预定弹出层
@@ -209,6 +228,7 @@
         $(".fulled").fadeIn();
         room_id =  $(this).attr('data-id');
     })
+    //点击添加数量确定按钮
      $('.confirm>button').click(function(){
           var total_room_num = 0;
           var room_num = $("input[type='number']").val(); //预定数量
@@ -224,6 +244,9 @@
                     total_room_num += ($(v).attr('status')-0);
                 }
               })
+          }else{
+            layer.msg('请输入正确的数量',{time:1200});
+            return;
           }
     
           $('.footer_money b').text(total_room_num);

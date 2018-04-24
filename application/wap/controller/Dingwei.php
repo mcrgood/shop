@@ -106,8 +106,21 @@ class Dingwei extends BaseController{
     public function catdetail(){
         ob_clean();
 		$id = input('param.id');
-        $cateids = db("ns_shop_menu")->where("userid",$id)->column("cateid");
-        $status = $cateids ? '1': '0';
+        $info = db('ns_shop_message')
+        ->alias('a')
+        ->field('a.*,b.con_cate_name')
+        ->join('ns_consumption b','a.leixing = b.con_cateid','left')
+        ->where('a.userid',$id)
+        ->find();
+        if($info['con_cate_name'] == '酒店'){
+            $room_list = db("ns_hotel_room")->where("business_id",$id)->select();
+            $status = $room_list ? '1': '0';
+            $type = 1; //酒店=1
+        }elseif($info['con_cate_name'] == '餐饮'){
+            $cateids = db("ns_shop_menu")->where("userid",$id)->column("cateid");
+            $status = $cateids ? '1': '0';
+            $type = 2; //餐饮=2
+        }
 		$row = db("ns_shop_message")
         ->alias('s')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
@@ -115,7 +128,8 @@ class Dingwei extends BaseController{
         ->field('s.*,w.business_status')
         ->find();
         $this->assign('row',$row);
-		$this->assign('status',$status);
+        $this->assign('status',$status); //状态为是否可以去预定
+        $this->assign('type',$type); //所属经营类型
         //轮播图查询
 		return view($this->style . 'Dingwei/catdetail');
 	}

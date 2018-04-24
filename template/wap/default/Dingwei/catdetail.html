@@ -304,8 +304,13 @@ width: 100%;height:480px;overflow: auto;margin:0;display: none;
 </div>
 
 <script type="text/javascript">
+    var type = "{$type}";
     function jumpyuding(userid){
-        window.location.href= "{:__URL('APP_MAIN/Myhome/yuding')}?userid="+userid;
+        if(type==2){
+            window.location.href= "{:__URL('APP_MAIN/Myhome/yuding')}?userid="+userid;
+        }else if(type ==1){
+            window.location.href= "{:__URL('APP_MAIN/Myhome/hotel')}?userid="+userid;
+        }
     }
     window.onload=function(){
 

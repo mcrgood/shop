@@ -10,30 +10,30 @@
 <meta name="format-detection" content="telephone=no">
 <script type="text/javascript" src="__STATIC__/js/jquery-1.8.1.min.js"></script>
 <link rel="stylesheet" href="__STATIC__/css/hotelDetail.css" />
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
 </head>
 <body>
 	<div class="big">
+	{if $count eq 1}
 		<div class="header">
 			<div class="content">
-				<span>豪华单人间</span>
-				<span>入住: 4-17 (今天)  离店: 4-18 (明天) 1晚</span>
-				<span>大床 |不含早| wifi</span>
+				<span>{$reserve.room_type}</span>
+				<span>入住:<b>{$reserve.startDate}</b>&nbsp;&nbsp;离店:<b>{$reserve.endDate}</b></span>
+				<span>预定<b class="num">{$reserve.room_num}</b>间&nbsp;&nbsp;入住<b class="day">{$reserve.stayDays}</b>晚&nbsp;&nbsp;房间单价：<b class="price">{$reserve.room_price}</b></span>
 			</div>
 		</div>
-		<div class="header">
-			<div class="content">
-				<span>豪华单人间</span>
-				<span>入住: 4-17 (今天)  离店: 4-18 (明天) 1晚</span>
-				<span>大床 |不含早| wifi</span>
+	{else/}
+		{volist name="room_list" id="v"}
+			<div class="header">
+				<div class="content">
+					<span>{$v.0}</span>
+					<span>入住:<b>{$reserve.startDate}</b>&nbsp;&nbsp;离店:<b>{$reserve.endDate}</b></span>
+					<span>预定<b class="num">{$v.2}</b>间&nbsp;&nbsp;入住<b class="day">{$reserve.stayDays}</b>晚&nbsp;&nbsp;房间单价：<b class="price">{$v.1}</b></span>
+				</div>
 			</div>
-		</div>
-		<div class="header">
-			<div class="content">
-				<span>豪华单人间</span>
-				<span>入住: 4-17 (今天)  离店: 4-18 (明天) 1晚</span>
-				<span>大床 |不含早| wifi</span>
-			</div>
-		</div>
+		{/volist}
+	{/if}
+
 		<div class="header_middle">
 			<div class="gantanhao">
 				<span>!</span><!--感叹号-->
@@ -54,11 +54,11 @@
 				</div> -->
 				<div class="second_common">
 					<span>入住姓名</span>
-					<input type="text" name="username" placeholder="预订人姓名">
+					<input type="text" name="realname" value="{$userInfo['realname']|default=''}" placeholder="预订人姓名">
 				</div>
 				<div class="second_common">
 					<span>联系手机</span>
-					<input type="text" name="phone" placeholder="用于接收短信">
+					<input type="text" name="phone" value="{$userInfo['user_name']|default=''}" placeholder="用于接收短信">
 				</div>
 				
 				<!-- <div class="diyongquan">
@@ -79,39 +79,77 @@
 						</ul>
 					</div>
 				</div> -->
-				 <script type="text/javascript">  
-				  $(function(){  
-				  	var flag = true;
-				  	var Spantext = $('.use_quan span').text();
-				    $('.use_quan span').click(function(){
-				    	if(flag){
-				        	$('#show_quan').animate({height:'178px'},200);
-				        	flag = false;
-				    	}else{
-				    		$('#show_quan').animate({height:'0px'},200);   
-				        	flag = true;
-				    	}  
-				    }); 
-				    $('#show_quan li').each(function(i,v){
-				    	var Litext = $(v).text();				    	
-				    	$(v).click(function(){
-					    	$('.use_quan span').text(Litext);
-					    	$('#show_quan').animate({height:'0px'},200);
-					    	flag = true;
-				    	})
-				    }) 
-				  });  
-				  </script>  
+				
 			</div>
 		</div>
 	</div> 
 	<div class="footer">
 			<div class="footer_money">
-				<span><img src="__STATIC__/images/hotelimg/money_03.png">99元</span>
+				<span><img src="__STATIC__/images/hotelimg/money_03.png">共&nbsp;<b style="color:red;"></b>元</span>
 			</div>
 			<div class="footer_btn">
 				<input type="button" value="确认付款"/>
 			</div>
 	</div> 
 </body>
+ <script type="text/javascript">  
+	$(function(){  
+	  	// var flag = true;
+	   //  $('.use_quan span').click(function(){
+	   //  	if(flag){
+	   //      	$('#show_quan').animate({height:'178px'},200);
+	   //      	flag = false;
+	   //  	}else{
+	   //  		$('#show_quan').animate({height:'0px'},200);   
+	   //      	flag = true;
+	   //  	}  
+	   //  }); 
+	   //  $('#show_quan li').each(function(i,v){
+	   //  	var Litext = $(v).text();				    	
+	   //  	$(v).click(function(){
+		  //   	$('.use_quan span').text(Litext);
+		  //   	$('#show_quan').animate({height:'0px'},200);
+		  //   	flag = true;
+	   //  	})
+	   //  }) 
+	    var total = 0;
+	    var out_trade_no = "{$out_trade_no}";
+	    $('.content').each(function(i,v){
+	    	var num = $(v).find('.num').text();
+	    	var price = $(v).find('.price').text();
+	    	var day = $(v).find('.day').text();
+	    	var subTotal = num*price*day;
+	    	total +=(subTotal-0);
+	    })
+	    $('.footer_money b').text(total);
+	    //确定付款
+	    $('.footer_btn input').click(function(){
+	    	var realname = $("input[name='realname']").val();
+	    	var phone = $("input[name='phone']").val();
+	    	var totalPrice = $('.footer_money b').text();
+	    	var url = "{:url('Myhome/hotelOrderPay')}";
+	    	var data = {
+	    		out_trade_no:out_trade_no,
+	    		totalPrice:totalPrice,
+	    		realname:realname,
+	    		phone:phone
+	    	};
+	    	$.post(url,data,function(res){
+	    		if(res.status == 1){
+	    			layer.msg(res.msg,{time:1200});
+	    			setTimeout(function(){
+	    				window.location.href = "{:__URL('APP_MAIN/pay/getpayvalue')}?business_id="+res.business_id+"&type=yuding&out_trade_no="+res.out_trade_no;
+	    			},1200)
+	    		}else if(res.status == 2){ //
+	    			layer.msg(res.msg,{time:1200});
+	    			setTimeout(function(){
+	    				window.location.href = "{:__URL('APP_MAIN/dingwei/index')}";
+	    			},1200)
+	    		}else{
+	    			layer.msg(res.msg,{time:1200});
+	    		}
+	    	},'json')
+	    })
+	});  
+</script>  
 </html>
