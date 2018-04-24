@@ -684,10 +684,16 @@ class Myhome extends Controller
         ->field('h.*,m.address')
         ->join('ns_shop_message m','h.business_id = m.userid','left')
         ->where($where)->select();
+        foreach($room_list as $k => $v){
+            if($v['room_img']){
+                $img_list[$k] =$v['room_img'];
+            }
+        }
         $this->assign('address',$room_list[0]['address']);
         $this->assign('room_list',$room_list);
         $this->assign('uid',$this->uid);
         $this->assign('business_id',$business_id);
+        $this->assign('img_list',$img_list);
         return view($this->style . 'Myhome/hotel');
     }
 

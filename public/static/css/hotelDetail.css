@@ -65,6 +65,7 @@ ul li{list-style: none;}
 	width: 90%;
 	float: left;
 	height: 80px;
+	line-height: 20px;
 }
 .wran_text p{
 	font-size: 1rem;

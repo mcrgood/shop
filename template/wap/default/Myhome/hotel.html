@@ -49,8 +49,9 @@
  <!-- Swiper -->
   <div class="swiper-container">
     <div class="swiper-wrapper">
-      <div class="swiper-slide"><img src="__STATIC__/images/adv_position/jifenzhongxin.jpg" width="100%" /></div>
-      <div class="swiper-slide"><img src="__STATIC__/images/adv_position/wapjifenzhongxin.png" width="100%"/></div>
+    {volist name="img_list" id="v"}
+      <div class="swiper-slide"><img src="{$v}" width="100%" /></div>
+    {/volist}
     </div>
     <!-- Add Pagination -->
     <div class="swiper-pagination"></div>
@@ -140,7 +141,7 @@
      <div class="order_button_2">
       <div class="special_room">
       <span>当天满房</span>
-      <input type="button" value="预订" class="reserve" disabled style="background-color: #cccccc;" />
+      <input type="button" value="预订" class="reserve" status="" disabled style="background-color: #cccccc;" />
       </div>
     </div>
     {/if}  
@@ -156,7 +157,7 @@
         <input type="radio" name="iCheck" class="radio" value="2">2
         <input type="radio" name="iCheck" class="radio" value="3">3 -->
     </div> 
-    <div class="qita">数量:<input type="number"  placeholder="请输入数量"/></div>    
+    <div class="qita">数量:<input type="number" value="1"  placeholder="请输入数量"/></div>    
     <div class="confirm">
       <button>确定</button>
     </div>
@@ -233,7 +234,6 @@
           var total_room_num = 0;
           var room_num = $("input[type='number']").val(); //预定数量
           if(room_num != '' && room_num != 0){
-              $("input[type='number']").val('');
               $('.reserve').each(function(i,v){
                 if($(v).attr('data-id')==room_id){
                   $(v).val('已预订'+room_num);
@@ -249,7 +249,7 @@
             return;
           }
     
-          $('.footer_money b').text(total_room_num);
+          $('.footer_money b').text(Number(total_room_num));
           if($('.footer_money b').text() != 0){
             $('.footer_btn input').css({"background-color":"#fe622f"});
             $('.footer_btn input').attr('disabled',false);
