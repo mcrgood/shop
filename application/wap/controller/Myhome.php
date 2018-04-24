@@ -1406,6 +1406,10 @@ class Myhome extends Controller
         $shopid = $this->business_id;
         $list = db("ns_shop_seat")->where("shopid",$shopid)->select();
         $this->assign("list",$list);
+        //判断隐藏页面的显示
+        $message = db("ns_shop_message")->where("userid",$shopid)->value("leixing");
+        $consumption = db("ns_consumption")->where("con_cateid",$message)->value("con_cate_name");
+        $this->assign("consumption",$consumption);
         return view($this->style . 'Myhome/hotelPutup');
     }
 
