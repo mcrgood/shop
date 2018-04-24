@@ -803,6 +803,10 @@ class Myhome extends Controller
                     $data['pay_money'] = $totalPrice; // 订单总金额
                     $res = db('ns_order_payment')->insert($data);
                     if($res !== false){
+                        $user_realname = db('sys_user')->where('uid',$ordermessage['uid'])->value('realname');
+                        if(!$user_realname || $user_realname!=$realname){
+                            db('sys_user')->where('uid',$ordermessage['uid'])->update(['realname'=>$realname]);
+                        }
                         $info = [
                             'status' => 1,
                             'msg' => '即将跳转付款页面！',
