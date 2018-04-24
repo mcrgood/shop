@@ -72,13 +72,13 @@ class Myhome extends BaseController
     //商家管理列表
 	public function registerlist(){
 		if (request()->isAjax()) {
-	            $page_index = request()->post("page_index", 1);
-	            $page_size = request()->post('page_size', PAGESIZE);
-	            $search_text = request()->post('search_text', '');
-	            $condition['iphone|address|names'] = ['LIKE',"%".$search_text."%"];
-	            $member = new MyhomeService();
-	            $list = $member->getRegisters($page_index, $page_size, $condition, $order = '');
-	            return $list;
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $condition['iphone|address|names'] = ['LIKE',"%".$search_text."%"];
+            $member = new MyhomeService();
+            $list = $member->getRegisters($page_index, $page_size, $condition, $order = '');
+            return $list;
 	    }
 		return view($this->style . "Myhome/registerlist");
 	}
