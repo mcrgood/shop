@@ -509,9 +509,9 @@ button:focus{
 .tuijian span{font-size: 15px;color:#8a8686;width: 97%;height: 40px;padding-left: 3%;display:block;text-align:left;}
 .tj_pic{width: 100%;height: auto;margin: 0 auto;}
 .tj_pic ul{list-style: none;width: 100%;height: auto;text-align:center;}
-.tj_pic ul li{width: 45%;height: 110px;display: inline-block;margin: 5px;}
+.tj_pic ul li{width: 45%;height: 110px;display: inline-block; }
 .tj_pic ul li:hover{border:1px solid #00ffff;background: #e8e3e3;opacity:0.75;}
-.tj_pic ul li img{max-width:100%;height:auto;}
+.tj_pic ul li img{max-width:100%;height:auto;margin: 5px;}
 .last {width: 100%;height: 40px;margin: 0 auto;}
 .last input{
 margin: 0 auto;;width: 80%;border:1px solid #cccccc;
