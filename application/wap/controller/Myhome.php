@@ -534,6 +534,10 @@ class Myhome extends Controller
         $this->assign('id', $id);
         $this->assign('beizhu', $beizhu);
         $this->assign('phone',$this->mobile);
+        //判断隐藏页面的显示
+        $message = db("ns_shop_message")->where("userid",$userid)->value("leixing");
+        $consumption = db("ns_consumption")->where("con_cateid",$message)->value("con_cate_name");
+        $this->assign("consumption",$consumption);
         return view($this->style . 'Myhome/yincan');
     }
 
@@ -1391,6 +1395,53 @@ class Myhome extends Controller
                 }else{
                     $info = ['status' => 0,'msg' => '订单信息有误，请重新提交！'];
                 }
+            }
+            return $info;
+        }
+    }
+
+    //预定系统 商家后台管理
+    public function hotelPutup(){
+        //查询当前商户所拥有的包间(所有)
+        $shopid = $this->business_id;
+        $list = db("ns_shop_seat")->where("shopid",$shopid)->select();
+        $this->assign("list",$list);
+        return view($this->style . 'Myhome/hotelPutup');
+    }
+
+    //商家后台控制
+    public function hotelor(){
+        if(request()->isAjax()){
+            $seatid = input("param.seatid");
+            $row = db("ns_shop_seat")->where("seatid",$seatid)->value("seatstatus");
+            if($row==1){
+                $data['seatstatus'] = 0;
+                $sy = db("ns_shop_seat")->where("seatid",$seatid)->update($data);
+                if($sy){
+                    $info = [
+                        "status" => 1,
+                        "msg" => "已正在使用中"
+                    ];
+                }else{
+                    $info = [
+                        "status" => 0,
+                        "msg" => "系统错误，请重试"
+                    ];
+                }
+            }else{
+               $data['seatstatus'] = 1;
+                $ty = db("ns_shop_seat")->where("seatid",$seatid)->update($data);
+                if($ty){
+                    $info = [
+                        "status" => 1,
+                        "msg" => "已准备就绪"
+                    ];
+                }else{
+                    $info = [
+                        "status" => 0,
+                        "msg" => "系统错误，请重试"
+                    ];
+                } 
             }
             return $info;
         }
