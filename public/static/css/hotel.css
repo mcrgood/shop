@@ -18,7 +18,7 @@ input[type=button], input[type=submit], input[type=file],button {
 
 .container1,#full_feature{
   width: 100%;
-  height: 11rem;
+  height: auto;
   margin: auto;
   
 }
@@ -46,8 +46,7 @@ input[type=button], input[type=submit], input[type=file],button {
     bottom: 0; }
   .swipslider .sw-slide {
     width: 100%;
-    height: 100%;
-    /*height: 11rem;*/
+    height: 10rem;
     margin: auto;
     display: inline-block;
     position: relative; }
@@ -57,9 +56,8 @@ input[type=button], input[type=submit], input[type=file],button {
       left: 50%;
       -webkit-transform: translate(-50%, -50%);
               transform: translate(-50%, -50%);
-      /*max-height: 100%;*/
-      /*height: 100%;*/
-      max-width: 100%;
+      max-height: 100%;
+      width: 100%;
       margin-left: auto;
       margin-right: auto;
       -webkit-user-select: none;
@@ -74,6 +72,7 @@ input[type=button], input[type=submit], input[type=file],button {
       font-size: 14px; }
 
 .sw-next-prev {
+  display: none;
   font-family: "Courier New", Courier, monospace;
   height: 50px;
   width: 50px;
@@ -137,30 +136,36 @@ input[type=button], input[type=submit], input[type=file],button {
     .sw-bullet li:not(:last-child) {
       margin-right: 5px; 
 }
-
-/*     .swiper-container {
-  width: 100%;
-  height: 10rem;
+@media only  screen and (min-device-width:361px) and (max-device-width:480px){  /*奇葩安卓机(一般为这个)dpr统一为1 Nexus 5X,6p ,最后一个and可写可不写(不写测试有效)*/
+  .swipslider .sw-slide > img{
+    max-height: 100% !important;
+    width: 100% !important;
+  }
 }
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #fff;
+@media only screen and (min-device-width:241px) and (max-device-width:360px){/*奇葩安卓机dpr统一为1  Galaxy 5s*/
+ .swipslider .sw-slide > img{
+    max-height: 100% !important;
+    width: 100% !important;
+  }
+} 
+@media (device-height:667px) and (-webkit-min-device-pixel-ratio:2){
 
-  Center slide text vertically
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-} */
+/* 兼容iphone6、iphone7、iphone8*/
+.swipslider .sw-slide > img{
+    max-height: 100% !important;
+    width: 100% !important;
+  }
+
+}
+@media (device-height:736px) and (-webkit-min-device-pixel-ratio:2){
+
+/* 兼容iphone6plus、iphone7plus、iphone8plus*/
+.swipslider .sw-slide > img{
+    max-height: 100% !important;
+    width: 100% !important;
+  }
+
+}
 /*上面的为轮播图css*/
 .comment_1{
   width: 100%;
