@@ -10,10 +10,9 @@
 <meta name="format-detection" content="telephone=no">
 <script type="text/javascript" src="__STATIC__/js/jquery-1.8.1.min.js"></script>
 <script type="text/javascript" src="__STATIC__/js/icheck.js"></script>
-<script type="text/javascript" src="__STATIC__/js/swiper.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/swipeslider.min.js"></script>
 <script src="__PUBLIC__/static/layui/layui.all.js"></script>
 <link rel="stylesheet" href="__STATIC__/css/hotel.css" />
-<link rel="stylesheet" href="__STATIC__/css/swiper.min.css" />
 <style>
   .hotel_relax ul li span{
     display: block;
@@ -46,26 +45,22 @@
 </style>
 </head>
 <body>
- <!-- Swiper -->
-  <div class="swiper-container">
-    <div class="swiper-wrapper">
-    {volist name="img_list" id="v"}
-      <div class="swiper-slide"><img src="{$v}" width="100%" /></div>
-    {/volist}
-    </div>
-    <!-- Add Pagination -->
-    <div class="swiper-pagination"></div>
-  </div>
-  <!-- Initialize Swiper -->
-  <script>
-    var mySwiper = new Swiper('.swiper-container', {
-    autoplay:true,//等同于以下设置
-    autoplay: {
-    delay: 3000,
-    stopOnLastSlide: false,
-    disableOnInteraction: true,
-    },
-});
+<!--轮播图-->
+  <div class="container1">       
+    <div id="full_feature" class="swipslider">
+      <ul class="sw-slides">
+      {volist name="img_list" id="v"}
+       <li class="sw-slide">
+          <img src="{$v}"/>
+        </li>
+        {/volist}
+      </ul>
+    </div>      
+</div>
+ <script type="text/javascript">
+    $(window).load(function() {
+          $('#full_feature').swipeslider();
+        });
   </script>
   <div class="comment_1">
     <div class="content-top">
