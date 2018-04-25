@@ -1,97 +1,456 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>招商合伙人表单填写</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta name="format-detection" content="telephone=no">
-    <meta http-equiv="description" content="ajax方式">
-    <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#login").click(function () {
-                var username = $('#UserName').val();
-                var phone = $('#phone').val();
-                var province = $('#province').val();
-                var city = $('#city').val();
-                var area = $('#area').val();
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>加入我们</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery-1.8.1.min.js"></script>
+<link rel="stylesheet" href="__YUDING__/css/style.css">
+<link rel="stylesheet" href="__YUDING__/css/laydate.css">
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
+<style>
+*{margin:0;padding: 0;}
+a{text-decoration: none;-webkit-tap-highlight-color:rgba(255,255,255,0);}
+.bigest{
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+.content_header{
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    background: #c63346;
+}
+.content_header span{
+    color: #fff;
+    font-size: 1.4rem;
+}
+.contact_detail{
+    width: 100%;
+    height: auto;
+    padding: 20px 0;
+    background: #d8f8e9;
+    
+}
+.contact_detail ul li{
+    list-style: none;
+    height: 60px;
+    width: 100%;
+    background: #fff;
+}
+.contact_detail ul li span{
+    float:left;
+    width: 40px;
+    height: 40px;
+}
+.contact_detail ul li p{
+    display: inline-block;
+    line-height: 60px;
+    width: 100%;
+    font-size: 1rem;
+    color: #000;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.contact_detail ul li p a{
+    display: block;
+    float: right;
+    width: 10%;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #c7c7c7;
+}
+#img1{
+    background: url(__JOIN__/coin_03_01.png) no-repeat center; 
+    background-size:100%;
+    width: 40px;
+    height: 40px;
+    margin: 10px 15px;
+}
+#img2{
+    background: url(__JOIN__/dibiao_03.png) no-repeat center;
+    background-size: 100%;
+    width: 35px;
+    height: 43px;
+    margin: 8px 15px;
 
-                if (username == '') {
-                    alert("请输入姓名");
-                    return false;
-                    }
-                    else {
-                    if (phone == '') {
-                        alert("请输入电话");
-                        return false;
-                        }else
-                        if (province == '') {                
-                                alert("请输入省名");                
-                                return false;
-                        }else
-                        if (city == '') {                
-                                alert("请输入你的城市");                
-                                return false;
-                         }else
-                            if(!isNaN(username)){
-                         alert("请填写正确的姓名");
-                             return false;
-                         }
-                         else
-                         if(!username.match(/^[\u4e00-\u9fa5]+$/)){
-                              alert("请填写正确的姓名");
-                                return false;
-                         }else
-                         if (area == '') {                
-                                alert("请输入你的县城");                
-                                return false;
-                        }else
+}
+#img3{
+    background: url(__JOIN__/us_03.png) no-repeat center;
+    background-size: 100%;
+    width: 40px;
+    height: 40px;
+    margin: 10px 15px;
+}
+.form1{
+    width: 100%;
+    height: auto;   
+}
+.form1 .common_text{
+    width: 90%;
+    padding: 0 5%;
+    height: auto;
+    margin: auto;
+    background: #fff;
+}
+.common_text span{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    font-size: 1rem;
+    text-align: left;
+    color: #595959;
 
-                            $.ajax({  
-                                type: "POST",   //提交的方法
-                                url:"{:url('cooperate/c_partern')}", //提交的地址  url
-                                data:$('#form1').serialize(),// 序列化表单值 表单id 
-                                async: false,  
-                                error: function(request) {  //失败的话
-                                     alert("Connection error");  
-                                },  
-                                success: function(data) {  //成功
-                                    if (data.error == 0) {
-                                        alert(data.message);
-                                        window.location.href = '{:url(\'wap/index\')}'
-                                    }
-                                    else
-                                    {
-                                        alert(data.message);
-                                    }
-                                }  
-                             });
-                        }
-              });  
-        });
-    </script>
-</head>
-<style type="text/css">
-    #form-div{width: 100%;height: auto;padding: 0;margin: 0;}
-    #form1{width: 100%;height: auto;display: block;}
-    #form1 h2{font-size: 35px;text-align: center;height: 60px;line-height: 60px;letter-spacing: 8px;width:100%;margin: 0;display:block;}
-    #form1 p{font-size: 30px;text-align: center;height: 40px;width:100%;display:block;margin:20px 0;}
-    #form1 p input{width: 55%;font-size: 25px;border:1px solid gray;}
+}
+.common_text label{
+    display: block;
+    height: 20px;
+    line-height: 20px;
+    font-size: 0.5rem;
+    text-align: left;
+    color: #c2c2c2;
+}
+.common_text input{
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    border: 1px solid #b3b3b3;
+    height: 30px;
+    outline: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+}
+.tijiao{
+    width: 100%;
+    height: 60px;
+    margin: auto;
+    background: #ebebeb;
+    margin-top: 20px;
+    text-align: center;
+}
+.tijiao input{
+    width: 40%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border: none;
+    background: #c73232;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-top: 10px;
+    outline: none;
+}
+/*轮播*/
+#lunbobox {  
+    width:100%;  
+    height:200px;  
+    position:relative;  
+}  
+.lunbo {  
+    width:100%;  
+    height:200px;  
+}  
+.lunbo img {  
+    width:100%;  
+    height:200px;  
+    position:absolute;  
+    top:0px;  
+    left:0px;  
+}  
+#lunbobox ul {  
+    width:58%;  
+    position:absolute;  
+    bottom:10px;  
+    right:0px;  
+    z-index:5;  
+}  
+#lunbobox ul li {  
+    cursor:pointer;  
+    width:20px;  
+    height:4px;  
+    border:1px solid #cccccc;  
+    float:left;  
+    list-style:none;  
+    background:#cccccc;  
+    text-align:center;  
+    margin:0px 5px 0px 0px;  
+}  
+#toleft {  
+    display:none;  
+    width:30px;  
+    height:100px;  
+    font-size:40px;  
+    line-height:100px;  
+    text-align:center;  
+    color:#f4f4f4;  
+    /*background:#cccccc;  
+    */  
+    /*background:url("../images/toleft.jpg")no-repeat center;  
+    */  
+    position:absolute;  
+    top:60px;  
+    left:12px;  
+    cursor:pointer;  
+    z-index:99;  
+    opacity:0.4;  
+}  
+#toright {  
+    display:none;  
+    width:30px;  
+    height:100px;  
+    font-size:40px;  
+    line-height:100px;  
+    text-align:center;  
+    color:#f4f4f4;  
+    /*background:#cccccc;  
+    */  
+    position:absolute;  
+    top:60px;  
+    right:0px;  
+    cursor:pointer;  
+    z-index:99;  
+    opacity:0.4;  
+}  
+/**/
 </style>
+</head>
 <body>
-<div id="form-div">
-    <form id="form1"><!--将form元素的属性action和method去掉，添加id=”form1”,form元素就变为<form id="form1">-->
-        <h2>招商合伙人</h2>
-        <p>姓名：<input name="userName" type="text" id="UserName" value=""/></p>
-        <p>电话：<input name="telphone" type="tel" id="phone" value=""/></p>
-        <p>省名：<input name="province" type="text" id="province"  value=""/></p>
-        <p>城市：<input name="city" type="text" id="city"  value=""/></p>
-        <p>城区：<input name="area" type="text" id="area"  value=""/></p>
-        <textarea rows="3" id="message" name="message" cols="20" placeholder="留言信息" style="font-size:25px;border:1px solid gray;width:90%;margin:0 5%;"></textarea>
-        <p><input type="button" value="提交" id="login" style="width:30%;display:inline-block;">&nbsp;<input type="reset" value="重置" style="width:30%;display:inline-block;"></p>
-    </form>
-</div>
+  <div class="bigest"> 
+    <div id="lunbobox">  
+        <div id="toleft"></div>  
+                <div class="lunbo">  
+                    <a href="#"><img src="http://www.jq22.com/img/cs/500x300a.png"></a>  
+                    <a href="#"><img src="http://www.jq22.com/img/cs/500x300b.png"></a>  
+                    <a href="#"><img src="http://www.jq22.com/img/cs/500x300c.png"></a>   
+                </div>  
+                <div id="toright"></div>  
+                <ul>  
+                <li></li>  
+                <li></li>  
+                <li></li>    
+                </ul>  
+        <span></span>  
+    </div>
+<script type="text/javascript">
+    ///轮播  
+$(function() {  
+    //$("#toright").hide();  
+    //$("#toleft").hide();  
+    $('#toright').hover(function() {  
+        $("#toleft").hide()  
+    }, function() {  
+        $("#toleft").show()  
+    })  
+    $('#toleft').hover(function() {  
+        $("#toright").hide()  
+    }, function() {  
+        $("#toright").show()  
+    })  
+})  
+  
+var t;  
+var index = 0;  
+/////自动播放  
+t = setInterval(play, 2500)  
+  
+function play() {  
+    index++;  
+    if (index > 4) {  
+        index = 0  
+    }  
+    // console.log(index)  
+    $("#lunbobox ul li").eq(index).css({  
+        "background": "#999",  
+        "border": "1px solid #ffffff"  
+    }).siblings().css({  
+        "background": "#cccccc",  
+        "border": ""  
+    })  
+  
+    $(".lunbo a ").eq(index).fadeIn(1000).siblings().fadeOut(1000);  
+};  
+  
+///点击鼠标 图片切换  
+$("#lunbobox ul li").click(function() {  
+  
+    //添加 移除样式  
+    //$(this).addClass("lito").siblings().removeClass("lito"); //给当前鼠标移动到的li增加样式 且其余兄弟元素移除样式   可以在样式中 用hover 来对li 实现  
+    $(this).css({  
+        "background": "#999",  
+        "border": "1px solid #ffffff"  
+    }).siblings().css({  
+        "background": "#cccccc"  
+    })  
+    var index = $(this).index(); //获取索引 图片索引与按钮的索引是一一对应的  
+    // console.log(index);  
+  
+    $(".lunbo a ").eq(index).fadeIn(1000).siblings().fadeOut(1000); // siblings  找到 兄弟节点(不包括自己）  
+});  
+  
+/////////////上一张、下一张切换  
+$("#toleft").click(function() {  
+    index--;  
+    if (index <= 0) //判断index<0的情况为：开始点击#toright  index=0时  再点击 #toleft 为负数了 会出错  
+    {  
+        index = 4  
+    }  
+    console.log(index);  
+    $("#lunbobox ul li").eq(index).css({  
+        "background": "#999",  
+        "border": "1px solid #ffffff"  
+    }).siblings().css({  
+        "background": "#cccccc"  
+    })  
+  
+    $(".lunbo a ").eq(index).fadeIn(1000).siblings().fadeOut(1000); // siblings  找到 兄弟节点(不包括自己）必须要写  
+}); // $("#imgbox a ")获取到的是一个数组集合 。所以可以用index来控制切换  
+  
+$("#toright").click(function() {  
+    index++;  
+    if (index > 4) {  
+        index = 0  
+    }  
+    console.log(index);  
+    $(this).css({  
+        "opacity": "0.5"  
+    })  
+    $("#lunbobox ul li").eq(index).css({  
+        "background": "#999",  
+        "border": "1px solid #ffffff"  
+    }).siblings().css({  
+        "background": "#cccccc"  
+    })  
+    $(".lunbo a ").eq(index).fadeIn(1000).siblings().fadeOut(1000); // siblings  找到 兄弟节点(不包括自己）  
+});  
+$("#toleft,#toright").hover(function() {  
+        $(this).css({  
+            "color": "black"  
+        })  
+    },  
+    function() {  
+        $(this).css({  
+            "opacity": "0.3",  
+            "color": ""  
+        })  
+    })  
+///  
+  
+///////鼠标移进  移出  
+$("#lunbobox ul li,.lunbo a img,#toright,#toleft ").hover(  
+    ////////鼠标移进  
+    function() {  
+        $('#toright,#toleft').show()  
+        clearInterval(t);  
+  
+    },  
+    ///////鼠标移开  
+    function() {  
+        //$('#toright,#toleft').hide()  
+        //alert('aaa')  
+        t = setInterval(play, 2000)  
+  
+        function play() {  
+            index++;  
+            if (index > 4) {  
+                index = 0  
+            }  
+            $("#lunbobox ul li").eq(index).css({  
+                "background": "#999",  
+                "border": "1px solid #ffffff"  
+            }).siblings().css({  
+                "background": "#cccccc"  
+            })  
+            $(".lunbo a ").eq(index).fadeIn(1000).siblings().fadeOut(1000);  
+        }  
+    })  
+</script>
+    <div class="content_header">
+        <span>客旺旺</span>
+    </div>
+    <div class="contact_detail">
+        <ul>
+            <li>                
+                <p><span id="img1"></span> 0791-86498066</p>              
+            </li>
+            <li>                
+                <p><span id="img2"></span> 江西省南昌市红谷滩新区联发广场908室</p>              
+            </li>
+            <li>                
+                <p><span id="img3"></span> 客旺旺平台累计用户量接近1000万</p>               
+            </li>
+        </ul>
+    </div>
+    <div class="content_header">
+        <span>欢迎加入我们</span>
+    </div>
+    <div class="form1">
+        <div class="common_text">
+            <span>姓名</span>
+            <label>请填写你的姓名</label>
+            <input type="text" id="name"/>
+        </div>
+        <div class="common_text">
+            <span>手机号</span>
+            <label>请填写你的手机号码</label>
+            <input type="text" id="tel"/>
+        </div>
+      <!--   <div class="common_text">
+            <span>公司名称</span>
+            <label>请填写你的公司名称</label>
+            <input type="text" id="company"/>
+        </div> -->
+        <div class="common_text">
+            <span>意向区域</span>
+            <label>请输入你希望合作的市/区/县名称</label>
+            <input type="text" id="sheng"placeholder="填写省"/>
+            <input type="text" id="shi"placeholder="填写市"/>
+            <input type="text" id="area"placeholder="填写区"/>
+        </div>
+        <div class="common_text">
+            <textarea  id="message" cols="30" rows="10"></textarea>
+        </div>
+        <div class="tijiao">
+            <input type="submit" id="submit_1" value="提交"/>
+        </div>
+    </div>
+<script type="text/javascript">
+        $('#submit_1').click(function(){
+            var name = $('#name').val();
+            var tel = $('#tel').val();
+            var sheng = $('#sheng').val();
+            var shi = $('#shi').val();
+            var message = $('#message').val();
+            var area = $('#area').val();
+            var data = {
+                "name":name,
+                "tel":tel,
+                "sheng":sheng,
+                "shi":shi,
+                "message":message,
+                "area":area
+            };
+            var url = "{:url('cooperate/c_partern')}";
+            $.post(url,data,function(res){
+                if(res.status==1){
+                    layer.msg(res.msg, {time: 2000,icon:6});
+                    setTimeout(function() {
+                            window.location.reload();
+                    }, 2000)
+                }else{
+                   layer.msg(res.msg, {time: 2000,icon:5});
+                }
+            },'json')
+        });
+</script>
+
+  </div>
 </body>
 </html>
