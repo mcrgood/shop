@@ -1508,11 +1508,19 @@ class Myhome extends Controller
     //预定消费订单支付
     public function orderPay(){
         if(request()->isAjax()){
-            $sid = input("post.sid");
-            $totalPrice = input("post.totalPrice");
+            $sid = input("post.sid");//订单号
+            $totalPrice = input("post.totalPrice");//总价
+            $have = db("ns_order_payment")->where("out_trade_no",$sid)->value("out_trade_no");
             
             if(!$sid){
                 $info = ['status' => 0,'msg' => '订单信息有误，请重新提交！'];
+            }else if($have){
+                $info = [
+                        'status' => 1,
+                        'msg' => '账单已存在，请直接支付！',
+                        'out_trade_no' => $sid,
+                        'business_id' => $ordermessage['shop_id']
+                    ];
             }else{
                 $ordermessage = db("ns_goods_yuding")->where("sid",$sid)->find(); //根据订单号查询订单详情
                 $data['out_trade_no'] = $sid; //订单号 唯一
