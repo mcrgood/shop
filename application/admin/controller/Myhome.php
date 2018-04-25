@@ -77,7 +77,7 @@ class Myhome extends BaseController
             $search_text = request()->post('search_text', '');
             $condition['iphone|address|names'] = ['LIKE',"%".$search_text."%"];
             $member = new MyhomeService();
-            $list = $member->getRegisters($page_index, $page_size, $condition, $order = '');
+            $list = $member->getRegisters($page_index, $page_size, $condition, $order = 'a.id asc');
             return $list;
 	    }
 		return view($this->style . "Myhome/registerlist");

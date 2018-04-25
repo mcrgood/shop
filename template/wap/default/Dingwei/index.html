@@ -26,6 +26,7 @@
     var longitude;
     var leixing_id = "{$leixing_id}";
     var con_cateid = "{$con_cateid}";
+    var type = "{$type}";
     var urls = "{:url('Dingwei/getSecondCate')}";
     var dingwei_url = "{:url('Dingwei/index')}";
 
@@ -79,7 +80,7 @@
             $.ajax({
                 type: 'GET',
                 url: '{:url("dingwei/getData")}?page='+page+'&size='+size,
-                data:{jingdu: longitude, weidu: latitude, leixing_id: leixing_id,con_cateid:con_cateid},
+                data:{jingdu: longitude, weidu: latitude, leixing_id: leixing_id,con_cateid:con_cateid,type:type},
                 dataType: 'json',
                 success: function(data){
                     if(data.message.length > 0 && page <= data.pages && data.state ==1){
@@ -149,13 +150,14 @@
 //             $.ajax({
 //                 type: 'GET',
 //                 url: '{:url("dingwei/getData")}?page='+page+'&size='+size,
-//                 data:{jingdu: 35.3535, weidu: 35.3535, leixing_id: leixing_id,con_cateid:con_cateid},
+//                 data:{jingdu: 115.870658, weidu: 28.695522, leixing_id: leixing_id,con_cateid:con_cateid,type:type},
 //                 dataType: 'json',
 //                 success: function(data){
+//                     console.log(data)
 //                     if(data.message.length > 0 && page <= data.pages && data.state ==1){
 //                        for(var i = 0;i < data["message"].length;i++){
 //                             html +='<li style="border-bottom: 1px solid #cccccc;">';
-//                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["id"]+'">';
+//                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'">';
 //                             html +='<img src="'+data["message"][i]["thumb"]+'"/>';
 //                             html +='</a>';
 //                             html +='<span style="float:right;font-size:0.72rem;color:red;">'+data["message"][i]["gold"]+'</span>';
@@ -273,6 +275,9 @@
 
 </body>
 <script>
+        function dingwei(){
+            location.href = dingwei_url+"?cat="+leixing_id+"&con_cateid="+con_cateid+"&type=dingwei";
+        }
     $(function(){
             $('.con_cateid').click(function(){
             val = $(this).attr('value');
@@ -290,6 +295,8 @@
                 $('.nav_right').empty().append(html);
             },'json')
         })
+
+
     })
 </script>
 

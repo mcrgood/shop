@@ -16,6 +16,7 @@ use data\extend\org\wechat\Jssdk;
 
 class Dingwei extends BaseController{
 	public function index(){
+
 		ob_clean();//清除缓存
         //查出当前分类的东东(判断审核状态)
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
@@ -23,11 +24,13 @@ class Dingwei extends BaseController{
         $this->assign('signPackage', $package);
 
         $leixing_id = input("param.cat",25);  //一级分类ID
+        $type = input("param.type",0);  //一级分类ID
         $con_cate_name = db('ns_consumption')->where('con_cateid',$leixing_id)->value('con_cate_name');
         $con_cateid = input("param.con_cateid",0);  //二级分类ID
         $this->assign('con_cate_name', $con_cate_name);
         $this->assign('leixing_id', $leixing_id);
         $this->assign('con_cateid', $con_cateid);
+        $this->assign('type', $type);
         $cate_list = db('ns_consumption')->where('con_pid',0)->select();
         $this->assign('cate_list', $cate_list);
         return view($this->style . 'Dingwei/index');
@@ -37,6 +40,7 @@ class Dingwei extends BaseController{
         ob_clean();//清除缓存
         $jingdu = input('param.jingdu');
         $weidu = input('param.weidu');
+        $type = input('param.type',0);  //点击定位以后type会有值
         $jingdu = $jingdu+'0.012112';
         $weidu = $weidu+'0.001513';
         $leixing_id = input('param.leixing_id'); //一级分类ID
@@ -51,6 +55,7 @@ class Dingwei extends BaseController{
             $where['leixing'] = $leixing_id;
             $where['state'] = 1;
         }
+        $where['business_status'] = ['neq',false];
         $count = db("ns_shop_message")
         ->alias('s')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
@@ -58,8 +63,10 @@ class Dingwei extends BaseController{
         $pages = ceil($count/$size); //总页数
         $list = db("ns_shop_message")
         ->alias('s')
+        ->field('s.id,s.userid,w.business_status,w.gold,s.names,s.address,s.jingdu,s.weidu,s.thumb')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
         ->limit(($page-1)*$size,$size)
+        ->order("s.id asc")
         ->where($where)->select();
         if (!empty($list)) {
             foreach ($list as $k => $v) {
@@ -72,6 +79,7 @@ class Dingwei extends BaseController{
             }
             array_multisort(array_column($list, 'distance'), SORT_ASC, $list);
             return ["message" => $list, "state" => 1,'pages' => $pages];
+
         }else{
             return ["message" => "没有数据", "state" => 0];
         }
