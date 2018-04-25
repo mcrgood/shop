@@ -615,29 +615,15 @@ class Myhome extends Controller
             }
             return $info;
         }
-        $map['m.userid'] = $this->business_id;
-        $map['p.pay_status'] = 1;
-        db("ns_goods_yuding")
-        ->alias('g')
-        ->join('ns_shop_message m','m.id=g.shop_id','left')
-        ->join('ns_order_payment p','p.out_trade_no = g.sid','left')
-        ->where($map)
-        ->update(["status"=>1]); //把消息状态修改成已读
-
-        $list = db('ns_goods_yuding')
-        ->field('a.*,m.names,w.msg_status')
-        ->alias('a')
-        ->join('ns_shop_message m','a.shop_id=m.id','left')
-        ->join('ns_wwb w','w.userid = m.userid','left')
-        ->join('ns_order_payment p','p.out_trade_no = a.sid','left')
-        ->order('a.add_time desc')
-        ->where($map)
-        ->select();
-        foreach($list as $k => $v){
-            $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
-        }  
+        $cate_name = db('ns_shop_message')->alias('a')->join('ns_consumption b','a.leixing = b.con_cateid','left')->where('a.userid',$this->business_id)->value('con_cate_name');
+        if($cate_name == '餐饮'){
+            $list = $this->getGoodsMsg($this->business_id); //获取该商家餐饮店的预定消息
+        }elseif($cate_name == '酒店'){
+            $list = $this->getHotelMsg($this->business_id);//获取该商家酒店的预定消息
+        }
         // dump($list);die;
         $this->assign('list',$list);  
+        $this->assign('cate_name',$cate_name);  
         return view($this->style . 'Myhome/message');
     }
     //预定订单详情
@@ -803,6 +789,7 @@ class Myhome extends Controller
                     $data['pay_money'] = $totalPrice; // 订单总金额
                     $res = db('ns_order_payment')->insert($data);
                     if($res !== false){
+                        db('ns_hotel_yuding')->where('out_trade_no',$out_trade_no)->update(['name'=>$realname,'phone'=>$phone]);
                         $user_realname = db('sys_user')->where('uid',$ordermessage['uid'])->value('realname');
                         if(!$user_realname || $user_realname!=$realname){
                             db('sys_user')->where('uid',$ordermessage['uid'])->update(['realname'=>$realname]);
@@ -1189,7 +1176,7 @@ class Myhome extends Controller
         $yuding = db('ns_goods_yuding')
         ->alias('g')
         ->field('g.*,m.names,m.address,m.tel,w.msg_status')
-        ->join('ns_shop_message m','g.shop_id = m.id','left')
+        ->join('ns_shop_message m','g.shop_id = m.userid','left')
         ->join('ns_wwb w','w.userid = m.userid','left')
         ->where('g.id',$id)->find();
         
@@ -1243,7 +1230,7 @@ class Myhome extends Controller
             $yuding = db('ns_goods_yuding')
             ->alias('g')
             ->field('g.*,m.names,m.address,m.tel')
-            ->join('ns_shop_message m','g.shop_id = m.id','left')
+            ->join('ns_shop_message m','g.shop_id = m.userid','left')
             ->where('g.id',$id)->find();
             
             $times = date('m月d日 H:i',strtotime($yuding['time'])); //预定的时间
@@ -1560,6 +1547,56 @@ class Myhome extends Controller
         return view($this->style . 'Myhome/hotelPutup');
     }
 
+    //获取餐饮的商家预定消息通知
+    public function getGoodsMsg($business_id){
+        $map['m.userid'] = $business_id;
+        $map['p.pay_status'] = 1;
+        db("ns_goods_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.shop_id','left')->join('ns_order_payment p','p.out_trade_no = g.sid','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
+        $list = db('ns_goods_yuding')
+        ->field('a.*,m.names,w.msg_status')
+        ->alias('a')
+        ->join('ns_shop_message m','a.shop_id=m.userid','left')
+        ->join('ns_wwb w','w.userid = m.userid','left')
+        ->join('ns_order_payment p','p.out_trade_no = a.sid','left')
+        ->order('a.add_time desc')
+        ->where($map)
+        ->select();
+        if($list){
+            foreach($list as $k => $v){
+                $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
+            }
+        }
+            return $list;  
+    }
+    //获取酒店商家预定消息通知
+    public function getHotelMsg($business_id){
+        $map['m.userid'] = $business_id;
+        $map['p.pay_status'] = 1;
+        db("ns_hotel_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
+        $list = db('ns_hotel_yuding')
+        ->field('a.*,m.names,w.msg_status')
+        ->alias('a')
+        ->join('ns_shop_message m','a.business_id=m.userid','left')
+        ->join('ns_wwb w','w.userid = m.userid','left')
+        ->join('ns_order_payment p','p.out_trade_no = a.out_trade_no','left')
+        ->order('a.create_time desc')
+        ->where($map)
+        ->select();
+        if($list){
+            foreach($list as $k => $v){
+                $list[$k]['room_num'] = explode('|',$v['room_num']);
+                if(count($list[$k]['room_num']) > 1){
+                    foreach($list[$k]['room_num'] as $key =>$val){
+                        $list[$k]['total_num'] += $val;
+                    }
+                }else{
+                    $list[$k]['total_num'] = implode('|',$list[$k]['room_num']);
+                }
+                $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+            }
+        }
+            return $list;  
+    }
     //商家后台控制
     public function hotelor(){
         if(request()->isAjax()){

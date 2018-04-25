@@ -16,7 +16,6 @@ use data\extend\org\wechat\Jssdk;
 
 class Dingwei extends BaseController{
 	public function index(){
-
 		ob_clean();//清除缓存
         //查出当前分类的东东(判断审核状态)
         $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
@@ -66,7 +65,6 @@ class Dingwei extends BaseController{
         ->field('s.id,s.userid,w.business_status,w.gold,s.names,s.address,s.jingdu,s.weidu,s.thumb')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
         ->limit(($page-1)*$size,$size)
-        ->order("s.id asc")
         ->where($where)->select();
         if (!empty($list)) {
             foreach ($list as $k => $v) {
