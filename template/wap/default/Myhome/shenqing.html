@@ -130,7 +130,15 @@
 <!-- 选择类型 -->
 <script type="text/javascript">
     $(function(){
+        var aa = true;
         $(".label1").on('click',function(){
+            if(aa == true){
+                $(this).parent().siblings('li').hide();
+                aa = false;
+            }else{
+                $(this).parent().siblings('li').show();
+                aa = true;
+            }
             var values = $(this).attr('value');
             var url = "{:url('Myhome/findSecondCate')}";
             var data = {values:values};
@@ -196,8 +204,8 @@
 			</label>
 		</div>
 
-		<div class="intake-title">法人身份证照</div>
-		<div class="up-file f-fl">
+		<!-- <div class="intake-title">法人身份证照</div> -->
+		<!-- <div class="up-file f-fl">
 			<label>
 				<img src="__INDEX__/images/upload1.png" id="thumb_zhengmian_img">
 				<input class="up-fileh error" name="thumb_zhengmian" onchange="" type="text" id="thumb_zhengmian" onclick="wximg('thumb_zhengmian')">
@@ -207,7 +215,7 @@
 				<img src="__INDEX__/images/upload2.png" id="thumb_fanmian_img">
 				<input class="up-fileh error" name="thumb_fanmian" onchange="" type="text" id="thumb_fanmian" onclick="wximg('thumb_fanmian')">
 			</label>
-		</div>
+		</div> -->
 	</div>
 	<div class="intake-title" id="up-file1">银行卡信息</div>
 	<div class="up-file f-fl" id="up-file1">
@@ -223,7 +231,7 @@
             <img id="preview" width="-1" height="-1" style="display: none" />
         </div>
         <p>卡类型：<input name="yhk_type" style="font-size:0.5rem;width:68%;" type="text" id="cardtype" size="15" placeholder="银行卡类型" onfocus="if (placeholder =='银行卡类型'){placeholder =''}" onblur="if (placeholder ==''){placeholder='银行卡类型'}"/></p>
-        <p>手机号：<input name="bank_phone" type="number" id="telephone"size="15" placeholder="请输入预留手机号码" onfocus="if (placeholder =='请输入预留手机号码'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入预留手机号码'}"/></p>
+        <!-- <p>手机号：<input name="bank_phone" type="number" id="telephone"size="15" placeholder="请输入预留手机号码" onfocus="if (placeholder =='请输入预留手机号码'){placeholder =''}" onblur="if (placeholder ==''){placeholder='请输入预留手机号码'}"/></p> -->
     </div>
 </div>
  <script type="text/javascript">
@@ -461,25 +469,25 @@
 
         }
 
-        if ($("#thumb_zhengmian").val()=='') {
+        // if ($("#thumb_zhengmian").val()=='') {
 
-            layer.msg('请上传法人正面照片');
+        //     layer.msg('请上传法人正面照片');
 
-            $("#thumb_zhengmian").focus();
+        //     $("#thumb_zhengmian").focus();
 
-            return false;
+        //     return false;
 
-        }
+        // }
 
-        if ($("#thumb_fanmian").val()=='') {
+        // if ($("#thumb_fanmian").val()=='') {
 
-            layer.msg('请上法人反面照片');
+        //     layer.msg('请上法人反面照片');
 
-            $("#thumb_fanmian").focus();
+        //     $("#thumb_fanmian").focus();
 
-            return false;
+        //     return false;
 
-        }
+        // }
 
                 
                 if(username === ''){
@@ -488,9 +496,6 @@
                     return false;
                 }else if(kahao === '' && pic === ''){
                     layer.msg("请输入银行卡号");
-                    return false;
-                }else if(telephone === ''){
-                    layer.msg("预留手机号码不能为空");
                     return false;
                 }else if(!username.match( /^[\u4E00-\u9FA5]{1,}$/)){
                     layer.msg("请填写正确的持卡人姓名");
@@ -504,14 +509,14 @@
                 }else if(!regs.test(telephone)){
                     layer.msg("请输入有效的手机号码!");
                 }
-                if($('#thumb_yhk1').val() == ''){
-                    layer.msg("请上传银行卡正面照片");
-                    return false;
-                }
-                if($('#thumb_yhk2').val() == ''){
-                    layer.msg("请上传银行卡反面照片");
-                    return false;
-                }
+                // if($('#thumb_yhk1').val() == ''){
+                //     layer.msg("请上传银行卡正面照片");
+                //     return false;
+                // }
+                // if($('#thumb_yhk2').val() == ''){
+                //     layer.msg("请上传银行卡反面照片");
+                //     return false;
+                // }
 
                 if($("input[type='checkbox']").is(':checked')) {
                     return true;
@@ -536,25 +541,26 @@
 
     </script>
 </div>
-<div style="width:100%;margin: 10px auto;font-size: .45rem;">银行卡</div>
-		<label>
+<!-- <div style="width:100%;margin: 10px auto;font-size: .45rem;">银行卡</div> -->
+		<!-- <label>
 			<img src="__INDEX__/images/upload1.png" id="thumb_yhk1_img">
 			<input class="up-fileh error" name="thumb_yhk1" onchange="" type="text" id="thumb_yhk1" onclick="wximg('thumb_yhk1')">
 		</label>
 		<label>
 			<img src="__INDEX__/images/upload2.png" id="thumb_yhk2_img">
 			<input class="up-fileh error" name="thumb_yhk2" onchange="" type="text" id="thumb_yhk2" onclick="wximg('thumb_yhk2')">
-		</label>
+		</label> -->
 	</div>
 	<div class="kong"></div>
 	<div class="intake-img">
-		<div class="intake-title1">商家介绍</div>
-		<textarea class="intake-text" placeholder="请简单的介绍您家店铺" name="content"></textarea>
+		<!-- <div class="intake-title1">商家介绍</div> -->
+		<!-- <textarea class="intake-text" placeholder="请简单的介绍您家店铺" name="content"></textarea> -->
 		<!-- <div class="intake-p">附：商家入驻需交<span>200元</span>入驻费用。</div> -->
 		<!-- <a class="shops-center_a" style="margin-top:.2rem" >提交申请</a> -->
    		<div style="height:.6rem; margin:.3rem 0;">
     	<input class="chk_1" type="checkbox" id="c1" >
-		<label for="c1" style="margin-top:0"><div class="chk_txt">我已阅读并同意<a  class="shangjia-a">《客旺旺商家注册协议》</a></div></label></div>
+		<label for="c1" style="margin-top:0"><div class="chk_txt">我已阅读并同意<a  class="shangjia-a">《客旺旺商家注册协议》</a></div></label>
+        </div>
 		<input type="hidden" name="jingdu" id="jingdu">
 		<input type="hidden" name="weidu" id="weidu">
 		<input type="submit" value="提交申请" id="submit_1" class="shops-center_a" style="margin-top:.2rem" />

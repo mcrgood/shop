@@ -143,8 +143,32 @@ ul li{list-style: none;}
   text-indent: 2rem;
   line-height: 1.2rem;
 }
-.first span{
+.food_name .first span{
   font-weight: bold;
+}
+.food_name .first span:nth-child(1){
+  width: 35%;
+}
+.food_name .first span:nth-child(2){
+  width: 25%;
+}
+.food_name .first span:nth-child(3){
+  width: 20%;
+}
+.food_name .first span:nth-child(4){
+  width: 20%;
+}
+.food_name .room_list span:nth-child(1){
+  width: 35%;
+}
+.food_name .room_list span:nth-child(2){
+  width: 25%;
+}
+.food_name .room_list span:nth-child(3){
+  width: 20%;
+}
+.food_name .room_list span:nth-child(4){
+  width: 20%;
 }
 </style>
 </head>
@@ -156,20 +180,22 @@ ul li{list-style: none;}
   	</div>
   	<div class="order_form">
   		<div class="username">
-  			<span>{$row.name} &nbsp;{$row.iphone}</span>
+  			<span>{$row.name} &nbsp;{$row.phone}</span>
   		</div>
   		<div class="food_name">
   			<ul>
           <li class="first">
-            <span>菜名</span>
+            <span>房间类型</span>
+            <span>单价</span>
             <span>数量</span>
-            <span>总价</span>
+            <span>天数</span>
           </li>
-        {volist name="row['goods']" id="v"}
-    			<li>
-    				<span>{$v.1}</span>
-    				<span>{$v.2}份</span>
-    				<span>￥{$v.0}</span>
+        {volist name="row['room_list']" id="v"}
+    			<li class="room_list">
+    				<span>{$v.0}</span>
+            <span>￥{$v.1}</span>
+    				<span>{$v.2}间</span>
+    				<span>{$row.stayDays}天</span>
     			</li>
     		{/volist}
     			
@@ -183,11 +209,11 @@ ul li{list-style: none;}
   			<ul>
   				<li>
   					<span>订单编号</span>
-  					<span>{$row.sid}</span>
+  					<span>{$row.out_trade_no}</span>
   				</li>
   				<li>
   					<span>下单时间</span>
-  					<span>{$row.add_time}</span>
+  					<span>{$row.create_time}</span>
   				</li>
   				<li>
   					<span>支付方式</span>

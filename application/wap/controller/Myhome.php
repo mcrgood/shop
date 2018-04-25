@@ -591,24 +591,14 @@ class Myhome extends Controller
         $this->check_login();
         if(request()->isAjax()){ //历史消息搜索
             $search_input = input('post.search_input', '');
-            if($search_input){
-                $where['a.name|a.iphone'] = ['like',"%".$search_input."%"];
+            $cate_name = db('ns_shop_message')->alias('a')->join('ns_consumption b','a.leixing = b.con_cateid','left')->where('a.userid',$this->business_id)->value('con_cate_name');
+            if($cate_name == '餐饮'){
+                $list = $this->getGoodsMsg($this->business_id, $search_input); //获取该商家餐饮店的预定消息
+            }elseif($cate_name == '酒店'){
+                $list = $this->getHotelMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
             }
-            $where['m.userid'] = $this->business_id;
-            $where['p.pay_status'] = 1;
-            $list = db('ns_goods_yuding')
-            ->field('a.*,m.names,w.msg_status')
-            ->alias('a')
-            ->join('ns_shop_message m','a.shop_id=m.id','left')
-            ->join('ns_wwb w','w.userid = m.userid','left')
-            ->join('ns_order_payment p','p.out_trade_no = a.sid','left')
-            ->order('a.add_time desc')
-            ->where($where)
-            ->select();
+
             if($list){
-                foreach($list as $k => $v){
-                    $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
-                }  
                 $info = ['status'=>1,'list'=>$list];
             }else{
                 $info = ['status'=>0,'list'=>''];
@@ -621,7 +611,6 @@ class Myhome extends Controller
         }elseif($cate_name == '酒店'){
             $list = $this->getHotelMsg($this->business_id);//获取该商家酒店的预定消息
         }
-        // dump($list);die;
         $this->assign('list',$list);  
         $this->assign('cate_name',$cate_name);  
         return view($this->style . 'Myhome/message');
@@ -629,6 +618,20 @@ class Myhome extends Controller
     //预定订单详情
     public function dingdan_detail(){
         $id = input('param.id');
+        $type = input('param.type');
+        if($type == 1){ //餐饮
+            $row = $this->getGoodsDetails($id);
+            $this->assign('row',$row);
+            return view($this->style . 'Myhome/dingdan_detail');
+        }elseif($type == 2){ //酒店
+            $row = $this->getHotelDetails($id);
+            // dump($row);die;
+            $this->assign('row',$row);
+            return view($this->style . 'Myhome/dingdan_hotel');
+        }
+    }
+    //获取餐饮订单详情
+    public function getGoodsDetails($id){
         $row = db('ns_goods_yuding')
         ->alias('a')
         ->field('a.*,b.pay_type')
@@ -647,13 +650,39 @@ class Myhome extends Controller
         $row['goodsprice'] = explode("|", $row['goodsprice']);
         foreach ($row['goodsprice'] as $k => $v) {
             $row['goods'][$k] = array_column($row,$k);
-            $totalPrice += $v; //计算总价钱
+            $row['totalPrice'] += $v; //计算总价钱
         }
         $row['add_time'] = date('Y-m-d H:i',$row['add_time']);
-        // dump($row);die;
-        $this->assign('totalPrice',$totalPrice);
-        $this->assign('row',$row);
-        return view($this->style . 'Myhome/dingdan_detail');
+        return $row;
+    }
+
+    //获取酒店订单详情
+    public function getHotelDetails($id){
+        $row = db('ns_hotel_yuding')
+        ->alias('a')
+        ->field('a.*,b.pay_type')
+        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
+        ->where('a.id',$id)->find();
+        switch ($row['pay_type']) {
+            case 1:
+               $row['pay_type'] = '快捷支付';
+                break;
+            case 5:
+                $row['pay_type'] = '微信支付';
+                break;
+        }
+        $row['room_type'] = explode("|", $row['room_type']);
+        $row['room_price'] = explode("|", $row['room_price']);
+        $row['room_num'] = explode("|", $row['room_num']);
+        foreach ($row['room_price'] as $k => $v) {
+            $row['room_list'][$k] = array_column($row,$k);
+        }
+        foreach($row['room_list'] as $k => $v){
+            $prices = $v[1]*$v[2];
+            $row['totalPrice'] += $prices;
+        }
+        $row['create_time'] = date('Y-m-d H:i',$row['create_time']);
+        return $row;
     }
     //预定酒店页面
     public function hotel(){
@@ -854,17 +883,17 @@ class Myhome extends Controller
             $thumb_inimg_one = input('post.thumb_inimg_one');//门店照片，用于商家页面轮播图
             $thumb_inimg_two = input('post.thumb_inimg_two');//门店照片，用于商家页面轮播图
             $thumb_zhizhao = input('post.thumb_zhizhao');
-            $thumb_zhengmian = input('post.thumb_zhengmian');
-            $thumb_fanmian = input('post.thumb_fanmian');
+            // $thumb_zhengmian = input('post.thumb_zhengmian');
+            // $thumb_fanmian = input('post.thumb_fanmian');
             $yhk_name = input('post.yhk_name');
             $yhk_num = input('post.yhk_num');
             $sheng = input('post.sheng');
             $shi = input('post.shi');
             $area = input('post.area');
             $yhk_type = input('post.yhk_type');
-            $bank_phone = input('post.bank_phone');
-            $thumb_yhk1 = input('post.thumb_yhk1');
-            $thumb_yhk2 = input('post.thumb_yhk2');
+            // $bank_phone = input('post.bank_phone');
+            // $thumb_yhk1 = input('post.thumb_yhk1');
+            // $thumb_yhk2 = input('post.thumb_yhk2');
             $jingdu = input('post.jingdu');
             $weidu = input('post.weidu');
             $business_hours = input('post.business_hours');
@@ -878,8 +907,8 @@ class Myhome extends Controller
             $data['thumb_inimg_one'] = $thumb_inimg_one;//门店照片，用于商家页面轮播图
             $data['thumb_inimg_two'] = $thumb_inimg_two;//门店照片，用于商家页面轮播图
             $data['thumb_zhizhao'] = $thumb_zhizhao;
-            $data['thumb_zhengmian'] = $thumb_zhengmian;
-            $data['thumb_fanmian'] = $thumb_fanmian;
+            // $data['thumb_zhengmian'] = $thumb_zhengmian;
+            // $data['thumb_fanmian'] = $thumb_fanmian;
             $data['yhk_name'] = $yhk_name;
             $data['yhk_num'] = $yhk_num;
             $data['sheng'] = $sheng;
@@ -887,9 +916,9 @@ class Myhome extends Controller
             $data['area'] = $area;
             $data['yhk_type'] = $yhk_type;
             $data['yhk_address'] = $yhk_address;
-            $data['bank_phone'] = $bank_phone;
-            $data['thumb_yhk1'] = $thumb_yhk1;
-            $data['thumb_yhk2'] = $thumb_yhk2;
+            // $data['bank_phone'] = $bank_phone;
+            // $data['thumb_yhk1'] = $thumb_yhk1;
+            // $data['thumb_yhk2'] = $thumb_yhk2;
             $data['content'] = $content;
             $data['sheng'] = $sheng;
             $data['shi'] = $shi;
@@ -1076,17 +1105,17 @@ class Myhome extends Controller
             $thumb_inimg_one = input('post.thumb_inimg_one');
             $thumb_inimg_two = input('post.thumb_inimg_two');
             $thumb_zhizhao = input('post.thumb_zhizhao');
-            $thumb_zhengmian = input('post.thumb_zhengmian');
-            $thumb_fanmian = input('post.thumb_fanmian');
+            // $thumb_zhengmian = input('post.thumb_zhengmian');
+            // $thumb_fanmian = input('post.thumb_fanmian');
             $yhk_name = input('post.yhk_name');
             $yhk_num = input('post.yhk_num');
             $sheng = input('post.sheng');
             $shi = input('post.shi');
             $area = input('post.area');
             $yhk_type = input('post.yhk_type');
-            $bank_phone = input('post.bank_phone');
-            $thumb_yhk1 = input('post.thumb_yhk1');
-            $thumb_yhk2 = input('post.thumb_yhk2');
+            // $bank_phone = input('post.bank_phone');
+            // $thumb_yhk1 = input('post.thumb_yhk1');
+            // $thumb_yhk2 = input('post.thumb_yhk2');
             $jingdu = input('post.jingdu');
             $weidu = input('post.weidu');
             $business_hours = input('post.business_hours');
@@ -1099,8 +1128,8 @@ class Myhome extends Controller
             $data['thumb_inimg_one'] = $thumb_inimg_one;
             $data['thumb_inimg_two'] = $thumb_inimg_two;
             $data['thumb_zhizhao'] = $thumb_zhizhao;
-            $data['thumb_zhengmian'] = $thumb_zhengmian;
-            $data['thumb_fanmian'] = $thumb_fanmian;
+            // $data['thumb_zhengmian'] = $thumb_zhengmian;
+            // $data['thumb_fanmian'] = $thumb_fanmian;
             $data['yhk_name'] = $yhk_name;
             $data['yhk_num'] = $yhk_num;
             $data['sheng'] = $sheng;
@@ -1108,9 +1137,9 @@ class Myhome extends Controller
             $data['area'] = $area;
             $data['yhk_type'] = $yhk_type;
             $data['yhk_address'] = $yhk_address;
-            $data['bank_phone'] = $bank_phone;
-            $data['thumb_yhk1'] = $thumb_yhk1;
-            $data['thumb_yhk2'] = $thumb_yhk2;
+            // $data['bank_phone'] = $bank_phone;
+            // $data['thumb_yhk1'] = $thumb_yhk1;
+            // $data['thumb_yhk2'] = $thumb_yhk2;
             $data['content'] = $content;
             $data['sheng'] = $sheng;
             $data['shi'] = $shi;
@@ -1548,10 +1577,14 @@ class Myhome extends Controller
     }
 
     //获取餐饮的商家预定消息通知
-    public function getGoodsMsg($business_id){
+    public function getGoodsMsg($business_id, $search_input = ''){
+       
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
         db("ns_goods_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.shop_id','left')->join('ns_order_payment p','p.out_trade_no = g.sid','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
+         if($search_input){
+            $map['a.name|a.iphone'] = ['like',"%".$search_input."%"];
+        }
         $list = db('ns_goods_yuding')
         ->field('a.*,m.names,w.msg_status')
         ->alias('a')
@@ -1569,10 +1602,14 @@ class Myhome extends Controller
             return $list;  
     }
     //获取酒店商家预定消息通知
-    public function getHotelMsg($business_id){
+    public function getHotelMsg($business_id, $search_input = ''){
+       
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
         db("ns_hotel_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
+         if($search_input){
+            $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
+        }
         $list = db('ns_hotel_yuding')
         ->field('a.*,m.names,w.msg_status')
         ->alias('a')
