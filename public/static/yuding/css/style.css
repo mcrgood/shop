@@ -508,8 +508,26 @@ button:focus{
 .tuijian{width: 100%;height: auto;border-bottom: 1px solid #cccccc;}
 .tuijian span{font-size: 15px;color:#8a8686;width: 97%;height: 40px;padding-left: 3%;display:block;text-align:left;}
 .tj_pic{width: 100%;height: auto;margin: 0 auto;}
+@media only  screen and (min-device-width:361px) and (max-device-width:480px){  /*奇葩安卓机(一般为这个)dpr统一为1 Nexus 5X,6p ,最后一个and可写可不写(不写测试有效)*/
+    .tj_pic ul li{margin: 1% !important;}
+}
+@media only screen and (min-device-width:241px) and (max-device-width:360px){/*奇葩安卓机dpr统一为1  Galaxy 5s*/
+   .tj_pic ul li{margin: 1% !important;}
+} 
+@media (device-height:667px) and (-webkit-min-device-pixel-ratio:2){
+
+/* 兼容iphone6、iphone7、iphone8*/
+.tj_pic ul li{margin: 1% !important;}
+
+}
+@media (device-height:736px) and (-webkit-min-device-pixel-ratio:2){
+
+/* 兼容iphone6plus、iphone7plus、iphone8plus*/
+.tj_pic ul li{margin: 1% !important;}
+
+}
 .tj_pic ul{list-style: none;width: 100%;height: auto;text-align:center;}
-.tj_pic ul li{width: 46%;height:auto;display: inline-block;margin: 1% !important;}
+.tj_pic ul li{width: 46%;height:auto;display: inline-block;margin: 1%;}
 .last {width: 100%;height: 40px;margin: 0 auto;}
 .last input{
 margin: 0 auto;;width: 80%;border:1px solid #cccccc;
