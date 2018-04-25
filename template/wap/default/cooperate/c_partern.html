@@ -218,6 +218,11 @@ a{text-decoration: none;-webkit-tap-highlight-color:rgba(255,255,255,0);}
     cursor:pointer;  
     z-index:99;  
     opacity:0.4;  
+}
+#message {
+    margin-top: 5px;
+    border-radius: 10px;
+    text-indent: 12px;
 }  
 /**/
 </style>
@@ -415,7 +420,9 @@ $("#lunbobox ul li,.lunbo a img,#toright,#toleft ").hover(
             <input type="text" id="area"placeholder="填写区"/>
         </div>
         <div class="common_text">
-            <textarea  id="message" cols="30" rows="10"></textarea>
+            <span>留言</span>
+            <label>请输入您的留言内容</label>
+            <textarea  id="message" cols="46.9" rows="10" placeholder="请必须填写留言信息" style="resize:none;outline:none;"></textarea>
         </div>
         <div class="tijiao">
             <input type="submit" id="submit_1" value="提交"/>
