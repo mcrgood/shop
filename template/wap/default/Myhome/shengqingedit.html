@@ -499,61 +499,30 @@
 
         }
 
-        // if ($("#thumb_zhengmian").val()=='') {
+        if(username === ''){
+            layer.msg("请输入持卡人姓名");
+            return false;
+        }else if(kahao === '' && pic === ''){
+            layer.msg("请输入银行卡号");
+            return false;
+        }else if(!username.match( /^[\u4E00-\u9FA5]{1,}$/)){
+            layer.msg("请填写正确的持卡人姓名");
+            return false;
+        }else if(kahao =="" || kahao.length < 16 || kahao.length > 19){
+            layer.msg("银行卡号数必须在16到19之间");
+            return false;
+        }else if(strBin.indexOf(kahao.substring(0, 2))== -1){
+            layer.msg("银行卡号开头6位不符合规范");
+            return false;
+        }
 
-        //     layer.msg('请上传法人正面照片');
-
-        //     $("#thumb_zhengmian").focus();
-
-        //     return false;
-
-        // }
-
-        // if ($("#thumb_fanmian").val()=='') {
-
-        //     layer.msg('请上法人反面照片');
-
-        //     $("#thumb_fanmian").focus();
-
-        //     return false;
-
-        // }
-
+        if($("input[type='checkbox']").is(':checked')) {
+            return true;
+        }else{
+            layer.msg('请同意商家协议！');
+            return false;
+        }
                 
-                if(username === ''){
-                    layer.msg("请输入持卡人姓名");
-                    return false;
-                }else if(kahao === '' && pic === ''){
-                    layer.msg("请输入银行卡号");
-                    return false;
-                }else if(!username.match( /^[\u4E00-\u9FA5]{1,}$/)){
-                    layer.msg("请填写正确的持卡人姓名");
-                    return false;
-                }else if(kahao =="" || kahao.length < 16 || kahao.length > 19){
-                    layer.msg("银行卡号数必须在16到19之间");
-                    return false;
-                }else if(strBin.indexOf(kahao.substring(0, 2))== -1){
-                    layer.msg("银行卡号开头6位不符合规范");
-                    return false;
-                }else if(!regs.test(telephone)){
-                    layer.msg("请输入有效的手机号码!");
-                }
-
-                // if($('#thumb_yhk1').val() == ''){
-                //     layer.msg("请上传银行卡正面照片");
-                //     return false;
-                // }
-                // if($('#thumb_yhk2').val() == ''){
-                //     layer.msg("请上传银行卡反面照片");
-                //     return false;
-                // }
-
-                if($("input[type='checkbox']").is(':checked')) {
-                    return true;
-                }else{
-                    layer.msg('请同意商家协议！');
-                    return false;
-                }
        });  
 });
 
@@ -589,7 +558,7 @@
         <!-- <div class="intake-p">附：商家入驻需交<span>200元</span>入驻费用。</div> -->
         <!-- <a class="shops-center_a" style="margin-top:.2rem" >提交申请</a> -->
         <div style="height:.6rem; margin:.3rem 0;">
-        <input class="chk_1" type="checkbox" id="c1" >
+        <input class="chk_1" type="checkbox" id="c1">
         <label for="c1" style="margin-top:0"><div class="chk_txt">我已阅读并同意<a  class="shangjia-a">《客旺旺商家注册协议》</a></div></label></div>
         <input type="hidden" name="jingdu" value="{$shopinfo.jingdu}" id="jingdu">
         <input type="hidden" name="weidu" value="{$shopinfo.weidu}" id="weidu">

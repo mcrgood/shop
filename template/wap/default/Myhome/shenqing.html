@@ -374,6 +374,8 @@
                 var seleAreaThird = $('#seleAreaThird').val();
                 var seleAreaFouth = $('#seleAreaFouth').val();
                 var username = $('#txtUserName').val();
+                var con_cateid = $('#con_cateid').val();
+                var thumb_inimg_one = $('#thumb_inimg_one').val();
                 var kahao = $('#cardnum').val();
                 var tel = $('#tel').val();    //商家电话
                 var telephone = $('#telephone').val();  // 银行预留电话
@@ -448,6 +450,13 @@
 
             return false;
         }
+        if(!con_cateid){
+            layer.msg('请选择营业范围');
+
+            $("#thumb").focus();
+
+            return false;
+        }
 
         if ($("#thumb").val()=='') {
 
@@ -457,6 +466,13 @@
 
             return false;
 
+        }
+        if(!thumb_inimg_one){
+            layer.msg('请上传店内照片');
+
+            $("#thumb_inimg_one").focus();
+
+            return false;
         }
 
         if ($("#thumb_zhizhao").val()=='') {
@@ -468,26 +484,6 @@
             return false;
 
         }
-
-        // if ($("#thumb_zhengmian").val()=='') {
-
-        //     layer.msg('请上传法人正面照片');
-
-        //     $("#thumb_zhengmian").focus();
-
-        //     return false;
-
-        // }
-
-        // if ($("#thumb_fanmian").val()=='') {
-
-        //     layer.msg('请上法人反面照片');
-
-        //     $("#thumb_fanmian").focus();
-
-        //     return false;
-
-        // }
 
                 
                 if(username === ''){
@@ -506,17 +502,7 @@
                 }else if(strBin.indexOf(kahao.substring(0, 2))== -1){
                     layer.msg("银行卡号开头6位不符合规范");
                     return false;
-                }else if(!regs.test(telephone)){
-                    layer.msg("请输入有效的手机号码!");
                 }
-                // if($('#thumb_yhk1').val() == ''){
-                //     layer.msg("请上传银行卡正面照片");
-                //     return false;
-                // }
-                // if($('#thumb_yhk2').val() == ''){
-                //     layer.msg("请上传银行卡反面照片");
-                //     return false;
-                // }
 
                 if($("input[type='checkbox']").is(':checked')) {
                     return true;
