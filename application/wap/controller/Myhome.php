@@ -591,7 +591,7 @@ class Myhome extends Controller
         $this->check_login();
         if(request()->isAjax()){ //历史消息搜索
             $search_input = input('post.search_input', '');
-            $cate_name = db('ns_shop_message')->alias('a')->join('ns_consumption b','a.leixing = b.con_cateid','left')->where('a.userid',$this->business_id)->value('con_cate_name');
+            $cate_name = $this->getCateName($this->business_id);
             if($cate_name == '餐饮'){
                 $list = $this->getGoodsMsg($this->business_id, $search_input); //获取该商家餐饮店的预定消息
             }elseif($cate_name == '酒店'){
@@ -605,7 +605,7 @@ class Myhome extends Controller
             }
             return $info;
         }
-        $cate_name = db('ns_shop_message')->alias('a')->join('ns_consumption b','a.leixing = b.con_cateid','left')->where('a.userid',$this->business_id)->value('con_cate_name');
+        $cate_name = $this->getCateName($this->business_id);
         if($cate_name == '餐饮'){
             $list = $this->getGoodsMsg($this->business_id); //获取该商家餐饮店的预定消息
         }elseif($cate_name == '酒店'){
@@ -630,6 +630,16 @@ class Myhome extends Controller
             return view($this->style . 'Myhome/dingdan_hotel');
         }
     }
+    //获取该商家所属的经营类型名称
+    public function getCateName($business_id){
+        $cate_name = db('ns_shop_message')
+        ->alias('a')
+        ->join('ns_consumption b','a.leixing = b.con_cateid','left')
+        ->where('a.userid',$business_id)
+        ->value('con_cate_name');
+        return $cate_name;
+    }
+
     //获取餐饮订单详情
     public function getGoodsDetails($id){
         $row = db('ns_goods_yuding')
@@ -1566,14 +1576,55 @@ class Myhome extends Controller
     //预定系统 商家后台管理
     public function hotelPutup(){
         //查询当前商户所拥有的包间(所有)
-        $shopid = $this->business_id;
-        $list = db("ns_shop_seat")->where("shopid",$shopid)->select();
+        $cate_name = $this->getCateName($this->business_id);
+        if($cate_name == '餐饮'){
+            $list = db("ns_shop_seat")->where("shopid",$this->business_id)->select();
+        }elseif($cate_name == '酒店'){
+            $list = db("ns_hotel_room")->where("business_id",$this->business_id)->order('room_id asc')->select();
+        }
         $this->assign("list",$list);
-        //判断隐藏页面的显示
-        $message = db("ns_shop_message")->where("userid",$shopid)->value("leixing");
-        $consumption = db("ns_consumption")->where("con_cateid",$message)->value("con_cate_name");
-        $this->assign("consumption",$consumption);
+        $this->assign("cate_name",$cate_name);
         return view($this->style . 'Myhome/hotelPutup');
+    }
+
+    //商家手动开关改变酒店房间预定的状态
+    public function changeRoomStatus(){
+        if(request()->isAjax()){
+            $room_id = input('post.room_id');
+            $room_status = db('ns_hotel_room')->where('room_id',$room_id)->value('room_status');
+            if($room_status == 0){ //
+                $res = db('ns_hotel_room')->where('room_id',$room_id)->update(['room_status' => 1]); //修改为已住满
+                if($res){
+                    $info = [
+                        'status' =>1,
+                        'msg' => '房间状态更变成功！',
+                        'room_status' => '已住满',
+                        'color' => 'red'
+                    ];
+                }else{
+                    $info = [
+                        'status' =>0,
+                        'msg' =>'修改失败，请刷新重试！'
+                    ];
+                }
+            }else{
+                $res = db('ns_hotel_room')->where('room_id',$room_id)->update(['room_status' => 0]);//修改为可预定
+                if($res){
+                    $info = [
+                        'status' =>1,
+                        'msg' => '房间状态更变成功！',
+                        'room_status' => '可预定',
+                        'color' =>'#5FB878'
+                    ];
+                }else{
+                    $info = [
+                        'status' =>0,
+                        'msg' =>'修改失败，请刷新重试！'
+                    ];
+                }
+            }
+            return $info;
+        }
     }
 
     //获取餐饮的商家预定消息通知

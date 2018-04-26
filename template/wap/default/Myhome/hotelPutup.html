@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>{$consumption}管理</title>
+<title>{$cate_name}管理</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -82,23 +82,39 @@ body{
   <div class="big">
   	<div class="hotel_name">
   		<ul>
-  		{volist name="list" id="v"}
-       <li class="lis">
-          <span class="jiudian">{$v.seatname}</span>
-          <div class="wrap">
-          {if $v.seatstatus eq true}
-              <button class="btn" value="{$v.seatid}" style="background:#5FB878;"onclick="or(this)">未使用</button>
-          {else if}
-              <button class="btn" value="{$v.seatid}" style="background:red;" onclick="or(this)">使用中</button>
-          {/if}  
-          </div> 
-        </li>
-      {/volist}
+      {if $cate_name eq 餐饮}
+        {volist name="list" id="v"}
+         <li class="lis">
+            <span class="jiudian">{$v.seatname}</span>
+            <div class="wrap">
+            {if $v.seatstatus eq true}
+                <button class="btn" value="{$v.seatid}" style="background:#5FB878;"onclick="or(this)">未使用</button>
+            {else if}
+                <button class="btn" value="{$v.seatid}" style="background:red;" onclick="or(this)">使用中</button>
+            {/if}  
+            </div> 
+          </li>
+        {/volist}
+      {elseif $cate_name eq 酒店/}
+        {volist name="list" id="v"}
+         <li class="lis">
+            <span class="jiudian">{$v.room_type}</span>
+            <div class="wrap">
+            {if $v.room_status eq 0}
+                <button class="btn" value="{$v.room_id}" style="background:#5FB878;"onclick="stop(this)">可预定</button>
+            {else if}
+                <button class="btn" value="{$v.room_id}" style="background:red;" onclick="stop(this)">已住满</button>
+            {/if}  
+            </div> 
+          </li>
+        {/volist}
+      {/if}
+  		
   		</ul>
   	</div>
   </div>
   <script type="text/javascript">
-      function or(obj){
+      function or(obj){ //餐饮更变状态
         if($(obj).text()=="未使用"){
           $(obj).text("使用中");
           $(obj).css("background","red");
@@ -113,13 +129,28 @@ body{
         var url = "{:url('Myhome/hotelor')}";
         $.post(url,data,function(res){
           if(res.status==1){
-            layer.msg(res.msg, {time: 2000,icon:6});
-            window.location.reload();
+            layer.msg(res.msg, {time: 1200});
           }else{
-            layer.msg(res.msg, {time: 2000,icon:5});
-            window.location.reload();
+            layer.msg(res.msg, {time: 1200});
           }
         },"json")
+      }
+
+      function stop(obj){ //酒店更变状态
+        var room_id = $(obj).val();
+        var data = {
+          "room_id":room_id
+        };
+        var url = "{:url('Myhome/changeRoomStatus')}";
+        $.post(url,data,function(res){
+            if(res.status == 1){
+              layer.msg(res.msg, {time: 1200});
+              $(obj).text(res.room_status);
+              $(obj).css('background',res.color);
+            }else{
+              layer.msg(res.msg, {time: 1200});
+            }
+        },'json')
       }
   </script>
 </body>
