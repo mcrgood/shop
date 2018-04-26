@@ -19,7 +19,7 @@
 			<div class="content">
 				<span>{$reserve.room_type}</span>
 				<span>入住:<b>{$reserve.startDate}</b>&nbsp;&nbsp;离店:<b>{$reserve.endDate}</b></span>
-				<span>预定<b class="num">{$reserve.room_num}</b>间&nbsp;&nbsp;入住<b class="day">{$reserve.stayDays}</b>晚&nbsp;&nbsp;房间单价：<b class="price">{$reserve.room_price}</b></span>
+				<span>预定<b class="num">{$reserve.room_num}</b>间&nbsp;&nbsp;入住<b class="day">{$reserve.stayDays}</b>晚&nbsp;&nbsp;房间单价：￥<b class="price">{$reserve.room_price}</b></span>
 			</div>
 		</div>
 	{else/}
@@ -28,7 +28,7 @@
 				<div class="content">
 					<span>{$v.0}</span>
 					<span>入住:<b>{$reserve.startDate}</b>&nbsp;&nbsp;离店:<b>{$reserve.endDate}</b></span>
-					<span>预定<b class="num">{$v.2}</b>间&nbsp;&nbsp;入住<b class="day">{$reserve.stayDays}</b>晚&nbsp;&nbsp;房间单价：<b class="price">{$v.1}</b></span>
+					<span>预定<b class="num">{$v.2}</b>间&nbsp;&nbsp;入住<b class="day">{$reserve.stayDays}</b>晚&nbsp;&nbsp;房间单价：￥<b class="price">{$v.1}</b></span>
 				</div>
 			</div>
 		{/volist}
