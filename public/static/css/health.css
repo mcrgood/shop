@@ -1,0 +1,548 @@
+* {
+  margin:0px;
+  padding:0px;
+}
+ul li {
+  list-style: none;
+}
+a{
+  text-decoration: none;
+  -webkit-tap-highlight-color:rgba(255,255,255,0);
+}
+input[type=button], input[type=submit], input[type=file],button { cursor: pointer; outline:none;-webkit-appearance: none;-webkit-tap-highlight-color:rgba(255,0,0,0); } 
+
+.content-top{
+  width: 100%;
+  height: auto;
+  margin: auto;
+}
+/*上面的为轮播图css*/
+.comment_1{
+  width: 100%;
+  height: 80px;
+}
+.comment_1 .content-top{
+  width: 100%;
+  height: 50px;
+}
+.content-top span{
+  display: block;
+  float: left;
+  width: 45%;
+  color: #ff4444;
+  font: 1.1rem/50px '微软雅黑';
+  text-align: center;
+}
+.content-top span:nth-child(2){
+  text-align: left;
+}
+.content-top span i{
+  font-style: normal;
+  font-size: 1.4rem;
+}
+.content-bottom{
+  width: 95%;
+  height: 30px;
+  overflow: hidden;
+  padding-left: 5%;
+  border-bottom: 1px solid #ccc;
+}
+.content-bottom li{
+  display: inline-block;
+  width: 20%;
+  color: #ff4444;
+  font: .8rem/20px "微软雅黑";
+  border-radius: 8px;
+  background: #fff6f6;
+  text-align: center;
+}
+.order_big{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+.content-order{
+  width: 100%;
+  height: 60px;
+  margin: auto;
+  border-bottom: 1px solid #ccc;
+}
+.content-order .map_left{
+  height: 60px;
+  width: 100%;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+  display: -webkit-box;
+  float: left;
+}
+.map_left span{
+    width: 100%;
+    line-height: 60px;
+    display: block;  
+    text-align: center;
+    font-size: 1rem;
+    color: #333333;
+}
+.map_right{
+  width: 25%;
+  height: 60px;
+  float: right;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+  display: -webkit-box;
+
+}
+.map_right a{
+  display: block;
+  border-left: 1px solid #cccccc;
+  color: #ff8383;
+  padding-left: 10px;
+  background: #f9f8f1;
+}
+.order_time{
+  width: 100%;
+  height: 60px;
+  margin: auto;
+  border-bottom: 1px solid #ccc;
+}
+.time_left{
+  float: left;
+  width: 50%;
+  height: 60px;
+}
+.time_left span{
+  width: 95%;
+  padding-left: 5%;
+  display: block;
+  color: #999999;
+  font: .8rem/30px "微软雅黑";
+  text-align: center;
+}
+.time_left span:nth-child(2){
+  font-size: 1rem;
+  color: #000;
+}
+.time_right{
+  float: left;
+  width: 50%;
+  height: 60px;
+}
+.time_right span{
+  width: 95%;
+  padding-left: 5%;
+  display: block;
+  color: #999999;
+  font: .8rem/30px "微软雅黑";
+  text-align: center;
+}
+.time_right span:nth-child(2){
+  font-size: 1rem;
+  color: #000;
+}
+.time_over{
+  float: left;
+  width: 20%;
+  height: 60px;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+  display: -webkit-box;
+}
+.time_over a{
+  color: #ff6363;
+}
+.waibao{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 60px;
+}
+.order_room{
+  height: 130px;
+  width: 95%;
+  margin: auto;
+  padding-left: 5%;
+  border-bottom: 1px solid #ccc;
+}
+.order_singleroom{
+  width: 65%;
+  height:130px;
+  float: left; 
+}
+.order_singleroom span{
+  width: 100%;
+  display: block;
+  line-height: 20px;
+  margin-top: 13px;
+}
+.order_singleroom span:nth-child(1){
+  color: #000;
+  font-size: 1.2rem;
+}
+.order_singleroom span:nth-child(2){
+  color: #999999;
+  font-size: .9rem; 
+}
+.order_singleroom span:nth-child(3){
+  color: #eb5d25;
+  font-size: 1.3rem; 
+}
+.order_button{
+  width: 35%;
+  float: right;
+  height: 130px;
+}
+.order_button input{
+  width: 80%;
+  height: 40px;
+  background: #fe622f;
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
+  margin: 38% 10% 0 10%;
+  border-radius: 3px;
+}
+.special_room{
+  width: 100%;
+  text-align: center;
+  margin-top: 15%;
+}
+.order_button_2{
+  width: 35%;
+  float: right;
+  height: 130px;
+}
+.order_button_2 span{
+    display: block;
+    width: 80%;
+    font-size: 1rem;
+    color: #fe622f;
+    margin: auto;
+    line-height: 30px;
+}
+.order_button_2 input{
+  width: 80%;
+  height: 40px;
+  background: #fe622f;
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
+  border-radius: 3px;
+}
+.hotel_relax{
+  width: 100%;
+  height: 70px;
+  margin: auto;
+  border-bottom: 1px solid #ccc;
+}
+.hotel_relax ul{
+  width: 80%;
+  text-align: center;
+  float: left;
+}
+.hotel_relax ul li{
+  width: 20%;
+  display: inline-block;
+  height: 70px; 
+}
+.hotel_relax ul li span{
+  display: block;
+    height: 40px;
+    width: 100%;
+    background-image: url(images/sjxq_03.png);
+    margin-top: 5px;
+}
+.hotel_relax ul li p{
+  font-size: .1rem;
+  color: #a9a9a9;
+}
+.hotel_relax a{
+  display: block;
+  width: 20%;
+  float: right;
+  height: 70px;
+  text-align: center;
+  line-height: 70px;
+  color: #ccc;
+  font-size: 1rem;
+}
+#item1{
+background-position: 0 5px;
+}
+#item2{
+background-position: 248px 3px;
+}
+#item3{
+background-position: 150px 4px; 
+}
+#item4{
+background-position: 56px 3px; 
+}
+.select_item{
+  width: 100%;
+  height: 60px;
+  margin: auto;
+  position: fixed;
+  z-index: 2;
+  background: #fff;
+  bottom: 0px;
+}
+.select_item span{
+  width: 40%;
+  padding-left: 5%;
+  height: 60px;
+  display: block;
+  float: left;
+  color: #000;
+  font-size: 1rem;
+  text-align: left;
+  line-height: 60px;
+}
+.select_item span i{
+  color: #f13737;
+  font-style: normal;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.select_item input{
+  width: 30%;
+  float: right;
+  height: 40px;
+  border: 1px solid #ded9d9;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-right: 2%;
+  font-size: 1rem;
+  background: #fe622f;
+  color: #fff;
+}
+.fulled {  
+    width:100%;  
+    height:100%;  
+    position:fixed;  
+    z-index: 9;
+    top:0;  
+    left:0;  
+    background:rgba(216,210, 210,0.9);  
+    display:none;  
+}  
+.container {  
+    width:100%;  
+    height:600px;  
+}  
+.container a {  
+    text-decoration:none;  
+    color:#0099FF;  
+    line-height:100px;  
+    font-size:60px;  
+    text-align:center;  
+    display:block;  
+}  
+.fulled .fix-box {  
+    position:relative;  
+    margin: 60% 10%;  
+    width:80%;  
+    height:30%;    
+    border:2px solid pink;  
+    background: #fbe5e5;
+}  
+.fulled .fix-box .close {  
+    position:absolute;  
+    right:10px;  
+    top:0;  
+    color:#cc6648;  
+    cursor:pointer;  
+} 
+.fix-box span{
+  display: block;
+  text-align: center;
+}
+.fix-box-btn{
+  width: 100%;
+  height: 20px;
+  margin: auto;
+  text-align: center;
+  margin-top: 5px;
+}
+.fix-box-btn input{
+  width: 20%;
+  height: 20px;
+  line-height: 20px;
+  border: none;
+  border-radius: 5px;
+  background: #12aef5;
+  color: #fff;
+}
+.qita{
+  width: 100%;
+  height: 40px;
+  -webkit-box-pack:center; /*水平方向:start 左 end 右*/
+
+  -webkit-box-align:center;/*垂直方向:start 左 end 右*/
+
+  display: -webkit-box;
+}
+.qita input{
+  outline: none;
+    padding-left: 8px;
+    font-size: 0.8rem;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid pink;
+    border-radius: 5px;
+}
+/*轮播*/
+.container,#full_feature{
+  width: 100%;
+  height: auto;
+  margin: auto;
+  
+}
+#full_feature{
+  position: relative;
+}
+.swipslider {
+  overflow: hidden;
+  display: block;
+ /* padding-top: 60%;*/
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
+  .swipslider .sw-slides {
+    display: block;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    height: 10rem;
+    white-space: nowrap;
+    font-size: 0;
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    bottom: 0; }
+  .swipslider .sw-slide {
+    width: 100%;
+    height: 10rem;
+    margin: auto;
+    display: inline-block;
+    position: relative; }
+    .swipslider .sw-slide > img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+      height: 10rem;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none; }
+    .swipslider .sw-slide .sw-content {
+      width: 100%;
+      height: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      font-size: 14px; }
+
+
+.sw-next-prev {
+  display: none !important;
+  font-family: "Courier New", Courier, monospace;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  vertical-align: middle;
+  position: absolute;
+  line-height: 50px;
+  font-size: 30px;
+  font-weight: bolder;
+  color: rgba(160, 160, 160, 0.53);
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all .2s ease-out;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
+  .sw-next-prev:hover {
+    background-color: rgba(255, 255, 255, 0.74); }
+  .sw-next-prev:active {
+    background-color: rgba(255, 255, 255, 0.5); }
+
+
+.sw-prev {
+  left: 2%; }
+  .sw-prev::after {
+    content: '<'; }
+
+
+.sw-next {
+  right: 2%; }
+  .sw-next::after {
+    content: '>'; }
+
+
+.sw-bullet {
+  display: none !important;
+  position: absolute;
+  bottom: 2%;
+  list-style: none;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0;
+  margin: 0; }
+  .sw-bullet li {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(160, 160, 160, 0.53);
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: all .2s ease-out; }
+    .sw-bullet li:hover {
+      background-color: rgba(255, 255, 255, 0.74); }
+    .sw-bullet li.active {
+      background-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 2px rgba(160, 160, 160, 0.53); }
+    .sw-bullet li:not(:last-child) {
+      margin-right: 5px; 
+}
+/*兼容*/
+@media only  screen and (min-device-width:361px) and (max-device-width:480px){  /*奇葩安卓机(一般为这个)dpr统一为1 Nexus 5X,6p ,最后一个and可写可不写(不写测试有效)*/
+  .swipslider .sw-slide > img{
+     height: 10rem !important;
+    width: 100% !important;
+  }
+}
+@media only screen and (min-device-width:241px) and (max-device-width:360px){/*奇葩安卓机dpr统一为1  Galaxy 5s*/
+ .swipslider .sw-slide > img{
+     height: 10rem !important;
+    width: 100% !important;
+  }
+} 
+@media (device-height:667px) and (-webkit-min-device-pixel-ratio:2){
+
+/* 兼容iphone6、iphone7、iphone8*/
+.swipslider .sw-slide > img{
+     height: 10rem !important;;
+    width: 100% !important;
+  }
+
+}
+@media (device-height:736px) and (-webkit-min-device-pixel-ratio:2){
+
+/* 兼容iphone6plus、iphone7plus、iphone8plus*/
+.swipslider .sw-slide > img{
+    height: 160px !important;
+    width: 100% !important;
+  }
+}

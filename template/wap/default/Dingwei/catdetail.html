@@ -293,7 +293,6 @@ width: 100%;height:480px;overflow: auto;margin:0;display: none;
         </div>
     </div>
 
-<!-- //预定测试，测试好之前用之后的 -->
 
 <div class="order">
    {if $row.business_status eq 1 && $status eq 1}
@@ -310,6 +309,8 @@ width: 100%;height:480px;overflow: auto;margin:0;display: none;
             window.location.href= "{:__URL('APP_MAIN/Myhome/yuding')}?userid="+userid;
         }else if(type ==1){
             window.location.href= "{:__URL('APP_MAIN/Myhome/hotel')}?userid="+userid;
+        }else if(type ==3){
+            window.location.href= "{:__URL('APP_MAIN/Myhome/health')}?userid="+userid;
         }
     }
     window.onload=function(){

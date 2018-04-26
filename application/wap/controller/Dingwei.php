@@ -126,6 +126,10 @@ class Dingwei extends BaseController{
             $cateids = db("ns_shop_menu")->where("userid",$id)->column("cateid");
             $status = $cateids ? '1': '0';
             $type = 2; //餐饮=2
+        }elseif($info['con_cate_name'] == '养生'){
+            $health = db("ns_health_room")->where("business_id",$id)->select();
+            $status = $health ? '1': '0';
+            $type = 3; //餐饮=3
         }
 		$row = db("ns_shop_message")
         ->alias('s')

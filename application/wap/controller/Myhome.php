@@ -849,6 +849,30 @@ class Myhome extends Controller
         }
     }
 
+    //养生页面
+    public function health(){
+        //查询所有信息
+        if(!$this->uid){
+            $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
+        }
+        $business_id = input('param.userid',0);
+        if($business_id == 0){
+            $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
+        }
+        $where['business_id'] = $business_id;
+        $list = db("ns_health_room")->alias("a")->join('ns_shop_message m','a.business_id=m.userid','left')->where($where)->field("a.*,m.address")->select();
+        foreach ($list as $k => $v) {
+            if($v['room_img']){
+                $img_list[$k] =$v['room_img'];
+            }
+        }
+        $this->assign("img_list",$img_list);
+        $this->assign("address",$list[1]["address"]);
+        $this->assign("list",$list);
+        $this->assign('uid',$this->uid);
+        $this->assign('business_id',$business_id);
+        return view($this->style . 'Myhome/health');
+    }
 
     //退出登录
 	public function out(){

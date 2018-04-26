@@ -79,6 +79,8 @@
 						html += '<a href="{:url("myhome/menu")}?id='+data["data"][i]["userid"]+' "><span style="color:green">菜单系统</span></a>';
 					}else if(data["data"][i]["leixing"] == '酒店'){
 						html += '<a href="{:url("myhome/hotel")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">酒店系统</span></a>';
+					}else if(data["data"][i]["leixing"] == '养生'){
+						html += '<a href="{:url("myhome/health")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">养生系统</span></a>';
 					}
 					html += '</td>';
 					html += '</tr>';

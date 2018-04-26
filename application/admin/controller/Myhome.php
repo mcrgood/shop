@@ -98,6 +98,156 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/hotel");
 	}
 
+	//商家养生系统列表
+	public function health(){
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $business_id = request()->post('business_id', '');
+            $condition['room_type'] = ['LIKE',"%".$search_text."%"];
+            $condition['business_id'] = $business_id;
+            $member = new MyhomeService();
+            $list = $member->getHealthList($page_index, $page_size, $condition, $order = '');
+            return $list;
+	    }
+		return view($this->style . "Myhome/health");
+	}
+
+	//商家养生房间添加
+	public function addHealth(){
+		if(request()->isAjax()){
+			$row = input('post.');
+			if(!$row){
+				$this->error("没有获取到用户信息");
+			}else{
+				$data['room_img'] = $row['room_img'];
+				$data['room_type'] = $row['room_type'];
+				$data['remark'] = $row['remark'];
+				$data['room_price'] = $row['room_price'];
+				$data['business_id'] = $row['business_id'];
+				$data['time_long'] = $row['time_long'];
+				$data['create_time'] = time();
+				if(!$row['room_type']||!$row['room_price'] || !$row['remark']){
+					$res = [
+						'status' => 0,
+						'msg' =>'请填写完整信息'
+					];
+				}else{
+					$where['room_type'] = $row['room_type'];
+					$where['health_id'] = ['<>',$row['health_id']];
+					$have = db("ns_health_room")->where($where)->find();
+					if($have){
+						$res = [
+							'status' => 0,
+							'msg' =>'房间类型已存在,不能重复添加'
+						];
+					}else{
+						if($row['health_id']){
+							$editid = db("ns_health_room")->where("health_id",$row['health_id'])->update($data);
+							if($editid){
+								$res = [
+									'status' => 1,
+									'msg' =>'修改成功'
+								];
+							}else{
+								$res = [
+									'status' => 0,
+									'msg' =>'修改失败'
+								];
+							}
+						}else{
+							$id = db("ns_health_room")->insertGetId($data);
+							if($id){
+								$res = [
+									'status' => 1,
+									'msg' =>'新增成功'
+								];
+							}else{
+								$res = [
+									'status' => 0,
+									'msg' =>'新增失败'
+								];
+							}
+						}
+					}
+				}
+			}
+			return $res;
+		}else{
+			$health_id = input('param.health_id',0);
+			if($health_id){
+				$row = db("ns_health_room")->where("health_id",$health_id)->find();
+				$this->assign("row",$row);
+			}
+		}
+		return view($this->style . "Myhome/addHealth");
+	}
+	//商家养生房间预定状态修改
+	public function healthStop(){
+		if(request()->isAjax()){
+			$health_id = input("param.health_id");
+			$room_status = db("ns_health_room")->where("health_id",$health_id)->value("room_status");
+			if($room_status == 0){
+				$stop = db("ns_health_room")->where("health_id",$health_id)->update(['room_status'=>1]);
+				if($stop){
+					$info = [
+						'status' => 3,
+						'text' =>'已住满',
+						'cssa' =>'red',
+						'msg' =>"停用成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"停用失败"
+					];
+				}
+			}else{
+				$qiyong = db("ns_health_room")->where("health_id",$health_id)->update(['room_status'=>0]);
+				if($qiyong){
+					$info = [
+						'status' => 1,
+						'text' =>'可预定',
+						'cssa' =>'green',
+						'msg' =>"启用成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"启用失败"
+					];
+				}
+			}
+			return $info;
+		}
+	}
+	//删除养生房间
+	public function healthDel(){
+		if(request()->isAjax()){
+			$health_id = input("post.health_id");
+			if($health_id){
+				$row = db("ns_health_room")->delete($health_id);
+				if($row){
+					$info = [
+						'status' => 1,
+						'msg' =>"删除成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"删除失败"
+					];
+				}
+			}else{
+				$info = [
+					'status' => 0,
+					'msg' =>"未获取删除信息"
+				];
+			}
+		}
+		return $info;
+	}
 	//商家酒店房间添加
 	public function addRoom(){
 		if(request()->isAjax()){
