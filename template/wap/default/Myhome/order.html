@@ -365,11 +365,13 @@ ul{list-style: none}
         			setTimeout(function(){
         				window.location.href = "{:__URL('APP_MAIN/pay/getpayvalue')}?business_id="+res.business_id+"&type=yuding&out_trade_no="+res.out_trade_no;
         			},1200)
-        		}else{
-        			layer.msg(res.msg,{time:3000});
+        		}else if(res.status == 2){
+        			layer.msg(res.msg,{time:1200});
         			setTimeout(function(){
         				window.location.href = "{:__URL('APP_MAIN/dingwei/index')}";
-        			},3000)
+        			},1200)
+        		}else{
+        			layer.msg(res.msg,{time:3000});
         		}
         	},'json')
         })

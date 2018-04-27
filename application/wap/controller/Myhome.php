@@ -814,10 +814,20 @@ class Myhome extends Controller
                 $info = ['status' => 0,'msg' => '请填写正确的手机号！'];
             }else{
                 $row = db("ns_order_payment")->where("out_trade_no",$out_trade_no)->find();
-                if($row){
-                    $info = ['status' => 2,'msg' => '订单信息有误，请重新提交！'];
+                $ordermessage = db("ns_hotel_yuding")->where("out_trade_no",$out_trade_no)->find(); //根据订单号查询订单详情
+                if($row && $row['pay_status'] == 0){
+                    $info = [
+                        'status' => 1,
+                        'msg' => '此订单已存在，请直接支付！',
+                        'out_trade_no' => $out_trade_no,
+                        'business_id' => $ordermessage['business_id']
+                    ];
+                }elseif($row && $row['pay_status'] == 1){
+                     $info = [
+                        'status' => 2,
+                        'msg' => '此订单已付款完成了！'
+                    ];
                 }else{
-                    $ordermessage = db("ns_hotel_yuding")->where("out_trade_no",$out_trade_no)->find(); //根据订单号查询订单详情
                     $data['out_trade_no'] = $out_trade_no; //订单号 唯一
                     $data['type'] = 6; //type=6为线下预定消费状态
                     $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
@@ -1560,19 +1570,24 @@ class Myhome extends Controller
         if(request()->isAjax()){
             $sid = input("post.sid");//订单号
             $totalPrice = input("post.totalPrice");//总价
-            $have = db("ns_order_payment")->where("out_trade_no",$sid)->value("out_trade_no");
-            
+            $have = db("ns_order_payment")->where("out_trade_no",$sid)->find();
+            $ordermessage = db("ns_goods_yuding")->where("sid",$sid)->find(); //根据订单号查询订单详情
             if(!$sid){
                 $info = ['status' => 0,'msg' => '订单信息有误，请重新提交！'];
-            }else if($have){
+            }elseif($have && $have['pay_status'] == 0){
                 $info = [
-                        'status' => 1,
-                        'msg' => '账单已存在，请直接支付！',
-                        'out_trade_no' => $sid,
-                        'business_id' => $ordermessage['shop_id']
-                    ];
-            }else{
-                $ordermessage = db("ns_goods_yuding")->where("sid",$sid)->find(); //根据订单号查询订单详情
+                    'status' => 1,
+                    'msg' => '此订单已存在，请直接支付！',
+                    'out_trade_no' => $sid,
+                    'business_id' => $ordermessage['shop_id']
+                ];
+            }elseif($have && $have['pay_status'] == 1){
+                $info = [
+                    'status' => 2,
+                    'msg' => '此订单已付款完成了！'
+                ];
+            }
+            else{
                 $data['out_trade_no'] = $sid; //订单号 唯一
                 $data['type'] = 6; //type=6为线下预定消费状态
                 $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
