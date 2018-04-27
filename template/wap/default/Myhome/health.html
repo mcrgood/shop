@@ -40,7 +40,7 @@
 </div>
   <div class="comment_1">
     <div class="content-top">
-      <span><i>4.8</i>分，棒极了！</span>
+      <span><b>4.8</b>分，棒极了！</span>
       <span>99条评论</span>
     </div>
     <div class="content-bottom">
@@ -62,13 +62,13 @@
 
   <div class="order_time">
     <div class="time_left">
-      <span>入住</span>
-      <input type="text" id="startDate" style="text-align: center;" placeholder="请选择入住时间" />
+      <span>到店时间</span>
+      <input type="text" id="startDate" style="text-align: center;" placeholder="请选择到店时间" />
     </div>
-    <div class="time_right">
+   <!--  <div class="time_right">
       <span>离店</span>
       <input type="text" id="endDate" placeholder="请选择离店时间" />
-    </div>
+    </div> -->
   </div>
 
   <div class="waibao">
@@ -79,9 +79,17 @@
       <span>时长：{$v.time_long}分钟<br/>{$v.remark}</span>
       <span>￥{$v.room_price}</span>
     </div>
-    <div class="order_button">
-      <input type="button" value="预订" class="shadow"/>
-    </div>
+    {if $v.room_status==1}
+      <div class="order_button">
+        <input type="button" value="当天满房" class="shadow" status="" disabled style="background-color: #cccccc;"/>
+      </div>
+    {else/}
+      <div class="order_button">
+        <input type="button" value="预订" class="shadow" status="" data-id="{$v.health_id}"/>
+        <input type="hidden" class="hidden" value="" />
+      </div>
+    {/if}
+    
     </div>
   {/volist}
 </div>
@@ -89,13 +97,87 @@
   <div class="fix-box">  
     <p class="close">关闭</p><br/>
     <span>请输入预定的人数:</span> 
-    <div class="qita"><input type="text" placeholder="预定人数"/></div>
+    <div class="qita"><input type="text" value="1" placeholder="预定人数"/></div>
     <div class="fix-box-btn">
     	<input type="button" value="确定" />
     </div>
   </div>  
-</div>   
+</div> 
+<div class="select_item">
+    <span>已选服务类型: <b>0</b></span>
+    <input type="button" value="提交订单" disabled style="background-color: #cccccc;border:none;color:#fff;"/>
+  </div>
+</div>  
 <script type="text/javascript">
+  //加入养生详情页面
+  var uid = "{$uid}";  //获取会员uid
+  var business_id = "{$business_id}";  //获取商家ID
+  $(".select_item input").click(function(){
+    var id_arr = new Array();
+    var num_arr = new Array();
+    $('.shadow').each(function(i,v){
+      if($(v).attr('status') != ''){ 
+          id_arr.push($(v).attr('data-id'));  //预定的酒店房间ID数组
+          num_arr.push($(v).attr('status'));  //预定的数量数组
+      }
+    })
+    var startDate = $('#startDate').val(); //入住时间
+    // var endDate = $('#endDate').val(); //离店时间
+    var url = "{:url('Myhome/health_order')}";
+    var data = {
+        id_arr:id_arr,
+        startDate:startDate,
+        // endDate:endDate,
+        num_arr:num_arr,
+        uid:uid,
+        business_id:business_id
+      };
+      $.post(url,data,function(res){
+        console.log(res);
+          if(res.status == 1){
+            layer.msg(res.msg,{time:1200});
+            setTimeout(function(){
+              window.location.href = "{:__URL('APP_MAIN/Myhome/healthDetail')}?out_trade_no="+res.out_trade_no;
+            },1200)
+          }else{
+            layer.msg(res.msg,{time:1200});
+          }
+      },'json')
+  })
+  // 选房系统
+  var room_id;  //获取点击预定的房间类型ID,之后方便做处理
+  $(".shadow").on("click", function(event){
+      room_id =  $(this).attr('data-id');
+  })
+  //点击添加数量确定按钮
+  $(".fix-box-btn>input").click(function(){
+    var total_room_num = 0;
+    var room_num = $(".qita>input").val();
+    if(room_num){
+      $('.shadow').each(function(i,v){
+        if($(v).attr('data-id')==room_id){
+          $(v).val('已预订'+room_num);
+          $(v).attr('status',room_num);
+        }
+        if($(v).attr('status') != ''){
+          total_room_num += ($(v).attr('status')-0);
+        }
+      })
+    }else{
+      layer.msg('请输入正确的数量',{time:1200});
+      return;
+    }
+    $('.select_item span b').text(Number(total_room_num));
+          if($('.select_item span b').text() != 0){
+            $('.select_item input').css({"background-color":"#fe622f"});
+            $('.select_item input').attr('disabled',false);
+          }else{
+            $('.select_item input').css({"background-color":"#cccccc"});
+            $('.select_item input').attr('disabled',true);
+          }
+          $(".fulled").hide();
+  })
+
     $(window).load(function() {
           $('#full_feature').swipeslider();
      });
@@ -118,7 +200,8 @@
             $(".fulled").hide();  
         }  
     }) 
-}); 
+});
+
 //时间控件
     var business_id = "{$business_id}";  //获取商家ID
     layui.use('laydate', function(){
@@ -132,31 +215,5 @@
     })
    var flag = true;    
 </script> 
-<!-- <div class="hotel_relax">
-  <ul>
-    <li>
-      <span id="item1"></span>
-      <p>无线上网</p>
-    </li>
-    <li>
-      <span id="item2"></span>
-      <p>热水洗浴</p>
-    </li>
-    <li>
-      <span id="item3"></span>
-      <p>电吹风</p>
-    </li>
-    <li>
-      <span id="item4"></span>
-      <p>洗漱用具</p>
-    </li>
-  </ul>
-  <a href="">详情></a>
-</div> -->
-	<div class="select_item">
-		<span>已选服务类型: <i>3</i></span>
-		<input type="button" value="提交订单" />
-	</div>
-</div>
 </body>
 </html>

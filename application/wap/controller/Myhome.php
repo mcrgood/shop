@@ -884,6 +884,134 @@ class Myhome extends Controller
         return view($this->style . 'Myhome/health');
     }
 
+    //预定养生订单
+    public function health_order(){
+        if(request()->isAjax()){
+            $postData = input('post.');
+            if(!$postData['startDate']){
+                $info = [
+                    'status' =>0,
+                    'msg' =>'请选择时间！'
+                ];
+            }else{
+                $tempTimes = strtotime($postData['startDate'])-time()+86400;
+                if($tempTimes <0){
+                    $info = [
+                        'status' =>0,
+                        'msg' =>'您选择的时间有误！'
+                    ];
+                }else{
+                    foreach($postData['id_arr'] as $k => $v){
+                        $reserve[$k] = db('ns_health_room')->where('health_id',$v)->find();
+                        $room_type[$k] = $reserve[$k]['room_type'];    
+                        $room_price[$k] = $reserve[$k]['room_price'];    
+                    }
+                    $data['room_type'] = implode('|', $room_type); //预定的房间类型（可能存在多个）
+                    $data['room_price'] = implode('|', $room_price); //预定的房间价钱（可能存在多个）
+                    $data['room_num'] = implode('|', $postData['num_arr']); //预定的房间数量（可能存在多个）
+                    // $data['stayDays'] = $tempTimes/86400; //入住的天数
+                    $data['startDate'] = $postData['startDate']; //入住日期
+                    // $data['endDate'] = $postData['endDate'];  //离店日期
+                    $data['out_trade_no'] = time().rand(100000,999999); //随机生成订单
+                    $data['business_id'] = $postData['business_id']; //商家ID
+                    $data['uid'] = $postData['uid']; //会员ID
+                    $data['create_time'] = time(); // 创建订单时间
+                    $res = db('ns_health_yuding')->insertGetId($data);
+                    if($res){
+                        $info = [
+                            'status' =>1,
+                            'msg' =>'确定订单成功！',
+                            'out_trade_no' =>$data['out_trade_no']
+                        ];
+                    }else{
+                        $info = [
+                            'status' =>0,
+                            'msg' =>'确定订单失败，请重试！'
+                        ];
+                    }
+                } 
+                
+            }
+            return $info;
+        }
+    }
+
+    //订单详情页
+    public function healthDetail(){
+        $out_trade_no = input('param.out_trade_no',0); //订单号
+        if($out_trade_no == 0){
+            $this->error('页面过期，请重新提交',__URL(__URL__ . '/wap/dingwei/index'));
+        }
+        $reserve = db('ns_health_yuding')->where('out_trade_no',$out_trade_no)->find();
+        $reserve['room_num'] = explode('|', $reserve['room_num']);
+        if(count($reserve['room_num']) >1){
+            $reserve['room_price'] = explode('|', $reserve['room_price']);
+            $reserve['room_type'] = explode('|', $reserve['room_type']);
+            foreach($reserve['room_num'] as $k =>$v){
+                $room_list[$k] = array_column($reserve,$k);
+            }
+            $this->assign('room_list',$room_list);
+        }else{
+            $reserve['room_num'] = implode('|', $reserve['room_num']);
+        }
+        $userInfo = db('sys_user')->where('uid',$reserve['uid'])->find();
+        $this->assign('reserve',$reserve);
+        $this->assign('count',count($reserve['room_num']));
+        $this->assign('userInfo',$userInfo);
+        $this->assign('out_trade_no',$out_trade_no);
+        return view($this->style . 'Myhome/healthDetail');
+    }
+
+    //养生预定支付
+    public function healthOrderPay(){
+        if(request()->isAjax()){
+            $regs = "/^1[3456789]{1}\d{9}$/";
+            $out_trade_no = input("post.out_trade_no");
+            $totalPrice = input("post.totalPrice");
+            $realname = input("post.realname");
+            $phone = input("post.phone");
+            if(!$phone || !$realname){
+                $info = ['status' => 0,'msg' => '请填写姓名或手机号！'];
+            }elseif(!preg_match($regs,$phone)){
+                $info = ['status' => 0,'msg' => '请填写正确的手机号！'];
+            }else{
+                $row = db("ns_order_payment")->where("out_trade_no",$out_trade_no)->find();
+                $ordermessage = db("ns_health_yuding")->where("out_trade_no",$out_trade_no)->find(); //根据订单号查询订单详情
+                if($row && $row['pay_status']==0){
+                    $info = ['status' => 1,'msg' => '订单已存在，请直接支付！','out_trade_no'=>$out_trade_no,'business_id'=>$ordermessage['business_id']];
+                }elseif($row && $row['pay_status']==1){
+                    $info = ['status' => 2,'msg' => '订单已完成'];
+                }else{
+                    $data['out_trade_no'] = $out_trade_no; //订单号 唯一
+                    $data['type'] = 6; //type=6为线下预定消费状态
+                    $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
+                    $data['pay_body'] = '线下预定消费'; 
+                    $data['pay_detail'] = '线下预定消费';
+                    $data['create_time'] = time();  //创建时间
+                    $data['business_id'] = $ordermessage['business_id']; //商家ID
+                    $data['pay_money'] = $totalPrice; // 订单总金额
+                    $res = db('ns_order_payment')->insert($data);
+                    if($res !== false){
+                        db('ns_health_yuding')->where('out_trade_no',$out_trade_no)->update(['name'=>$realname,'phone'=>$phone]);
+                        $user_realname = db('sys_user')->where('uid',$ordermessage['uid'])->value('realname');
+                        if(!$user_realname || $user_realname!=$realname){
+                            db('sys_user')->where('uid',$ordermessage['uid'])->update(['realname'=>$realname]);
+                        }
+                        $info = [
+                            'status' => 1,
+                            'msg' => '即将跳转付款页面！',
+                            'out_trade_no' => $out_trade_no,
+                            'business_id' => $ordermessage['business_id']
+                        ];
+                    }else{
+                        $info = ['status' => 2,'msg' => '订单信息有误，请重新提交！'];
+                    }
+                }
+            }
+            return $info;
+        }
+    }
+
     //退出登录
 	public function out(){
         Session::set('business_id', "");
