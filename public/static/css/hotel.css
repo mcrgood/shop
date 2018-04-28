@@ -18,7 +18,7 @@ input[type=button], input[type=submit], input[type=file],button {
 
 .container1,#full_feature{
   width: 100%;
-  height: auto;
+  height: 160px;
   margin: auto; 
 }
 #full_feature{
@@ -37,7 +37,7 @@ input[type=button], input[type=submit], input[type=file],button {
     padding: 0;
     list-style: none;
     width: 100%;
-    height: auto;
+    height: 160px;
     white-space: nowrap;
     font-size: 0;
     -webkit-transform: translateX(0);

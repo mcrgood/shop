@@ -214,6 +214,7 @@ ul li{list-style: none;}
 	width: 100%;
 	z-index: 3;
 	background: #fff;
+	border-top: 1px solid #cccccc;
 }
 .footer_money{
 	width: 45%;

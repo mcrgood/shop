@@ -142,9 +142,10 @@
 
 .merchant-ul li img{ width:3.58rem; height:76%; position:absolute; left:.26rem; top:0;margin-top:0.25rem;}
 
-.merchant-ul li span{ font-size:.42rem; color:#202020;  display:block}
+.merchant-ul li span{ font-size:.42rem; color:#202020;  display:block;margin-top: 4px;
+    margin-right: 30px;}
 
-.merchant-ul-a{ display:inline-block; color:#ff5803; position:absolute; bottom:.5rem; right:.23rem}
+.merchant-ul-a{ display:inline-block; color:#ff5803; position:absolute; bottom:.5rem; right:.23rem;line-height: 18px;}
 
 /**************************公告**********************/
 
