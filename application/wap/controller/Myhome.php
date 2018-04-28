@@ -475,7 +475,7 @@ class Myhome extends Controller
     public function yingshou(){
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
-        $ratio = db('ns_wwb')->where('userid',$business_id)->value('ratio');
+        $ratio = Db::table('ns_wwb')->where('userid',$business_id)->value('ratio');
         $condition['pay_status'] = 1; //pay_status=1 是已付款状态
         $condition['type'] = 5; //type=5是扫码付款状态
         $condition['business_id'] = $business_id;
@@ -1752,6 +1752,11 @@ class Myhome extends Controller
         $this->assign("list",$list);
         $this->assign("cate_name",$cate_name);
         return view($this->style . 'Myhome/hotelPutup');
+    }
+
+    //ktv预定页面
+    public function ktv(){
+        return view($this->style . 'Myhome/ktv');
     }
 
     //商家手动开关改变酒店房间预定的状态

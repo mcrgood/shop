@@ -409,7 +409,7 @@ return [
         //商戶號
         'MerCode' =>'205754',  //ADMIN  Kwang2018
         //交易賬戶號
-        'Account' =>'2057540029',
+        'Account' =>'2057540011',
         //商戶證書
         'MerCert' =>'z6r9z84rodeEX80pzVRNLj4ECzjDYtQRuvYO6ArFye5clC6HnUNxu7QEluSrmjcAXQ1AEh6ffErNf3KKGTXCyzDUPr9BbWx3UxHgf3ORlC5C8M7aHRyMqWXkULs4HP50',
         //请求地址

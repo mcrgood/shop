@@ -1,0 +1,177 @@
+@charset "utf-8";
+*{margin:0;padding:0;font-family:"微软雅黑";}
+input[type=button], input[type=submit], input[type=file],button { cursor: pointer; outline:none;-webkit-appearance: none;-webkit-tap-highlight-color:rgba(255,255,255,0); } 
+a{-webkit-tap-highlight-color:rgba(255,255,255,0);text-decoration: none;}
+ul li{list-style: none;}
+i{font-style: normal;}
+a{color:#000; text-decoration:none;}
+body{
+	height: 100%;
+    background: #e6e6e6;
+}
+.big{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+.header_top{
+  width: 100%;
+  height: 12rem;
+  background: linear-gradient(
+        #fbb3bb ,
+        #c452b0 ,
+        #a0159e 
+    );
+  overflow-x: auto;
+  position: relative;
+}
+::-webkit-scrollbar {width: 0px;}
+::-webkit-scrollbar {display: none;/*隐藏滚轮*/}
+
+.bigbx{
+	width:214%;
+	height: 6rem;
+	margin: auto;
+	top: 50%;
+	left: 4%;
+	position: absolute;
+}
+.baoxiang{
+	width: 100%;
+	height: 3.5rem;
+	margin: auto;
+	text-align: center;
+}
+.baoxiang ul li{
+	width: 14%;
+    height: 100%;
+    float: left;
+    color: #fff;
+}
+.baoxiang ul li span{
+	width: 100%;
+	height: 50%;
+	display: block;
+}
+.bx_time{
+	width: 100%;
+	height: 2rem;
+	margin: auto;
+	text-align: center;
+	line-height: 2rem;
+}
+.bx_time ul li{
+	width: 14.2%;
+    height: 100%;
+    float: left;
+    text-align: center;
+    color: #fff;
+}
+.header_top .active{
+	color: #76fff1;
+}
+.big .loop{
+	width: 95%;
+	height: auto;
+	margin: 10px auto;
+}
+.big .loop ul li{
+	width: 95%;
+	height: 6rem;
+	padding: 0 2.5%;
+	background: #ffffff;
+	border-radius: 8px;
+	margin-bottom: 10px;
+	padding-bottom: 5px;
+}
+ .big .loop ul li h4{
+    line-height: 2rem;
+    width: 100%;	
+    height: 2rem;
+ }
+ .big .loop .select_time{
+  	width: 100%;
+  	height: 2rem;
+  	color: #999999;
+  }
+ .big .loop .select_time span{
+	float: left;
+	display: block;
+	line-height: 2rem;
+	font-size: 1rem;
+ }
+  .big .loop .select_time span:nth-child(1){
+  	width: 60%;
+  }
+   .big .loop .select_time span:nth-child(2){
+  	width: 40%;
+  	text-align: right;
+  }
+ .big .loop .select_price{
+  	width: 100%;
+  	height: 2rem;
+  	color: #000;
+  }
+.big .loop .select_price span:nth-child(1){
+	width: 13%;
+	height: 1.4rem;
+	display: block;
+	border-radius: 10px;
+	background: #21ecd8;
+	float: left;
+	font-size: 1rem;
+	text-align: center;
+	color: #fff;
+}
+.big .loop .select_price span:nth-child(2){
+	width: 24%;
+    text-align: center;
+    display: block;
+    float: left;
+    font-size: 1rem;
+    color: #000;
+
+}
+.big .loop .select_price input{
+	width: 18%;
+	float: right;
+	height: 1.5rem;
+	border: 1px solid #c7cdcc;
+	border-radius: 8px;
+	margin-right: 4%;
+	color: #fff;
+	background: #c972d8;
+	letter-spacing: 2px;
+	font-size: 0.9rem;
+}
+
+.select-1{left:-1px;}
+.select-2{left:16.66%;}
+.select-3{left:33.33%;}
+.select-4{left:49.98%;}
+.select-5{left:66.64%;}
+.select-6{left: 83.35%;}
+.select-7{left: 100%;}
+
+.screening-select a{
+	position:absolute;
+	left:-25px;
+	top:-27px;
+	color: #fff;
+	white-space:nowrap;
+	margin:0;padding:0;
+	line-height:none;
+	width:56px; 
+	text-align:center;
+	line-height:16px;
+	font-size:12px;
+}
+.screening-select a:nth-child(2){
+	top:21px;
+}
+
+.project-screening .current a{
+	/*background:url(../images/s_select_bg_09.png) top center no-repeat;*/
+	color:#76fff1;
+	height:21px;
+}

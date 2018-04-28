@@ -1,6 +1,7 @@
 <?php
 namespace app\wap\controller;
 
+use think\Db;
 use data\service\Config as WebConfig;
 use data\service\Goods as GoodsService;
 use data\service\GoodsBrand as GoodsBrand;
@@ -60,7 +61,7 @@ class Dingwei extends BaseController{
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
         ->where($where)->count();
         $pages = ceil($count/$size); //总页数
-        $list = db("ns_shop_message")
+        $list = Db::table("ns_shop_message")
         ->alias('s')
         ->field('s.id,s.userid,w.business_status,w.gold,s.names,s.address,s.jingdu,s.weidu,s.thumb')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
