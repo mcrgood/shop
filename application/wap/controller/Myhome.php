@@ -1934,6 +1934,32 @@ class Myhome extends Controller
             return $info;
         }
     }
+
+    //景点系统 张行飞 2018-4-28
+    public function scenicspot(){
+        $userid = input("param.userid");
+        $list = Db::table("ns_scenicspot_room")->alias('a')->join("ns_shop_message m","a.business_id=m.userid",'left')->field("a.*,m.names")->where("business_id",$userid)->select();
+        foreach ($list as $k => $v) {
+            $listimg[$k] = $v['scenic_img'];
+        }
+        $uid = $this->uid;
+        $this->assign("address",$list[0]['names']);
+        $this->assign("list",$list);
+        $this->assign("listimg",$listimg);
+        $this->assign("uid",$uid);
+        $this->assign("business_id",$userid);
+        return view($this->style . 'Myhome/scenicspot');
+    }
+
+    //景点订单 
+    public function scenic_order(){
+        if(request()->isAjax()){
+            $row = input('post.');
+            $user_message = Db::table("sys_user")->where("uid",$row['uid'])->field("realname,user_name")->find();
+            $shop_message = Db::table("ns_shop_message")->where("userid",$row['business_id'])->value("names");
+            
+        }
+    }
     /**
 
      * [lingquan 前台领券]

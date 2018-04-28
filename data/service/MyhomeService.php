@@ -32,7 +32,11 @@ use data\model\NsMenulist as NsMenulist;
 use data\model\NsseatModel as NsseatModel;
 use data\model\NsHotelList as NsHotelList;
 use data\model\NsHealthList as NsHealthList;
+<<<<<<< Updated upstream
 use data\model\NsKtvList as NsKtvList;
+=======
+use data\model\NsScenicList as NsScenicList;
+>>>>>>> Stashed changes
 
 class MyhomeService extends BaseService{
 
@@ -181,6 +185,7 @@ class MyhomeService extends BaseService{
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         return $result;
     }
+<<<<<<< Updated upstream
     //获取商家KTV列表 屈华俊 2018-04-28
     public function getKtvList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
@@ -193,6 +198,13 @@ class MyhomeService extends BaseService{
                 $result['data'][$k]['time_scope'] = '18:00-次日02:00';
             }
         }
+=======
+    //获取景点列表 张行飞
+    public function getscenicList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsScenicList();
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+>>>>>>> Stashed changes
         return $result;
     }
 }

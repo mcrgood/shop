@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<title>养生订单详情</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<script type="text/javascript" src="__STATIC__/js/jquery-1.8.1.min.js"></script>
+<link rel="stylesheet" href="__STATIC__/css/hotelDetail.css" />
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
+</head>
+<body>
+	<div class="big">
+	{if $count eq 1}
+		<div class="header">
+			<div class="content">
+				<span>{$reserve.room_type}</span>
+				<span>使用:<b>{$reserve.startDate}</b>&nbsp;&nbsp;<!-- 离店:<b>{$reserve.endDate}</b> --></span>
+				<span>预定<b class="num">{$reserve.room_num}</b>人&nbsp;&nbsp;<!-- 使用<b class="day">{$reserve.stayDays}</b>次 -->&nbsp;&nbsp;房间单价：￥<b class="price">{$reserve.room_price}</b></span>
+			</div>
+		</div>
+	{else/}
+		{volist name="room_list" id="v"}
+			<div class="header">
+				<div class="content">
+					<span>{$v.0}</span>
+					<span>使用:<b>{$reserve.startDate}</b>&nbsp;&nbsp;<!-- 离店:<b>{$reserve.endDate}</b> --></span>
+					<span>预定<b class="num">{$v.2}</b>人&nbsp;&nbsp;<!-- 使用<b class="day">{$reserve.stayDays}</b>次 -->&nbsp;&nbsp;房间单价：￥<b class="price">{$v.1}</b></span>
+				</div>
+			</div>
+		{/volist}
+	{/if}
+
+		<div class="header_middle">
+			<div class="gantanhao">
+				<span>!</span><!--感叹号-->
+			</div>
+			<div class="wran_text">
+				<p>订单确认后不可取消/变更，
+					如未按时使用,店家将扣除全额房费;在预定时间内都可以使用，具体请电联客户电话
+				</p>
+			</div>
+		</div>
+		<div class="content_last">
+			<div class="form_order">
+				<!-- <div class="first_common">
+					<span>房间数</span>
+					<span>1间</span>
+					<span>></span>
+				</div> -->
+				<div class="second_common">
+					<span>使用姓名</span>
+					<input type="text" name="realname" value="{$userInfo['realname']|default=''}" placeholder="预订人姓名">
+				</div>
+				<div class="second_common">
+					<span>联系手机</span>
+					<input type="text" name="phone" value="{$userInfo['user_name']|default=''}" placeholder="用于接收短信">
+				</div>
+				
+				<!-- <div class="diyongquan">
+					<div class="diyong">
+						<span>券</span>
+						<span>抵用券</span>
+					</div>
+					<div class="use_quan">
+						<span>无可用抵用券 ></span>
+					</div>
+				</div> -->
+				<!-- <div class="kong">
+					<div id="show_quan">
+						<ul>
+							<li>1</li>
+							<li>2</li>
+							<li>3</li>
+						</ul>
+					</div>
+				</div> -->
+				
+			</div>
+		</div>
+	</div> 
+	<div class="footer">
+			<div class="footer_money">
+				<span><img src="__STATIC__/images/hotelimg/money_03.png">共&nbsp;<b style="color:red;"></b>元</span>
+			</div>
+			<div class="footer_btn">
+				<input type="button" value="确认付款"/>
+			</div>
+	</div> 
+</body>
+ <script type="text/javascript">  
+	$(function(){  
+	  	// var flag = true;
+	   //  $('.use_quan span').click(function(){
+	   //  	if(flag){
+	   //      	$('#show_quan').animate({height:'178px'},200);
+	   //      	flag = false;
+	   //  	}else{
+	   //  		$('#show_quan').animate({height:'0px'},200);   
+	   //      	flag = true;
+	   //  	}  
+	   //  }); 
+	   //  $('#show_quan li').each(function(i,v){
+	   //  	var Litext = $(v).text();				    	
+	   //  	$(v).click(function(){
+		  //   	$('.use_quan span').text(Litext);
+		  //   	$('#show_quan').animate({height:'0px'},200);
+		  //   	flag = true;
+	   //  	})
+	   //  }) 
+	    var total = 0;
+	    var out_trade_no = "{$out_trade_no}";
+	    $('.content').each(function(i,v){
+	    	var num = $(v).find('.num').text();
+	    	var price = $(v).find('.price').text();
+	    	var day = $(v).find('.day').text();
+	    	var subTotal = num*price;
+	    	total +=(subTotal-0);
+	    })
+	    $('.footer_money b').text(total);
+	    //确定付款
+	    $('.footer_btn input').click(function(){
+	    	var realname = $("input[name='realname']").val();
+	    	var phone = $("input[name='phone']").val();
+	    	var totalPrice = $('.footer_money b').text();
+	    	var url = "{:url('Myhome/healthOrderPay')}";
+	    	var data = {
+	    		out_trade_no:out_trade_no,
+	    		totalPrice:totalPrice,
+	    		realname:realname,
+	    		phone:phone
+	    	};
+	    	$.post(url,data,function(res){
+	    		if(res.status == 1){
+	    			layer.msg(res.msg,{time:1200});
+	    			setTimeout(function(){
+	    				window.location.href = "{:__URL('APP_MAIN/pay/getpayvalue')}?business_id="+res.business_id+"&type=yuding&out_trade_no="+res.out_trade_no;
+	    			},1200)
+	    		}else if(res.status == 2){ //
+	    			layer.msg(res.msg,{time:1200});
+	    			setTimeout(function(){
+	    				window.location.href = "{:__URL('APP_MAIN/wap/indexx')}";
+	    			},1200)
+	    		}else{
+	    			layer.msg(res.msg,{time:1200});
+	    		}
+	    	},'json')
+	    })
+	});  
+</script>  
+</html>

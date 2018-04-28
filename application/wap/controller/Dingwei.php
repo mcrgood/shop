@@ -130,11 +130,19 @@ class Dingwei extends BaseController{
         }elseif($info['con_cate_name'] == '养生'){
             $health = db("ns_health_room")->where("business_id",$id)->select();
             $status = $health ? '1': '0';
+<<<<<<< Updated upstream
             $type = 3; //养生
         }elseif($info['con_cate_name'] == 'KTV'){
             $ktv = db("ns_ktv_room")->where("business_id",$id)->select();
             $status = $ktv ? '1': '0';
             $type = 4; //KTV
+=======
+            $type = 3; //餐饮=3
+        }elseif($info['con_cate_name'] == '景点'){
+            $health = db("ns_scenicspot_room")->where("business_id",$id)->select();
+            $status = $health ? '1': '0';
+            $type = 4; //景点=3
+>>>>>>> Stashed changes
         }
 		$row = db("ns_shop_message")
         ->alias('s')

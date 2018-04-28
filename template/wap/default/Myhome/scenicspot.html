@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>养生</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<script type="text/javascript" src="__STATIC__/js/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="__STATIC__/js/swipeslider.min.js"></script>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/scenic.css">
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
+<link rel="stylesheet" href="__YUDING__/css/style.css">
+<link rel="stylesheet" href="__YUDING__/css/laydate.css">
+</head>
+<body>
+<div class="content-top">
+ 	<div class="container">       
+    <div id="full_feature" class="swipslider">
+      <ul class="sw-slides">
+      {volist name="listimg" id="v"}
+       <li class="sw-slide">
+          <img src="{$v}" alt="">
+        </li>
+      {/volist}
+      </ul>
+    </div>      
+</div>
+  <div class="comment_1">
+    <div class="content-top">
+      <span><i>4.8</i>分，棒极了！</span>
+      <span>99条评论</span>
+    </div>
+    <div class="content-bottom">
+      <ul>
+        <li>性价比高</li>
+        <li>吃喝玩乐</li>
+        <li>环境优美</li>
+      </ul>
+    </div>
+  </div> 
+</div>
+
+<div class="order_big">
+  <div class="content-order">
+    <div class="map_left">
+      <span>{$address}</span>
+    </div>
+  </div>
+
+  <div class="waibao">
+  {volist name="list" id="v"}
+  	<div class="order_room">
+      <div class="order_singleroom">
+        <span>{$v.scenic_type}</span>
+        <span>{$v.remark}</span>
+        <span>￥{$v.scenic_price}</span>
+      </div>
+      {if $v.scenic_status==1}
+      <div class="order_button">
+        <input type="button" value="已售罄" status="" times="" disabled style="background-color: #cccccc;" class="shadow" scenic-id="{$v.scenic_id}"/>
+      </div>
+    </div>
+    {else/}
+     <div class="order_button">
+        <input type="button" value="可预订" status="" times="" class="shadow" scenic-id="{$v.scenic_id}"/>
+      </div>
+    </div>
+    {/if}
+  {/volist}
+</div>
+<div class="fulled">  
+  <div class="fix-box">  
+    <p class="close">关闭</p><br/>
+    <span>请输入预定的票数:</span> 
+    <div class="qita"><input type="text" class="num" placeholder="预定票数" value="1" /></div>
+    <span>请选择使用时间:</span> 
+    <div class="qita"><input type="text" class="startDate" id="startDate" style="text-align: center;" placeholder="请选择到店时间" value="" /></div>
+    <div class="fix-box-btn">
+    	<input type="button" value="确定" />
+    </div>
+  </div>  
+</div>
+<div class="select_item">
+    <span>已预定票数: <b>0</b></span>
+    <input type="button" class="tjdd" value="提交订单" disabled style="background-color: #cccccc;border:none;color:#fff;" />
+  </div>
+</div>   
+<script type="text/javascript">
+
+
+    var scenic_id;
+    //时间控件
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({ 
+          elem: '#startDate'
+        });
+    })
+    $(window).load(function() {
+        $('#full_feature').swipeslider();
+    });
+    $(document).ready(function() {  
+        $(".shadow").on("click", function(event) {
+            scenic_id = $(this).attr('scenic-id');  
+            event.preventDefault();  
+            $(".fulled").fadeIn();  
+        })  
+        $(".close").on("click", function(event) {  
+            if ($(event.target).is(".close") || $(event.target).is(".fix-box")) {  
+                //alert(123)  
+                event.preventDefault();  
+                $(".fulled").hide();  
+            }  
+        })  
+    //景点选择
+
+        $(".fix-box-btn input").on("click", function(event) {
+            var totalNum = 0;
+            var num = $('.num').val();
+            var times = $('.startDate').val();
+            if(num==''||num==0||times==''||times==0){
+                layer.msg("请填写完整信息",{time:1200});
+                return;
+            }else{
+               $(".shadow").each(function(i,v){
+                if($(v).attr('scenic-id') == scenic_id){
+                    $(v).val('已预订'+num);
+                    $(v).attr('status',num);
+                    $(v).attr('times',times);
+                }
+                if($(v).attr('status')){
+                  totalNum += Number($(v).attr('status'));
+                }
+            })
+            $('.select_item b').text(totalNum);
+            $(".fulled").hide();
+            $(".select_item span b").text(Number(totalNum));
+            if($(".select_item span b").text()==0){
+              $(".select_item input").css({"background-color":"#cccccc"});
+              $(".select_item input").attr("disabled",true);
+            }else{
+              $(".select_item input").css({"background-color":"#fe622f"});
+              $(".select_item input").attr("disabled",false);
+            }
+            }
+        })
+        //提交订单
+        var uid = "{$uid}";  //获取会员uid
+        var business_id = "{$business_id}";  //获取商家ID
+        $('.tjdd').click(function(){
+           var id_arr = new Array();
+           var num_arr = new Array();
+           var time_arr = new Array();
+           $('.shadow').each(function(i,v){
+              if($(v).attr('status') != ''){ 
+                  id_arr.push($(v).attr('scenic-id'));  //预定的名称
+                  num_arr.push($(v).attr('status'));  //预定的人数数组
+                  time_arr.push($(v).attr('times'));  //预定的时间
+              }
+           })
+           var url = "{:url('Myhome/scenic_order')}";
+           var data = {
+               id_arr:id_arr,
+               num_arr:num_arr,
+               time_arr:time_arr,
+               uid:uid,
+               business_id:business_id
+           };
+           $.post(url,data,function(res){
+              console.log(res);
+              if(res.status == 1){
+                layer.msg(res.msg,{time:1200});
+                setTimeout(function(){
+                  window.location.href = "{:__URL('APP_MAIN/Myhome/scenic_order')}?out_trade_no="+res.out_trade_no;
+                },1200)
+              }else{
+                layer.msg(res.msg,{time:1200});
+              }
+            },'json')
+        })
+    });    
+</script> 
+</body>
+</html>

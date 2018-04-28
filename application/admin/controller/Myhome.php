@@ -19,6 +19,157 @@ class Myhome extends BaseController
         parent::__construct();
     }
 
+    //景点系统 2018-4-28 小飞飞
+    public function scenicSpot(){
+    	if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $business_id = request()->post('business_id', '');
+            $condition['scenic_type'] = ['LIKE',"%".$search_text."%"];
+            $condition['business_id'] = $business_id;
+            $member = new MyhomeService();
+            $list = $member->getscenicList($page_index, $page_size, $condition, $order = '');
+            return $list;
+	    }
+    	return view($this->style . "Myhome/scenicSpot");
+    }
+
+    //添加景点
+    public function addscenicSpot(){
+    	if(request()->isAjax()){
+    		$scenic_list = input('post.');
+    		if(!$scenic_list){
+    			$info = [
+                    'status' =>0,
+                    'msg' => '未获取用户信息'
+                ];
+    		}else{
+    			$data['scenic_type'] = $scenic_list['scenic_type'];
+    			$data['scenic_price'] = $scenic_list['scenic_price'];
+    			$data['remark'] = $scenic_list['remark'];
+    			$data['scenic_img'] = $scenic_list['scenic_img'];
+    			$data['business_id'] = $scenic_list['business_id'];
+    			$data['create_time'] = time();
+    			if(!$scenic_list['scenic_type']||!$scenic_list['scenic_price']||!$scenic_list['remark']||!$scenic_list['scenic_img']){
+    				$info = [
+	                    'status' =>0,
+	                    'msg' => '请填写完整信息'
+                	];
+    			}else{
+    				if(!$scenic_list['scenic_id']){
+    					$id = Db::table("ns_scenicspot_room")->insertGetId($data);
+	    				if($id){
+	    					$info = [
+			                    'status' =>1,
+			                    'msg' => '新增成功'
+	                		];
+	    				}else{
+	    					$info = [
+			                    'status' =>0,
+			                    'msg' => '新增失败'
+	                		];
+	    				}
+    				}else{
+    					$id = Db::table("ns_scenicspot_room")->where("scenic_id",$scenic_list['scenic_id'])->update($data);
+    					if($id){
+	    					$info = [
+			                    'status' =>1,
+			                    'msg' => '修改成功'
+	                		];
+	    				}else{
+	    					$info = [
+			                    'status' =>0,
+			                    'msg' => '修改失败'
+	                		];
+	    				}
+    				}
+    			}
+    		}
+    		return $info;
+    	}
+    	$scenic_id = input('param.scenic_id');
+    	$edit_row = Db::table("ns_scenicspot_room")->where("scenic_id",$scenic_id)->find();
+    	$this->assign("edit_row",$edit_row);
+    	return view($this->style . "Myhome/addscenicSpot");
+    }
+
+    //是否停用景点
+    public function scenicStop(){
+    	if(request()->isAjax()){
+    		$scenic_id = input("post.scenic_id");
+	    	if(!$scenic_id){
+	    		$info = [
+	                'status' =>0,
+	                'msg' => '系统出错'
+	    		];
+	    	}else{
+	    		$row = Db::table("ns_scenicspot_room")->where("scenic_id",$scenic_id)->value('scenic_status');
+	    		if($row==1){
+	    			$data['scenic_status'] = 0;
+	    			$ty = Db::table("ns_scenicspot_room")->where("scenic_id",$scenic_id)->update($data);
+	    			if($ty){
+	    				$info = [
+			                'status' =>2,
+			                'msg' => '确定可预订',
+			                'text' => '可预订',
+			                'cssa' => 'green'
+			    		];
+	    			}else{
+	    				$info = [
+			                'status' =>0,
+			                'msg' => '系统出错'
+			    		];
+	    			}
+	    		}else{
+	    			$data['scenic_status'] = 1;
+	    			$qy = Db::table("ns_scenicspot_room")->where("scenic_id",$scenic_id)->update($data);
+	    			if($qy){
+	    				$info = [
+			                'status' =>1,
+			                'msg' => '确定已售罄',
+			                'text' => '已售罄',
+			                'cssa' => 'red'
+			    		];
+	    			}else{
+	    				$info = [
+			                'status' =>0,
+			                'msg' => '系统出错'
+			    		];
+	    			}
+	    		}
+	    	}
+	    	return $info;
+    	}
+    	
+    }
+    //删除景点
+    public function scenic_del(){
+    	if(request()->isAjax()){
+    		$scenic_id = input('post.scenic_id');
+    		if(!$scenic_id){
+    			$info = [
+                    'status' =>0,
+                    'msg' => '系统出错'
+        		];
+    		}else{
+    			$row = Db::table("ns_scenicspot_room")->where("scenic_id",$scenic_id)->delete();
+    			if($row){
+    				$info = [
+	                    'status' =>1,
+	                    'msg' => '删除成功'
+        			];
+    			}else{
+    				$info = [
+	                    'status' =>0,
+	                    'msg' => '删除失败'
+        			];
+    			}
+    		}
+    		return $info;
+    	}
+    }
+
     public function myhomelist(){
     	return view($this->style . "Myhome/myhomelist");
     }
