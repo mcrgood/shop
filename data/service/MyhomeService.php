@@ -32,6 +32,7 @@ use data\model\NsMenulist as NsMenulist;
 use data\model\NsseatModel as NsseatModel;
 use data\model\NsHotelList as NsHotelList;
 use data\model\NsHealthList as NsHealthList;
+use data\model\NsKtvList as NsKtvList;
 
 class MyhomeService extends BaseService{
 
@@ -178,6 +179,20 @@ class MyhomeService extends BaseService{
     {
         $myhome = new NsHealthList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        return $result;
+    }
+    //获取商家KTV列表 屈华俊 2018-04-28
+    public function getKtvList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsKtvList();
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        foreach($result['data'] as $k => $v){
+            if($v['time_scope'] == 1){
+                $result['data'][$k]['time_scope'] = '13:00-18:00';
+            }elseif($v['time_scope'] == 2){
+                $result['data'][$k]['time_scope'] = '18:00-次日02:00';
+            }
+        }
         return $result;
     }
 }

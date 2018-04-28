@@ -428,26 +428,26 @@ class Myhome extends Controller
             $data['referee_phone'] = $referee_phone;
             $retval = db('ns_goods_login')->insert($data);  //商家注册成功
             if($retval){
-                $row = db('sys_user')->where('user_tel',$mobile)->find();
-                if(!$row){
-                    $info['reg_time'] = time();
-                    $info['user_name'] = $mobile;
-                    $info['user_tel'] = $mobile;
-                    $info['user_password'] = MD5($password);
-                    $info['referee_phone'] = $referee_phone;
-                    $info['is_member'] = 1;     // 1 是前台会员，必须添加，否则无法正常登录
-                    $result = db('sys_user')->insertGetId($info);
-                    if($result){
-                        $aa['uid'] = $result;
-                        $aa['point'] = 10;
-                        $rr = db('ns_member_account')->insert($aa);
-                        if($rr){
-                            $HandleOrder = new HandleOrder();
-                            $HandleOrder->bill_detail_record($result, 10, '注册赠送积分', 12);
+                // $row = db('sys_user')->where('user_tel',$mobile)->find();
+                // if(!$row){
+                //     $info['reg_time'] = time();
+                //     $info['user_name'] = $mobile;
+                //     $info['user_tel'] = $mobile;
+                //     $info['user_password'] = MD5($password);
+                //     $info['referee_phone'] = $referee_phone;
+                //     $info['is_member'] = 1;     // 1 是前台会员，必须添加，否则无法正常登录
+                //     $result = db('sys_user')->insertGetId($info);
+                //     if($result){
+                //         $aa['uid'] = $result;
+                //         $aa['point'] = 10;
+                //         $rr = db('ns_member_account')->insert($aa);
+                //         if($rr){
+                //             $HandleOrder = new HandleOrder();
+                //             $HandleOrder->bill_detail_record($result, 10, '注册赠送积分', 12);
                            
-                        }
-                    }
-                }
+                //         }
+                //     }
+                // }
                 return $info = [
                     'status' => 1,
                     'msg' => '操作成功'
@@ -1753,9 +1753,49 @@ class Myhome extends Controller
         $this->assign("cate_name",$cate_name);
         return view($this->style . 'Myhome/hotelPutup');
     }
+    //Ajax获取包厢价格
+    public function getKtvRoomPrice(){
+        if(request()->isAjax()){
+            $room_type = input('post.room_type');
+            $business_id = input('post.business_id');
+            $where['room_type'] = $room_type;
+            $where['business_id'] = $business_id;
+            $price_list = Db::table('ns_ktv_room')->where($where)->order('room_price asc')->column('room_price');
+            return json($price_list);
+        }
+
+    }
 
     //ktv预定页面
     public function ktv(){
+        if(request()->isAjax()){
+            $business_id = input('post.business_id');
+            $list = Db::table('ns_ktv_room')->where('business_id',$business_id)->group('room_type')->order('people_num asc')->select();
+            $where['room_type'] = $list[0]['room_type'];
+            $where['business_id'] = $business_id;
+            $price_list = Db::table('ns_ktv_room')->where($where)->order('room_price asc')->column('room_price');
+            return $info = [
+                'list' => $list,
+                'price_list' =>$price_list
+            ];
+        }
+        if(!$this->uid){
+            $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
+        }
+        $business_id = input('param.userid',0);
+        if($business_id == 0){
+            $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
+        }
+        for($i = 0; $i < 7; $i++){ //获取未来一周的日期和星期几
+            $dateList[$i]['dates'] = date('m月d日', strtotime('+'.$i.' day'));
+            if($i == 0){
+                $dateList[$i]['week'] = '今天';
+            }else{
+                $dateList[$i]['week'] = getTimeWeek(strtotime('+'.$i.' day'));
+            }
+        }
+        $this->assign('business_id',$business_id);
+        $this->assign('dateList',$dateList);
         return view($this->style . 'Myhome/ktv');
     }
 

@@ -4326,6 +4326,13 @@ function xmlToArray($xml){
     $xmlstring = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
     $val = json_decode(json_encode($xmlstring),true);
     return $val;  
+}
+
+//查询该时间戳为星期几
+function getTimeWeek($time, $i = 0) {
+    $weekarray = array("日","一", "二", "三", "四", "五", "六");
+    $oneD = 24 * 60 * 60;
+    return "周" . $weekarray[date("w", $time + $oneD * $i)];
 } 
 
 

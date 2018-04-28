@@ -8,6 +8,7 @@ use data\service\Supplier;
 use data\service\HandleOrder as HandleOrder;
 use think\Request;
 use data\service\MyhomeService as MyhomeService;
+use data\model\AddKtvRoomModel as AddKtvRoomModel;
 use think\Upload;//文件上传
 header("Content-Type: text/html; charset=UTF-8"); //编码
 
@@ -97,6 +98,93 @@ class Myhome extends BaseController
 	    }
 		return view($this->style . "Myhome/hotel");
 	}
+	//商家ktv系统页面
+	public function ktv(){
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $business_id = request()->post('business_id', '');
+            $condition['room_type'] = ['LIKE',"%".$search_text."%"];
+            $condition['business_id'] = $business_id;
+            $member = new MyhomeService();
+            $list = $member->getKtvList($page_index, $page_size, $condition, $order = 'people_num asc');
+            return $list;
+	    }
+		return view($this->style . "Myhome/ktv");
+	}
+	//KTV包厢删除
+	public function delKtv(){
+		if (request()->isAjax()) {
+			$ktv_id = input('post.ktv_id');
+			$res = Db::table('ns_ktv_room')->delete($ktv_id);
+			if($res){
+				$info = [
+					'status' =>1,
+					'msg' =>'删除成功！'
+				];
+			}else{
+				$info = [
+					'status' =>0,
+					'msg' =>'删除失败！'
+				];
+			}
+			return $info;
+		}
+	}
+	//修改KTV包厢状态
+	public function ktvStop(){
+		$ktv_id = input('post.ktv_id');
+		$room_status = Db::table('ns_ktv_room')->where('ktv_id',$ktv_id)->value('room_status');
+		if($room_status == 0){
+			$res = Db::table('ns_ktv_room')->where('ktv_id',$ktv_id)->update(['room_status' => 1]);
+			if($res){
+					$info = [
+						'status' => 3,
+						'text' =>'已订满',
+						'cssa' =>'red',
+						'msg' =>"修改成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"修改失败"
+					];
+				}
+		}else{
+			$res = Db::table('ns_ktv_room')->where('ktv_id',$ktv_id)->update(['room_status' => 0]);
+				if($res){
+					$info = [
+						'status' => 1,
+						'text' =>'可预定',
+						'cssa' =>'green',
+						'msg' =>"修改成功"
+					];
+				}else{
+					$info = [
+						'status' => 0,
+						'msg' =>"修改成功"
+					];
+				}
+		}
+		return $info;
+	}
+	//ktv包厢添加
+	public function addKtvRoom(){
+		if(request()->isAjax()){
+			$postData = input('post.');
+			$ktv = new AddKtvRoomModel();
+			$res = $ktv->add($postData);
+			return $res;
+		}
+		$ktv_id = input('param.ktv_id',0);
+		if($ktv_id){
+			$row = Db::table('ns_ktv_room')->where('ktv_id',$ktv_id)->find();
+			$this->assign('row',$row);
+		}
+		return view($this->style . "Myhome/addKtvRoom");
+	}
+
 
 	//商家养生系统列表
 	public function health(){

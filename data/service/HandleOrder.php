@@ -38,7 +38,7 @@ class HandleOrder{
             ->join('ns_member_recharge m','p.type_alis_id = m.id','left')
             ->where('p.out_trade_no',$out_trade_no)
             ->value('uid');
-            $referee_money = $pay_money*0.25*0.15*$ratio*0.01; //计算出给推荐人的佣金
+            $referee_money = $pay_money*0.25*0.3*$ratio*0.01; //计算出给推荐人的佣金
             $referee_money = sprintf("%.2f",$referee_money); // 佣金只保留小数点后2位
             if($sendGold){ //赠送旺旺币给买单消费的会员账号下   
                 $res = db('ns_member_account')->where('uid',$uid)->setInc('point',$sendGold);

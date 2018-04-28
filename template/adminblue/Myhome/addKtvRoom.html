@@ -1,0 +1,118 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+<script src="ADMIN_JS/art_dialog.source.js"></script>
+<script src="ADMIN_JS/iframe_tools.source.js"></script>
+<script src="ADMIN_JS/material_managedialog.js"></script>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__STATIC__/js/ajax_file_upload.js" type="text/javascript"></script>
+<script src="__STATIC__/js/file_upload.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="ADMIN_CSS/defau.css">
+<link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+<style type="text/css">
+.image1111{margin-left: 188px;width: 413px;height: 211px;}
+.error {padding-left: 5px !important;}
+</style>
+{/block}
+{block name="main"}
+<div class="set-style">
+	<dl id="one">
+		<dt><span class="color-red">*</span>包厢类型:</dt>
+		<dd>
+			<input id="room_type" type="text" placeholder="请填写包厢类型" class="input-common" value="{$row.room_type|default=''}" />
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>适合人数:</dt>
+		<dd>
+			<input id="people_num" type="text" placeholder="例：1~3人" class="input-common" value="{$row.people_num|default=''}"/>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>包厢时间段:</dt>
+		<dd>
+			<select name="time_scope" id="time_scope">
+				<option value="1" {if $row.time_scope == 1}selected{/if}>13:00-18:00</option>
+				<option value="2" {if $row.time_scope == 2}selected{/if}>18:00-次日02:00</option>
+			</select>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>包厢单价:</dt>
+		<dd>
+			<input id="room_price" type="number" placeholder="请填写包厢单价" class="input-common" value="{$row.room_price|default=''}"/>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>包厢描述:</dt>
+		<dd>
+			<input id="remark" type="text" placeholder="请填写包厢描述" class="input-common" value="{$row.remark|default=''}"/>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red"></span>包厢图片:</dt>
+		<button type="button" class="layui-btn" id="test2" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
+        </button>
+	</dl>
+	<img class="image image1111" src="{$row.room_img|default=''}" alt="" id="room_img">
+	<input type="hidden" class="hidden" value="{$row.ktv_id|default=''}">
+	<dl>
+		<dt></dt>
+		<dd><button class="btn-common btn-big">{if $row.ktv_id eq true}修&nbsp;&nbsp;改{else/}新&nbsp;&nbsp;增{/if}</button></dd>
+	</dl>
+</div>
+<script>
+	$(".btn-big").click(function(){
+		var business_id = "{$Request.param.business_id}";//商家id
+		var room_img = $("#room_img").attr('src');
+		var room_type = $("#room_type").val();
+		var room_price = $("#room_price").val();
+		var remark = $("#remark").val();
+		var time_scope = $("#time_scope").val();
+		var ktv_id = $(".hidden").val();
+		var people_num = $("#people_num").val();
+		var url = "{:url('Myhome/addKtvRoom')}";
+		var data = {
+			"room_img":room_img,
+			"room_type":room_type,
+			"remark":remark,
+			"ktv_id":ktv_id,
+			"room_price":room_price,
+			business_id:business_id,
+			people_num:people_num,
+			time_scope:time_scope
+		};
+		$.post(url,data,function(res){
+			if(res.status==1){
+                layer.msg(res.msg,{time:1000,icon:6});
+                setTimeout(function(){
+                    location.href="{:url('Myhome/ktv')}?business_id="+business_id;
+                },1000);
+			}else{
+				layer.msg(res.msg,{time:2000,icon:5});
+			}
+		},'json')
+	})
+	//上传图片
+    layui.use('upload', function(){
+            var upload = layui.upload;
+            //执行实例
+            var uploadInst = upload.render({
+                    elem: "#test2" ,//绑定元素
+                    url: "{:url('Myhome/ajax_upimg')}",//上传接口
+                    field: 'image' ,//允许上传的文件类型
+                    done: function(res){
+                        //上传完毕回调
+                        if(res.status==1){
+                            var room_img = document.getElementById('room_img');
+                            room_img.src = '__UPLOADS__/'+res.src;
+                        }
+                        layer.closeAll('loading'); //关闭loading
+                    },
+                    error: function(){
+                        //请求异常回调
+                        layer.closeAll('loading'); //关闭loading
+                    }
+            });
+    });
+</script>
+{/block}

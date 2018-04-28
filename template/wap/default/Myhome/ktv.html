@@ -45,79 +45,19 @@
   		<div class="project-screening">
 			<div class="project-screening-yellow"></div>
 			<div class="select-1-yellow"></div>
-			<div class="screening-select current" value="0">
-				<a href="javascript:void(0)">星期一</a>
-				<a href="javascript:void(0)">4月28日</a>
+			{volist name="dateList" id="v" key="key"}
+			<div class="screening-select select-{$key}">
+				<a href="javascript:void(0)">{$v.week}</a>
+				<a href="javascript:void(0)">{$v.dates}</a>
 			</div>
-			<div class="screening-select select-2" selval="4,6" value="1">
-				<a href="javascript:void(0)" selval="4,6">星期二</a>
-				<a href="javascript:void(0)">4月28日</a>
-			</div>
-			<div class="screening-select select-3" selval="6,7">
-				<a href="javascript:void(0)" selval="6,7">星期三</a>
-				<a href="javascript:void(0)">4月28日</a>
-			</div>
-			<div class="screening-select select-4" selval="7,10">
-				<a href="javascript:void(0)" selval="7,10">星期四</a>
-				<a href="javascript:void(0)">4月28日</a>
-			</div>
-			<div class="screening-select select-5" selval="10,-1">
-				<a href="javascript:void(0)" selval="10,-1">星期五</a>
-				<a href="javascript:void(0)">4月28日</a>
-			</div>
-			<div class="screening-select select-6" selval="10,-1">
-				<a href="javascript:void(0)" selval="10,-1">星期六</a>
-				<a href="javascript:void(0)">4月28日</a>
-			</div>
-			<div class="screening-select select-7" selval="10,-1">
-				<a href="javascript:void(0)" selval="10,-1">星期天</a>
-				<a href="javascript:void(0)">4月28日</a>
-			</div>
+			{/volist}
+		
 		</div>
 		<div class="bigbx">
 			<div class="baoxiang">
-			<ul>
-				<li>
-					<span>小包厢</span>
-					<span>(2-4人)</span>
-				</li>
-				<li>
-					<span>小包厢</span>
-					<span>(2-4人)</span>
-				</li>
-				<li>
-					<span>小包厢</span>
-					<span>(2-4人)</span>
-				</li>
-				<li>
-					<span>小包厢</span>
-					<span>(2-4人)</span>
-				</li>
-				<li>
-					<span>小包厢</span>
-					<span>(2-4人)</span>
-				</li>
-				<li>
-					<span>小包厢</span>
-					<span>(2-4人)</span>
-				</li>
-				<li>
-					<span>小包厢</span>
-					<span>(2-4人)</span>
-				</li>
-			</ul>
+			<ul></ul>
 		</div>
-		<!-- <div class="bx_time">
-			<ul>
-				<li class="active">13:00-18:00</li>
-				<li>13:00-18:00</li>
-				<li>13:00-18:00</li>
-				<li>13:00-18:00</li>
-				<li>13:00-18:00</li>
-				<li>13:00-18:00</li>
-				<li>13:00-18:00</li>
-			</ul>
-		</div> -->
+		
 		</div>
   	</div>
   	<div class="loop">
@@ -125,24 +65,24 @@
   			<li>
   				<h4>日场5小时活动包间</h4>
   				<div class="select_time">
-  					<span>可选时间段:<i> 13:00-18:00</i></span>
+  					<span>时间段:<i> 13:00-18:00</i></span>
   					<span>可用时长≤5.0h</span>
   				</div>
   				<div class="select_price">
   					<span>价格</span>
-  					<span>￥68.00</span>
+  					<span>￥<b class="zao"></b></span>
   					<input type="button" value="预定" class="btn" />
   				</div>
   			</li>
   			<li>
-  				<h4>日场5小时活动包间</h4>
+  				<h4>晚场8小时活动包间</h4>
   				<div class="select_time">
-  					<span>可选时间段:<i> 13:00-18:00</i></span>
-  					<span>可用时长≤5.0h</span>
+  					<span>时间段:<i> 18:00-次日02:00</i></span>
+  					<span>可用时长≤8.0h</span>
   				</div>
   				<div class="select_price">
   					<span>价格</span>
-  					<span>￥68.00</span>
+  					<span>￥<b class="wan"></b></span>
   					<input type="button" value="预定" class="btn" />
   				</div>
   			</li>
@@ -150,6 +90,11 @@
   	</div>
  </div>  	
 <script type="text/javascript">
+	var business_id = "{$business_id}";
+$(function(){
+	$('.select-1').addClass('current');
+	getKtv();
+})
 $(".screening-select").click(function () {
 	var _parent = $(this);
 	var _postX = _parent.position().left;
@@ -161,6 +106,43 @@ $(".screening-select").click(function () {
 	_parent.prevAll(".screening-select").css("background", "none");
 	_parent.nextAll().removeAttr("style");
 });
+$('.baoxiang').on('click','li',function(){
+	$('.baoxiang li').removeClass('active');
+	$(this).addClass('active');
+	var room_type = $(this).find('.room_type').text();
+	var url = "{:__URL('APP_MAIN/Myhome/getKtvRoomPrice')}";
+	var data = {
+		room_type:room_type,
+		business_id:business_id
+	};
+	$.post(url,data,function(res){
+		if(res){
+			$('.zao').text(res[0]);
+			$('.wan').text(res[1]);
+		}
+	},'json')
+})
+
+
+function getKtv(){
+	var url = "{:__URL('APP_MAIN/Myhome/ktv')}";
+	var data = {
+		business_id:business_id
+	};
+	$.post(url,data,function(res){
+		var html = '';
+		for(var i=0;i<res.list.length;i++){
+				html +='<li>';
+				html +='<span class="room_type">'+res["list"][i]["room_type"]+'</span>';
+				html +='<span>('+res["list"][i]["people_num"]+')</span>';
+				html +='</li>';
+		}
+		$('.baoxiang ul').html(html);
+		$('.zao').text(res.price_list[0]);
+		$('.wan').text(res.price_list[1]);
+		$('.baoxiang li').eq(0).addClass('active');
+	},'json')
+}
 </script>
 
 </body>
