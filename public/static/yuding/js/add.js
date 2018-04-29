@@ -6,10 +6,11 @@ $(function () {
     var e;
     $('.con-actives').delegate('.add','click',function(){
         var n = $(this).prev().text()-0;//获取当前点击的数量
-        if(n == 0){
+        if(n == 0 || n == ''){
           $(".subFly").show(); 
         }else{
              $(".shopcart-list").show();
+             $(".up1").show();
         }
         var parent = $(this).parent();
         var name = $(this).parents('.menu-txt').find('.goodsnamess').text();
@@ -36,7 +37,7 @@ $(function () {
 
     $('.con-actives').delegate('.minus','click',function(){
         $('.shopcart-list').show();
-
+        $('.up1').show();
     });
     var dd;
     $(".ad").click(function () {
@@ -147,7 +148,7 @@ $(function () {
             var n = parseInt($(this).prev().text())+1;
              var nam = $(this).parents('.food').find('.accountName').text();  //获取当前减少数量物品的名称
             $('.con-actives>li').each(function(i,v){
-                var nnam = $(v).find('h4').text();
+                var nnam = $(v).find('.goodsnamess').text();
                 if(nam == nnam){
                    $(v).find('.nums').text(n); 
                 }
@@ -172,7 +173,7 @@ $(function () {
            //console.log(n);
             var nam = $(this).parents('.food').find('.accountName').text();  //获取当前减少数量物品的名称
             $('.con-actives>li').each(function(i,v){
-                var nnam = $(v).find('h4').text();
+                var nnam = $(v).find('.goodsnamess').text();
                 if(nam == nnam){
                    $(v).find('.nums').text(n); 
                 }
@@ -183,13 +184,15 @@ $(function () {
            
             if (n == 0) {
                 $(this).parents('.food').remove();
-                $('.con-actives>li').each(function(i,v){
-                    var nnam = $(v).find('h4').text();
+                $('.con-actives li').each(function(i,v){
+                    var nnam = $(v).find('.goodsnamess').text();
                     if(nam == nnam){
+                       $(v).find('.nums').text(0); 
                        $(v).find('.nums').hide(); 
                        $(v).find('.minus').hide(); 
                     }
                 })
+                $('.up1').hide();
             }
             $(this).next().html(n);
            
