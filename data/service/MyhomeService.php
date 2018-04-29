@@ -33,15 +33,14 @@ use data\model\NsMenulist as NsMenulist;
 use data\model\NsseatModel as NsseatModel;
 use data\model\NsHotelList as NsHotelList;
 use data\model\NsHealthList as NsHealthList;
-<<<<<<< Updated upstream
+
 use data\model\NsKtvList as NsKtvList;
-<<<<<<< Updated upstream
-=======
+
+
 use data\model\NsScenicList as NsScenicList;
->>>>>>> Stashed changes
-=======
+
 use data\model\NsKtvHoursList as NsKtvHoursList;
->>>>>>> Stashed changes
+
 
 class MyhomeService extends BaseService{
 
@@ -169,51 +168,42 @@ class MyhomeService extends BaseService{
         return $result;
     }   
 
-    //菜单首页管理 张行飞
+
     public function getMenulist($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsMenulist();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         return $result;
     }
-     //获取商家酒店列表 屈华俊 2018-04-23
+
     public function getHotelList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsHotelList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         return $result;
     }
-    //获取商家养生列表 张行飞
+
     public function getHealthList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsHealthList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         return $result;
     }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    //获取商家KTV列表 屈华俊 2018-04-28
-=======
-    //获取商家KTV包厢列表 屈华俊 2018-04-28
->>>>>>> Stashed changes
     public function getKtvList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsKtvList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
-        foreach($result['data'] as $k => $v){
-            $result['data'][$k]['time_scope'] = Db::table('ns_ktv_hours')->where('id',$v['time_scope'])->value('business_hours');
+        foreach ($result['data'] as $k => $v) {
+            $result['data'][$k]['time_scope'] = Db::table('ns_ktv_hours')->where('id', $v['time_scope'])->value('business_hours');
         }
-=======
-    //获取景点列表 张行飞
-    public function getscenicList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    }
+        public function getscenicList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsScenicList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
->>>>>>> Stashed changes
+
         return $result;
     }
-
-    //获取商家KTV营业时间段列表 屈华俊 2018-04-29
     public function getKtvHoursList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsKtvHoursList();
