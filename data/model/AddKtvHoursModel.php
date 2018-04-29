@@ -21,17 +21,15 @@ use think\Db;
  * @author Administrator
  *
  */
-class AddKtvRoomModel extends BaseModel {
-    protected $table = 'ns_ktv_room';
+class AddKtvHoursModel extends BaseModel {
+    protected $table = 'ns_ktv_hours';
 
     public function add($postData){
-        if($postData['ktv_id']){
-            $where['room_type'] = trim($postData['room_type']);
-            $where['time_scope'] = $postData['time_scope'];
-            $where['ktv_id'] = ['<>',$postData['ktv_id']];
+        if($postData['id']){
+            $where['business_hours'] = trim($postData['business_hours']);
+            $where['id'] = ['<>',$postData['id']];
         }else{
-            $where['room_type'] = trim($postData['room_type']);
-            $where['time_scope'] = $postData['time_scope'];
+            $where['business_hours'] = trim($postData['business_hours']);
         }
         $row = $this->where($where)->find();
         if($row){
@@ -40,16 +38,12 @@ class AddKtvRoomModel extends BaseModel {
                 'msg' => '此时间段的包厢已存在！'    
             ];
         }
-        $data['room_type'] = $postData['room_type'];
+        $data['business_hours'] = $postData['business_hours'];
         $data['business_id'] = $postData['business_id'];
-        $data['people_num'] = $postData['people_num'];
-        $data['time_scope'] = $postData['time_scope'];
-        $data['room_price'] = $postData['room_price'];
-        $data['room_img'] = $postData['room_img'];
         $data['remark'] = $postData['remark'];
-        $data['sort'] = mb_strlen($postData['people_num'],'utf-8');  //获取人数长度来排序
-        if($postData['ktv_id']){  // 编辑
-            $res = $this->where('ktv_id',$postData['ktv_id'])->update($data);
+        $data['total_hours'] = $postData['total_hours'];
+        if($postData['id']){  // 编辑
+            $res = $this->where('id',$postData['id'])->update($data);
             if($res!==false){
                 $info = [
                     'status' => 1,
@@ -62,14 +56,13 @@ class AddKtvRoomModel extends BaseModel {
                 ];
             }
         }else{  // 新增
-            if(!$postData['room_type'] || !$postData['room_price'] ||!$postData['people_num'] ||!$postData['remark'] || !$postData['time_scope']){
+            if(!$postData['business_hours'] || !$postData['remark'] ||!$postData['total_hours'] ){
                 $info = [
                     'status' => 0,
                     'msg' => '请填写必填项！'                    
                 ];
             }else{
                 
-                $data['create_time'] = time();
                 $res = $this->insert($data);
                 if($res){
                     $info = [

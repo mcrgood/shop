@@ -9,6 +9,7 @@ use data\service\HandleOrder as HandleOrder;
 use think\Request;
 use data\service\MyhomeService as MyhomeService;
 use data\model\AddKtvRoomModel as AddKtvRoomModel;
+use data\model\AddKtvHoursModel as AddKtvHoursModel;
 use think\Upload;//文件上传
 header("Content-Type: text/html; charset=UTF-8"); //编码
 
@@ -249,7 +250,7 @@ class Myhome extends BaseController
 	    }
 		return view($this->style . "Myhome/hotel");
 	}
-	//商家ktv系统页面
+	//商家ktv包厢系统页面
 	public function ktv(){
 		if (request()->isAjax()) {
             $page_index = request()->post("page_index", 1);
@@ -259,11 +260,61 @@ class Myhome extends BaseController
             $condition['room_type'] = ['LIKE',"%".$search_text."%"];
             $condition['business_id'] = $business_id;
             $member = new MyhomeService();
-            $list = $member->getKtvList($page_index, $page_size, $condition, $order = 'people_num asc');
+            $list = $member->getKtvList($page_index, $page_size, $condition, $order = 'sort asc,people_num asc,room_price asc');
             return $list;
 	    }
 		return view($this->style . "Myhome/ktv");
 	}
+
+	//商家ktv营业时间段页面
+	public function ktv_hours(){
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $business_id = request()->post('business_id', '');
+            $condition['business_id'] = $business_id;
+            $member = new MyhomeService();
+            $list = $member->getKtvHoursList($page_index, $page_size, $condition, $order = '');
+            return $list;
+	    }
+		return view($this->style . "Myhome/ktv_hours");
+	}
+	//添加商家KTV的营业时间段
+	public function addKtvHours(){
+		if(request()->isAjax()){
+			$postData = input('post.');
+			$ktv = new AddKtvHoursModel();
+			$res = $ktv->add($postData);
+			return $res;
+		}
+		$id = input('param.id',0);
+		if($id){
+			$row = Db::table('ns_ktv_hours')->where('id',$id)->find();
+			$this->assign('row',$row);
+		}
+		return view($this->style . "Myhome/addKtvHours");
+	}
+	//KTV时间段删除
+	public function delKtvHours(){
+		if (request()->isAjax()) {
+			$id = input('post.id');
+			$res = Db::table('ns_ktv_hours')->delete($id);
+			if($res){
+				$info = [
+					'status' =>1,
+					'msg' =>'删除成功！'
+				];
+			}else{
+				$info = [
+					'status' =>0,
+					'msg' =>'删除失败！'
+				];
+			}
+			return $info;
+		}
+	}
+
 	//KTV包厢删除
 	public function delKtv(){
 		if (request()->isAjax()) {
@@ -329,10 +380,13 @@ class Myhome extends BaseController
 			return $res;
 		}
 		$ktv_id = input('param.ktv_id',0);
+		$business_id = input('param.business_id',0);
+		$hoursList = Db::table('ns_ktv_hours')->where('business_id',$business_id)->select();
 		if($ktv_id){
 			$row = Db::table('ns_ktv_room')->where('ktv_id',$ktv_id)->find();
 			$this->assign('row',$row);
 		}
+			$this->assign('hoursList',$hoursList);
 		return view($this->style . "Myhome/addKtvRoom");
 	}
 

@@ -31,8 +31,9 @@
 		<dt><span class="color-red">*</span>包厢时间段:</dt>
 		<dd>
 			<select name="time_scope" id="time_scope">
-				<option value="1" {if $row.time_scope == 1}selected{/if}>13:00-18:00</option>
-				<option value="2" {if $row.time_scope == 2}selected{/if}>18:00-次日02:00</option>
+			{volist name="hoursList" id="v"}
+				<option value="{$v.id}" {if $row.time_scope == $v.id}selected{/if}>{$v.business_hours}</option>
+			{/volist}	
 			</select>
 		</dd>
 	</dl>

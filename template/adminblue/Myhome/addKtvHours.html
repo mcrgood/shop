@@ -1,0 +1,73 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+<script src="ADMIN_JS/art_dialog.source.js"></script>
+<script src="ADMIN_JS/iframe_tools.source.js"></script>
+<script src="ADMIN_JS/material_managedialog.js"></script>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__STATIC__/js/ajax_file_upload.js" type="text/javascript"></script>
+<script src="__STATIC__/js/file_upload.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="ADMIN_CSS/defau.css">
+<link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+<style type="text/css">
+.image1111{margin-left: 188px;width: 413px;height: 211px;}
+.error {padding-left: 5px !important;}
+</style>
+{/block}
+{block name="main"}
+<div class="set-style">
+	
+	
+	
+	<dl>
+		<dt><span class="color-red">*</span>营业时间段:</dt>
+		<dd>
+			<input id="business_hours" type="text" placeholder="例：12:00-18:00" class="input-common" value="{$row.business_hours|default=''}"/>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>描述:</dt>
+		<dd>
+			<input id="remark" type="text" placeholder="例：下午场6小时活动包厢" class="input-common" value="{$row.remark|default=''}"/>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>总时长:</dt>
+		<dd>
+			<input id="total_hours" type="number" placeholder="例：6" class="input-common" value="{$row.total_hours|default=''}"/>
+		</dd>
+	</dl>
+	<input type="hidden" class="hidden" value="{$row.id|default=''}">
+	<dl>
+		<dt></dt>
+		<dd><button class="btn-common btn-big">{if $row.id eq true}修&nbsp;&nbsp;改{else/}新&nbsp;&nbsp;增{/if}</button></dd>
+	</dl>
+</div>
+<script>
+	$(".btn-big").click(function(){
+		var business_id = "{$Request.param.business_id}";//商家id
+		var business_hours = $("#business_hours").val();
+		var remark = $("#remark").val();
+		var total_hours = $("#total_hours").val();
+		var id = $(".hidden").val();
+		var url = "{:url('Myhome/addKtvHours')}";
+		var data = {
+			"business_hours":business_hours,
+			business_id:business_id,
+			remark:remark,
+			total_hours:total_hours,
+			id:id
+		};
+		$.post(url,data,function(res){
+			if(res.status==1){
+                layer.msg(res.msg,{time:1000,icon:6});
+                setTimeout(function(){
+                    location.href="{:url('Myhome/ktv_hours')}?business_id="+business_id;
+                },1000);
+			}else{
+				layer.msg(res.msg,{time:1500,icon:5});
+			}
+		},'json')
+	})
+
+</script>
+{/block}

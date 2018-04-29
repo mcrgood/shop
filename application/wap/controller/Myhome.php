@@ -4,6 +4,7 @@ namespace app\wap\controller;
 use data\service\Config as WebConfig;
 use data\service\Member;
 use data\service\WebSite;
+use data\model\CreateKtvOrderModel as CreateKtvOrderModel;
 use think\Controller;
 use think\Db;
 use think\Session;
@@ -831,8 +832,8 @@ class Myhome extends Controller
                     $data['out_trade_no'] = $out_trade_no; //订单号 唯一
                     $data['type'] = 6; //type=6为线下预定消费状态
                     $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
-                    $data['pay_body'] = '线下预定消费'; 
-                    $data['pay_detail'] = '线下预定消费';
+                    $data['pay_body'] = '线下酒店预定消费'; 
+                    $data['pay_detail'] = '线下酒店预定消费';
                     $data['create_time'] = time();  //创建时间
                     $data['business_id'] = $ordermessage['business_id']; //商家ID
                     $data['pay_money'] = $totalPrice; // 订单总金额
@@ -985,8 +986,8 @@ class Myhome extends Controller
                     $data['out_trade_no'] = $out_trade_no; //订单号 唯一
                     $data['type'] = 6; //type=6为线下预定消费状态
                     $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
-                    $data['pay_body'] = '线下预定消费'; 
-                    $data['pay_detail'] = '线下预定消费';
+                    $data['pay_body'] = '线下养生预定消费'; 
+                    $data['pay_detail'] = '线下养生预定消费';
                     $data['create_time'] = time();  //创建时间
                     $data['business_id'] = $ordermessage['business_id']; //商家ID
                     $data['pay_money'] = $totalPrice; // 订单总金额
@@ -1719,8 +1720,8 @@ class Myhome extends Controller
                 $data['out_trade_no'] = $sid; //订单号 唯一
                 $data['type'] = 6; //type=6为线下预定消费状态
                 $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
-                $data['pay_body'] = '线下预定消费'; 
-                $data['pay_detail'] = '线下预定消费';
+                $data['pay_body'] = '线下餐饮预定消费'; 
+                $data['pay_detail'] = '线下餐饮预定消费';
                 $data['create_time'] = time();  //创建时间
                 $data['business_id'] = $ordermessage['shop_id']; //商家ID
                 $data['pay_money'] = $totalPrice; // 订单总金额
@@ -1770,13 +1771,9 @@ class Myhome extends Controller
     public function ktv(){
         if(request()->isAjax()){
             $business_id = input('post.business_id');
-            $list = Db::table('ns_ktv_room')->where('business_id',$business_id)->group('room_type')->order('people_num asc')->select();
-            $where['room_type'] = $list[0]['room_type'];
-            $where['business_id'] = $business_id;
-            $price_list = Db::table('ns_ktv_room')->where($where)->order('room_price asc')->column('room_price');
+            $list = Db::table('ns_ktv_room')->where('business_id',$business_id)->group('room_type')->order('sort asc,people_num asc')->select();
             return $info = [
-                'list' => $list,
-                'price_list' =>$price_list
+                'list' => $list
             ];
         }
         if(!$this->uid){
@@ -1788,6 +1785,7 @@ class Myhome extends Controller
         }
         for($i = 0; $i < 7; $i++){ //获取未来一周的日期和星期几
             $dateList[$i]['dates'] = date('m月d日', strtotime('+'.$i.' day'));
+            $dateList[$i]['dateTime'] = date('Y-m-d', strtotime('+'.$i.' day'));
             if($i == 0){
                 $dateList[$i]['week'] = '今天';
             }else{
@@ -1796,7 +1794,61 @@ class Myhome extends Controller
         }
         $this->assign('business_id',$business_id);
         $this->assign('dateList',$dateList);
+        $this->assign('uid',$this->uid);
         return view($this->style . 'Myhome/ktv');
+    }
+    //Ajax请求获取KTV的营业时间段和价格
+    public function getKtvHour(){
+        if(request()->isAjax()){
+            $business_id = input('post.business_id');
+            $room_type = input('post.room_type',0);
+            $map['business_id'] = $business_id;
+            $row = Db::table('ns_ktv_room')->where($map)
+            ->group('room_type')->order('sort asc,people_num asc')->find(); //查出排序第一的包厢类型
+            if($room_type){
+                $where['a.room_type'] = $room_type;
+            }else{
+                $where['a.room_type'] = $row['room_type'];
+            }
+            $where['a.business_id'] = $business_id;
+            $list = Db::table('ns_ktv_room')->alias('a')->field('b.*,a.room_price')
+            ->join('ns_ktv_hours b','b.id=a.time_scope','left')
+            ->where($where)->order('b.business_hours asc')->select();
+            if($list){
+                return $info = ['list' => $list];
+            }
+        }
+    }
+    //生成KTV预定订单
+    public function ktvOrder(){
+        if(request()->isAjax()){
+            $postData = input('post.');
+            $CreateKtvOrderModel = new CreateKtvOrderModel();
+            $res = $CreateKtvOrderModel->createKtv($postData);
+            return json($res);
+        }
+    }
+    //KTV预定订单详情页面
+    public function ktvDetail(){
+        $out_trade_no = input('param.out_trade_no',0); //订单号
+        if($out_trade_no == 0){
+            $this->error('页面过期，请重新提交',__URL(__URL__ . '/wap/dingwei/index'));
+        }
+        $row = Db::table('ns_ktv_yuding')
+        ->alias('a')->join('sys_user b','a.uid=b.uid','left')->field('a.*,b.realname,b.user_name')
+        ->where('out_trade_no',$out_trade_no)->find();
+        $this->assign('row',$row);
+        $this->assign('out_trade_no',$out_trade_no);
+        return view($this->style . 'Myhome/ktvDetail');
+    }
+    //KTV付款处理
+    public function ktvOrderPay(){
+         if(request()->isAjax()){
+            $postData = input('post.');
+            $CreateKtvOrderModel = new CreateKtvOrderModel();
+            $res = $CreateKtvOrderModel->ktvPayment($postData);
+            return json($res);
+         }
     }
 
     //商家手动开关改变酒店房间预定的状态

@@ -15,6 +15,7 @@
  * @version : v1.0.0.0
  */
 namespace data\service;
+use think\Db;
 
 /**
  * 商家
@@ -34,8 +35,12 @@ use data\model\NsHotelList as NsHotelList;
 use data\model\NsHealthList as NsHealthList;
 <<<<<<< Updated upstream
 use data\model\NsKtvList as NsKtvList;
+<<<<<<< Updated upstream
 =======
 use data\model\NsScenicList as NsScenicList;
+>>>>>>> Stashed changes
+=======
+use data\model\NsKtvHoursList as NsKtvHoursList;
 >>>>>>> Stashed changes
 
 class MyhomeService extends BaseService{
@@ -186,17 +191,17 @@ class MyhomeService extends BaseService{
         return $result;
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     //获取商家KTV列表 屈华俊 2018-04-28
+=======
+    //获取商家KTV包厢列表 屈华俊 2018-04-28
+>>>>>>> Stashed changes
     public function getKtvList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsKtvList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         foreach($result['data'] as $k => $v){
-            if($v['time_scope'] == 1){
-                $result['data'][$k]['time_scope'] = '13:00-18:00';
-            }elseif($v['time_scope'] == 2){
-                $result['data'][$k]['time_scope'] = '18:00-次日02:00';
-            }
+            $result['data'][$k]['time_scope'] = Db::table('ns_ktv_hours')->where('id',$v['time_scope'])->value('business_hours');
         }
 =======
     //获取景点列表 张行飞
@@ -205,6 +210,14 @@ class MyhomeService extends BaseService{
         $myhome = new NsScenicList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
 >>>>>>> Stashed changes
+        return $result;
+    }
+
+    //获取商家KTV营业时间段列表 屈华俊 2018-04-29
+    public function getKtvHoursList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+    {
+        $myhome = new NsKtvHoursList();
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         return $result;
     }
 }

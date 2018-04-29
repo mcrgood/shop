@@ -17,12 +17,12 @@ namespace data\model;
 use data\model\BaseModel as BaseModel;
 use think\Db;
 /**
- * KTV 包厢
+ * KTV营业时间段
  * @author Administrator
  *
  */
-class NsKtvList extends BaseModel {
-    protected $table = 'ns_ktv_room';
+class NsKtvHoursList extends BaseModel {
+    protected $table = 'ns_ktv_hours';
     protected $rule = [
         'id'  =>  '',
     ];
