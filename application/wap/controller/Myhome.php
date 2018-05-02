@@ -77,6 +77,7 @@ class Myhome extends Controller
         $this->assign("style", "wap/" . $use_wap_template['value']);
     }
 
+
     //个人中心首页
     public function index()
     {
@@ -92,7 +93,6 @@ class Myhome extends Controller
     //商家登录
     public function login()
     {
-
         $city_id = '124';  //城市ID
         $city_num = db('sys_city')->where('city_id',$city_id)->value('city_num');  //通过城市ID查询出区号
         $rand = getRandNum();    //获取随机12位数字
@@ -279,6 +279,22 @@ class Myhome extends Controller
         $html_xml = $payment->withdrawal($customerCode, $bankCard);
         echo $html_xml;
     }
+    //银行卡四要素认证页入口
+    public function bankCard(){
+        if(request()->isPost()){
+            $customerCode = input('post.customerCode');
+            $payment = new EasyPayment();
+            $html_xml = $payment->bankCard($customerCode);
+            echo $html_xml;
+        }else{
+            $this->check_login();
+            $customerCode = Db::table('ns_business_open')->where('userid',$this->business_id)->value('customerCode');
+            $this->assign('customerCode',$customerCode);
+            return view($this->style . 'Myhome/bankCard');
+        }
+        
+    }
+
     //用户查询账单页面
     public function queryOrdersList(){
         $this->check_login();

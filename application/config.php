@@ -297,6 +297,7 @@ return [
         'ADMIN_MAIN' => __URL__ . '/' . ADMIN_MODULE,
         'APP_MAIN' => __URL__ . '/wap',
         'SHOP_MAIN' => __URL__ . '',
+        'API_MAIN' =>__URL__ . '/api',
         '__UPLOAD__' => __ROOT__,
         '__MODULE__' => '/' . ADMIN_MODULE,
         '__ADDONS__' => __ROOT__ . '/addons', // 插件目录
