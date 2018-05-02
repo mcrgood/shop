@@ -14,6 +14,7 @@ use data\extend\org\wechat\Jssdk;
 use data\extend\chuanglan\ChuanglanSmsApi;
 use \data\extend\QRcode as QRcode;
 use think\captcha\Captcha;
+use data\service\Business as Business;
 
 class Myhome extends Controller
 {
@@ -618,13 +619,14 @@ class Myhome extends Controller
     //商家消息页面
     public function message(){
         $this->check_login();
+        $business = new Business();
         if(request()->isAjax()){ //历史消息搜索
             $search_input = input('post.search_input', '');
-            $cate_name = $this->getCateName($this->business_id);
+            $cate_name = $business->getCateName($this->business_id);
             if($cate_name == '餐饮'){
-                $list = $this->getGoodsMsg($this->business_id, $search_input); //获取该商家餐饮店的预定消息
+                $list = $business->getGoodsMsg($this->business_id, $search_input); //获取该商家餐饮店的预定消息
             }elseif($cate_name == '酒店'){
-                $list = $this->getHotelMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
+                $list = $business->getHotelMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
             }
 
             if($list){
@@ -634,11 +636,11 @@ class Myhome extends Controller
             }
             return $info;
         }
-        $cate_name = $this->getCateName($this->business_id);
+        $cate_name = $business->getCateName($this->business_id);
         if($cate_name == '餐饮'){
-            $list = $this->getGoodsMsg($this->business_id); //获取该商家餐饮店的预定消息
+            $list = $business->getGoodsMsg($this->business_id); //获取该商家餐饮店的预定消息
         }elseif($cate_name == '酒店'){
-            $list = $this->getHotelMsg($this->business_id);//获取该商家酒店的预定消息
+            $list = $business->getHotelMsg($this->business_id);//获取该商家酒店的预定消息
         }
         $this->assign('list',$list);  
         $this->assign('cate_name',$cate_name);  
@@ -659,15 +661,7 @@ class Myhome extends Controller
             return view($this->style . 'Myhome/dingdan_hotel');
         }
     }
-    //获取该商家所属的经营类型名称
-    public function getCateName($business_id){
-        $cate_name = db('ns_shop_message')
-        ->alias('a')
-        ->join('ns_consumption b','a.leixing = b.con_cateid','left')
-        ->where('a.userid',$business_id)
-        ->value('con_cate_name');
-        return $cate_name;
-    }
+
 
     //获取餐饮订单详情
     public function getGoodsDetails($id){
@@ -1772,7 +1766,8 @@ class Myhome extends Controller
     //预定系统 商家后台管理
     public function hotelPutup(){
         //查询当前商户所拥有的包间(所有)
-        $cate_name = $this->getCateName($this->business_id);
+        $business = new Business();
+        $cate_name = $business->getCateName($this->business_id);
         if($cate_name == '餐饮'){
             $list = db("ns_shop_seat")->where("shopid",$this->business_id)->select();
         }elseif($cate_name == '酒店'){
@@ -1919,64 +1914,8 @@ class Myhome extends Controller
         }
     }
 
-    //获取餐饮的商家预定消息通知
-    public function getGoodsMsg($business_id, $search_input = ''){
-       
-        $map['m.userid'] = $business_id;
-        $map['p.pay_status'] = 1;
-        db("ns_goods_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.shop_id','left')->join('ns_order_payment p','p.out_trade_no = g.sid','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
-         if($search_input){
-            $map['a.name|a.iphone'] = ['like',"%".$search_input."%"];
-        }
-        $list = db('ns_goods_yuding')
-        ->field('a.*,m.names,w.msg_status')
-        ->alias('a')
-        ->join('ns_shop_message m','a.shop_id=m.userid','left')
-        ->join('ns_wwb w','w.userid = m.userid','left')
-        ->join('ns_order_payment p','p.out_trade_no = a.sid','left')
-        ->order('a.add_time desc')
-        ->where($map)
-        ->select();
-        if($list){
-            foreach($list as $k => $v){
-                $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
-            }
-        }
-            return $list;  
-    }
-    //获取酒店商家预定消息通知
-    public function getHotelMsg($business_id, $search_input = ''){
-       
-        $map['m.userid'] = $business_id;
-        $map['p.pay_status'] = 1;
-        db("ns_hotel_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
-         if($search_input){
-            $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
-        }
-        $list = db('ns_hotel_yuding')
-        ->field('a.*,m.names,w.msg_status')
-        ->alias('a')
-        ->join('ns_shop_message m','a.business_id=m.userid','left')
-        ->join('ns_wwb w','w.userid = m.userid','left')
-        ->join('ns_order_payment p','p.out_trade_no = a.out_trade_no','left')
-        ->order('a.create_time desc')
-        ->where($map)
-        ->select();
-        if($list){
-            foreach($list as $k => $v){
-                $list[$k]['room_num'] = explode('|',$v['room_num']);
-                if(count($list[$k]['room_num']) > 1){
-                    foreach($list[$k]['room_num'] as $key =>$val){
-                        $list[$k]['total_num'] += $val;
-                    }
-                }else{
-                    $list[$k]['total_num'] = implode('|',$list[$k]['room_num']);
-                }
-                $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
-            }
-        }
-            return $list;  
-    }
+
+
     //商家后台控制
     public function hotelor(){
         if(request()->isAjax()){

@@ -51,10 +51,23 @@ class Myhome extends BaseController
         $business = new Business();
         $res = $business->yingshou($business_id);
         return json($res);
-        // dump(json($res));die;
     }
 
-
+    //所属商家的会员
+    public function business_member(){
+        $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
+        $business = new Business();
+        $res = $business->member($business_id);
+        return json($res);
+    }
+    //商家预定消息API
+    public function business_message(){
+        $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
+        $business = new Business();
+        $res = $business->message($business_id);
+        return json($res);
+        // dump($res);die;
+    }
     public function test(){
         return view($this->style . 'Myhome/test');
     }
