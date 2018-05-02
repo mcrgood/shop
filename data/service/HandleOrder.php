@@ -30,6 +30,7 @@ class HandleOrder{
             Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['business_money' =>$money]);//把这次付款商家应得的金额存入表中
             $payment = new EasyPayment();
             $resArray = $payment->transfer($customerCode, $money); //向商家转账相应的金额
+            dump($resArray);die;
             $gold = Db::table('ns_wwb')->where('userid',$business_id)->value('gold'); //查出该商家设置赠送旺旺币的比例
             $sendGold = round($gold*0.01*$pay_money);  //应该赠送给会员的旺旺币数量
             
@@ -73,7 +74,21 @@ class HandleOrder{
                 $uid = Db::table('ns_member_recharge')->where('id',$payInfo['type_alis_id'])->value('uid');
                 $row = Db::table('ns_member_account')->where('uid',$uid)->find();
                 if($row){
-                    Db::table('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
+                    $aa = Db::table('ns_member_account')->where('uid',$uid)->setInc('balance',$pay_money);// 给会员的余额中增加金额
+                    if($aa){
+                        $data['uid'] = $uid;
+                        $data['account_type'] = 2;
+                        $data['number'] = $pay_money;
+                        $data['from_type'] = 4;
+                        $data['data_id'] = $payInfo['type_alis_id'];
+                        $data['create_time'] = time();
+                        if($payInfo['pay_type'] ==1){
+                            $data['text'] = '快捷支付充值';
+                        }elseif($payInfo['pay_type'] ==5){
+                            $data['text'] = '微信支付充值';
+                        }
+                        Db::table('ns_member_account_records')->insert($data);
+                    }
                 }
             }else{
                 Db::table('ns_order')->where('out_trade_no',$out_trade_no)->update(['order_status' => 1,'pay_status' => 1]);
