@@ -294,7 +294,20 @@ class Myhome extends Controller
         }
         
     }
-
+    //用户实名认证页入口
+    public function toCertificate(){
+            $this->check_login();
+        if(request()->isPost()){
+            $customerCode = input('post.customerCode');
+            $payment = new EasyPayment();
+            $html_xml = $payment->toCertificate($customerCode);
+            echo $html_xml;
+        }else{
+            $customerCode = Db::table('ns_business_open')->where('userid',$this->business_id)->value('customerCode');
+            $this->assign('customerCode',$customerCode);
+            return view($this->style . 'Myhome/toCertificate');
+        }
+    }
     //用户查询账单页面
     public function queryOrdersList(){
         $this->check_login();
@@ -492,7 +505,6 @@ class Myhome extends Controller
     public function yingshou(){
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
-        $ratio = Db::table('ns_wwb')->where('userid',$business_id)->value('ratio');
         $condition['pay_status'] = 1; //pay_status=1 是已付款状态
         $condition['type'] = 5; //type=5是扫码付款状态
         $condition['business_id'] = $business_id;
@@ -520,10 +532,10 @@ class Myhome extends Controller
             $data['shop_qrcode_num'] = $shop_qrcode_num;
             db('ns_shop_message')->where('userid',$business_id)->update($data);
         }
-        $where['shop_id'] = $this->business_id;
-        $where['state'] = 0;
-        $count = db('ns_goods_reserve')->where($where)->count();
-        $this->assign('count', $count);
+        // $where['shop_id'] = $this->business_id;
+        // $where['state'] = 0;
+        // $count = db('ns_goods_reserve')->where($where)->count();
+        // $this->assign('count', $count);
         return view($this->style . 'Myhome/yingshou');
     }
     //隐藏页面

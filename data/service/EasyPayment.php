@@ -198,6 +198,33 @@ class EasyPayment
         return $resArray;    
     }
 
+    //4.12 用户实名认证页入口
+    public function toCertificate($customerCode){
+         $reqIp = request()->ip();   //获取客户端IP
+         $reqDate = date("Y-m-d H:i:s",time());
+         $body="<body><customerCode>".$customerCode."</customerCode><merAcctNo>".$this->merAcctNo."</merAcctNo></body>";
+         $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
+         $certIdentityReqXml="<?xml version='1.0' encoding='utf-8'?><certIdentityReqXml>".$head.$body."</certIdentityReqXml>";
+         Log::DEBUG("用户实名认证页明文:" . $certIdentityReqXml);  //未加密的日志
+         //加密请求类容
+         $updateUser = $this->encrypt($certIdentityReqXml);
+       
+         //拼接$ipsRequest
+         $ipsRequest = "<ipsRequest><argMerCode>".$this->argMerCode."</argMerCode><arg3DesXmlPara>".$updateUser."</arg3DesXmlPara></ipsRequest>";
+         //ips 易收付地址
+         $url = "https://ebp.ips.com.cn/fpms-access/action/channelCert/toCertificate.html";
+         $sHtml = "<form id='ipspaysubmit' name='ipspaysubmit' method='post' action='".$url."'>";
+         
+         $sHtml.= "<input type='hidden' name='ipsRequest' value='".$ipsRequest."'/>";
+         
+         $sHtml = $sHtml."<input type='submit' style='display:none;'></form>";
+    
+         $sHtml = $sHtml."<script>document.forms['ipspaysubmit'].submit();</script>";
+    
+         return $sHtml;
+    }
+
+
     //4.13 银行卡四要素认证页入口
     public function bankCard($customerCode){
          $reqIp = request()->ip();   //获取客户端IP

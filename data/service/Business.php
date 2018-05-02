@@ -32,9 +32,30 @@ class Business extends BaseService{
             if($userInfo['password'] != md5($password)){
                 $info = ['code' => 0, 'msg' =>'账号或密码有误！'];
             }else{
-                $info = ['code' => 1, 'msg' =>'登录成功！', 'business_id' => $userInfo['id']];
+                $shop_qrcode = Db::table('ns_shop_message')->where('userid',$business_id)->value('shop_qrcode');//商家收款二维码
+                $info = ['code' => 1, 'msg' =>'登录成功！','user_name'=>$userInfo['iphone'],'shop_qrcode'=>$shop_qrcode, 'business_id' => $userInfo['id']];
             }
         }
+        return $info;
+    }
+    //商家API营收页面信息
+    public function yingshou($business_id){
+        $condition['pay_status'] = 1; //pay_status=1 是已付款状态
+        $condition['type'] = 5; //type=5是扫码付款状态
+        $condition['business_id'] = $business_id;
+        $condition['business_money'] = ['>',0];
+        $today_start_time = strtotime(date('Y-m-d')); //今天开始的时间戳
+        $today_end_time = strtotime(date('Y-m-d'))+86400; //今天结束的时间戳
+        $condition['create_time'] = ['between',[$today_start_time,$today_end_time]];
+        $total_money = Db::table('ns_order_payment')->where($condition)->sum('business_money'); //今日已付款金额
+        $money_count = Db::table('ns_order_payment')->where($condition)->count(); //今日营收总数量
+        if(!$total_money){
+            $total_money = '0.00';
+        }
+        $info = [
+            'total_money' =>$total_money,
+            'money_count' =>$money_count
+        ];
         return $info;
     }
 

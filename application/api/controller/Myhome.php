@@ -32,7 +32,7 @@ class Myhome extends BaseController
     {
         parent::__construct();
     }
-
+    //验证登录API
     public function login()
     {
         //获取信息
@@ -42,9 +42,18 @@ class Myhome extends BaseController
         $business = new Business();
         $res = $business->Login($user_name, $password);
         return json($res);
-        // dump(json($res));die;
         
     }
+
+    //商家信息API
+    public function business_info(){
+        $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
+        $business = new Business();
+        $res = $business->yingshou($business_id);
+        return json($res);
+        // dump(json($res));die;
+    }
+
 
     public function test(){
         return view($this->style . 'Myhome/test');
