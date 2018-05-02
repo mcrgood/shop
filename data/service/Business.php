@@ -36,7 +36,16 @@ class Business extends BaseService{
                 if(!$row || $row['state'] != 1){
                     $info = ['code' => 0, 'msg' =>'此账号暂时未通过入驻审核,请耐心等待！'];
                 }else{
-                    $info = ['code' => 1, 'msg' =>'登录成功！','user_name'=>$userInfo['iphone'],'shop_qrcode'=>$row['shop_qrcode'], 'business_id' => $userInfo['id']];
+                    $info = [
+                        'code' => 1, 
+                        'msg' =>'登录成功！',
+                        'data' =>[
+                            'user_name'=>$userInfo['iphone'],
+                            'shop_qrcode'=>$row['shop_qrcode'],
+                            'business_id' => $userInfo['id']
+                        ]
+                    ];
+                     
                 }
             }
         }
