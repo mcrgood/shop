@@ -59,7 +59,7 @@ class Business extends BaseService{
             $condition['business_money'] = ['>',0];
             $today_start_time = strtotime(date('Y-m-d')); //今天开始的时间戳
             $today_end_time = strtotime(date('Y-m-d'))+86400; //今天结束的时间戳
-            $condition['create_time'] = ['between',[$today_start_time,$today_end_time]];
+            $condition['transfer_time'] = ['between',[$today_start_time,$today_end_time]];
             $total_money = Db::table('ns_order_payment')->where($condition)->sum('business_money'); //今日已付款金额
             $money_count = Db::table('ns_order_payment')->where($condition)->count(); //今日营收总数量
             if(!$total_money){
@@ -179,6 +179,32 @@ class Business extends BaseService{
             return $list;  
     }
 
+    //获取KTV商家预定消息通知
+    public function getKtvMsg($business_id, $search_input = ''){
+        
+        $map['m.userid'] = $business_id;
+        $map['p.pay_status'] = 1;
+        db("ns_ktv_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
+         if($search_input){
+            $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
+        }
+        $list = db('ns_ktv_yuding')
+        ->field('a.*,m.names,w.msg_status')
+        ->alias('a')
+        ->join('ns_shop_message m','a.business_id=m.userid','left')
+        ->join('ns_wwb w','w.userid = m.userid','left')
+        ->join('ns_order_payment p','p.out_trade_no = a.out_trade_no','left')
+        ->order('a.create_time desc')
+        ->where($map)
+        ->select();
+        if($list){
+            foreach($list as $k => $v){
+                $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+            }
+        }
+        return $list;  
+    }
+
         //获取该商家所属的经营类型名称
     public function getCateName($business_id){
         $cate_name = db('ns_shop_message')
@@ -187,6 +213,27 @@ class Business extends BaseService{
         ->where('a.userid',$business_id)
         ->value('con_cate_name');
         return $cate_name;
+    }
+
+    public function getMsgStatus($cate_name, $business_id){
+        if($cate_name == '餐饮'){
+            $count = Db::table('ns_goods_yuding')
+            ->alias('a')->join('ns_order_payment b','a.sid = b.out_trade_no','left')
+            ->where(['a.shop_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
+        }elseif($cate_name == '酒店'){
+            $count = Db::table('ns_hotel_yuding')
+            ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
+            ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
+        }elseif($cate_name == '养生'){
+            $count = Db::table('ns_health_yuding')
+            ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
+            ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
+        }elseif($cate_name == 'KTV'){
+            $count = Db::table('ns_ktv_yuding')
+            ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
+            ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
+        }
+        return $count;
     }
 
 

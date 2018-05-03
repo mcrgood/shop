@@ -160,7 +160,25 @@
 						<div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.phone}</span></div>
 						<button class="dingdan" onclick="jumpDetails({$v.id},2)">订单详情</button>
 						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
-						<input type="hidden" value="{$v.iphone}" class="iphone"/>
+						<input type="hidden" value="{$v.phone}" class="iphone"/>
+							<button class="agree">确定</button>
+						<input type="hidden" value="{$v.id}" class="id"/>
+						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
+							<span class="is_agree">已发送</span>
+						{elseif $v.msg_status eq 2 AND $v.is_msg_send eq 1 /}
+							<span class="is_agree">已发送</span>
+						{/if}
+					</li>
+	             {/foreach}
+			{elseif $cate_name eq KTV /}
+				{foreach name="list" id="v"}
+					<li>
+						<div class="inform"><h4>预定通知</h4><span>{$v.create_time}</span></div>
+						<div class="inform_content"><p>{$v.names}&nbsp;预定包厢&nbsp;<b style="color:red;">{$v.room_type}</b><br />包厢时间：<b style="color:red;">{$v.dateTime}&nbsp;{$v.business_hours}</b></p></div>
+						<div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.phone}</span></div>
+						<button class="dingdan" onclick="jumpDetails({$v.id},3)">订单详情</button>
+						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
+						<input type="hidden" value="{$v.phone}" class="iphone"/>
 							<button class="agree">确定</button>
 						<input type="hidden" value="{$v.id}" class="id"/>
 						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
@@ -216,6 +234,16 @@
 	        				html +='<li>';
 	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
 	        				html +='<div class="inform_content"><p>'+res["list"][i]["names"]+'&nbsp;预定房间共&nbsp;<span style="color:red;">'+res["list"][i]["total_num"]+'</span>间<br />预定时间:'+res["list"][i]["startDate"]+'</p></div>';
+	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
+	        				html +='</li>';
+	        			}
+	        		}
+        		}else if(cate_name == 'KTV'){
+        			if(res.status ==1){
+	        			for(var i=0; i<res.list.length;i++){
+	        				html +='<li>';
+	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
+	        				html +='<div class="inform_content"><p>'+res["list"][i]["names"]+'&nbsp;预定包厢&nbsp;<span style="color:red;">'+res["list"][i]["room_type"]+'</span><br />包厢时间:'+res["list"][i]["dateTime"]+'&nbsp;'+res["list"][i]["business_hours"]+'</p></div>';
 	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
 	        				html +='</li>';
 	        			}

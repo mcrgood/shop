@@ -514,7 +514,7 @@ class Myhome extends Controller
         $condition['business_money'] = ['>',0];
         $today_start_time = strtotime(date('Y-m-d')); //今天开始的时间戳
         $today_end_time = strtotime(date('Y-m-d'))+86400; //今天结束的时间戳
-        $condition['create_time'] = ['between',[$today_start_time,$today_end_time]];
+        $condition['transfer_time'] = ['between',[$today_start_time,$today_end_time]];
         $total_money = db('ns_order_payment')->where($condition)->sum('business_money'); //今日已付款金额
         $money_count = db('ns_order_payment')->where($condition)->count(); //今日营收总数量
         if(!$total_money){
@@ -535,10 +535,11 @@ class Myhome extends Controller
             $data['shop_qrcode_num'] = $shop_qrcode_num;
             db('ns_shop_message')->where('userid',$business_id)->update($data);
         }
-        // $where['shop_id'] = $this->business_id;
-        // $where['state'] = 0;
-        // $count = db('ns_goods_reserve')->where($where)->count();
-        // $this->assign('count', $count);
+
+        $business = new Business();
+        $cate_name = $business->getCateName($business_id); //通过商家ID获取所属经营分类名称
+        $count = $business->getMsgStatus($cate_name, $business_id); //通过分类名称获取该商家是否有未读的最新预定消息
+        $this->assign('count', $count);
         return view($this->style . 'Myhome/yingshou');
     }
     //隐藏页面
@@ -629,6 +630,8 @@ class Myhome extends Controller
                 $list = $business->getGoodsMsg($this->business_id, $search_input); //获取该商家餐饮店的预定消息
             }elseif($cate_name == '酒店'){
                 $list = $business->getHotelMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
+            }elseif($cate_name == 'KTV'){
+                $list = $business->getKtvMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
             }
 
             if($list){
@@ -643,7 +646,10 @@ class Myhome extends Controller
             $list = $business->getGoodsMsg($this->business_id); //获取该商家餐饮店的预定消息
         }elseif($cate_name == '酒店'){
             $list = $business->getHotelMsg($this->business_id);//获取该商家酒店的预定消息
+        }elseif($cate_name == 'KTV'){
+            $list = $business->getKtvMsg($this->business_id);//获取该商家酒店的预定消息
         }
+        // dump($list);die;
         $this->assign('list',$list);  
         $this->assign('cate_name',$cate_name);  
         return view($this->style . 'Myhome/message');
@@ -658,9 +664,13 @@ class Myhome extends Controller
             return view($this->style . 'Myhome/dingdan_detail');
         }elseif($type == 2){ //酒店
             $row = $this->getHotelDetails($id);
-            // dump($row);die;
             $this->assign('row',$row);
             return view($this->style . 'Myhome/dingdan_hotel');
+        }elseif($type == 3){ //KTV
+            $row = $this->getKtvDetails($id);
+            $this->assign('row',$row);
+            // dump($row);die;
+            return view($this->style . 'Myhome/dingdan_ktv');
         }
     }
 
@@ -719,6 +729,26 @@ class Myhome extends Controller
         $row['create_time'] = date('Y-m-d H:i',$row['create_time']);
         return $row;
     }
+
+    //获取KTV订单详情
+    public function getKtvDetails($id){
+        $row = db('ns_ktv_yuding')
+        ->alias('a')
+        ->field('a.*,b.pay_type')
+        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
+        ->where('a.id',$id)->find();
+        switch ($row['pay_type']) {
+            case 1:
+               $row['pay_type'] = '快捷支付';
+                break;
+            case 5:
+                $row['pay_type'] = '微信支付';
+                break;
+        }
+        $row['create_time'] = date('Y-m-d H:i',$row['create_time']);
+        return $row;
+    }
+
     //预定酒店页面
     public function hotel(){
         if(!$this->uid){
