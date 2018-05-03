@@ -15,6 +15,7 @@
  */
 namespace app\wap\controller;
 
+use think\Db;
 use data\extend\ThinkOauth as ThinkOauth;
 use data\extend\WchatOauth;
 use data\service\Config as WebConfig;
@@ -237,7 +238,8 @@ class Login extends Controller
             return $retval;
         }
         $this->getWchatBindMemberInfo();
-
+        $fans = Db::table('ns_fans')->find();
+        $this->assign('num',$fans['num']);
         // 没有登录首先要获取上一页
         $pre_url = '';
         $_SESSION['bund_pre_url'] = '';
@@ -1257,6 +1259,12 @@ class Login extends Controller
                 $this->redirect($redirect);
             }
         }
+    }
+
+    //变化客旺旺当前粉丝数量
+    public function changeFans(){
+        $num = input('post.num');
+        Db::table('ns_fans')->where('id',1)->update(['num'=>$num]);
     }
 
 

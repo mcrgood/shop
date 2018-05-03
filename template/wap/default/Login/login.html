@@ -89,8 +89,8 @@
                 }
             });
         }
-
-
+        	 
+        
 	</script>
 	<style>
 		.login_wei_three{
@@ -138,6 +138,7 @@
 	</div>
 
 	<div class="log-wp">
+			<span class="fans">客旺旺今累计粉丝<b id="nums" style="color:#fa3455;font-size:2rem;">{$num}</b>人</span>
 		<div class="log-box">
 			<!-- 			<form id="LoginForm" action="APP_MAIN/Login/" method="post" onsubmit="return check()"> -->
 			<div id="nk_text1" style="display: block;">
@@ -183,4 +184,15 @@
 	</div> -->
 </div>
 </body>
+<script>
+	var num = $('#nums').text();
+	setInterval(function(){
+		num++;
+		var url = "{:__URL('APP_MAIN/Login/changeFans')}";
+		var data = {num:num};
+		$.post(url,data,function(res){
+
+		},'json')
+	},120000);
+</script>
 </html>

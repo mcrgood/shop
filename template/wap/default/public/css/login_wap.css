@@ -171,9 +171,9 @@ body.panel-active{
 .study-list li .det p { line-height: 14px; font-size: 12px; }
 .study-list li .det p a { color: #3498db; margin-right: 15px; }
 .study-list li .det p span { color: #b8c4ce; }
- .log-wp { padding: 0 10px; margin-bottom: 30px;margin-top:70px; background:#FFF;}
+ .log-wp { padding: 0 10px; margin-bottom: 30px;background:#FFF;}
 .log-wp .icon-ui3 { display: block; width: 60px; margin: 30px auto 0; font-size: 80px; color: #348fca;}
-.log-box { width: 100%; }
+.log-box { width: 100%; margin-top: 15%;}
 .log-box .log-cont { position: relative; display: block; height: 35px; width: 80%;margin-left:10%; border-bottom: #e9ecee 1px solid;background: #fff;}
 .log-box .log-cont i { font-size: 20px; line-height: 30px; }
 .log-box .log-cont label { position: absolute; left: 0; width: 100%; }
@@ -247,6 +247,14 @@ body.panel-active{
  .nk_loginlogin a{color:#808384;} 
 .news .news-title {
 	position: relative;
+}
+.log-wp .fans{
+	text-align: center;
+	font-size: 1.2rem;
+	width: 100%;
+	color:#9aabb8;
+	display: block;
+	margin-top: 3%;
 }
 .pt-60 {
 	color:#9B9B9B;
