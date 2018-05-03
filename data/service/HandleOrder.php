@@ -30,7 +30,7 @@ class HandleOrder{
             $payment = new EasyPayment();
             $resArray = $payment->transfer($customerCode, $money); //向商家转账相应的金额
             if($resArray['rspCode']=='M000000'){
-                Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['business_money' =>$money, 'is_transfer'=>1]);//把这次付款商家应得的金额存入表中 //并且修改分账状态
+                Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['business_money' =>$money, 'is_transfer'=>1,'transfer_time'=>time()]);//把这次付款商家应得的金额存入表中 //并且修改分账状态
             }
             $gold = Db::table('ns_wwb')->where('userid',$business_id)->value('gold'); //查出该商家设置赠送旺旺币的比例
             $sendGold = round($gold*0.01*$pay_money);  //应该赠送给会员的旺旺币数量
@@ -107,5 +107,30 @@ class HandleOrder{
          $datas['data_id'] = $data_id; //相关表的数据ID主键
          $datas['create_time'] = time(); //创建时间
          Db::table('ns_member_account_records')->insert($datas);
+    }
+
+    //当天分账未成功后再第二天继续调用分账系统给商家转账
+    public function transfer_again($business_id){
+        $customerCode = Db::table('ns_business_open')->where('userid',$business_id)->value('customerCode'); //商家的客户号
+        $ratio = Db::table('ns_wwb')->where('userid',$business_id)->value('ratio'); //查出该商家设置分账金额比例
+        $where['business_id'] = $business_id;
+        $where['pay_status'] = 1;
+        $where['is_transfer'] = 0;
+        $where['pay_time'] = ['neq',0];
+        $list = Db::table('ns_order_payment')->where($where)->select();
+        if($list){
+            foreach($list as $k => $v){
+                $tomorrow = date('Y-m-d',$v['pay_time']+86400); //计算出付款之后第二天的时间
+                if(date('Y-m-d') == $tomorrow){
+                    $money = (100-$ratio)*0.01*$v['pay_money'];  //应该转给商家的金额
+                    $payment = new EasyPayment();
+                    $resArray = $payment->transfer($customerCode, $money); //向商家转账相应的金额
+                    if($resArray['rspCode']=='M000000'){
+                        Db::table('ns_order_payment')->where('out_trade_no',$v['out_trade_no'])->update(['business_money' =>$money, 'is_transfer'=>1, 'transfer_time'=>time()]);
+                    }
+                }
+               
+            }
+        }
     }
 }

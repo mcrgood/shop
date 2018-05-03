@@ -506,6 +506,8 @@ class Myhome extends Controller
     public function yingshou(){
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
+        $HandleOrder = new HandleOrder();
+        $HandleOrder->transfer_again($business_id); //调用再次分账方法
         $condition['pay_status'] = 1; //pay_status=1 是已付款状态
         $condition['type'] = 5; //type=5是扫码付款状态
         $condition['business_id'] = $business_id;
