@@ -32,7 +32,7 @@ class Business extends BaseService{
             if($userInfo['password'] != md5($password)){
                 $info = ['code' => 0, 'msg' =>'账号或密码有误！'];
             }else{
-                $row = Db::table('ns_shop_message')->where('userid',$business_id)->find();
+                $row = Db::table('ns_shop_message')->where('userid',$userInfo['id'])->find();
                 if(!$row || $row['state'] != 1){
                     $info = ['code' => 0, 'msg' =>'此账号暂时未通过入驻审核,请耐心等待！'];
                 }else{
