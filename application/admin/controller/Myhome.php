@@ -10,6 +10,7 @@ use think\Request;
 use data\service\MyhomeService as MyhomeService;
 use data\model\AddKtvRoomModel as AddKtvRoomModel;
 use data\model\AddKtvHoursModel as AddKtvHoursModel;
+use data\model\NsRegisterListModel as NsRegisterListModel;
 use think\Upload;//文件上传
 header("Content-Type: text/html; charset=UTF-8"); //编码
 
@@ -229,6 +230,7 @@ class Myhome extends BaseController
             $page_size = request()->post('page_size', PAGESIZE);
             $search_text = request()->post('search_text', '');
             $condition['iphone|address|names'] = ['LIKE',"%".$search_text."%"];
+            $condition['shop_status'] = 1;
             $member = new MyhomeService();
             $list = $member->getRegisters($page_index, $page_size, $condition, $order = 'a.id asc');
             return $list;
@@ -1417,6 +1419,48 @@ class Myhome extends BaseController
 			}
 		}
 		return $info;
+	}
+	//批量删除商家
+	public function delete_business(){
+		if(request()->isAjax()){
+			$data = input('post.');
+			$del = new NsRegisterListModel();
+			$res = $del->del_bus($data);
+			return json($res);
+		}
+	}
+	//后台添加商家
+	public function addBusiness(){
+		if(request()->isAjax()){
+			$list = input('post.');
+			$regs = "/^1[3456789]{1}\d{9}$/";
+			if(!preg_match($regs,$list['tel'])){
+				return $info = ['status'=>0, 'msg'=>'手机号码格式有误！'];
+			}
+			$row = Db::table('ns_shop_message')->where('userid',$list['userid'])->find();
+			if($row){
+				$info = ['status'=>0, 'msg'=>'商家ID已存在，请重新填写！'];
+			}else{
+				$res = Db::table('ns_shop_message')->insert($list);
+				if($res){
+					$info = ['status'=>1, 'msg'=>'新增成功'];
+				}else{
+					$info = ['status'=>0, 'msg'=>'新增失败'];
+				}
+			}
+			
+			return $info;
+		}
+		$pid_list = Db::table('ns_consumption')->where('con_pid',0)->select();
+		$this->assign('pid_list',$pid_list);
+		return view($this->style . "Myhome/addBusiness");
+	}
+
+	//后台添加商家（Ajax查到经营范围详情）
+	public function findBusinessScope(){
+		$con_pid = input('post.con_pid');
+		$list = Db::table('ns_consumption')->where('con_pid',$con_pid)->select();
+		return json($list);
 	}
 }
 

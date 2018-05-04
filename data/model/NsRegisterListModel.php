@@ -45,7 +45,7 @@ class NsRegisterListModel extends BaseModel {
         //设置查询视图
         $viewObj = $this->alias('a')
         ->join('ns_goods_login s','s.id = a.userid','left')
-        ->field('a.*,s.*');
+        ->field('a.*,s.iphone');
         $list = $this->viewPageQuery($viewObj, $page_index, $page_size, $condition, $order);
         return $list;
     }
@@ -59,9 +59,30 @@ class NsRegisterListModel extends BaseModel {
     {
         $viewObj = $this->alias('a')
         ->join('ns_goods_login s','s.id = a.userid','left')
-        ->field('a.*,s.*');
+        ->field('a.*,s.iphone');
         $count = $this->viewCount($viewObj,$condition);
         return $count;
+    }
+
+    //后台批量删除入驻的商家
+    public function del_bus($data){
+        if($data['id_arr']){
+            foreach($data['id_arr'] as $k =>$v){
+                $res = $this->where('id',$v)->update(['shop_status' => 2]);
+            }
+            if($res){
+                 $info = [
+                    'status'=> 1,
+                    'msg' =>'删除成功！'
+                ];
+            }else{
+                 $info = [
+                    'status'=> 0,
+                    'msg' =>'删除失败！'
+                ];
+            }
+        }
+        return $info;
     }
 
 }

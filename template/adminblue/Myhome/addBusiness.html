@@ -1,0 +1,292 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+<script src="ADMIN_JS/art_dialog.source.js"></script>
+<script src="ADMIN_JS/iframe_tools.source.js"></script>
+<script src="ADMIN_JS/material_managedialog.js"></script>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__STATIC__/js/ajax_file_upload.js" type="text/javascript"></script>
+<script src="__STATIC__/js/file_upload.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EWOFpIVomII8KSivhpMAqjxVeaALPYIL"></script>
+<link rel="stylesheet" type="text/css" href="ADMIN_CSS/defau.css">
+<link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+<style type="text/css">
+.image1111{margin-left: 188px;width:300px;height: 211px;display: none;}
+.error {padding-left: 5px !important;}
+.layui-btn{margin-top: 10px;}
+</style>
+{/block}
+{block name="main"}
+<div class="set-style">
+	<dl id="one">
+		<dt><span class="color-red">*</span>商家名称:</dt>
+		<dd>
+			<input id="names" type="text" placeholder="请填写商家名称" class="input-common" value="{$row.room_type|default=''}" />
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>商家ID:</dt>
+		<dd>
+			<input id="userid" type="num" style="height:1.8rem;" placeholder="填写数字（大于1000,避免重复）" class="input-common" value="{$row.room_type|default=''}" />
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red"></span>输入省市区搜索:</dt>
+		<dd>
+			<input id="suggestId" type="text" placeholder="输入省市区关键字" class="input-common" value="{$row.remark|default=''}"/>
+		</dd>
+	</dl>
+	<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+	<dl>
+		<dt><span class="color-red">*</span>详细地址:</dt>
+		<dd>
+			<input id="address" type="text" placeholder="请填写详细地址" class="input-common" value="{$row.remark|default=''}"/>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>经度:</dt>
+		<dd>
+			<input id="jingdu" type="text" placeholder="" class="input-common" value="{$row.remark|default=''}"/>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>纬度:</dt>
+		<dd>
+			<input id="weidu" type="text" placeholder="" class="input-common" value="{$row.remark|default=''}"/>
+		</dd>
+	</dl>
+	<div style=" width:70%; height:20rem;margin:2% 15%;" id="allmap"></div>
+	<dl>
+		<dt><span class="color-red">*</span>商家电话:</dt>
+		<dd>
+			<input id="tel" type="text" placeholder="请填写商家电话" class="input-common" value="{$row.remark|default=''}"/>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>营业时间:</dt>
+		<dd>
+			<input id="business_hours" type="text" placeholder="例：09:00-21:00" class="input-common" value="09:00-21:00"/>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>营业范围:</dt>
+		<dd>
+			<select id="leixing">
+			<option value="-1">请选择</option>
+			{volist name="pid_list" id="v"}
+				<option value="{$v.con_cateid}">{$v.con_cate_name}</option>
+			{/volist}
+			</select>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red">*</span>营业详情:</dt>
+		<dd>
+			<select id="business_scope">
+				<option value="">请选择</option>
+			</select>
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red"></span>门店照片:</dt>
+		<button type="button" class="layui-btn" id="test2" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
+        </button>
+	</dl>
+	<img  class="image image1111" src="{$row.room_img|default=''}" alt="" id="thumb">
+	<dl>
+		<dt><span class="color-red"></span>店内图片1:</dt>
+		<button type="button" class="layui-btn" id="test3" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
+        </button>
+	</dl>
+	<img  class="image image1111" src="{$row.room_img|default=''}" alt="" id="thumb_inimg_one">
+	<dl>
+		<dt><span class="color-red"></span>店内图片2:</dt>
+		<button type="button" class="layui-btn" id="test4" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
+        </button>
+	</dl>
+	<img  class="image image1111" src="{$row.room_img|default=''}" alt="" id="thumb_inimg_two">
+	<input type="hidden" class="hidden" value="{$row.ktv_id|default=''}">
+	<dl>
+		<dt></dt>
+		<dd><button class="btn-common btn-big">新&nbsp;&nbsp;增</button></dd>
+	</dl>
+</div>
+<script>
+	$(".btn-big").click(function(){
+		var names = $('#names').val();
+		var userid = $('#userid').val();
+		var address = $('#address').val();
+		var tel = $('#tel').val();
+		var jingdu = $('#jingdu').val();
+		var weidu = $('#weidu').val();
+		var leixing = $('#leixing').val();
+		var thumb = $('#thumb').attr('src');
+		var thumb_inimg_one = $('#thumb_inimg_one').attr('src');
+		var thumb_inimg_two = $('#thumb_inimg_two').attr('src');
+		var business_scope = $('#business_scope').val();
+		var business_hours = $('#business_hours').val();
+		var url = "{:url('Myhome/addBusiness')}";
+		var data = {
+			"names":names,"address":address,"tel":tel,
+			"jingdu":jingdu,"weidu":weidu,"leixing":leixing,
+			"thumb":thumb,"thumb_inimg_one":thumb_inimg_one,"thumb_inimg_two":thumb_inimg_two,
+			"business_scope":business_scope,"business_hours":business_hours,userid:userid,state:1
+		};
+		$.post(url,data,function(res){
+			if(res.status==1){
+                layer.msg(res.msg,{time:1000,icon:6});
+                setTimeout(function(){
+                    location.href="{:url('Myhome/registerlist')}";
+                },1000);
+			}else{
+				layer.msg(res.msg,{time:2000,icon:5});
+			}
+		},'json')
+	})
+	//上传图片
+    layui.use('upload', function(){
+            var upload = layui.upload;
+            //执行实例
+            var uploadInst = upload.render({
+                    elem: "#test2" ,//绑定元素
+                    url: "{:url('Myhome/ajax_upimg')}",//上传接口
+                    field: 'image' ,//允许上传的文件类型
+                    done: function(res){
+                        //上传完毕回调
+                        if(res.status==1){
+                            var thumb = document.getElementById('thumb');
+                            thumb.src = '__UPLOADS__/'+res.src;
+                            thumb.style.display = 'block';
+                        }
+                        layer.closeAll('loading'); //关闭loading
+                    },
+                    error: function(){
+                        //请求异常回调
+                        layer.closeAll('loading'); //关闭loading
+                    }
+            });
+            var uploadInsts = upload.render({
+                    elem: "#test3" ,//绑定元素
+                    url: "{:url('Myhome/ajax_upimg')}",//上传接口
+                    field: 'image' ,//允许上传的文件类型
+                    done: function(res){
+                        //上传完毕回调
+                        if(res.status==1){
+                            var thumb_inimg_one = document.getElementById('thumb_inimg_one');
+                            thumb_inimg_one.src = '__UPLOADS__/'+res.src;
+                            thumb_inimg_one.style.display = 'block';
+                        }
+                        layer.closeAll('loading'); //关闭loading
+                    },
+                    error: function(){
+                        //请求异常回调
+                        layer.closeAll('loading'); //关闭loading
+                    }
+            });
+            var uploadInstss = upload.render({
+                    elem: "#test4" ,//绑定元素
+                    url: "{:url('Myhome/ajax_upimg')}",//上传接口
+                    field: 'image' ,//允许上传的文件类型
+                    done: function(res){
+                        //上传完毕回调
+                        if(res.status==1){
+                            var thumb_inimg_two = document.getElementById('thumb_inimg_two');
+                            thumb_inimg_two.src = '__UPLOADS__/'+res.src;
+                            thumb_inimg_two.style.display = 'block';
+                        }
+                        layer.closeAll('loading'); //关闭loading
+                    },
+                    error: function(){
+                        //请求异常回调
+                        layer.closeAll('loading'); //关闭loading
+                    }
+            });
+    });
+
+    $('#leixing').change(function(){
+    	var con_pid = $(this).val()
+    	var url = "{:__URL('SHOP_MAIN/admin/Myhome/findBusinessScope')}";
+    	var data = {con_pid:con_pid};
+    	$.post(url,data,function(res){
+    		var html = '';
+    		if(res.length > 0){
+    			for(var i=0; i<res.length;i++){
+    				html += '<option value="'+res[i]["con_cateid"]+'">'+res[i]["con_cate_name"]+'</option>';
+    			}
+    		}else{
+    			html += '<option value="">请选择</option>';
+    		}
+    			$('#business_scope').empty().append(html);
+    	},'json')
+    })
+
+
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point(116.331398,39.897445);
+
+	map.centerAndZoom(point,12);
+	var geoc = new BMap.Geocoder();    
+
+	map.addEventListener("click", function(e){        
+		var pt = e.point;
+		geoc.getLocation(pt, function(rs){
+			var addComp = rs.addressComponents;
+			// alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+			
+			$('#address').val(addComp.city+ addComp.district+ addComp.street+ addComp.streetNumber);
+			$('#jingdu').val(rs.point.lng);
+			$('#weidu').val(rs.point.lat);
+		});        
+	});
+		// 百度地图API功能
+	function G(id) {
+		return document.getElementById(id);
+	}
+
+
+	var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+		{"input" : "suggestId"
+		,"location" : map
+	});
+
+	ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+	var str = "";
+		var _value = e.fromitem.value;
+		var value = "";
+		if (e.fromitem.index > -1) {
+			value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+		}    
+		str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+		
+		value = "";
+		if (e.toitem.index > -1) {
+			_value = e.toitem.value;
+			value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+		}    
+		str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+		G("searchResultPanel").innerHTML = str;
+	});
+
+	var myValue;
+	ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+	var _value = e.item.value;
+		myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+		G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+		
+		setPlace();
+	});
+
+	function setPlace(){
+		map.clearOverlays();    //清除地图上所有覆盖物
+		function myFun(){
+			var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+			map.centerAndZoom(pp, 18);
+			map.addOverlay(new BMap.Marker(pp));    //添加标注
+		}
+		var local = new BMap.LocalSearch(map, { //智能搜索
+		  onSearchComplete: myFun
+		});
+		local.search(myValue);
+	}
+</script>
+{/block}
