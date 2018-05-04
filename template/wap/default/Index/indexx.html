@@ -196,11 +196,7 @@
         <div class="scollimg">
             {if condition="$plat_adv_list['is_use'] eq 1"}
             {foreach name="plat_adv_list['adv_list']" item="v"}
-            {if condition="$v['adv_image'] neq ''"}
-                <a href="{$v.adv_url}">
-                {else /}
-                <a href="javascript:void(0);">
-                {/if}
+                <a>
             <img src="{:__IMG($v.adv_image)}"></a> 
             {/foreach}
         {/if}
@@ -216,6 +212,15 @@
         </div>  
     </div>
 <script type="text/javascript">  
+        //轮播图跳转对应的商家  注释代码
+         // {if condition="$v['adv_image'] neq ''"}
+         //        <a href="{$v.adv_url}">
+         //        {else /}
+         //        <a href="javascript:void(0);">
+         //        {/if}
+
+
+
    window.onload=function(){  
              var container = document.getElementById('main');  
 autoMove(container);  
