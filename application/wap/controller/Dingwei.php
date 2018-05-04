@@ -56,6 +56,7 @@ class Dingwei extends BaseController{
             $where['state'] = 1;
         }
         $where['business_status'] = ['neq',false];
+        $where['shop_status'] = 1;
         $count = db("ns_shop_message")
         ->alias('s')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
@@ -67,7 +68,7 @@ class Dingwei extends BaseController{
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
         ->limit(($page-1)*$size,$size)
         ->where($where)->select();
-        if (!empty($list)) {
+        if(!empty($list)){
             foreach ($list as $k => $v) {
                 if($list[$k]['business_status'] == 1){
                     $list[$k]['business_status'] = '营业中';
