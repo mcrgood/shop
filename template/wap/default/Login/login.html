@@ -40,6 +40,7 @@
 	</style>
 	<script src="__TEMP__/{$style}/public/js/jquery.js"></script>
 	<script src="__TEMP__/{$style}/public/js/showBox.js"></script>
+	<script src="__STATIC__/js/changeFans.js"></script>
 	<script type="text/javascript" src="__TEMP__/{$style}/public/js/layer.js"></script>
 	<script src="__STATIC__/js/load_bottom.js" type="text/javascript"></script>
 	<script type="text/javascript">
@@ -185,14 +186,8 @@
 </div>
 </body>
 <script>
-	var num = $('#nums').text();
-	setInterval(function(){
-		num++;
-		var url = "{:__URL('APP_MAIN/Login/changeFans')}";
-		var data = {num:num};
-		$.post(url,data,function(res){
-
-		},'json')
-	},120000);
+	var urls = "{:__URL('APP_MAIN/Login/changeFans')}";
+	var totalNum = $('#nums').text();
+	
 </script>
 </html>

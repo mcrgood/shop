@@ -625,6 +625,8 @@ class Login extends Controller
             
             return AjaxReturn($retval);
         } else {
+             $fans = Db::table('ns_fans')->find();
+            $this->assign('num',$fans['num']);
             $referee_phone = input('param.referee_phone', ''); // 判断地址栏是否有推荐人手机号（扫码客旺旺会员推荐码时会有）
             $this->assign("referee_phone", $referee_phone);
             $this->getWchatBindMemberInfo();

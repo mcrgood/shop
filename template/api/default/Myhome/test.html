@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="__STATIC__/js/jquery-1.8.1.min.js"></script>
 </head>
 <body>
-<form action="{:url('myhome/business_message')}" method="post">
-	账号：<input type="text" value="" name="business_id"><br/>
-	<!-- 密码<input type="password" value="" name="password"> -->
-	<input type="submit" >
-</form>
+ 
+    <p>初始值是0，点击按钮让其增加到10然后停止</p>
+    <span>0</span>
+    <button>开始</button>
+ 
+    <script>
+        $(function(){
+                var num = 0;
+                // 调用计时函数
+                var t = setTimeout(timedCount(num),50);
+             
+            // 循环计时函数, 多次调用自身函数, num为被传递的参数
+            function timedCount(num){
+            	var count = Math.round(6088/100);
+                num = num+count;
+                $("span").text(num);
+                // 设置条件使停止计时
+                if (num<6088) {
+                    var t = setTimeout(function(){timedCount(num)},50);
+                }else{
+                	$("span").text(6088);
+                }
+            }
+        })
+    </script>
 </body>
 </html>

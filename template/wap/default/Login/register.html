@@ -66,7 +66,8 @@
 		}
 	</style>
 	<script src="__TEMP__/{$style}/public/js/showBox.js"></script>
-	<script src="__TEMP__/{$style}/public/js/jquery.js"></script>
+    <script src="__TEMP__/{$style}/public/js/jquery.js"></script>
+	<script src="__STATIC__/js/changeFans.js"></script>
 	<script type="text/javascript" src="__TEMP__/{$style}/public/js/layer.js"></script>
 	<script type="text/javascript"
 			src="__TEMP__/{$style}/public/js/jquery.js"></script>
@@ -94,6 +95,7 @@
 
 
 	<div class="reg-box">
+    <span class="fans">客旺旺今累计粉丝<b id="nums" style="color:#fa3455;font-size:2rem;">{$num}</b>人</span>
 		<!-- <form id="regForm" action="APP_MAIN/login/register" method="post" onsubmit="return check()"> -->
 
 		<!-- </form> -->
@@ -182,6 +184,8 @@
     <script type="text/javascript">
         var APPMAIN='APP_MAIN';
         var STATIC = "__STATIC__";
+        var urls = "{:__URL('APP_MAIN/Login/changeFans')}";
+        var totalNum = $('#nums').text();
 
         function login_mobile(mobile,password){
             $.ajax({

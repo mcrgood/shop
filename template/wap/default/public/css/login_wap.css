@@ -256,6 +256,14 @@ body.panel-active{
 	display: block;
 	margin-top: 3%;
 }
+.reg-box .fans{
+	text-align: center;
+	font-size: 1.2rem;
+	width: 100%;
+	color:#9aabb8;
+	display: block;
+	margin-top: 3%;
+}
 .pt-60 {
 	color:#9B9B9B;
 	padding-top: 25px;
