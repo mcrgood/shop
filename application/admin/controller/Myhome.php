@@ -1434,8 +1434,10 @@ class Myhome extends BaseController
 		if(request()->isAjax()){
 			$list = input('post.');
 			$regs = "/^1[3456789]{1}\d{9}$/";
-			if(!preg_match($regs,$list['tel'])){
-				return $info = ['status'=>0, 'msg'=>'手机号码格式有误！'];
+			$phone_regs = "/^0[0-9]{2,3}[1-9]\d{5,7}$/";
+
+			if(!preg_match($regs,$list['tel']) && !preg_match($phone_regs,$list['tel'])){
+				return $info = ['status'=>0, 'msg'=>'商家电话格式有误！'];
 			}
 			$row = Db::table('ns_shop_message')->where('userid',$list['userid'])->find();
 			if($row){
@@ -1443,7 +1445,16 @@ class Myhome extends BaseController
 			}else{
 				$res = Db::table('ns_shop_message')->insert($list);
 				if($res){
+					$data['userid'] = $list['userid'];
+					$data['business_status'] = 1;
+					$data['ratio'] = 20;
+					$data['gold'] = 50;
+					$data['create_time'] = time();
+					$data['first_ratio'] = 20;
+					$data['msg_status'] = 2;
+					Db::table('ns_wwb')->insert($data);
 					$info = ['status'=>1, 'msg'=>'新增成功'];
+
 				}else{
 					$info = ['status'=>0, 'msg'=>'新增失败'];
 				}

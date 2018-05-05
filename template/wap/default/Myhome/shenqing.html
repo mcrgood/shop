@@ -367,7 +367,7 @@
         $(document).ready(function () {
             $("#submit_1").click(function () {
                 var regs = /^1[3456789]{1}\d{9}$/;   //手机号正则
-                var phone_reg = /^0[1-9]{2,3}[1-9]\d{5,7}$/;  //座机号码正则
+                var phone_reg = /^0[0-9]{2,3}[1-9]\d{5,7}$/;  //座机号码正则
                 var business_hours = $('#business_hours').val();
                 var category = $('#category').val();
                 var seleAreaNext = $('#seleAreaNext').val();
