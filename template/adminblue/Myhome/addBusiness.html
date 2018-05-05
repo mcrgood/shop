@@ -26,7 +26,7 @@
 	<dl>
 		<dt><span class="color-red">*</span>商家ID:</dt>
 		<dd>
-			<input id="userid" type="num" style="height:1.8rem;" placeholder="填写数字（大于1000,避免重复）" class="input-common" value="{$row.room_type|default=''}" />
+			<input id="userid" type="num" style="height:1.8rem;" placeholder="填写数字（大于1000,避免重复）" class="input-common" value="100" />
 		</dd>
 	</dl>
 	<dl>
@@ -139,6 +139,7 @@
                 },1000);
 			}else{
 				layer.msg(res.msg,{time:2000,icon:5});
+				$('#userid').focus();
 			}
 		},'json')
 	})
