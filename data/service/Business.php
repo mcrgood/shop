@@ -106,6 +106,8 @@ class Business extends BaseService{
             $list = $this->getGoodsMsg($business_id, $search_input); //获取该商家餐饮店的预定消息
         }elseif($cate_name == '酒店'){
             $list = $this->getHotelMsg($business_id, $search_input);//获取该商家酒店的预定消息
+        }elseif($cate_name == 'KTV'){
+            $list = $this->getKtvMsg($business_id, $search_input);//获取该商家KTV的预定消息
         }
 
         if($list){
