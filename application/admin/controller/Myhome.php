@@ -1473,5 +1473,27 @@ class Myhome extends BaseController
 		$list = Db::table('ns_consumption')->where('con_pid',$con_pid)->select();
 		return json($list);
 	}
+	//后台修改商家（只修改地址，经纬度）
+	public function updateBusiness(){
+		if(request()->isAjax()){
+			$list = input('post.');
+			$data['address'] = $list['address'];
+			$data['jingdu'] = $list['jingdu'];
+			$data['weidu'] = $list['weidu'];
+			$res = Db::table('ns_shop_message')->where('userid',$list['userid'])->update($data);
+			if($res){
+				$info = [
+					'status' => 1,
+					'msg' => '修改成功！'
+				];
+			}else{
+				$info = [
+					'status' => 0,
+					'msg' => '修改失败！'
+				];
+			}
+			return json($info);
+		}
+	}
 }
 

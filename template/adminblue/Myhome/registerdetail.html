@@ -34,7 +34,7 @@
 	<dl>
 		<dt><span class="required"></span>店铺地址：</dt>
 		<dd>
-			<p><input class="input-common"  type="text" name="address" value="{$row.address}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="address" value="{$row.address}" ></p>
 		</dd>
 	</dl>
 	<dl>
@@ -160,6 +160,7 @@
 			<button onclick="pass({$row.id})">审核通过</button>
 		{/neq}
 			<button onclick="returns()" class="returns">退回重审</button>
+			<button class="edit" style="margin-left:40px;background-color:#0072d2;color:#fff;height:2rem;">确定修改</button>
 		</dd>
 		<!-- <else />
 		<dt><i class="required"></i>审核状态：</dt>
@@ -172,6 +173,28 @@
 </div>
 </form>
 <script type="text/javascript">
+	var userid = "{$Request.param.id}";
+	$('.edit').click(function(){
+		var address = $("input[name='address']").val();
+		var jingdu = $("input[name='jingdu']").val();
+		var weidu = $("input[name='weidu']").val();
+		$.ajax({
+			type:"post",
+			data:{address:address,jingdu:jingdu,weidu:weidu,userid:userid},
+			dataType:"json",
+			url:"{:__URL('ADMIN_MAIN/Myhome/updateBusiness')}",
+			success:function(res){
+				if(res.status == 1){
+					showTip(res["msg"],'success');
+					setTimeout(function(){
+						window.location.href = "{:__URL('ADMIN_MAIN/Myhome/registerlist')}";
+					},800)
+				}else{
+					showTip(res["msg"],'error');
+				}
+			}
+		})
+	})
 	function pass(id){
 		var jingdu = $('input[name="jingdu"]').val();
 		var weidu = $('input[name="weidu"]').val();
