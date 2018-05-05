@@ -207,6 +207,30 @@ class Business extends BaseService{
         return $list;  
     }
 
+    public function getHealthMsg($business_id, $search_input = ''){
+        $map['m.userid'] = $business_id;
+        $map['p.pay_status'] = 1;
+        db("ns_health_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
+        if($search_input){
+            $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
+        }
+        $list = db('ns_health_yuding')
+        ->field('a.*,m.names,w.msg_status')
+        ->alias('a')
+        ->join('ns_shop_message m','a.business_id=m.userid','left')
+        ->join('ns_wwb w','w.userid = m.userid','left')
+        ->join('ns_order_payment p','p.out_trade_no = a.out_trade_no','left')
+        ->order('a.create_time desc')
+        ->where($map)
+        ->select();
+        if($list){
+            foreach($list as $k => $v){
+                $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+            }
+        }
+        return $list;  
+    }
+
         //获取该商家所属的经营类型名称
     public function getCateName($business_id){
         $cate_name = db('ns_shop_message')

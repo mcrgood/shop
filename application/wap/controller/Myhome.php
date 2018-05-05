@@ -632,6 +632,8 @@ class Myhome extends Controller
                 $list = $business->getHotelMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
             }elseif($cate_name == 'KTV'){
                 $list = $business->getKtvMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
+            }elseif($cate_name == '养生'){
+                $list = $business->getHealthMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
             }
 
             if($list){
@@ -648,6 +650,8 @@ class Myhome extends Controller
             $list = $business->getHotelMsg($this->business_id);//获取该商家酒店的预定消息
         }elseif($cate_name == 'KTV'){
             $list = $business->getKtvMsg($this->business_id);//获取该商家酒店的预定消息
+        }elseif($cate_name == '养生'){
+            $list = $business->getHealthMsg($this->business_id);//获取该商家酒店的预定消息
         }
         // dump($list);die;
         $this->assign('list',$list);  
@@ -669,8 +673,12 @@ class Myhome extends Controller
         }elseif($type == 3){ //KTV
             $row = $this->getKtvDetails($id);
             $this->assign('row',$row);
-            // dump($row);die;
             return view($this->style . 'Myhome/dingdan_ktv');
+        }elseif($type == 4){ //养生
+            $row = $this->getHealthDetails($id);
+            $this->assign('row',$row);
+            // dump($row);die;
+            return view($this->style . 'Myhome/dingdan_health');
         }
     }
 
@@ -748,6 +756,33 @@ class Myhome extends Controller
         $row['create_time'] = date('Y-m-d H:i',$row['create_time']);
         return $row;
     }
+
+    //获取养生订单详情
+    public function getHealthDetails($id){
+        $row = db('ns_health_yuding')
+        ->alias('a')
+        ->field('a.*,b.pay_type,b.pay_money')
+        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
+        ->where('a.id',$id)->find();
+        switch ($row['pay_type']) {
+            case 1:
+               $row['pay_type'] = '快捷支付';
+                break;
+            case 5:
+                $row['pay_type'] = '微信支付';
+                break;
+        }
+        $row['room_type'] = explode("|", $row['room_type']);
+        $row['room_price'] = explode("|", $row['room_price']);
+        $row['room_num'] = explode("|", $row['room_num']);
+        foreach ($row['room_price'] as $k => $v){
+            $row['room_list'][$k] = array_column($row,$k);
+        }
+        unset($row['room_type'],$row['room_price'], $row['room_num']);
+        $row['create_time'] = date('Y-m-d H:i',$row['create_time']);
+        return $row;
+    }
+    
 
     //预定酒店页面
     public function hotel(){
