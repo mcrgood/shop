@@ -662,8 +662,9 @@ class Myhome extends Controller
     public function dingdan_detail(){
         $id = input('param.id');
         $type = input('param.type');
+        $buss = new Business();
         if($type == 1){ //餐饮
-            $row = $this->getGoodsDetails($id);
+            $row = $buss->getGoodsDetails($id);
             $this->assign('row',$row);
             return view($this->style . 'Myhome/dingdan_detail');
         }elseif($type == 2){ //酒店
@@ -677,37 +678,12 @@ class Myhome extends Controller
         }elseif($type == 4){ //养生
             $row = $this->getHealthDetails($id);
             $this->assign('row',$row);
-            // dump($row);die;
             return view($this->style . 'Myhome/dingdan_health');
         }
     }
 
 
-    //获取餐饮订单详情
-    public function getGoodsDetails($id){
-        $row = db('ns_goods_yuding')
-        ->alias('a')
-        ->field('a.*,b.pay_type')
-        ->join('ns_order_payment b','b.out_trade_no = a.sid','left')
-        ->where('a.id',$id)->find();
-        switch ($row['pay_type']) {
-            case 1:
-               $row['pay_type'] = '快捷支付';
-                break;
-            case 5:
-                $row['pay_type'] = '微信支付';
-                break;
-        }
-        $row['goodsname'] = explode("|", $row['goodsname']);
-        $row['goodsnum'] = explode("|", $row['goodsnum']);
-        $row['goodsprice'] = explode("|", $row['goodsprice']);
-        foreach ($row['goodsprice'] as $k => $v) {
-            $row['goods'][$k] = array_column($row,$k);
-            $row['totalPrice'] += $v; //计算总价钱
-        }
-        $row['add_time'] = date('Y-m-d H:i',$row['add_time']);
-        return $row;
-    }
+
 
     //获取酒店订单详情
     public function getHotelDetails($id){

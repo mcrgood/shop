@@ -206,9 +206,9 @@
             <div id="btnright"><div class="triangle"></div></div>  
         </div>  
         <div class="item">  
+        {volist name="img_adv_list" id="vo"}
             <span></span>  
-            <span></span>  
-            <span></span>  
+        {/volist}
         </div>  
     </div>
 <script type="text/javascript">  
@@ -223,8 +223,8 @@
 
    window.onload=function(){  
              var container = document.getElementById('main');  
-autoMove(container);  
-        }  
+                autoMove(container);  
+            }  
         //轮播图函数  
         function autoMove(container){  
 var imgs = container.getElementsByTagName('img');  

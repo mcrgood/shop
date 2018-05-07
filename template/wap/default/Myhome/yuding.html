@@ -179,6 +179,7 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         </div>
         <div id="hide">
             <select name="pageselect" id="sele" >
+            <option value="">请选择</option>
                 {volist name="seat_list" id="v"}
                     <option value="{$v.seatid}" style="font-size:15px;height:30px;text-align:center">{$v.seatname}</option>
                 {/volist}

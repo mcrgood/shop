@@ -2,6 +2,7 @@
 namespace app\wap\controller;
 use data\extend\org\wechat\Jssdk;
 use data\service\Platform;
+use think\Db;
 class Indexx extends BaseController{
 
 	public function indexx(){
@@ -20,6 +21,8 @@ class Indexx extends BaseController{
         // 首页轮播图
         $platform = new Platform();
         $plat_adv_list = $platform->getPlatformAdvPositionDetail(1175);
+        $img_adv_list = Db::table('ns_platform_adv')->where('ap_id',1175)->select();
+        $this->assign('img_adv_list', $img_adv_list);
         $this->assign('plat_adv_list', $plat_adv_list);
         //餐饮通用券
         $index_adv_one = $platform->getPlatformAdvPositionDetail(1170);

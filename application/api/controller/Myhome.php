@@ -45,7 +45,7 @@ class Myhome extends BaseController
         
     }
 
-    //商家信息API
+    //商家API营收
     public function business_info(){
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
         $business = new Business();
@@ -60,14 +60,26 @@ class Myhome extends BaseController
         $res = $business->member($business_id);
         return json($res);
     }
-    //商家预定消息API
+    //商家预定消息列表API
     public function business_message(){
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
         $business = new Business();
         $res = $business->message($business_id);
-        return json($res);
         // dump($res);die;
+        return json($res);
     }
+    //商家预定消息详情API
+    public function reserve_detail(){
+        $id = isset($_POST['id'])? $_POST['id'] :'';
+        $cate_name = isset($_POST['cate_name'])? $_POST['cate_name'] :'';
+        $business = new Business();
+        if($cate_name == '餐饮'){
+            $res = $business->getGoodsDetails($id);
+        }
+        return json($res);
+    }
+
+    //测试
     public function test(){
         return view($this->style . 'Myhome/test');
     }

@@ -78,7 +78,13 @@ ul li{list-style: none;}
 }
 .food_name li span{
 	display: block;
-    width: 33%;
+    width: 22%;
+    float: left;
+    text-align: center;
+}
+.food_name li span:nth-child(1){
+  display: block;
+    width: 34%;
     float: left;
     text-align: center;
 }
@@ -163,12 +169,14 @@ ul li{list-style: none;}
           <li class="first">
             <span>菜名</span>
             <span>数量</span>
-            <span>总价</span>
+            <span>单价</span>
+            <span>小计</span>
           </li>
         {volist name="row['goods']" id="v"}
     			<li>
     				<span>{$v.1}</span>
     				<span>{$v.2}份</span>
+            <span>￥{$v.subTotal}</span>
     				<span>￥{$v.0}</span>
     			</li>
     		{/volist}
