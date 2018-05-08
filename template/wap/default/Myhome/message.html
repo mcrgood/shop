@@ -134,7 +134,7 @@
 	<div class="m-box first-content active">
 		<div class="first_content_1 ">
 			<ul>
-			{if $cate_name eq 餐饮}
+			{if $cate_name eq goods}
 				{foreach name="list" id="v"}
 					<li>
 						<div class="inform"><h4>预定通知</h4><span>{$v.add_time}</span></div>
@@ -152,7 +152,7 @@
 						{/if}
 					</li>
 	             {/foreach}
-			{elseif $cate_name eq 酒店 /}
+			{elseif $cate_name eq hotel /}
 				{foreach name="list" id="v"}
 					<li>
 						<div class="inform"><h4>预定通知</h4><span>{$v.create_time}</span></div>
@@ -188,7 +188,7 @@
 						{/if}
 					</li>
 	             {/foreach}
-			{elseif $cate_name eq 养生 /}
+			{elseif $cate_name eq health /}
 				{foreach name="list" id="v"}
 					<li>
 						<div class="inform"><h4>预定通知</h4><span>{$v.create_time}</span></div>
@@ -236,7 +236,7 @@
         	$.post(url,data,function(res){
         		console.log(res);
         		var html = '';
-        		if(cate_name == '餐饮'){
+        		if(cate_name == 'goods'){
 	        		if(res.status ==1){
 	        			for(var i=0; i<res.list.length;i++){
 	        				html +='<li>';
@@ -246,7 +246,7 @@
 	        				html +='</li>';
 	        			}
 	        		}
-        		}else if(cate_name == '酒店'){
+        		}else if(cate_name == 'hotel'){
         			if(res.status ==1){
 	        			for(var i=0; i<res.list.length;i++){
 	        				html +='<li>';
@@ -266,7 +266,7 @@
 	        				html +='</li>';
 	        			}
 	        		}
-        		}else if(cate_name == '养生'){
+        		}else if(cate_name == 'health'){
         			if(res.status ==1){
 	        			for(var i=0; i<res.list.length;i++){
 	        				html +='<li>';

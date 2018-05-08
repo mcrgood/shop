@@ -102,9 +102,9 @@ class Business extends BaseService{
 
     public function message($business_id){
         $cate_name = $this->getCateName($business_id);
-        if($cate_name == '餐饮'){
+        if($cate_name == 'goods'){
             $list = $this->getGoodsMsg($business_id, $search_input); //获取该商家餐饮店的预定消息
-        }elseif($cate_name == '酒店'){
+        }elseif($cate_name == 'hotel'){
             $list = $this->getHotelMsg($business_id, $search_input);//获取该商家酒店的预定消息
         }elseif($cate_name == 'KTV'){
             $list = $this->getKtvMsg($business_id, $search_input);//获取该商家KTV的预定消息
@@ -142,20 +142,6 @@ class Business extends BaseService{
             foreach($list as $k => $v){
                 $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
                 $list[$k]['time'] = date('Y-m-d H:i',strtotime($v['time']));
-                $list[$k]['msg_time'] = date('Y-m-d H:i',$v['msg_time']);
-                // $list[$k]['goodsname'] = explode('|',$v['goodsname']);
-                // $list[$k]['count'] = count($list[$k]['goodsname']);
-                // $list[$k]['goodsprice'] = explode('|',$v['goodsprice']);
-                // $list[$k]['goodsnum'] = explode('|',$v['goodsnum']);
-                // foreach($list[$k]['goodsprice'] as $key => $val){
-                //     $list[$k]['goodsList'][$key] = array_column($list[$k],$key);
-                // }
-                // foreach($list[$k]['goodsList'] as $kk => $vv){
-                //     $list[$k]['goodsList'][$kk]['goodsPrice'] = $vv[0]/$vv[2];
-                //     $list[$k]['goodsList'][$kk]['goodsName'] = $vv[1];
-                //     $list[$k]['goodsList'][$kk]['goodsNum'] = $vv[2];
-                //     $list[$k]['goodsList'][$kk]['subTotal'] = $vv[0];
-                // }
             }
         }
         return $list;  
@@ -252,20 +238,20 @@ class Business extends BaseService{
         ->alias('a')
         ->join('ns_consumption b','a.leixing = b.con_cateid','left')
         ->where('a.userid',$business_id)
-        ->value('con_cate_name');
+        ->value('alias_name');
         return $cate_name;
     }
     //获取商家是否有未读的预定消息
     public function getMsgStatus($cate_name, $business_id){
-        if($cate_name == '餐饮'){
+        if($cate_name == 'goods'){
             $count = Db::table('ns_goods_yuding')
             ->alias('a')->join('ns_order_payment b','a.sid = b.out_trade_no','left')
             ->where(['a.shop_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
-        }elseif($cate_name == '酒店'){
+        }elseif($cate_name == 'hotel'){
             $count = Db::table('ns_hotel_yuding')
             ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
             ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
-        }elseif($cate_name == '养生'){
+        }elseif($cate_name == 'health'){
             $count = Db::table('ns_health_yuding')
             ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
             ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
@@ -281,29 +267,39 @@ class Business extends BaseService{
     public function getGoodsDetails($id){
         $row = db('ns_goods_yuding')
         ->alias('a')
-        ->field('a.*,b.pay_type')
+        ->field('a.name,a.iphone,a.message,a.id,b.pay_type,b.pay_money,a.goodsname,a.goodsnum,a.goodsprice,a.sid,b.pay_time')
         ->join('ns_order_payment b','b.out_trade_no = a.sid','left')
         ->where('a.id',$id)->find();
-        switch ($row['pay_type']) {
-            case 1:
-               $row['pay_type'] = '快捷支付';
-                break;
-            case 5:
-                $row['pay_type'] = '微信支付';
-                break;
+        if($row){
+             switch ($row['pay_type']) {
+                case 1:
+                   $row['pay_type'] = '快捷支付';
+                    break;
+                case 5:
+                    $row['pay_type'] = '微信支付';
+                    break;
+            }
+            $row['goodsname'] = explode("|", $row['goodsname']);
+            $row['goodsnum'] = explode("|", $row['goodsnum']);
+            $row['goodsprice'] = explode("|", $row['goodsprice']);
+            foreach ($row['goodsprice'] as $k => $v) {
+                $row['goods'][$k] = array_column($row,$k);
+            }
+            foreach($row['goods'] as $key => $val){
+                $row['goods'][$key]['subTotal'] =$val[2];
+                $row['goods'][$key]['goodsNum'] =$val[1];
+                $row['goods'][$key]['goodsPrice'] =$val[2]/$val[1];
+                $row['goods'][$key]['goodsName'] =$val[0];
+                unset($row['goods'][$key][2],$row['goods'][$key][0],$row['goods'][$key][1]);
+            }
+            $row['add_time'] = date('Y-m-d H:i',$row['add_time']);
+            $row['pay_time'] = date('Y-m-d H:i',$row['pay_time']);
+            unset($row['goodsname'],$row['goodsnum'],$row['goodsprice']);
+            $info = ['code' => 1, 'data' =>$row];
+        }else{
+             $info = ['code' => 0, 'data' =>''];
         }
-        $row['goodsname'] = explode("|", $row['goodsname']);
-        $row['goodsnum'] = explode("|", $row['goodsnum']);
-        $row['goodsprice'] = explode("|", $row['goodsprice']);
-        foreach ($row['goodsprice'] as $k => $v) {
-            $row['goods'][$k] = array_column($row,$k);
-            $row['totalPrice'] += $v; //计算总价钱
-        }
-        foreach($row['goods'] as $key => $val){
-            $row['goods'][$key]['subTotal'] =$val[0]/$val[2];
-        }
-        $row['add_time'] = date('Y-m-d H:i',$row['add_time']);
-        return $row;
+        return $info;
     }
 
 

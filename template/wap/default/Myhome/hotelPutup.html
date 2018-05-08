@@ -82,7 +82,7 @@ body{
   <div class="big">
   	<div class="hotel_name">
   		<ul>
-      {if $cate_name eq 餐饮}
+      {if $cate_name eq goods}
         {volist name="list" id="v"}
          <li class="lis">
             <span class="jiudian">{$v.seatname}</span>
@@ -95,7 +95,7 @@ body{
             </div> 
           </li>
         {/volist}
-      {elseif $cate_name eq 酒店/}
+      {elseif $cate_name eq hotel/}
         {volist name="list" id="v"}
          <li class="lis">
             <span class="jiudian">{$v.room_type}</span>

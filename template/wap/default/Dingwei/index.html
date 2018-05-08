@@ -65,61 +65,61 @@
                  latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                  longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180
                  
-     // 页数
-     var page = 0;
-     // 每页展示个数
-     var size = 15;
+     // // 页数
+     // var page = 0;
+     // // 每页展示个数
+     // var size = 15;
 
-     // dropload
-     $('.content').dropload({
-         scrollArea : window,
-         loadDownFn : function(me){
-             page++;    //第一次page=1
-             // 拼接HTML
-              var html = '';
-             $.ajax({
-                 type: 'GET',
-                 url: '{:url("dingwei/getData")}?page='+page+'&size='+size,
-                 data:{jingdu: longitude, weidu: latitude, leixing_id: leixing_id,con_cateid:con_cateid,type:type},
-                 dataType: 'json',
-                 success: function(data){
-                     if(data.message.length > 0 && page <= data.pages && data.state ==1){
-                        for(var i = 0;i < data["message"].length;i++){
-                             html +='<li style="border-bottom: 1px solid #cccccc;">';
-                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'">';
-                             html +='<img src="'+data["message"][i]["thumb"]+'"/>';
-                             html +='</a>';
-                             html +='<span style="float:right;">消费返旺币<br/>&nbsp;&nbsp;&nbsp;<b style="font-size:0.62rem;color:red;">'+data["message"][i]["gold"]+'%</b></span>';
-                             html += '店名：' +data["message"][i]["names"]+  '<br/>';
-                             html += '距离：'+data["message"][i]["distance"]+' km <br />';
-                             html += '地址：' +data["message"][i]["address"]+ '<br />';
-                             html +='<span style="color:#ff5803;">'+data["message"][i]["business_status"]+' <span>';
-                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'" class="merchant-ul-a">>>更多详情</a>';
-                             html +='</li>';
-                         }
-                     // 如果没有数据
-                     }else{
-                         // 锁定
-                         me.lock();
-                         // 无数据
-                         me.noData();
-                     }
-                     // 为了测试，延迟1秒加载
-                     setTimeout(function(){
-                         // 插入数据到页面，放到最后面
-                         $('.merchant-ul').append(html);
-                         // 每次数据插入，必须重置
-                         me.resetload();
-                     },700);
-                 },
-                 error: function(xhr, type){
-                     alert('Ajax error!');
-                     // 即使加载出错，也得重置
-                     me.resetload();
-                 }
-             });
-         }
-     });
+     // // dropload
+     // $('.content').dropload({
+     //     scrollArea : window,
+     //     loadDownFn : function(me){
+     //         page++;    //第一次page=1
+     //         // 拼接HTML
+     //          var html = '';
+     //         $.ajax({
+     //             type: 'GET',
+     //             url: '{:url("dingwei/getData")}?page='+page+'&size='+size,
+     //             data:{jingdu: longitude, weidu: latitude, leixing_id: leixing_id,con_cateid:con_cateid,type:type},
+     //             dataType: 'json',
+     //             success: function(data){
+     //                 if(data.message.length > 0 && page <= data.pages && data.state ==1){
+     //                    for(var i = 0;i < data["message"].length;i++){
+     //                         html +='<li style="border-bottom: 1px solid #cccccc;">';
+     //                         html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'">';
+     //                         html +='<img src="'+data["message"][i]["thumb"]+'"/>';
+     //                         html +='</a>';
+     //                         html +='<span style="float:right;">消费返旺币<br/>&nbsp;&nbsp;&nbsp;<b style="font-size:0.62rem;color:red;">'+data["message"][i]["gold"]+'%</b></span>';
+     //                         html += '店名：' +data["message"][i]["names"]+  '<br/>';
+     //                         html += '距离：'+data["message"][i]["distance"]+' km <br />';
+     //                         html += '地址：' +data["message"][i]["address"]+ '<br />';
+     //                         html +='<span style="color:#ff5803;">'+data["message"][i]["business_status"]+' <span>';
+     //                         html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'" class="merchant-ul-a">>>更多详情</a>';
+     //                         html +='</li>';
+     //                     }
+     //                 // 如果没有数据
+     //                 }else{
+     //                     // 锁定
+     //                     me.lock();
+     //                     // 无数据
+     //                     me.noData();
+     //                 }
+     //                 // 为了测试，延迟1秒加载
+     //                 setTimeout(function(){
+     //                     // 插入数据到页面，放到最后面
+     //                     $('.merchant-ul').append(html);
+     //                     // 每次数据插入，必须重置
+     //                     me.resetload();
+     //                 },700);
+     //             },
+     //             error: function(xhr, type){
+     //                 alert('Ajax error!');
+     //                 // 即使加载出错，也得重置
+     //                 me.resetload();
+     //             }
+     //         });
+     //     }
+     // });
     
    // /////////////////////////
             },
@@ -133,64 +133,64 @@
 
 //     //上拉加载数据
    
-//     $(function(){
-//     // 页数
-//     var page = 0;
-//     // 每页展示个数
-//     var size = 15;
+    $(function(){
+    // 页数
+    var page = 0;
+    // 每页展示个数
+    var size = 15;
 
-//     // dropload
-//     $('.content').dropload({
-//         scrollArea : window,
-//         loadDownFn : function(me){
-//             page++;    //第一次page=1
-//             // 拼接HTML
-//              var html = '';
-//             $.ajax({
-//                 type: 'GET',
-//                 url: '{:url("dingwei/getData")}?page='+page+'&size='+size,
-//                 data:{jingdu: 115.870658, weidu: 28.695522, leixing_id: leixing_id,con_cateid:con_cateid,type:type},
-//                 dataType: 'json',
-//                 success: function(data){
-//                     console.log(data)
-//                     if(data.message.length > 0 && page <= data.pages && data.state ==1){
-//                        for(var i = 0;i < data["message"].length;i++){
-//                             html +='<li style="border-bottom: 1px solid #cccccc;">';
-//                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'">';
-//                             html +='<img src="'+data["message"][i]["thumb"]+'"/>';
-//                             html +='</a>';
-//                             html +='<span style="float:right;">消费返旺币<br/>&nbsp;&nbsp;&nbsp;<b style="font-size:0.62rem;color:red;">'+data["message"][i]["gold"]+'%</b></span>';
-//                             html += '店名：' +data["message"][i]["names"]+  '<br/>';
-//                             html += '距离：'+data["message"][i]["distance"]+' km <br />';
-//                             html += '地址：' +data["message"][i]["address"]+ '<br />';
-//                             html +='<span style="color:#ff5803;">'+data["message"][i]["business_status"]+' <span>';
-//                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'" class="merchant-ul-a">>>更多详情</a>';
-//                             html +='</li>';
-//                         }
-//                     // 如果没有数据
-//                     }else{
-//                         // 锁定
-//                         me.lock();
-//                         // 无数据
-//                         me.noData();
-//                     }
-//                     // 为了测试，延迟1秒加载
-//                     setTimeout(function(){
-//                         // 插入数据到页面，放到最后面
-//                         $('.merchant-ul').append(html);
-//                         // 每次数据插入，必须重置
-//                         me.resetload();
-//                     },700);
-//                 },
-//                 error: function(xhr, type){
-//                     alert('Ajax error!');
-//                     // 即使加载出错，也得重置
-//                     me.resetload();
-//                 }
-//             });
-//         }
-//     });
-// });
+    // dropload
+    $('.content').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+            page++;    //第一次page=1
+            // 拼接HTML
+             var html = '';
+            $.ajax({
+                type: 'GET',
+                url: '{:url("dingwei/getData")}?page='+page+'&size='+size,
+                data:{jingdu: 115.870658, weidu: 28.695522, leixing_id: leixing_id,con_cateid:con_cateid,type:type},
+                dataType: 'json',
+                success: function(data){
+                    console.log(data)
+                    if(data.message.length > 0 && page <= data.pages && data.state ==1){
+                       for(var i = 0;i < data["message"].length;i++){
+                            html +='<li style="border-bottom: 1px solid #cccccc;">';
+                            html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'">';
+                            html +='<img src="'+data["message"][i]["thumb"]+'"/>';
+                            html +='</a>';
+                            html +='<span style="float:right;">消费返旺币<br/>&nbsp;&nbsp;&nbsp;<b style="font-size:0.62rem;color:red;">'+data["message"][i]["gold"]+'%</b></span>';
+                            html += '店名：' +data["message"][i]["names"]+  '<br/>';
+                            html += '距离：'+data["message"][i]["distance"]+' km <br />';
+                            html += '地址：' +data["message"][i]["address"]+ '<br />';
+                            html +='<span style="color:#ff5803;">'+data["message"][i]["business_status"]+' <span>';
+                            html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'" class="merchant-ul-a">>>更多详情</a>';
+                            html +='</li>';
+                        }
+                    // 如果没有数据
+                    }else{
+                        // 锁定
+                        me.lock();
+                        // 无数据
+                        me.noData();
+                    }
+                    // 为了测试，延迟1秒加载
+                    setTimeout(function(){
+                        // 插入数据到页面，放到最后面
+                        $('.merchant-ul').append(html);
+                        // 每次数据插入，必须重置
+                        me.resetload();
+                    },700);
+                },
+                error: function(xhr, type){
+                    alert('Ajax error!');
+                    // 即使加载出错，也得重置
+                    me.resetload();
+                }
+            });
+        }
+    });
+});
 
  //上面为本地测试加载数据↑
  

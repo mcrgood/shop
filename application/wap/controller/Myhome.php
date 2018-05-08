@@ -83,8 +83,8 @@ class Myhome extends Controller
     public function index()
     {
         return view($this->style . 'Myhome/index');
-        $cus = db('customer')->where('openid', $this->myinfo['openid'])->find();
-        $shop = db('shop')->where('customer_id', $cus['id'])->find();
+        $cus = Db::table('ns_customer')->where('openid', $this->myinfo['openid'])->find();
+        $shop = Db::table('ns_shop')->where('customer_id', $cus['id'])->find();
         return $this->fetch('', [
             'userInfo' => $this->myinfo,
             'cus' => $cus,
@@ -95,7 +95,7 @@ class Myhome extends Controller
     public function login()
     {
         $city_id = '124';  //城市ID
-        $city_num = db('sys_city')->where('city_id',$city_id)->value('city_num');  //通过城市ID查询出区号
+        $city_num = Db::table('sys_city')->where('city_id',$city_id)->value('city_num');  //通过城市ID查询出区号
         $rand = getRandNum();    //获取随机12位数字
         if (request()->isAjax()) {
             $password = request()->post('password', '');
@@ -197,7 +197,7 @@ class Myhome extends Controller
        
         $this->check_login();
         $business_id = $this->business_id;
-        $result = db("ns_shop_message")->where('userid',$business_id)->find();
+        $result = Db::table("ns_shop_message")->where('userid',$business_id)->find();
         if ($result){
             $qrcode = $result['shop_qrcode'];
         }
@@ -265,7 +265,7 @@ class Myhome extends Controller
     public function withdrawal(){
         $this->check_login();
         $userid = $this->business_id;
-        $customerCode = db('ns_business_open')->where('userid',$userid)->value('customerCode');
+        $customerCode = Db::table('ns_business_open')->where('userid',$userid)->value('customerCode');
         $yhk_num = db('ns_shop_message')->where('userid',$userid)->value('yhk_num');
         $this->assign('customerCode',$customerCode);
         $this->assign('yhk_num',$yhk_num);
@@ -626,7 +626,7 @@ class Myhome extends Controller
         if(request()->isAjax()){ //历史消息搜索
             $search_input = input('post.search_input', '');
             $cate_name = $business->getCateName($this->business_id);
-            if($cate_name == '餐饮'){
+            if($cate_name == 'goods'){
                 $list = $business->getGoodsMsg($this->business_id, $search_input); //获取该商家餐饮店的预定消息
             }elseif($cate_name == '酒店'){
                 $list = $business->getHotelMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
@@ -644,7 +644,7 @@ class Myhome extends Controller
             return $info;
         }
         $cate_name = $business->getCateName($this->business_id);
-        if($cate_name == '餐饮'){
+        if($cate_name == 'goods'){
             $list = $business->getGoodsMsg($this->business_id); //获取该商家餐饮店的预定消息
         }elseif($cate_name == '酒店'){
             $list = $business->getHotelMsg($this->business_id);//获取该商家酒店的预定消息
@@ -665,7 +665,7 @@ class Myhome extends Controller
         $buss = new Business();
         if($type == 1){ //餐饮
             $row = $buss->getGoodsDetails($id);
-            $this->assign('row',$row);
+            $this->assign('row',$row['data']);
             return view($this->style . 'Myhome/dingdan_detail');
         }elseif($type == 2){ //酒店
             $row = $this->getHotelDetails($id);
@@ -1811,7 +1811,7 @@ class Myhome extends Controller
         //查询当前商户所拥有的包间(所有)
         $business = new Business();
         $cate_name = $business->getCateName($this->business_id);
-        if($cate_name == '餐饮'){
+        if($cate_name == 'goods'){
             $list = db("ns_shop_seat")->where("shopid",$this->business_id)->select();
         }elseif($cate_name == '酒店'){
             $list = db("ns_hotel_room")->where("business_id",$this->business_id)->order('room_id asc')->select();
