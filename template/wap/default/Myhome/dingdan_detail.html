@@ -180,7 +180,12 @@ ul li{list-style: none;}
     				<span>￥{$v.subTotal}</span>
     			</li>
     		{/volist}
-    			
+          <li>
+            <span>用餐餐具费</span>
+            <span>{$row.num}位</span>
+            <span>￥2</span>
+            <span>￥{$row.service_money}</span>
+          </li>
   		</ul>
   		</div>
   		<div class="pay_money">

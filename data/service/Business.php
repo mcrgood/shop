@@ -277,7 +277,7 @@ class Business extends BaseService{
     public function getGoodsDetails($id){
         $row = db('ns_goods_yuding')
         ->alias('a')
-        ->field('a.name,a.iphone,a.message,a.id,b.pay_type,b.pay_money,a.goodsname,a.goodsnum,a.goodsprice,a.sid,b.pay_time')
+        ->field('a.name,a.iphone,a.message,a.id,b.pay_type,b.pay_money,a.goodsname,a.goodsnum,a.goodsprice,a.sid,b.pay_time,a.num')
         ->join('ns_order_payment b','b.out_trade_no = a.sid','left')
         ->where('a.id',$id)->find();
         if($row){
@@ -292,6 +292,7 @@ class Business extends BaseService{
             $row['goodsname'] = explode("|", $row['goodsname']);
             $row['goodsnum'] = explode("|", $row['goodsnum']);
             $row['goodsprice'] = explode("|", $row['goodsprice']);
+            $row['service_money'] = $row['num']*2;
             foreach ($row['goodsprice'] as $k => $v) {
                 $row['goods'][$k] = array_column($row,$k);
             }

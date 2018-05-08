@@ -439,7 +439,6 @@ class MemberAccount extends BaseService
             case 5:
                 $type_name = '签到';
                 break;
-            
             case 6:
                 $type_name = '分享';
                 break;
@@ -453,22 +452,19 @@ class MemberAccount extends BaseService
                 $type_name = '提现退还';
                 break;
             case 10:
-                $type_name = '调整';
+                $type_name = '消费赠送';
+                break;
+            case 11:
+                $type_name = '获得返佣';
+                break;
+            case 12:
+                $type_name = '会员注册';
                 break;
             case 19:
                 $type_name = '点赞';
                 break;
             case 20:
                 $type_name = '评论';
-                break;
-            case 12:
-                $type_name = '会员注册';
-                break;
-            case 10:
-                $type_name = '消费赠送';
-                break;
-            case 11:
-                $type_name = '获得返佣';
                 break;
             default:
                 $type_name = '';

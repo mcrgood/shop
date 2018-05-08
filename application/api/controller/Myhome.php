@@ -78,8 +78,8 @@ class Myhome extends BaseController
         }else{
             $res = ['code'=>0, 'data' =>''];
         }
-        // dump($res);die;
-        return json($res);
+        dump($res);die;
+        // return json($res);
     }
 
     //测试
