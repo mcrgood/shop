@@ -459,26 +459,26 @@ class Myhome extends Controller
             $data['referee_phone'] = $referee_phone;
             $retval = db('ns_goods_login')->insert($data);  //商家注册成功
             if($retval){
-                // $row = db('sys_user')->where('user_tel',$mobile)->find();
-                // if(!$row){
-                //     $info['reg_time'] = time();
-                //     $info['user_name'] = $mobile;
-                //     $info['user_tel'] = $mobile;
-                //     $info['user_password'] = MD5($password);
-                //     $info['referee_phone'] = $referee_phone;
-                //     $info['is_member'] = 1;     // 1 是前台会员，必须添加，否则无法正常登录
-                //     $result = db('sys_user')->insertGetId($info);
-                //     if($result){
-                //         $aa['uid'] = $result;
-                //         $aa['point'] = 10;
-                //         $rr = db('ns_member_account')->insert($aa);
-                //         if($rr){
-                //             $HandleOrder = new HandleOrder();
-                //             $HandleOrder->bill_detail_record($result, 10, '注册赠送积分', 12);
+                $row = db('sys_user')->where('user_tel',$mobile)->find();
+                if(!$row){
+                    $info['reg_time'] = time();
+                    $info['user_name'] = $mobile;
+                    $info['user_tel'] = $mobile;
+                    $info['user_password'] = MD5($password);
+                    $info['referee_phone'] = $referee_phone;
+                    $info['is_member'] = 1;     // 1 是前台会员，必须添加，否则无法正常登录
+                    $result = db('sys_user')->insertGetId($info);
+                    if($result){
+                        $aa['uid'] = $result;
+                        $aa['point'] = 10;
+                        $rr = db('ns_member_account')->insert($aa);
+                        if($rr){
+                            $HandleOrder = new HandleOrder();
+                            $HandleOrder->bill_detail_record($result, 10, '注册赠送积分', 12);
                            
-                //         }
-                //     }
-                // }
+                        }
+                    }
+                }
                 return $info = [
                     'status' => 1,
                     'msg' => '操作成功'
@@ -570,7 +570,16 @@ class Myhome extends Controller
         //判断隐藏页面的显示
         $message = db("ns_shop_message")->where("userid",$userid)->value("leixing");
         $consumption = db("ns_consumption")->where("con_cateid",$message)->value("con_cate_name");
+        $alias_name = db("ns_consumption")->where("con_cateid",$message)->value("alias_name");
+        if($alias_name == 'goods'){ //餐饮
+            $shop_list = Db::table('ns_shop_seat')->where('shopid',$userid)->select();
+            $shop_type = $shop_list ? '1': '0' ;
+        }elseif($alias_name == 'hotel'){ //酒店
+            $shop_list = Db::table('ns_hotel_room')->where('business_id',$userid)->select();
+            $shop_type = $shop_list ? '1': '0' ;
+        }
         $this->assign("consumption",$consumption);
+        $this->assign("shop_type",$shop_type);
         return view($this->style . 'Myhome/yincan');
     }
 
@@ -645,7 +654,7 @@ class Myhome extends Controller
         }
         $cate_name = $business->getCateName($this->business_id);
         if($cate_name == 'goods'){
-            $list = $business->getGoodsMsg($this->business_id); //获取该商家餐饮店的预定消息
+            $list = $business->getGoodsMsg($this->business_id,'','new'); //获取该商家餐饮店的预定消息
         }elseif($cate_name == '酒店'){
             $list = $business->getHotelMsg($this->business_id);//获取该商家酒店的预定消息
         }elseif($cate_name == 'KTV'){
@@ -1811,13 +1820,16 @@ class Myhome extends Controller
         //查询当前商户所拥有的包间(所有)
         $business = new Business();
         $cate_name = $business->getCateName($this->business_id);
-        if($cate_name == 'goods'){
+        if($cate_name == 'goods'){ //餐饮
             $list = db("ns_shop_seat")->where("shopid",$this->business_id)->select();
-        }elseif($cate_name == '酒店'){
+            $type_name = '餐饮';
+        }elseif($cate_name == 'hotel'){ //酒店
             $list = db("ns_hotel_room")->where("business_id",$this->business_id)->order('room_id asc')->select();
+            $type_name = '酒店';
         }
         $this->assign("list",$list);
         $this->assign("cate_name",$cate_name);
+        $this->assign("type_name",$type_name);
         return view($this->style . 'Myhome/hotelPutup');
     }
     //Ajax获取包厢价格

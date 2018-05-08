@@ -91,7 +91,11 @@
 			<li class="lis">
 				<h2>店铺管理<span>></span></h2>
 				<ul>
+				{if $shop_type eq 1}
 					<li><a href="{:__URL('APP_MAIN/Myhome/hotelPutup')}">{$consumption}管理</a></li>
+				{else/}
+					<li><a href="javascript:;">暂无管理项目……</a></li>
+				{/if}
 				</ul>
 			</li>
 		</ul>

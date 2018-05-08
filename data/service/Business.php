@@ -100,14 +100,14 @@ class Business extends BaseService{
         return $info;
     }
 
-    public function message($business_id){
+    public function message($business_id, $type){
         $cate_name = $this->getCateName($business_id);
         if($cate_name == 'goods'){
-            $list = $this->getGoodsMsg($business_id, $search_input); //获取该商家餐饮店的预定消息
+            $list = $this->getGoodsMsg($business_id, $search_input, $type); //获取该商家餐饮店的预定消息
         }elseif($cate_name == 'hotel'){
-            $list = $this->getHotelMsg($business_id, $search_input);//获取该商家酒店的预定消息
+            $list = $this->getHotelMsg($business_id, $search_input, $type);//获取该商家酒店的预定消息
         }elseif($cate_name == 'KTV'){
-            $list = $this->getKtvMsg($business_id, $search_input);//获取该商家KTV的预定消息
+            $list = $this->getKtvMsg($business_id, $search_input, $type);//获取该商家KTV的预定消息
         }
 
         if($list){
@@ -121,16 +121,22 @@ class Business extends BaseService{
 
 
     //获取餐饮商家预定消息通知
-    public function getGoodsMsg($business_id, $search_input = ''){
+    public function getGoodsMsg($business_id, $search_input = '', $type = ''){
        
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
+        
         db("ns_goods_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.shop_id','left')->join('ns_order_payment p','p.out_trade_no = g.sid','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
-         if($search_input){
+        if($search_input){
             $map['a.name|a.iphone'] = ['like',"%".$search_input."%"];
         }
+        if($type == 'new'){
+            $startTime = strtotime(date('Y-m-d'))-86400*15;
+            $endTime = strtotime(date('Y-m-d'))+86400;
+            $map['a.add_time'] = ['between',[$startTime,$endTime]];
+        }
         $list = db('ns_goods_yuding')
-        ->field('m.names as shop_name,w.msg_status,a.id,a.sid,a.name,a.iphone,a.is_msg_send,a.num,a.add_time,a.time,a.uid,a.status,a.msg_time')
+        ->field('m.names as shop_name,w.msg_status,a.id,a.sid,a.name,a.iphone,a.is_msg_send,a.num,a.add_time,a.time,a.uid,a.status')
         ->alias('a')
         ->join('ns_shop_message m','a.shop_id=m.userid','left')
         ->join('ns_wwb w','w.userid = m.userid','left')
@@ -140,7 +146,11 @@ class Business extends BaseService{
         ->select();
         if($list){
             foreach($list as $k => $v){
-                $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
+                if(date('Y-m-d',$v['add_time'])==date('Y-m-d')){
+                    $list[$k]['add_time'] = '今天'.date('H:i',$v['add_time']);
+                }else{
+                    $list[$k]['add_time'] = date('Y-m-d',$v['add_time']);
+                }
                 $list[$k]['time'] = date('Y-m-d H:i',strtotime($v['time']));
             }
         }
@@ -292,7 +302,6 @@ class Business extends BaseService{
                 $row['goods'][$key]['goodsName'] =$val[0];
                 unset($row['goods'][$key][2],$row['goods'][$key][0],$row['goods'][$key][1]);
             }
-            $row['add_time'] = date('Y-m-d H:i',$row['add_time']);
             $row['pay_time'] = date('Y-m-d H:i',$row['pay_time']);
             unset($row['goodsname'],$row['goodsnum'],$row['goodsprice']);
             $info = ['code' => 1, 'data' =>$row];

@@ -63,8 +63,9 @@ class Myhome extends BaseController
     //商家预定消息列表API
     public function business_message(){
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
+        $type = isset($_POST['type'])? $_POST['type'] :'';
         $business = new Business();
-        $res = $business->message($business_id);
+        $res = $business->message($business_id, $type);
         return json($res);
     }
     //商家预定消息详情API
@@ -74,9 +75,11 @@ class Myhome extends BaseController
         $business = new Business();
         if($cate_name == 'goods'){
             $res = $business->getGoodsDetails($id);
+        }else{
+            $res = ['code'=>0, 'data' =>''];
         }
-        dump($res);die;
-        // return json($res);
+        // dump($res);die;
+        return json($res);
     }
 
     //测试
