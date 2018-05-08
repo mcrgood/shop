@@ -16,7 +16,7 @@
 namespace app\api\controller;
 
 
-
+use data\service\EasyPayment as EasyPayment;
 use data\service\Business as Business;
 
 /**
@@ -70,16 +70,48 @@ class Myhome extends BaseController
     }
     //商家预定消息详情API
     public function reserve_detail(){
-        $id = isset($_POST['id'])? $_POST['id'] :'';
-        $cate_name = isset($_POST['cate_name'])? $_POST['cate_name'] :'';
+        $id = isset($_POST['id'])? $_POST['id'] :''; //订单详情ID
+        $cate_name = isset($_POST['cate_name'])? $_POST['cate_name'] :''; //商家类型名称
         $business = new Business();
         if($cate_name == 'goods'){
             $res = $business->getGoodsDetails($id);
         }else{
             $res = ['code'=>0, 'data' =>''];
         }
-        dump($res);die;
-        // return json($res);
+        return json($res);
+    }
+    public function queryOrdersList(){
+        $customerCode = isset($_POST['customerCode'])? $_POST['customerCode'] :''; //商家客户号
+        $startTime = isset($_POST['startTime'])? $_POST['startTime'] :'';
+        $endTime = isset($_POST['endTime'])? $_POST['endTime'] :'';
+        $ordersType = isset($_POST['ordersType'])? $_POST['ordersType'] :'';
+        $payment = new EasyPayment();
+        $result = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime);
+        if($result['rspCode'] == 'M000000'){ //请求接口成功
+            $resXml = $payment->decrypt($result['p3DesXmlPara']);
+            $resArr = xmlToArray($resXml);
+            $orderDetails = $resArr['body']['orderDetails']['orderDetail'];
+            $totalCount = $resArr['body']['totalCount'];
+            if($totalCount > 0){
+                 $res = [
+                    'code' =>1,
+                    'totalCount' => $totalCount,
+                    'orderDetails' => $orderDetails
+                ];
+            }else{
+                $res = [
+                    'code' =>0,
+                    'msg' => '暂无相关交易信息!'
+                ];
+            }
+        }else{ //请求接口失败
+            $res = [
+                'code' =>0,
+                'msg' => $result['rspMsg']
+            ];
+        }
+        dump($res);
+        return json($res);
     }
 
     //测试

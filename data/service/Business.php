@@ -33,6 +33,7 @@ class Business extends BaseService{
                 $info = ['code' => 0, 'msg' =>'账号或密码有误！'];
             }else{
                 $row = Db::table('ns_shop_message')->where('userid',$userInfo['id'])->find();
+                $customerCode = Db::table('ns_business_open')->where('userid',$userInfo['id'])->value('customerCode');
                 if(!$row || $row['state'] != 1){
                     $info = ['code' => 0, 'msg' =>'此账号暂时未通过入驻审核,请耐心等待！'];
                 }else{
@@ -42,7 +43,8 @@ class Business extends BaseService{
                         'data' =>[
                             'user_name'=>$userInfo['iphone'],
                             'shop_qrcode'=>'http://mall.jxqkw8.com/'.$row['shop_qrcode'],
-                            'business_id' => $userInfo['id']
+                            'business_id' => $userInfo['id'],
+                            'customerCode' => $customerCode
                         ]
                     ];
                      
