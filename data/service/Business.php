@@ -24,7 +24,7 @@ class Business extends BaseService{
         parent::__construct();
     }
     //商家API验证登录
-    public function Login($user_name, $password){
+    public function login_user($user_name, $password){
         $userInfo = Db::table('ns_goods_login')->where('iphone',$user_name)->find();
         if(!$userInfo){
             $info = ['code' => 0, 'msg' =>'账号或密码有误！'];
@@ -34,6 +34,7 @@ class Business extends BaseService{
             }else{
                 $row = Db::table('ns_shop_message')->where('userid',$userInfo['id'])->find();
                 $customerCode = Db::table('ns_business_open')->where('userid',$userInfo['id'])->value('customerCode');
+                $type_name = Db::table('ns_consumption')->where('con_cateid',$row['leixing'])->value('con_cate_name');
                 if(!$row || $row['state'] != 1){
                     $info = ['code' => 0, 'msg' =>'此账号暂时未通过入驻审核,请耐心等待！'];
                 }else{
@@ -44,7 +45,8 @@ class Business extends BaseService{
                             'user_name'=>$userInfo['iphone'],
                             'shop_qrcode'=>'http://mall.jxqkw8.com/'.$row['shop_qrcode'],
                             'business_id' => $userInfo['id'],
-                            'customerCode' => $customerCode
+                            'customerCode' => $customerCode,
+                            'type_name' => $type_name
                         ]
                     ];
                      
@@ -116,6 +118,16 @@ class Business extends BaseService{
             $info = ['code'=>1,'cate_name'=>$cate_name, 'data'=>$list];
         }else{
             $info = ['code'=>0,'data'=>''];
+        }
+        return $info;
+    }
+
+    public function wwbSetUp($business_id){
+        $row = Db::table('ns_wwb')->field('ratio,gold,business_status,msg_status')->where('userid',$business_id)->find();
+        if($row){
+            $info = ['code'=>1, 'data' =>$row];
+        }else{
+            $info = ['code'=>0, 'data' =>''];
         }
         return $info;
     }
