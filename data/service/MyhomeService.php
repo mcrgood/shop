@@ -189,6 +189,7 @@ class MyhomeService extends BaseService{
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         return $result;
     }
+
     public function getKtvList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsKtvList();
@@ -196,8 +197,10 @@ class MyhomeService extends BaseService{
         foreach ($result['data'] as $k => $v) {
             $result['data'][$k]['time_scope'] = Db::table('ns_ktv_hours')->where('id', $v['time_scope'])->value('business_hours');
         }
+        return $result;
     }
-        public function getscenicList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
+
+    public function getscenicList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*')
     {
         $myhome = new NsScenicList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);

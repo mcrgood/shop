@@ -64,7 +64,6 @@
 			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text,"business_id":business_id
 		},
 		success : function(data) {
-			console.log(data)
 			var html = '';
 			if (data["data"].length > 0) {
 				for (var i = 0; i < data["data"].length; i++) {
