@@ -26,11 +26,10 @@ class AddKtvHoursModel extends BaseModel {
 
     public function add($postData){
         if($postData['id']){
-            $where['business_hours'] = trim($postData['business_hours']);
             $where['id'] = ['<>',$postData['id']];
-        }else{
-            $where['business_hours'] = trim($postData['business_hours']);
         }
+        $where['business_hours'] = trim($postData['business_hours']);
+        $where['business_id'] = $postData['business_id'];
         $row = $this->where($where)->find();
         if($row){
             return $info = [
