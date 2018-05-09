@@ -107,11 +107,13 @@ class Business extends BaseService{
     public function message($business_id, $type){
         $cate_name = $this->getCateName($business_id);
         if($cate_name == 'goods'){
-            $list = $this->getGoodsMsg($business_id, $search_input, $type); //获取该商家餐饮店的预定消息
+            $list = $this->getGoodsMsg($business_id, '', $type); //获取该商家餐饮店的预定消息
         }elseif($cate_name == 'hotel'){
-            $list = $this->getHotelMsg($business_id, $search_input, $type);//获取该商家酒店的预定消息
+            $list = $this->getHotelMsg($business_id, '', $type);//获取该商家酒店的预定消息
         }elseif($cate_name == 'KTV'){
-            $list = $this->getKtvMsg($business_id, $search_input, $type);//获取该商家KTV的预定消息
+            $list = $this->getKtvMsg($business_id, '', $type);//获取该商家KTV的预定消息
+        }elseif($cate_name == 'health'){
+            $list = $this->getHealthMsg($business_id, '', $type);//获取该商家养生的预定消息
         }
 
         if($list){
@@ -173,16 +175,21 @@ class Business extends BaseService{
 
 
     //获取酒店商家预定消息通知
-    public function getHotelMsg($business_id, $search_input = ''){
+    public function getHotelMsg($business_id, $search_input = '', $type = ''){
        
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
         db("ns_hotel_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
-         if($search_input){
+        if($search_input){
             $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
         }
+        if($type == 'new'){
+            $startTime = strtotime(date('Y-m-d'))-86400*15;
+            $endTime = strtotime(date('Y-m-d'))+86400;
+            $map['a.create_time'] = ['between',[$startTime,$endTime]];
+        }
         $list = db('ns_hotel_yuding')
-        ->field('a.*,m.names,w.msg_status')
+        ->field('a.id,a.startDate,m.names as shop_name,w.msg_status,a.name,a.phone,a.is_msg_send,a.create_time,a.room_num, a.status, a.uid')
         ->alias('a')
         ->join('ns_shop_message m','a.business_id=m.userid','left')
         ->join('ns_wwb w','w.userid = m.userid','left')
@@ -190,24 +197,25 @@ class Business extends BaseService{
         ->order('a.create_time desc')
         ->where($map)
         ->select();
-        if($list){
+         if($list){
             foreach($list as $k => $v){
-                $list[$k]['room_num'] = explode('|',$v['room_num']);
-                if(count($list[$k]['room_num']) > 1){
-                    foreach($list[$k]['room_num'] as $key =>$val){
-                        $list[$k]['total_num'] += $val;
-                    }
+                if(date('Y-m-d',$v['create_time']) == date('Y-m-d')){
+                    $list[$k]['create_time'] = '今天'.date('H:i',$v['create_time']);
                 }else{
-                    $list[$k]['total_num'] = implode('|',$list[$k]['room_num']);
+                    $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
                 }
-                $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+                $list[$k]['room_num'] = explode('|',$v['room_num']);
+                foreach($list[$k]['room_num'] as $key => $val){
+                    $list[$k]['total_num'] +=$val;
+                }
+                unset($list[$k]['room_num']);
             }
         }
-            return $list;  
+        return $list;  
     }
 
     //获取KTV商家预定消息通知
-    public function getKtvMsg($business_id, $search_input = ''){
+    public function getKtvMsg($business_id, $search_input = '', $type = ''){
         
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
@@ -215,8 +223,13 @@ class Business extends BaseService{
          if($search_input){
             $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
         }
+        if($type == 'new'){
+            $startTime = strtotime(date('Y-m-d'))-86400*15;
+            $endTime = strtotime(date('Y-m-d'))+86400;
+            $map['a.create_time'] = ['between',[$startTime,$endTime]];
+        }
         $list = db('ns_ktv_yuding')
-        ->field('a.*,m.names,w.msg_status')
+        ->field('a.id,a.uid,a.name,a.phone,a.is_msg_send,a.create_time,a.business_hours,a.dateTime, a.room_type, m.names as shop_name,w.msg_status')
         ->alias('a')
         ->join('ns_shop_message m','a.business_id=m.userid','left')
         ->join('ns_wwb w','w.userid = m.userid','left')
@@ -226,21 +239,30 @@ class Business extends BaseService{
         ->select();
         if($list){
             foreach($list as $k => $v){
-                $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+                if(date('Y-m-d',$v['create_time']) == date('Y-m-d')){
+                    $list[$k]['create_time'] = '今天'.date('H:i',$v['create_time']);
+                }else{
+                    $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+                }
             }
         }
         return $list;  
     }
 
-    public function getHealthMsg($business_id, $search_input = ''){
+    public function getHealthMsg($business_id, $search_input = '', $type = ''){
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
         db("ns_health_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
         if($search_input){
             $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
         }
+        if($type == 'new'){
+            $startTime = strtotime(date('Y-m-d'))-86400*15;
+            $endTime = strtotime(date('Y-m-d'))+86400;
+            $map['a.create_time'] = ['between',[$startTime,$endTime]];
+        }
         $list = db('ns_health_yuding')
-        ->field('a.*,m.names,w.msg_status')
+        ->field('a.id, a.startDate, a.uid,a.name,a.phone, a.create_time,a.is_msg_send,a.room_type,m.names as shop_name,w.msg_status')
         ->alias('a')
         ->join('ns_shop_message m','a.business_id=m.userid','left')
         ->join('ns_wwb w','w.userid = m.userid','left')
@@ -250,7 +272,11 @@ class Business extends BaseService{
         ->select();
         if($list){
             foreach($list as $k => $v){
-                $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+                if(date('Y-m-d',$v['create_time']) == date('Y-m-d')){
+                    $list[$k]['create_time'] = '今天'.date('H:i',$v['create_time']);
+                }else{
+                    $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+                }
             }
         }
         return $list;  
@@ -323,6 +349,109 @@ class Business extends BaseService{
         }else{
              $info = ['code' => 0, 'data' =>''];
         }
+        return $info;
+    }
+
+
+
+    //获取酒店订单详情
+    public function getHotelDetails($id){
+        $row = db('ns_hotel_yuding')
+        ->alias('a')
+        ->field('a.id,a.stayDays,a.name,a.phone,a.room_type,a.room_price,a.room_num,a.out_trade_no,b.pay_type,b.pay_money,b.pay_time')
+        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
+        ->where('a.id',$id)->find();
+        if($row){
+            switch ($row['pay_type']) {
+                case 1:
+                   $row['pay_type'] = '快捷支付';
+                    break;
+                case 5:
+                    $row['pay_type'] = '微信支付';
+                    break;
+            }
+            $row['room_type'] = explode("|", $row['room_type']);
+            $row['room_price'] = explode("|", $row['room_price']);
+            $row['room_num'] = explode("|", $row['room_num']);
+            foreach ($row['room_price'] as $k => $v) {
+                $row['room_list'][$k] = array_column($row,$k);
+            }
+            foreach($row['room_list'] as $key => $val){
+                $row['room_list'][$key]['room_type'] = $val[0];
+                $row['room_list'][$key]['room_price'] = $val[1];
+                $row['room_list'][$key]['room_num'] = $val[2];
+                unset($row['room_list'][$key][0], $row['room_list'][$key][1], $row['room_list'][$key][2]);
+            }
+            $row['pay_time'] = date('Y-m-d H:i',$row['pay_time']);
+            unset($row['room_type'], $row['room_price'], $row['room_num']);
+            $info = ['code' => 1, 'data' =>$row];
+        }else{
+             $info = ['code' => 0, 'data' =>''];
+        }
+
+        return $info;
+    }
+
+    //获取KTV订单详情
+    public function getKtvDetails($id){
+        $row = db('ns_ktv_yuding')
+        ->alias('a')
+        ->field('a.id, a.dateTime, a.business_hours, a.room_price, b.pay_time,a.room_type, a.name, a.phone, a.out_trade_no ,b.pay_type, b.pay_money')
+        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
+        ->where('a.id',$id)->find();
+        if($row){
+             switch ($row['pay_type']) {
+                case 1:
+                   $row['pay_type'] = '快捷支付';
+                    break;
+                case 5:
+                    $row['pay_type'] = '微信支付';
+                    break;
+            }
+            $row['pay_time'] = date('Y-m-d H:i',$row['pay_time']);
+            $info = ['code' => 1, 'data' =>$row];
+        }else{
+            $info = ['code' => 0, 'data' =>''];
+        }
+       
+        return $info;
+    }
+
+    //获取养生订单详情
+    public function getHealthDetails($id){
+        $row = db('ns_health_yuding')
+        ->alias('a')
+        ->field('a.id,b.pay_type,b.pay_money, b.pay_time, a.name, a.phone, a.out_trade_no, a.room_type, a.room_price, a.room_num')
+        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
+        ->where('a.id',$id)->find();
+        if($row){
+             switch ($row['pay_type']) {
+                case 1:
+                   $row['pay_type'] = '快捷支付';
+                    break;
+                case 5:
+                    $row['pay_type'] = '微信支付';
+                    break;
+            }
+            $row['room_type'] = explode("|", $row['room_type']);
+            $row['room_price'] = explode("|", $row['room_price']);
+            $row['room_num'] = explode("|", $row['room_num']);
+            foreach ($row['room_price'] as $k => $v){
+                $row['room_list'][$k] = array_column($row,$k);
+            }
+            foreach($row['room_list'] as $key =>$val){
+                $row['room_list'][$key]['room_type'] = $val[0];
+                $row['room_list'][$key]['room_price'] = $val[1];
+                $row['room_list'][$key]['room_num'] = $val[2];
+                unset($row['room_list'][$key][0], $row['room_list'][$key][1], $row['room_list'][$key][2]);
+            }
+            $row['pay_time'] = date('Y-m-d H:i',$row['pay_time']);
+            unset($row['room_type'],$row['room_price'], $row['room_num']);
+            $info = ['code' => 1, 'data' =>$row];
+        }else{
+            $info = ['code' => 0, 'data' =>''];
+        }
+       
         return $info;
     }
 

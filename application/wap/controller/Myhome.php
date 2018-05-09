@@ -637,11 +637,11 @@ class Myhome extends Controller
             $cate_name = $business->getCateName($this->business_id);
             if($cate_name == 'goods'){
                 $list = $business->getGoodsMsg($this->business_id, $search_input); //获取该商家餐饮店的预定消息
-            }elseif($cate_name == '酒店'){
+            }elseif($cate_name == 'hotel'){
                 $list = $business->getHotelMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
             }elseif($cate_name == 'KTV'){
                 $list = $business->getKtvMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
-            }elseif($cate_name == '养生'){
+            }elseif($cate_name == 'health'){
                 $list = $business->getHealthMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
             }
 
@@ -655,14 +655,13 @@ class Myhome extends Controller
         $cate_name = $business->getCateName($this->business_id);
         if($cate_name == 'goods'){
             $list = $business->getGoodsMsg($this->business_id,'','new'); //获取该商家餐饮店的预定消息
-        }elseif($cate_name == '酒店'){
-            $list = $business->getHotelMsg($this->business_id);//获取该商家酒店的预定消息
+        }elseif($cate_name == 'hotel'){
+            $list = $business->getHotelMsg($this->business_id, '', 'new');//获取该商家酒店的预定消息
         }elseif($cate_name == 'KTV'){
-            $list = $business->getKtvMsg($this->business_id);//获取该商家酒店的预定消息
-        }elseif($cate_name == '养生'){
-            $list = $business->getHealthMsg($this->business_id);//获取该商家酒店的预定消息
+            $list = $business->getKtvMsg($this->business_id, '', 'new');//获取该商家酒店的预定消息
+        }elseif($cate_name == 'health'){
+            $list = $business->getHealthMsg($this->business_id, '', 'new');//获取该商家酒店的预定消息
         }
-        // dump($list);die;
         $this->assign('list',$list);  
         $this->assign('cate_name',$cate_name);  
         return view($this->style . 'Myhome/message');
@@ -677,96 +676,22 @@ class Myhome extends Controller
             $this->assign('row',$row['data']);
             return view($this->style . 'Myhome/dingdan_detail');
         }elseif($type == 2){ //酒店
-            $row = $this->getHotelDetails($id);
-            $this->assign('row',$row);
+            $row = $buss->getHotelDetails($id);
+            $this->assign('row',$row['data']);
             return view($this->style . 'Myhome/dingdan_hotel');
         }elseif($type == 3){ //KTV
-            $row = $this->getKtvDetails($id);
-            $this->assign('row',$row);
+            $row = $buss->getKtvDetails($id);
+            $this->assign('row',$row['data']);
             return view($this->style . 'Myhome/dingdan_ktv');
         }elseif($type == 4){ //养生
-            $row = $this->getHealthDetails($id);
-            $this->assign('row',$row);
+            $row = $buss->getHealthDetails($id);
+            $this->assign('row',$row['data']);
             return view($this->style . 'Myhome/dingdan_health');
         }
     }
 
 
 
-
-    //获取酒店订单详情
-    public function getHotelDetails($id){
-        $row = db('ns_hotel_yuding')
-        ->alias('a')
-        ->field('a.*,b.pay_type')
-        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
-        ->where('a.id',$id)->find();
-        switch ($row['pay_type']) {
-            case 1:
-               $row['pay_type'] = '快捷支付';
-                break;
-            case 5:
-                $row['pay_type'] = '微信支付';
-                break;
-        }
-        $row['room_type'] = explode("|", $row['room_type']);
-        $row['room_price'] = explode("|", $row['room_price']);
-        $row['room_num'] = explode("|", $row['room_num']);
-        foreach ($row['room_price'] as $k => $v) {
-            $row['room_list'][$k] = array_column($row,$k);
-        }
-        foreach($row['room_list'] as $k => $v){
-            $prices = $v[1]*$v[2];
-            $row['totalPrice'] += $prices;
-        }
-        $row['create_time'] = date('Y-m-d H:i',$row['create_time']);
-        return $row;
-    }
-
-    //获取KTV订单详情
-    public function getKtvDetails($id){
-        $row = db('ns_ktv_yuding')
-        ->alias('a')
-        ->field('a.*,b.pay_type')
-        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
-        ->where('a.id',$id)->find();
-        switch ($row['pay_type']) {
-            case 1:
-               $row['pay_type'] = '快捷支付';
-                break;
-            case 5:
-                $row['pay_type'] = '微信支付';
-                break;
-        }
-        $row['create_time'] = date('Y-m-d H:i',$row['create_time']);
-        return $row;
-    }
-
-    //获取养生订单详情
-    public function getHealthDetails($id){
-        $row = db('ns_health_yuding')
-        ->alias('a')
-        ->field('a.*,b.pay_type,b.pay_money')
-        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
-        ->where('a.id',$id)->find();
-        switch ($row['pay_type']) {
-            case 1:
-               $row['pay_type'] = '快捷支付';
-                break;
-            case 5:
-                $row['pay_type'] = '微信支付';
-                break;
-        }
-        $row['room_type'] = explode("|", $row['room_type']);
-        $row['room_price'] = explode("|", $row['room_price']);
-        $row['room_num'] = explode("|", $row['room_num']);
-        foreach ($row['room_price'] as $k => $v){
-            $row['room_list'][$k] = array_column($row,$k);
-        }
-        unset($row['room_type'],$row['room_price'], $row['room_num']);
-        $row['create_time'] = date('Y-m-d H:i',$row['create_time']);
-        return $row;
-    }
     
 
     //预定酒店页面

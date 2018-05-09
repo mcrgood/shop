@@ -91,14 +91,14 @@ ul li{list-style: none;}
 .pay_money span{
 	display: block;
     float: left;
-    width: 30%;
+    width: 40%;
     text-align: center;
     height: 50px;
 	line-height: 50px;
 }
 .pay_money span:nth-child(2){
 	float: left;
-	width: 70%;
+	width: 60%;
   color: #ff6b6b;
 }
 
@@ -192,9 +192,9 @@ ul li{list-style: none;}
           </li>
         {volist name="row['room_list']" id="v"}
     			<li class="room_list">
-    				<span>{$v.0}</span>
-            <span>￥{$v.1}</span>
-    				<span>{$v.2}间</span>
+    				<span>{$v.room_type}</span>
+            <span>￥{$v.room_price}</span>
+    				<span>{$v.room_num}间</span>
     				<span>{$row.stayDays}天</span>
     			</li>
     		{/volist}
@@ -202,8 +202,8 @@ ul li{list-style: none;}
   		</ul>
   		</div>
   		<div class="pay_money">
-  			<span>总计:{$row.totalPrice}</span>
-  			<span>实付:{$row.totalPrice}</span>
+  			<span>总计:{$row.pay_money}</span>
+  			<span>实付:{$row.pay_money}</span>
   		</div>
   		<div class="pay_detial">
   			<ul>
@@ -213,7 +213,7 @@ ul li{list-style: none;}
   				</li>
   				<li>
   					<span>下单时间</span>
-  					<span>{$row.create_time}</span>
+  					<span>{$row.pay_time}</span>
   				</li>
   				<li>
   					<span>支付方式</span>

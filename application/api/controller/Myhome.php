@@ -28,6 +28,8 @@ use data\service\Business as Business;
 class Myhome extends BaseController
 {
 
+    protected $prefix = 'kww_mall';
+
     public function __construct()
     {
         parent::__construct();
@@ -39,7 +41,8 @@ class Myhome extends BaseController
         $user_name = isset($_POST['user_name'])? $_POST['user_name'] :'';
         $password = isset($_POST['password'])? $_POST['password']:'';
         $signature = isset($_POST['signature'])? $_POST['signature']:'';
-        if($user_name == base64_decode($signature)){
+        $sign = $this->prefix.$user_name;
+        if($sign == base64_decode($signature)){
             $business = new Business();
             $res = $business->login_user($user_name, $password);
         }else{
@@ -57,7 +60,8 @@ class Myhome extends BaseController
     public function business_info(){
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
         $signature = isset($_POST['signature'])? $_POST['signature'] :'';
-        if($business_id == base64_decode($signature)){
+        $sign = $this->prefix.$business_id;
+        if($sign == base64_decode($signature)){
             $business = new Business();
             $res = $business->yingshou($business_id);
         }else{
@@ -73,7 +77,8 @@ class Myhome extends BaseController
     public function business_member(){
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
         $signature = isset($_POST['signature'])? $_POST['signature'] :'';
-        if($business_id == base64_decode($signature)){
+        $sign = $this->prefix.$business_id;
+        if($sign == base64_decode($signature)){
             $business = new Business();
             $res = $business->member($business_id);
         }else{
@@ -89,7 +94,8 @@ class Myhome extends BaseController
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
         $type = isset($_POST['type'])? $_POST['type'] :'';
         $signature = isset($_POST['signature'])? $_POST['signature'] :'';
-        if($business_id == base64_decode($signature)){
+        $sign = $this->prefix.$business_id;
+        if($sign == base64_decode($signature)){
             $business = new Business();
             $res = $business->message($business_id, $type);
         }else{
@@ -98,7 +104,6 @@ class Myhome extends BaseController
                 'msg' =>'签名错误，禁止访问！'
             ];
         }
-        
         return json($res);
     }
     //商家预定消息详情API
@@ -106,11 +111,19 @@ class Myhome extends BaseController
         $id = isset($_POST['id'])? $_POST['id'] :''; //订单详情ID
         $cate_name = isset($_POST['cate_name'])? $_POST['cate_name'] :''; //商家类型名称
         $signature = isset($_POST['signature'])? $_POST['signature'] :''; //签名
-        if($id == base64_decode($signature)){
+        $sign = $this->prefix.$id;
+        if($sign == base64_decode($signature)){
              $business = new Business();
             if($cate_name == 'goods'){
                 $res = $business->getGoodsDetails($id);
-            }else{
+            }elseif($cate_name == 'hotel'){
+                $res = $business->getHotelDetails($id);
+            }elseif($cate_name == 'KTV'){
+                $res = $business->getKtvDetails($id);
+            }elseif($cate_name == 'health'){
+                $res = $business->getHealthDetails($id);
+            }
+            else{
                 $res = ['code'=>0, 'data' =>''];
             }
         }else{
@@ -119,7 +132,6 @@ class Myhome extends BaseController
                 'msg' =>'签名错误，禁止访问！'
             ];
         }
-       
         return json($res);
     }
     //商家交易信息列表API
@@ -129,7 +141,8 @@ class Myhome extends BaseController
         $endTime = isset($_POST['endTime'])? $_POST['endTime'] :'';
         $ordersType = isset($_POST['ordersType'])? $_POST['ordersType'] :'';
         $signature = isset($_POST['signature'])? $_POST['signature'] :'';
-        if($customerCode == base64_decode($signature)){
+        $sign = $this->prefix.$customerCode;
+        if($sign == base64_decode($signature)){
             $payment = new EasyPayment();
             $result = $payment->queryOrdersList($customerCode, $ordersType, $startTime, $endTime);
             if($result['rspCode'] == 'M000000'){ //请求接口成功
@@ -169,7 +182,8 @@ class Myhome extends BaseController
     public function wwbSet(){
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
         $signature = isset($_POST['signature'])? $_POST['signature'] :'';
-        if($business_id == base64_decode($signature)){
+        $sign = $this->prefix.$business_id;
+        if($sign == base64_decode($signature)){
             $business = new Business();
             $res = $business->wwbSetUp($business_id);
         }else{
