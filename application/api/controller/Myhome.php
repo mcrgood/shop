@@ -10,7 +10,7 @@
  * 任何企业和个人不允许对程序代码以任何形式任何目的再发布。
  * =========================================================
  * @author : niuteam
- * @date : 2015.1.17
+ * @date : 客旺旺商家API 2018-05-02  屈华俊
  * @version : v1.0.0.0
  */
 namespace app\api\controller;
@@ -123,9 +123,6 @@ class Myhome extends BaseController
             }elseif($cate_name == 'health'){
                 $res = $business->getHealthDetails($id);
             }
-            else{
-                $res = ['code'=>0, 'data' =>''];
-            }
         }else{
              $res = [
                 'code' =>0,
@@ -158,8 +155,9 @@ class Myhome extends BaseController
                     ];
                 }else{
                     $res = [
-                        'code' =>0,
-                        'msg' => '暂无相关交易信息!'
+                        'code' =>1,
+                        'totalCount' => 0,
+                        'orderDetails' => []
                     ];
                 }
             }else{ //请求接口失败

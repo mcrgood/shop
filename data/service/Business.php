@@ -96,8 +96,8 @@ class Business extends BaseService{
             ];
         }else{
             $info = [
-                'code' =>0,
-                'data' =>'',
+                'code' =>1,
+                'data' =>[],
                 'count' =>$count
             ];
         }
@@ -119,7 +119,7 @@ class Business extends BaseService{
         if($list){
             $info = ['code'=>1,'cate_name'=>$cate_name, 'data'=>$list];
         }else{
-            $info = ['code'=>0,'data'=>''];
+            $info = ['code'=>1,'cate_name'=>$cate_name, 'data'=>[]];
         }
         return $info;
     }
@@ -129,7 +129,7 @@ class Business extends BaseService{
         if($row){
             $info = ['code'=>1, 'data' =>$row];
         }else{
-            $info = ['code'=>0, 'data' =>''];
+            $info = ['code'=>1, 'data' =>[]];
         }
         return $info;
     }
@@ -347,7 +347,7 @@ class Business extends BaseService{
             unset($row['goodsname'],$row['goodsnum'],$row['goodsprice']);
             $info = ['code' => 1, 'data' =>$row];
         }else{
-             $info = ['code' => 0, 'data' =>''];
+             $info = ['code' => 1, 'data' =>[]];
         }
         return $info;
     }
@@ -386,7 +386,7 @@ class Business extends BaseService{
             unset($row['room_type'], $row['room_price'], $row['room_num']);
             $info = ['code' => 1, 'data' =>$row];
         }else{
-             $info = ['code' => 0, 'data' =>''];
+             $info = ['code' => 1, 'data' =>[]];
         }
 
         return $info;
@@ -411,7 +411,7 @@ class Business extends BaseService{
             $row['pay_time'] = date('Y-m-d H:i',$row['pay_time']);
             $info = ['code' => 1, 'data' =>$row];
         }else{
-            $info = ['code' => 0, 'data' =>''];
+            $info = ['code' => 1, 'data' =>[]];
         }
        
         return $info;
@@ -449,7 +449,7 @@ class Business extends BaseService{
             unset($row['room_type'],$row['room_price'], $row['room_num']);
             $info = ['code' => 1, 'data' =>$row];
         }else{
-            $info = ['code' => 0, 'data' =>''];
+            $info = ['code' => 1, 'data' =>[]];
         }
        
         return $info;
