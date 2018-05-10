@@ -123,13 +123,47 @@ class Business extends BaseService{
         }
         return $info;
     }
-
+    //旺旺币设置基本信息
     public function wwbSetUp($business_id){
         $row = Db::table('ns_wwb')->field('ratio,gold,business_status,msg_status')->where('userid',$business_id)->find();
         if($row){
             $info = ['code'=>1, 'data' =>$row];
         }else{
             $info = ['code'=>1, 'data' =>[]];
+        }
+        return $info;
+    }
+    //旺旺币设置修改
+    public function wwbSetModify($business_id, $msg_status, $business_status, $ratio, $gold){
+       $data['msg_status'] = $msg_status;
+       $data['business_status'] = $business_status;
+       $data['ratio'] = $ratio;
+       $data['gold'] = $gold;
+       $res = Db::table('ns_wwb')->where('userid',$business_id)->update($data);
+       if($res){
+            $info = ['code'=>1, 'msg'=> '修改成功！'];
+       }else{
+            $info = ['code'=>0, 'msg'=> '修改失败！'];
+       }
+       return $info;
+    }
+    //商家包厢信息
+    public function room_info($business_id){
+        $cate_name = $this->getCateName($business_id);
+        if($cate_name == 'goods'){
+            $list = Db::table("ns_shop_seat")->field('seatid,seatstatus,seatname')->where("shopid",$business_id)->select();
+        }elseif($cate_name == 'hotel'){
+            $list = Db::table("ns_hotel_room")->field('room_id,room_type,room_status')->where("business_id",$business_id)->order('room_id asc')->select();
+        }elseif($cate_name == 'KTV'){
+            $list = Db::table("ns_ktv_room")->field('ktv_id,room_type,room_status')->where("business_id",$business_id)->select();
+        }elseif($cate_name == 'health'){
+            $list = Db::table("ns_health_room")->field('health_id,room_type,room_status')->where("business_id",$business_id)->select();
+        }
+
+        if($list){
+            $info = ['code'=>1, 'cate_name' =>$cate_name, 'data' =>$list];
+        }else{
+            $info = ['code'=>1, 'cate_name' =>$cate_name, 'data' =>[]];
         }
         return $info;
     }
@@ -455,6 +489,161 @@ class Business extends BaseService{
         return $info;
     }
 
+    public static function changeKtv($ktv_id){
+        $room_status = Db::table('ns_ktv_room')->where('ktv_id',$ktv_id)->value('room_status');
+        if($room_status == 0){
+            $res = Db::table('ns_ktv_room')->where('ktv_id',$ktv_id)->update(['room_status'=>1]);
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' =>'状态更变成功！',
+                    'room_status' =>'已定满',
+                    'color' =>'red'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }else{
+            $res = Db::table('ns_ktv_room')->where('ktv_id',$ktv_id)->update(['room_status'=>0]);
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' =>'状态更变成功！',
+                    'room_status' =>'可预定',
+                    'color' =>'#5FB878'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }
+        return $info;
+    }
+    public static function changeSeat($seatid){
+        $row = db("ns_shop_seat")->where("seatid",$seatid)->value("seatstatus");
+        if($row==1){
+            $data['seatstatus'] = 0;
+            $sy = db("ns_shop_seat")->where("seatid",$seatid)->update($data);
+            if($sy){
+                $info = [
+                    "code" => 1,
+                    "msg" => "状态更变成功！"
+                ];
+            }else{
+                $info = [
+                    "code" => 0,
+                    "msg" => "系统错误，请重试"
+                ];
+            }
+        }else{
+           $data['seatstatus'] = 1;
+            $ty = db("ns_shop_seat")->where("seatid",$seatid)->update($data);
+            if($ty){
+                $info = [
+                    "code" => 1,
+                    "msg" => "状态更变成功！"
+                ];
+            }else{
+                $info = [
+                    "code" => 0,
+                    "msg" => "系统错误，请重试"
+                ];
+            } 
+        }
+        return $info;
+    }
+
+
+    public static function changeHealth($health_id){
+        $room_status = Db::table('ns_health_room')->where('health_id',$health_id)->value('room_status');
+        if($room_status == 0){
+            $res = Db::table('ns_health_room')->where('health_id',$health_id)->update(['room_status'=>1]);
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' =>'状态更变成功！',
+                    'room_status' =>'已定满',
+                    'color' =>'red'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }else{
+            $res = Db::table('ns_health_room')->where('health_id',$health_id)->update(['room_status'=>0]);
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' =>'状态更变成功！',
+                    'room_status' =>'可预定',
+                    'color' =>'#5FB878'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }
+        return $info;
+    }
+    //
+    public static function changeHotel($room_id){
+        $room_status = db('ns_hotel_room')->where('room_id',$room_id)->value('room_status');
+        if($room_status == 0){ //
+            $res = db('ns_hotel_room')->where('room_id',$room_id)->update(['room_status' => 1]); //修改为已住满
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' => '状态更变成功！',
+                    'room_status' => '已住满',
+                    'color' => 'red'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }else{
+            $res = db('ns_hotel_room')->where('room_id',$room_id)->update(['room_status' => 0]);//修改为可预定
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' => '状态更变成功！',
+                    'room_status' => '可预定',
+                    'color' =>'#5FB878'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }
+        return $info;
+    }
+
+    //商家店铺管理（商家手动更改包厢状态API）
+    public function changeStatus($id, $cate_name){
+        if($cate_name == 'goods'){
+            $res = $this->changeSeat($id);
+        }elseif($cate_name == 'hotel'){
+            $res = $this->changeHotel($id);
+        }elseif($cate_name == 'KTV'){
+            $res = $this->changeKtv($id);
+        }elseif($cate_name == 'health'){
+            $res = $this->changeHealth($id);
+        }
+        return $res;
+    }
 
 
 

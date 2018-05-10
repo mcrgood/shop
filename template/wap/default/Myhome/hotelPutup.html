@@ -108,6 +108,32 @@ body{
             </div> 
           </li>
         {/volist}
+      {elseif $cate_name eq KTV/}
+        {volist name="list" id="v"}
+         <li class="lis">
+            <span class="jiudian">{$v.room_type}</span>
+              <div class="wrap">
+                {if $v.room_status eq 0}
+                    <button class="btn" value="{$v.ktv_id}" style="background:#5FB878;"onclick="changeKtv(this)">可预定</button>
+                {else if}
+                    <button class="btn" value="{$v.ktv_id}" style="background:red;" onclick="changeKtv(this)">已定满</button>
+                {/if}  
+              </div> 
+          </li>
+        {/volist}
+      {elseif $cate_name eq health/}
+         {volist name="list" id="v"}
+           <li class="lis">
+              <span class="jiudian">{$v.room_type}</span>
+                <div class="wrap">
+                  {if $v.room_status eq 0}
+                      <button class="btn" value="{$v.health_id}" style="background:#5FB878;"onclick="changeHealth(this)">可预定</button>
+                  {else if}
+                      <button class="btn" value="{$v.health_id}" style="background:red;" onclick="changeHealth(this)">已定满</button>
+                  {/if}  
+                </div> 
+            </li>
+         {/volist}
       {/if}
   		
   		</ul>
@@ -128,7 +154,7 @@ body{
         };
         var url = "{:url('Myhome/hotelor')}";
         $.post(url,data,function(res){
-          if(res.status==1){
+          if(res.code==1){
             layer.msg(res.msg, {time: 1200});
           }else{
             layer.msg(res.msg, {time: 1200});
@@ -143,7 +169,41 @@ body{
         };
         var url = "{:url('Myhome/changeRoomStatus')}";
         $.post(url,data,function(res){
-            if(res.status == 1){
+            if(res.code == 1){
+              layer.msg(res.msg, {time: 1200});
+              $(obj).text(res.room_status);
+              $(obj).css('background',res.color);
+            }else{
+              layer.msg(res.msg, {time: 1200});
+            }
+        },'json')
+      }
+
+      function changeKtv(obj){ //KTV更变包厢状态
+         var ktv_id = $(obj).val();
+         var data = {
+            "ktv_id":ktv_id
+         };
+        var url = "{:url('Myhome/changeKtvStatus')}";
+         $.post(url,data,function(res){
+            if(res.code == 1){
+              layer.msg(res.msg, {time: 1200});
+              $(obj).text(res.room_status);
+              $(obj).css('background',res.color);
+            }else{
+              layer.msg(res.msg, {time: 1200});
+            }
+        },'json')
+      }
+
+      function changeHealth(obj){
+         var health_id = $(obj).val();
+         var data = {
+            "health_id":health_id
+         };
+        var url = "{:url('Myhome/changeHealthStatus')}";
+          $.post(url,data,function(res){
+            if(res.code == 1){
               layer.msg(res.msg, {time: 1200});
               $(obj).text(res.room_status);
               $(obj).css('background',res.color);

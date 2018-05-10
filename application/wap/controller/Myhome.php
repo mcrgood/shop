@@ -568,14 +568,20 @@ class Myhome extends Controller
         $this->assign('beizhu', $beizhu);
         $this->assign('phone',$this->mobile);
         //判断隐藏页面的显示
-        $message = db("ns_shop_message")->where("userid",$userid)->value("leixing");
-        $consumption = db("ns_consumption")->where("con_cateid",$message)->value("con_cate_name");
-        $alias_name = db("ns_consumption")->where("con_cateid",$message)->value("alias_name");
+        $message = Db::table("ns_shop_message")->where("userid",$userid)->value("leixing");
+        $consumption = Db::table("ns_consumption")->where("con_cateid",$message)->value("con_cate_name");
+        $alias_name = Db::table("ns_consumption")->where("con_cateid",$message)->value("alias_name");
         if($alias_name == 'goods'){ //餐饮
             $shop_list = Db::table('ns_shop_seat')->where('shopid',$userid)->select();
             $shop_type = $shop_list ? '1': '0' ;
         }elseif($alias_name == 'hotel'){ //酒店
             $shop_list = Db::table('ns_hotel_room')->where('business_id',$userid)->select();
+            $shop_type = $shop_list ? '1': '0' ;
+        }elseif($alias_name == 'KTV'){
+            $shop_list = Db::table('ns_ktv_room')->where('business_id',$userid)->select();
+            $shop_type = $shop_list ? '1': '0' ;
+        }elseif($alias_name == 'health'){
+            $shop_list = Db::table('ns_health_room')->where('business_id',$userid)->select();
             $shop_type = $shop_list ? '1': '0' ;
         }
         $this->assign("consumption",$consumption);
@@ -1746,11 +1752,17 @@ class Myhome extends Controller
         $business = new Business();
         $cate_name = $business->getCateName($this->business_id);
         if($cate_name == 'goods'){ //餐饮
-            $list = db("ns_shop_seat")->where("shopid",$this->business_id)->select();
+            $list = Db::table("ns_shop_seat")->where("shopid",$this->business_id)->select();
             $type_name = '餐饮';
         }elseif($cate_name == 'hotel'){ //酒店
-            $list = db("ns_hotel_room")->where("business_id",$this->business_id)->order('room_id asc')->select();
+            $list = Db::table("ns_hotel_room")->where("business_id",$this->business_id)->order('room_id asc')->select();
             $type_name = '酒店';
+        }elseif($cate_name == 'KTV'){
+            $list = Db::table("ns_ktv_room")->where("business_id",$this->business_id)->select();
+            $type_name = 'KTV';
+        }elseif($cate_name == 'health'){
+            $list = Db::table("ns_health_room")->where("business_id",$this->business_id)->select();
+            $type_name = '养生';
         }
         $this->assign("list",$list);
         $this->assign("cate_name",$cate_name);
@@ -1858,79 +1870,34 @@ class Myhome extends Controller
     public function changeRoomStatus(){
         if(request()->isAjax()){
             $room_id = input('post.room_id');
-            $room_status = db('ns_hotel_room')->where('room_id',$room_id)->value('room_status');
-            if($room_status == 0){ //
-                $res = db('ns_hotel_room')->where('room_id',$room_id)->update(['room_status' => 1]); //修改为已住满
-                if($res){
-                    $info = [
-                        'status' =>1,
-                        'msg' => '房间状态更变成功！',
-                        'room_status' => '已住满',
-                        'color' => 'red'
-                    ];
-                }else{
-                    $info = [
-                        'status' =>0,
-                        'msg' =>'修改失败，请刷新重试！'
-                    ];
-                }
-            }else{
-                $res = db('ns_hotel_room')->where('room_id',$room_id)->update(['room_status' => 0]);//修改为可预定
-                if($res){
-                    $info = [
-                        'status' =>1,
-                        'msg' => '房间状态更变成功！',
-                        'room_status' => '可预定',
-                        'color' =>'#5FB878'
-                    ];
-                }else{
-                    $info = [
-                        'status' =>0,
-                        'msg' =>'修改失败，请刷新重试！'
-                    ];
-                }
-            }
-            return $info;
+            $res = Business::changeHotel($room_id);
+            return json($res);
+        }
+    }
+    //商家手动开关改变KTV房间状态
+    public function changeKtvStatus(){
+        if(request()->isAjax()){
+            $ktv_id = input('post.ktv_id');
+            $res = Business::changeKtv($ktv_id);
+            return json($res);
         }
     }
 
-
+    //商家手动开关改变养生房间状态
+    public function changeHealthStatus(){
+        if(request()->isAjax()){
+            $health_id = input('post.health_id');
+            $res = Business::changeHealth($health_id);
+            return json($res);
+        }
+    }
 
     //商家后台控制
     public function hotelor(){
         if(request()->isAjax()){
             $seatid = input("param.seatid");
-            $row = db("ns_shop_seat")->where("seatid",$seatid)->value("seatstatus");
-            if($row==1){
-                $data['seatstatus'] = 0;
-                $sy = db("ns_shop_seat")->where("seatid",$seatid)->update($data);
-                if($sy){
-                    $info = [
-                        "status" => 1,
-                        "msg" => "已正在使用中"
-                    ];
-                }else{
-                    $info = [
-                        "status" => 0,
-                        "msg" => "系统错误，请重试"
-                    ];
-                }
-            }else{
-               $data['seatstatus'] = 1;
-                $ty = db("ns_shop_seat")->where("seatid",$seatid)->update($data);
-                if($ty){
-                    $info = [
-                        "status" => 1,
-                        "msg" => "已准备就绪"
-                    ];
-                }else{
-                    $info = [
-                        "status" => 0,
-                        "msg" => "系统错误，请重试"
-                    ];
-                } 
-            }
-            return $info;
+            $res = Business::changeSeat($seatid);
+            return $res;
         }
     }
 

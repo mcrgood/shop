@@ -176,7 +176,7 @@ class Myhome extends BaseController
         return json($res);
     }
 
-    //旺旺币设置接口
+    //旺旺币设置基本信息接口
     public function wwbSet(){
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
         $signature = isset($_POST['signature'])? $_POST['signature'] :'';
@@ -192,6 +192,62 @@ class Myhome extends BaseController
         }
         return json($res);
     }
+
+    //旺旺币设置修改API
+    public function wwbSetUpdate(){
+        $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
+        $signature = isset($_POST['signature'])? $_POST['signature'] :'';
+        $msg_status = isset($_POST['msg_status'])? $_POST['msg_status'] :'';
+        $business_status = isset($_POST['business_status'])? $_POST['business_status'] :'';
+        $ratio = isset($_POST['ratio'])? $_POST['ratio'] :'';
+        $gold = isset($_POST['gold'])? $_POST['gold'] :'';
+        $sign = $this->prefix.$business_id;
+        if($sign == base64_decode($signature)){
+            $business = new Business();
+            $res = $business->wwbSetModify($business_id, $msg_status, $business_status, $ratio, $gold);
+        }else{
+            $res = [
+                'code' =>0,
+                'msg' =>'签名错误，禁止访问！'
+            ];
+        }
+        return json($res);
+    }
+    //商家店铺管理包厢使用情况API
+    public function business_control(){
+    	$business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
+        $signature = isset($_POST['signature'])? $_POST['signature'] :'';
+        $sign = $this->prefix.$business_id;
+        if($sign == base64_decode($signature)){
+            $business = new Business();
+            $res = $business->room_info($business_id);
+        }else{
+            $res = [
+                'code' =>0,
+                'msg' =>'签名错误，禁止访问！'
+            ];
+        }
+        return json($res);
+    }
+
+    //商家店铺管理（商家手动更改包厢状态API）
+    public function changeRoomStatus(){
+    	$id = isset($_POST['id'])? $_POST['id'] :'';
+    	$cate_name = isset($_POST['cate_name'])? $_POST['cate_name'] :'';
+        $signature = isset($_POST['signature'])? $_POST['signature'] :'';
+        $sign = $this->prefix.$id;
+        if($sign == base64_decode($signature)){
+            $business = new Business();
+            $res = $business->changeStatus($id, $cate_name);
+        }else{
+            $res = [
+                'code' =>0,
+                'msg' =>'签名错误，禁止访问！'
+            ];
+        }
+        return json($res);
+    }
+
 
     //测试
     public function test(){
