@@ -78,12 +78,12 @@ class Business extends BaseService{
         return $info;
     }
     //在此商家的会员信息
-    public function member($business_id){
+    public function member($business_id, $page){
         $where['b.business_id'] = $business_id;
          $list = Db::table('ns_business_member')->alias('b')
         ->join('sys_user u','u.uid = b.uid','left')
         ->field('u.user_name,u.nick_name,u.user_headimg')
-        ->where($where)->select(); //查出该店铺下的所有会员
+        ->where($where)->limit(($page-1)*20,20)->select(); //查出该店铺下的所有会员
         $count = Db::table('ns_business_member')->alias('b')
         ->join('sys_user u','u.uid = b.uid','left')
         ->field('u.user_name,u.nick_name,u.user_headimg')
@@ -104,16 +104,16 @@ class Business extends BaseService{
         return $info;
     }
 
-    public function message($business_id, $type){
+    public function message($business_id, $type, $page){
         $cate_name = $this->getCateName($business_id);
         if($cate_name == 'goods'){
-            $list = $this->getGoodsMsg($business_id, '', $type); //获取该商家餐饮店的预定消息
+            $list = $this->getGoodsMsg($business_id, '', $type, $page); //获取该商家餐饮店的预定消息
         }elseif($cate_name == 'hotel'){
-            $list = $this->getHotelMsg($business_id, '', $type);//获取该商家酒店的预定消息
+            $list = $this->getHotelMsg($business_id, '', $type, $page);//获取该商家酒店的预定消息
         }elseif($cate_name == 'KTV'){
-            $list = $this->getKtvMsg($business_id, '', $type);//获取该商家KTV的预定消息
+            $list = $this->getKtvMsg($business_id, '', $type, $page);//获取该商家KTV的预定消息
         }elseif($cate_name == 'health'){
-            $list = $this->getHealthMsg($business_id, '', $type);//获取该商家养生的预定消息
+            $list = $this->getHealthMsg($business_id, '', $type, $page);//获取该商家养生的预定消息
         }
 
         if($list){
@@ -171,7 +171,7 @@ class Business extends BaseService{
 
 
     //获取餐饮商家预定消息通知
-    public function getGoodsMsg($business_id, $search_input = '', $type = ''){
+    public function getGoodsMsg($business_id, $search_input = '', $type = '', $page =1){
        
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
@@ -193,6 +193,7 @@ class Business extends BaseService{
         ->join('ns_order_payment p','p.out_trade_no = a.sid','left')
         ->order('a.add_time desc')
         ->where($map)
+        ->limit(($page-1)*20,20)
         ->select();
         if($list){
             foreach($list as $k => $v){
@@ -209,7 +210,7 @@ class Business extends BaseService{
 
 
     //获取酒店商家预定消息通知
-    public function getHotelMsg($business_id, $search_input = '', $type = ''){
+    public function getHotelMsg($business_id, $search_input = '', $type = '', $page =1){
        
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
@@ -230,6 +231,7 @@ class Business extends BaseService{
         ->join('ns_order_payment p','p.out_trade_no = a.out_trade_no','left')
         ->order('a.create_time desc')
         ->where($map)
+        ->limit(($page-1)*20,20)
         ->select();
          if($list){
             foreach($list as $k => $v){
@@ -249,7 +251,7 @@ class Business extends BaseService{
     }
 
     //获取KTV商家预定消息通知
-    public function getKtvMsg($business_id, $search_input = '', $type = ''){
+    public function getKtvMsg($business_id, $search_input = '', $type = '', $page = 1){
         
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
@@ -270,6 +272,7 @@ class Business extends BaseService{
         ->join('ns_order_payment p','p.out_trade_no = a.out_trade_no','left')
         ->order('a.create_time desc')
         ->where($map)
+        ->limit(($page-1)*20,20)
         ->select();
         if($list){
             foreach($list as $k => $v){
@@ -283,7 +286,7 @@ class Business extends BaseService{
         return $list;  
     }
 
-    public function getHealthMsg($business_id, $search_input = '', $type = ''){
+    public function getHealthMsg($business_id, $search_input = '', $type = '', $page =1){
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
         db("ns_health_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
@@ -303,6 +306,7 @@ class Business extends BaseService{
         ->join('ns_order_payment p','p.out_trade_no = a.out_trade_no','left')
         ->order('a.create_time desc')
         ->where($map)
+        ->limit(($page-1)*20,20)
         ->select();
         if($list){
             foreach($list as $k => $v){
