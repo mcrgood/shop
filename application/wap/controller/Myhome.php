@@ -5,6 +5,7 @@ use data\service\Config as WebConfig;
 use data\service\Member;
 use data\service\WebSite;
 use data\model\CreateKtvOrderModel as CreateKtvOrderModel;
+use data\model\ScenicOrderModel;
 use think\Controller;
 use think\Db;
 use think\Session;
@@ -649,6 +650,8 @@ class Myhome extends Controller
                 $list = $business->getKtvMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
             }elseif($cate_name == 'health'){
                 $list = $business->getHealthMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
+            }elseif($cate_name == 'scenic'){
+                 $list = $business->getScenicMsg($this->business_id, $search_input);//获取景点预定消息
             }
 
             if($list){
@@ -664,9 +667,11 @@ class Myhome extends Controller
         }elseif($cate_name == 'hotel'){
             $list = $business->getHotelMsg($this->business_id, '', 'new');//获取该商家酒店的预定消息
         }elseif($cate_name == 'KTV'){
-            $list = $business->getKtvMsg($this->business_id, '', 'new');//获取该商家酒店的预定消息
+            $list = $business->getKtvMsg($this->business_id, '', 'new');//
         }elseif($cate_name == 'health'){
-            $list = $business->getHealthMsg($this->business_id, '', 'new');//获取该商家酒店的预定消息
+            $list = $business->getHealthMsg($this->business_id, '', 'new');//获养生的预定消息
+        }elseif($cate_name == 'scenic'){
+            $list = $business->getScenicMsg($this->business_id, '', 'new');//获取景点预定消息
         }
         $this->assign('list',$list);  
         $this->assign('cate_name',$cate_name);  
@@ -693,6 +698,10 @@ class Myhome extends Controller
             $row = $buss->getHealthDetails($id);
             $this->assign('row',$row['data']);
             return view($this->style . 'Myhome/dingdan_health');
+        }elseif($type == 5){ //景点
+            $row = $buss->getScenicDetails($id);
+            $this->assign('row',$row['data']);
+            return view($this->style . 'Myhome/dingdan_scenic');
         }
     }
 
@@ -1903,12 +1912,15 @@ class Myhome extends Controller
 
     //景点系统 张行飞 2018-4-28
     public function scenicspot(){
+        $uid = $this->uid;
+        if(!$this->uid){
+            $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
+        }
         $userid = input("param.userid");
         $list = Db::table("ns_scenicspot_room")->alias('a')->join("ns_shop_message m","a.business_id=m.userid",'left')->field("a.*,m.names")->where("business_id",$userid)->select();
         foreach ($list as $k => $v) {
             $listimg[$k] = $v['scenic_img'];
         }
-        $uid = $this->uid;
         $this->assign("address",$list[0]['names']);
         $this->assign("list",$list);
         $this->assign("listimg",$listimg);
@@ -1921,11 +1933,70 @@ class Myhome extends Controller
     public function scenic_order(){
         if(request()->isAjax()){
             $row = input('post.');
-            $user_message = Db::table("sys_user")->where("uid",$row['uid'])->field("realname,user_name")->find();
-            $shop_message = Db::table("ns_shop_message")->where("userid",$row['business_id'])->value("names");
-            
+            $TodayTime = strtotime(date('Y-m-d')); //今天0点的时间戳
+            if(!$row['startDate'] || strtotime($row['startDate']) < $TodayTime){
+                $info = [
+                    'status' => 0,
+                    'msg' =>'请选择正确的时间！'
+                ];
+            }else{
+                foreach($row['id_arr'] as $k =>$v){
+                    $row['scenic_type'][$k] = Db::table('ns_scenicspot_room')->where('scenic_id',$v)->value('scenic_type');
+                    $row['scenic_price'][$k] = Db::table('ns_scenicspot_room')->where('scenic_id',$v)->value('scenic_price');
+                }
+                $data['out_trade_no'] = time().rand(100000,999999); //随机生成订单
+                $data['startDate'] = $row['startDate']; //使用时间
+                $data['uid'] = $row['uid'];
+                $data['create_time'] = time();
+                $data['business_id'] = $row['business_id'];
+                $data['scenic_type'] = implode('|', $row['scenic_type']);
+                $data['scenic_price'] = implode('|', $row['scenic_price']);
+                $data['scenic_num'] = implode('|', $row['num_arr']);
+                $res = Db::table('ns_scenic_yuding')->insertGetId($data);
+                if($res){
+                     $info = [
+                        'status' => 1,
+                        'msg' =>'提交订单成功！',
+                        'out_trade_no' => $data['out_trade_no']
+                    ];
+                }else{
+                     $info = [
+                        'status' => 0,
+                        'msg' =>'提交订单失败，请重试！'
+                    ];
+                }
+            }
+            return $info;
+        }
+        $out_trade_no = input('param.out_trade_no');
+        if(!$out_trade_no){
+             $this->error('页面过期，请重新提交',__URL(__URL__ . '/wap/dingwei/index'));
+        }
+        $reserve = Db::table('ns_scenic_yuding')->where('out_trade_no',$out_trade_no)->find();
+        $reserve['scenic_type'] = explode('|', $reserve['scenic_type']);
+        $reserve['scenic_price'] = explode('|', $reserve['scenic_price']);
+        $reserve['scenic_num'] = explode('|', $reserve['scenic_num']);
+        $userInfo = Db::table('sys_user')->where('uid',$reserve['uid'])->find();
+        foreach($reserve['scenic_price'] as $k => $v){
+            $room_list[$k] = array_column($reserve,$k);
+        }
+        $this->assign('room_list',$room_list);
+        $this->assign('reserve',$reserve);
+        $this->assign('userInfo',$userInfo);
+        $this->assign('out_trade_no',$out_trade_no);
+        return view($this->style . 'Myhome/scenic_order');
+    }
+
+    public function scenicOrderPay(){
+        if(request()->isAjax()){
+            $postData = input('post.');
+            $res = ScenicOrderModel::scenicPayment($postData);
+            return json($res);
         }
     }
+
+
+
     /**
 
      * [lingquan 前台领券]

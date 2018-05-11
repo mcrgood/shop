@@ -58,7 +58,7 @@ input[type=button], input[type=submit], input[type=file],button { cursor: pointe
 }
 .order_big{
   width: 100%;
-  height: 100%;
+  height: auto;
   margin: auto;
 }
 .content-order{

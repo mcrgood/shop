@@ -135,7 +135,7 @@
 		<div class="first_content_1 ">
 			<ul>
 			{if $cate_name eq goods}
-				{foreach name="list" id="v"}
+				{volist name="list" id="v"}
 					<li>
 						<div class="inform"><h4>预定通知</h4><span>{$v.add_time}</span></div>
 						<div class="inform_content"><p>{$v.shop_name}&nbsp;预定人数&nbsp;<span style="color:red;">{$v.num}人</span><br />预定时间：{$v.time}</p></div>
@@ -151,9 +151,9 @@
 							<span class="is_agree">已发送</span>
 						{/if}
 					</li>
-	             {/foreach}
+	             {/volist}
 			{elseif $cate_name eq hotel /}
-				{foreach name="list" id="v"}
+				{volist name="list" id="v"}
 					<li>
 						<div class="inform"><h4>预定通知</h4><span>{$v.create_time}</span></div>
 						<div class="inform_content"><p>{$v.shop_name}&nbsp;预定房间共&nbsp;<b style="color:red;">{$v.total_num}</b>间<br />入住时间：<b style="color:red;">{$v.startDate}</b></p></div>
@@ -169,9 +169,9 @@
 							<span class="is_agree">已发送</span>
 						{/if}
 					</li>
-	             {/foreach}
+	             {/volist}
 			{elseif $cate_name eq KTV /}
-				{foreach name="list" id="v"}
+				{volist name="list" id="v"}
 					<li>
 						<div class="inform"><h4>预定通知</h4><span>{$v.create_time}</span></div>
 						<div class="inform_content"><p>{$v.shop_name}&nbsp;预定包厢&nbsp;<b style="color:red;">{$v.room_type}</b><br />包厢时间：<b style="color:red;">{$v.dateTime}&nbsp;{$v.business_hours}</b></p></div>
@@ -187,9 +187,9 @@
 							<span class="is_agree">已发送</span>
 						{/if}
 					</li>
-	             {/foreach}
+	             {/volist}
 			{elseif $cate_name eq health /}
-				{foreach name="list" id="v"}
+				{volist name="list" id="v"}
 					<li>
 						<div class="inform"><h4>预定通知</h4><span>{$v.create_time}</span></div>
 						<div class="inform_content"><p>{$v.shop_name}&nbsp;预定服务&nbsp;<b style="color:red;">{$v.room_type}</b><br />到店时间：<b style="color:red;">{$v.startDate}</b></p></div>
@@ -205,7 +205,25 @@
 							<span class="is_agree">已发送</span>
 						{/if}
 					</li>
-	             {/foreach}
+	             {/volist}
+			{elseif $cate_name eq scenic /}
+				{volist name="list" id="v"}
+					<li>
+						<div class="inform"><h4>预定通知</h4><span>{$v.create_time}</span></div>
+						<div class="inform_content"><p>{$v.shop_name}&nbsp;预定景点&nbsp;<b style="color:red;">{$v.scenic_type}</b><br />使用时间：<b style="color:red;">{$v.startDate}</b></p></div>
+						<div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.phone}</span></div>
+						<button class="dingdan" onclick="jumpDetails({$v.id},5)">订单详情</button>
+						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
+						<input type="hidden" value="{$v.phone}" class="iphone"/>
+							<button class="agree">确定</button>
+						<input type="hidden" value="{$v.id}" class="id"/>
+						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
+							<span class="is_agree">已发送</span>
+						{elseif $v.msg_status eq 2 AND $v.is_msg_send eq 1 /}
+							<span class="is_agree">已发送</span>
+						{/if}
+					</li>
+	             {/volist}
 			{/if}
                 
 			</ul>
@@ -272,6 +290,16 @@
 	        				html +='<li>';
 	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
 	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定服务&nbsp;<span style="color:red;">'+res["list"][i]["room_type"]+'</span><br />到店时间:'+res["list"][i]["startDate"]+'</p></div>';
+	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
+	        				html +='</li>';
+	        			}
+	        		}
+        		}else if(cate_name == 'scenic'){
+        			if(res.status ==1){
+	        			for(var i=0; i<res.list.length;i++){
+	        				html +='<li>';
+	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
+	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定景点&nbsp;<span style="color:red;">'+res["list"][i]["scenic_type"]+'</span><br />使用时间:'+res["list"][i]["startDate"]+'</p></div>';
 	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
 	        				html +='</li>';
 	        			}

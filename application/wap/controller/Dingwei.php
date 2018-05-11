@@ -121,23 +121,23 @@ class Dingwei extends BaseController{
         ->where('a.userid',$id)
         ->find();
         
-        if($info['alias_name'] == 'hotel'){
+        if($info['alias_name'] == 'hotel'){ //酒店
             $room_list = db("ns_hotel_room")->where("business_id",$id)->select();
             $status = $room_list ? '1': '0';
             $type = 1; //酒店=1
-        }elseif($info['alias_name'] == 'goods'){
+        }elseif($info['alias_name'] == 'goods'){ //餐饮
             $cateids = db("ns_shop_menu")->where("userid",$id)->column("cateid");
             $status = $cateids ? '1': '0';
             $type = 2; //餐饮=2
-        }elseif($info['alias_name'] == 'health'){
+        }elseif($info['alias_name'] == 'health'){ //养生
             $health = db("ns_health_room")->where("business_id",$id)->select();
             $status = $health ? '1': '0';
             $type = 3; //养生
-        }elseif($info['alias_name'] == 'KTV'){
+        }elseif($info['alias_name'] == 'KTV'){ //KTV
             $ktv = db("ns_ktv_room")->where("business_id",$id)->select();
             $status = $ktv ? '1': '0';
             $type = 5; //KTV=5
-        }elseif($info['alias_name'] == 'scenicspot'){
+        }elseif($info['alias_name'] == 'scenic'){ //景点
             $health = db("ns_scenicspot_room")->where("business_id",$id)->select();
             $status = $health ? '1': '0';
             $type = 4; //景点=4

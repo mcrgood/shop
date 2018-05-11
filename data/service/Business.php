@@ -78,7 +78,10 @@ class Business extends BaseService{
         return $info;
     }
     //在此商家的会员信息
-    public function member($business_id, $page){
+    public function member($business_id, $page, $search_input = ''){
+        if($search_input){
+            $where['u.user_name|u.nick_name'] = ['like', "%".$search_input."%"];
+        }
         $where['b.business_id'] = $business_id;
          $list = Db::table('ns_business_member')->alias('b')
         ->join('sys_user u','u.uid = b.uid','left')
@@ -104,16 +107,16 @@ class Business extends BaseService{
         return $info;
     }
 
-    public function message($business_id, $type, $page){
+    public function message($business_id, $type, $page, $search_input = ''){
         $cate_name = $this->getCateName($business_id);
         if($cate_name == 'goods'){
-            $list = $this->getGoodsMsg($business_id, '', $type, $page); //获取该商家餐饮店的预定消息
+            $list = $this->getGoodsMsg($business_id, $search_input, $type, $page); //获取该商家餐饮店的预定消息
         }elseif($cate_name == 'hotel'){
-            $list = $this->getHotelMsg($business_id, '', $type, $page);//获取该商家酒店的预定消息
+            $list = $this->getHotelMsg($business_id, $search_input, $type, $page);//获取该商家酒店的预定消息
         }elseif($cate_name == 'KTV'){
-            $list = $this->getKtvMsg($business_id, '', $type, $page);//获取该商家KTV的预定消息
+            $list = $this->getKtvMsg($business_id, $search_input, $type, $page);//获取该商家KTV的预定消息
         }elseif($cate_name == 'health'){
-            $list = $this->getHealthMsg($business_id, '', $type, $page);//获取该商家养生的预定消息
+            $list = $this->getHealthMsg($business_id, $search_input, $type, $page);//获取该商家养生的预定消息
         }
 
         if($list){
@@ -286,6 +289,44 @@ class Business extends BaseService{
         return $list;  
     }
 
+    //获取景点商家预定消息通知
+    public function getScenicMsg($business_id, $search_input = '', $type = '', $page = 1){
+        
+        $map['m.userid'] = $business_id;
+        $map['p.pay_status'] = 1;
+        db("ns_scenic_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
+         if($search_input){
+            $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
+        }
+        if($type == 'new'){
+            $startTime = strtotime(date('Y-m-d'))-86400*15;
+            $endTime = strtotime(date('Y-m-d'))+86400;
+            $map['a.create_time'] = ['between',[$startTime,$endTime]];
+        }
+        $list = db('ns_scenic_yuding')
+        ->field('a.id,a.uid,a.name,a.phone,a.is_msg_send,a.create_time,a.startDate, a.scenic_type, m.names as shop_name,w.msg_status')
+        ->alias('a')
+        ->join('ns_shop_message m','a.business_id=m.userid','left')
+        ->join('ns_wwb w','w.userid = m.userid','left')
+        ->join('ns_order_payment p','p.out_trade_no = a.out_trade_no','left')
+        ->order('a.create_time desc')
+        ->where($map)
+        ->limit(($page-1)*20,20)
+        ->select();
+        if($list){
+            foreach($list as $k => $v){
+                if(date('Y-m-d',$v['create_time']) == date('Y-m-d')){
+                    $list[$k]['create_time'] = '今天'.date('H:i',$v['create_time']);
+                }else{
+                    $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+                }
+            }
+        }
+        return $list;  
+    }
+
+    
+
     public function getHealthMsg($business_id, $search_input = '', $type = '', $page =1){
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
@@ -331,20 +372,24 @@ class Business extends BaseService{
     }
     //获取商家是否有未读的预定消息
     public function getMsgStatus($cate_name, $business_id){
-        if($cate_name == 'goods'){
+        if($cate_name == 'goods'){ //餐饮
             $count = Db::table('ns_goods_yuding')
             ->alias('a')->join('ns_order_payment b','a.sid = b.out_trade_no','left')
             ->where(['a.shop_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
-        }elseif($cate_name == 'hotel'){
+        }elseif($cate_name == 'hotel'){ //酒店
             $count = Db::table('ns_hotel_yuding')
             ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
             ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
-        }elseif($cate_name == 'health'){
+        }elseif($cate_name == 'health'){ // 养生
             $count = Db::table('ns_health_yuding')
             ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
             ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
         }elseif($cate_name == 'KTV'){
             $count = Db::table('ns_ktv_yuding')
+            ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
+            ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
+        }elseif($cate_name == 'scenic'){ //景点
+            $count = Db::table('ns_scenic_yuding')
             ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
             ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
         }
@@ -485,6 +530,45 @@ class Business extends BaseService{
             }
             $row['pay_time'] = date('Y-m-d H:i',$row['pay_time']);
             unset($row['room_type'],$row['room_price'], $row['room_num']);
+            $info = ['code' => 1, 'data' =>$row];
+        }else{
+            $info = ['code' => 1, 'data' =>[]];
+        }
+       
+        return $info;
+    }
+
+
+    //获取景点订单详情
+    public function getScenicDetails($id){
+        $row = db('ns_scenic_yuding')
+        ->alias('a')
+        ->field('a.id,b.pay_type,b.pay_money, b.pay_time, a.name, a.phone, a.out_trade_no, a.scenic_type, a.scenic_price, a.scenic_num')
+        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
+        ->where('a.id',$id)->find();
+        if($row){
+             switch ($row['pay_type']) {
+                case 1:
+                   $row['pay_type'] = '快捷支付';
+                    break;
+                case 5:
+                    $row['pay_type'] = '微信支付';
+                    break;
+            }
+            $row['scenic_type'] = explode("|", $row['scenic_type']);
+            $row['scenic_price'] = explode("|", $row['scenic_price']);
+            $row['scenic_num'] = explode("|", $row['scenic_num']);
+            foreach ($row['scenic_price'] as $k => $v){
+                $row['scenic_list'][$k] = array_column($row,$k);
+            }
+            foreach($row['scenic_list'] as $key =>$val){
+                $row['scenic_list'][$key]['scenic_type'] = $val[0];
+                $row['scenic_list'][$key]['scenic_price'] = $val[1];
+                $row['scenic_list'][$key]['scenic_num'] = $val[2];
+                unset($row['scenic_list'][$key][0], $row['scenic_list'][$key][1], $row['scenic_list'][$key][2]);
+            }
+            $row['pay_time'] = date('Y-m-d H:i',$row['pay_time']);
+            unset($row['scenic_type'],$row['scenic_price'], $row['scenic_num']);
             $info = ['code' => 1, 'data' =>$row];
         }else{
             $info = ['code' => 1, 'data' =>[]];

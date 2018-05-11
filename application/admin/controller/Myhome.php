@@ -429,8 +429,11 @@ class Myhome extends BaseController
 						'msg' =>'请填写完整信息'
 					];
 				}else{
+					if($row['health_id']){
+						$where['health_id'] = ['<>',$row['health_id']];
+					}
 					$where['room_type'] = $row['room_type'];
-					$where['health_id'] = ['<>',$row['health_id']];
+					$where['business_id'] = $row['business_id'];
 					$have = db("ns_health_room")->where($where)->find();
 					if($have){
 						$res = [

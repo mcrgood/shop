@@ -77,11 +77,12 @@ class Myhome extends BaseController
     public function business_member(){
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :''; //商家ID
         $page = isset($_POST['page'])? $_POST['page'] :1;  //请求数据的页码
+        $search_input = isset($_POST['search_input'])? $_POST['search_input'] : '';  //关键词搜索
         $signature = isset($_POST['signature'])? $_POST['signature'] :'';
         $sign = $this->prefix.$business_id;
         if($sign == base64_decode($signature)){
             $business = new Business();
-            $res = $business->member($business_id, $page);
+            $res = $business->member($business_id, $page, $search_input);
         }else{
              $res = [
                 'code' =>0,
@@ -93,13 +94,14 @@ class Myhome extends BaseController
     //商家预定消息列表API
     public function business_message(){
         $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
-        $page = isset($_POST['page'])? $_POST['page'] : '1' ;
+        $page = isset($_POST['page'])? $_POST['page'] : 1;
         $type = isset($_POST['type'])? $_POST['type'] :'';
+        $search_input = isset($_POST['search_input'])? $_POST['search_input'] :'';
         $signature = isset($_POST['signature'])? $_POST['signature'] :'';
         $sign = $this->prefix.$business_id;
         if($sign == base64_decode($signature)){
             $business = new Business();
-            $res = $business->message($business_id, $type, $page);
+            $res = $business->message($business_id, $type, $page, $search_input);
         }else{
              $res = [
                 'code' =>0,

@@ -14,25 +14,15 @@
 </head>
 <body>
 	<div class="big">
-	{if $count eq 1}
+	{volist name="room_list" id="v"}
 		<div class="header">
 			<div class="content">
-				<span>{$reserve.room_type}</span>
-				<span>使用:<b>{$reserve.startDate}</b>&nbsp;&nbsp;<!-- 离店:<b>{$reserve.endDate}</b> --></span>
-				<span>预定<b class="num">{$reserve.room_num}</b>人&nbsp;&nbsp;<!-- 使用<b class="day">{$reserve.stayDays}</b>次 -->&nbsp;&nbsp;房间单价：￥<b class="price">{$reserve.room_price}</b></span>
+				<span>{$v.0}</span>
+				<span>使用时间:<b>{$reserve.startDate}</b>&nbsp;&nbsp;<!-- 离店:<b>{$reserve.endDate}</b> --></span>
+				<span>预定票数&nbsp;<b class="num">{$v.2}</b>张&nbsp;&nbsp;<!-- 使用<b class="day">{$reserve.stayDays}</b>次 -->&nbsp;&nbsp;景点单价：￥<b class="price">{$v.1}</b></span>
 			</div>
 		</div>
-	{else/}
-		{volist name="room_list" id="v"}
-			<div class="header">
-				<div class="content">
-					<span>{$v.0}</span>
-					<span>使用:<b>{$reserve.startDate}</b>&nbsp;&nbsp;<!-- 离店:<b>{$reserve.endDate}</b> --></span>
-					<span>预定<b class="num">{$v.2}</b>人&nbsp;&nbsp;<!-- 使用<b class="day">{$reserve.stayDays}</b>次 -->&nbsp;&nbsp;房间单价：￥<b class="price">{$v.1}</b></span>
-				</div>
-			</div>
-		{/volist}
-	{/if}
+	{/volist}
 
 		<div class="header_middle">
 			<div class="gantanhao">
@@ -40,7 +30,7 @@
 			</div>
 			<div class="wran_text">
 				<p>订单确认后不可取消/变更，
-					如未按时使用,店家将扣除全额房费;在预定时间内都可以使用，具体请电联客户电话
+					如未按时使用,店家将扣除全额费用;在预定时间内都可以使用，具体请电联客户电话
 				</p>
 			</div>
 		</div>
@@ -93,24 +83,6 @@
 </body>
  <script type="text/javascript">  
 	$(function(){  
-	  	// var flag = true;
-	   //  $('.use_quan span').click(function(){
-	   //  	if(flag){
-	   //      	$('#show_quan').animate({height:'178px'},200);
-	   //      	flag = false;
-	   //  	}else{
-	   //  		$('#show_quan').animate({height:'0px'},200);   
-	   //      	flag = true;
-	   //  	}  
-	   //  }); 
-	   //  $('#show_quan li').each(function(i,v){
-	   //  	var Litext = $(v).text();				    	
-	   //  	$(v).click(function(){
-		  //   	$('.use_quan span').text(Litext);
-		  //   	$('#show_quan').animate({height:'0px'},200);
-		  //   	flag = true;
-	   //  	})
-	   //  }) 
 	    var total = 0;
 	    var out_trade_no = "{$out_trade_no}";
 	    $('.content').each(function(i,v){
@@ -126,7 +98,7 @@
 	    	var realname = $("input[name='realname']").val();
 	    	var phone = $("input[name='phone']").val();
 	    	var totalPrice = $('.footer_money b').text();
-	    	var url = "{:url('Myhome/healthOrderPay')}";
+	    	var url = "{:url('Myhome/scenicOrderPay')}";
 	    	var data = {
 	    		out_trade_no:out_trade_no,
 	    		totalPrice:totalPrice,
@@ -142,7 +114,7 @@
 	    		}else if(res.status == 2){ //
 	    			layer.msg(res.msg,{time:1200});
 	    			setTimeout(function(){
-	    				window.location.href = "{:__URL('APP_MAIN/wap/indexx')}";
+	    				window.location.href = "{:__URL('APP_MAIN/indexx/indexx')}";
 	    			},1200)
 	    		}else{
 	    			layer.msg(res.msg,{time:1200});
