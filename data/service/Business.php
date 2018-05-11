@@ -15,6 +15,8 @@
  * @version : v1.0.0.0
  */
 namespace data\service;
+
+use data\extend\chuanglan\ChuanglanSmsApi;
 use think\Db;
 
 class Business extends BaseService{
@@ -117,6 +119,8 @@ class Business extends BaseService{
             $list = $this->getKtvMsg($business_id, $search_input, $type, $page);//获取该商家KTV的预定消息
         }elseif($cate_name == 'health'){
             $list = $this->getHealthMsg($business_id, $search_input, $type, $page);//获取该商家养生的预定消息
+        }elseif($cate_name == 'scenic'){
+            $list = $this->getScenicMsg($business_id, $search_input, $type, $page);//获取该商家养生的预定消息
         }
 
         if($list){
@@ -161,6 +165,8 @@ class Business extends BaseService{
             $list = Db::table("ns_ktv_room")->field('ktv_id,room_type,room_status')->where("business_id",$business_id)->select();
         }elseif($cate_name == 'health'){
             $list = Db::table("ns_health_room")->field('health_id,room_type,room_status')->where("business_id",$business_id)->select();
+        }elseif($cate_name == 'scenic'){
+            $list = Db::table("ns_scenicspot_room")->field('scenic_id, scenic_type, scenic_status')->where("business_id",$business_id)->select();
         }
 
         if($list){
@@ -646,7 +652,44 @@ class Business extends BaseService{
         return $info;
     }
 
+    //改变景点预定状态
+    public static function changeScenic($scenic_id){
+        $scenic_status = Db::table('ns_scenicspot_room')->where('scenic_id',$scenic_id)->value('scenic_status');
+        if($scenic_status == 0){
+            $res = Db::table('ns_scenicspot_room')->where('scenic_id',$scenic_id)->update(['scenic_status'=>1]);
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' =>'状态更变成功！',
+                    'scenic_status' =>'已定满',
+                    'color' =>'red'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }else{
+            $res = Db::table('ns_scenicspot_room')->where('scenic_id',$scenic_id)->update(['scenic_status'=>0]);
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' =>'状态更变成功！',
+                    'scenic_status' =>'可预定',
+                    'color' =>'#5FB878'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }
+        return $info;
+    }
 
+    //改变养生预定状态
     public static function changeHealth($health_id){
         $room_status = Db::table('ns_health_room')->where('health_id',$health_id)->value('room_status');
         if($room_status == 0){
@@ -729,8 +772,68 @@ class Business extends BaseService{
             $res = $this->changeKtv($id);
         }elseif($cate_name == 'health'){
             $res = $this->changeHealth($id);
+        }elseif($cate_name == 'scenic'){
+            $res = $this->changeScenic($id);
         }
         return $res;
+    }
+
+    //根据不同类型的商家发送不同的预定消息给消费者
+    public function sendMsg($cate_name, $id){
+       if($cate_name == 'goods'){
+           $info = $this->getGoodsInfo($id);
+        }
+        if($info){     
+            $clapi  = new ChuanglanSmsApi();
+            $result = $clapi->sendSMS($info['phone'], $info['message']);
+            if(!is_null(json_decode($result))){
+                $output=json_decode($result,true);
+                if(isset($output['code'])  && $output['code']=='0'){
+                    if($cate_name == 'goods'){
+                        Db::table('ns_goods_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
+                    }
+                    return $result = [
+                        'status' => 0,
+                        'message' => "恭喜您，操作成功！"
+                    ];
+                }else{
+                    return $result = [
+                        'status' => $output['code'],
+                        'message' => $output["errorMsg"]
+                    ];
+                }
+            }else{
+                return $result = [
+                    'status' => - 1,
+                    'message' => "对不起，操作失败，请刷新重试！"
+                ];
+            }
+        }else{
+            return $result = [
+                'status' => -2,
+                'message' => "对不起，操作失败，请刷新重试！"
+            ];
+        }
+    }
+
+
+
+
+
+
+    //获取餐饮预定通知短信模板
+    public function getGoodsInfo($id){
+        $yuding = Db::table('ns_goods_yuding')->alias('g')->field('g.*,m.names,m.address,m.tel')
+        ->join('ns_shop_message m','g.shop_id = m.userid','left')->where('g.id',$id)->find();
+        $times = date('m月d日 H:i',strtotime($yuding['time'])); //预定的时间
+        $names = '【'.$yuding['names'].'】'; //商家店铺名
+        $address = $yuding['address']; //商家店铺地址
+        $tel = $yuding['tel']; //商家店铺联系电话
+        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.".地址:".$address.".美食热线:".$tel.".欢迎莅临品鉴，全体员工恭候您的光临！";
+        return $info = [
+            'phone' =>$yuding['iphone'],
+            'message' => $message
+        ];
     }
 
 

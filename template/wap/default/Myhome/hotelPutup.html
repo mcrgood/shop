@@ -134,6 +134,19 @@ body{
                 </div> 
             </li>
          {/volist}
+      {elseif $cate_name eq scenic/}
+        {volist name="list" id="v"}
+           <li class="lis">
+              <span class="jiudian">{$v.scenic_type}</span>
+                <div class="wrap">
+                  {if $v.scenic_status eq 0}
+                      <button class="btn" value="{$v.scenic_id}" style="background:#5FB878;"onclick="changeScenic(this)">可预定</button>
+                  {else if}
+                      <button class="btn" value="{$v.scenic_id}" style="background:red;" onclick="changeScenic(this)">已定满</button>
+                  {/if}  
+                </div> 
+            </li>
+         {/volist}
       {/if}
   		
   		</ul>
@@ -196,7 +209,7 @@ body{
         },'json')
       }
 
-      function changeHealth(obj){
+      function changeHealth(obj){ //养生状态
          var health_id = $(obj).val();
          var data = {
             "health_id":health_id
@@ -206,6 +219,23 @@ body{
             if(res.code == 1){
               layer.msg(res.msg, {time: 1200});
               $(obj).text(res.room_status);
+              $(obj).css('background',res.color);
+            }else{
+              layer.msg(res.msg, {time: 1200});
+            }
+        },'json')
+      }
+
+      function changeScenic(obj){    //景点状态
+        var scenic_id = $(obj).val();
+         var data = {
+            "scenic_id":scenic_id
+         };
+        var url = "{:url('Myhome/changeScenicStatus')}";
+         $.post(url,data,function(res){
+            if(res.code == 1){
+              layer.msg(res.msg, {time: 1200});
+              $(obj).text(res.scenic_status);
               $(obj).css('background',res.color);
             }else{
               layer.msg(res.msg, {time: 1200});

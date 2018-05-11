@@ -126,6 +126,8 @@ class Myhome extends BaseController
                 $res = $business->getKtvDetails($id);
             }elseif($cate_name == 'health'){
                 $res = $business->getHealthDetails($id);
+            }elseif($cate_name == 'scenic'){
+                $res = $business->getScenicDetails($id);
             }
         }else{
              $res = [

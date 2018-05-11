@@ -314,6 +314,7 @@
 </body>
 <script src="__PUBLIC__/static/layui/layui.all.js"></script>
 <script type="text/javascript">
+	var business_id = "{$business_id}";
     //tab切换效果
     $(document).ready(function () {
         $(".tab-header li").on("click", function (e) {
@@ -329,7 +330,7 @@
     	var id = $(this).siblings('.id').val();
     	var url = "{:url('Myhome/send_yuding_msg_manual')}";
     	var data = {
-    		iphone:iphone,
+    		business_id:business_id,
     		id:id
     	};
     	$.post(url,data,function(res){

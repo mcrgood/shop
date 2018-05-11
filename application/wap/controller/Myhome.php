@@ -584,6 +584,9 @@ class Myhome extends Controller
         }elseif($alias_name == 'health'){
             $shop_list = Db::table('ns_health_room')->where('business_id',$userid)->select();
             $shop_type = $shop_list ? '1': '0' ;
+        }elseif($alias_name == 'scenic'){
+            $shop_list = Db::table('ns_scenicspot_room')->where('business_id',$userid)->select();
+            $shop_type = $shop_list ? '1': '0' ;
         }
         $this->assign("consumption",$consumption);
         $this->assign("shop_type",$shop_type);
@@ -675,6 +678,7 @@ class Myhome extends Controller
         }
         $this->assign('list',$list);  
         $this->assign('cate_name',$cate_name);  
+        $this->assign('business_id',$this->business_id);  
         return view($this->style . 'Myhome/message');
     }
     //预定订单详情
@@ -1441,48 +1445,12 @@ class Myhome extends Controller
     //商家点击确定后发送预定消息
     public function send_yuding_msg_manual(){
         if(request()->isAjax()){
-            $iphone = input('post.iphone'); //预定用户的手机号
-            $id = input('post.id'); //预定的信息ID
-            $yuding = db('ns_goods_yuding')
-            ->alias('g')
-            ->field('g.*,m.names,m.address,m.tel')
-            ->join('ns_shop_message m','g.shop_id = m.userid','left')
-            ->where('g.id',$id)->find();
-            
-            $times = date('m月d日 H:i',strtotime($yuding['time'])); //预定的时间
-            $names = '【'.$yuding['names'].'】'; //商家店铺名
-            $address = $yuding['address']; //商家店铺地址
-            $tel = $yuding['tel']; //商家店铺联系电话
-            $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.".地址:".$address.".美食热线:".$tel.".欢迎莅临品鉴，全体员工恭候您的光临！";
-            if($iphone){     
-                $clapi  = new ChuanglanSmsApi();
-                $result = $clapi->sendSMS($iphone, $message);
-                if(!is_null(json_decode($result))){
-                    $output=json_decode($result,true);
-                    if(isset($output['code'])  && $output['code']=='0'){
-                        db('ns_goods_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
-                        return $result = [
-                            'status' => 0,
-                            'message' => "恭喜您，操作成功！"
-                        ];
-                    }else{
-                        return $result = [
-                            'status' => $output['code'],
-                            'message' => $output["errorMsg"]
-                        ];
-                    }
-                }else{
-                    return $result = [
-                        'status' => - 1,
-                        'message' => "对不起，操作失败，请刷新重试！"
-                    ];
-                }
-            }else{
-                return $result = [
-                    'status' => -2,
-                    'message' => "对不起，操作失败，请刷新重试！"
-                ];
-            }
+            $business_id = input('post.business_id'); //商家ID
+            $id = input('post.id'); //订单的详情主键ID
+            $business = new Business();
+            $cate_name = $business->getCateName($business_id); //通过商家ID获取经营类型名称
+            $res = $business->sendMsg($cate_name, $id);
+            return json($res);
         }
     }
 
@@ -1772,6 +1740,9 @@ class Myhome extends Controller
         }elseif($cate_name == 'health'){
             $list = Db::table("ns_health_room")->where("business_id",$this->business_id)->select();
             $type_name = '养生';
+        }elseif($cate_name == 'scenic'){
+            $list = Db::table("ns_scenicspot_room")->where("business_id",$this->business_id)->select();
+            $type_name = '景点';
         }
         $this->assign("list",$list);
         $this->assign("cate_name",$cate_name);
@@ -1888,6 +1859,15 @@ class Myhome extends Controller
         if(request()->isAjax()){
             $ktv_id = input('post.ktv_id');
             $res = Business::changeKtv($ktv_id);
+            return json($res);
+        }
+    }
+
+    //商家手动开关改变景点状态
+    public function changeScenicStatus(){
+         if(request()->isAjax()){
+            $scenic_id = input('post.scenic_id');
+            $res = Business::changeScenic($scenic_id);
             return json($res);
         }
     }
