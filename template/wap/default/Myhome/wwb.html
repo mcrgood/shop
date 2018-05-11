@@ -145,12 +145,12 @@ font-size: 16px;
 		{/if}
 		</div>
 		<div class="zhuantai" id="message">
-		{if $row.msg_status eq 2}
-			<span class="zidong" style="color:#060606;font-size:1.2rem;">自动推送消息</span>
-			<span class="shoudong" style="color:#ff4949;font-size:1.2rem;">手动推送消息</span>
-		{else/}
+		{if $row.msg_status eq 1}
 			<span class="zidong" style="color:#ff4949;font-size:1.2rem;">自动推送消息</span>
 			<span class="shoudong" style="color:#060606;font-size:1.2rem;">手动推送消息</span>
+		{else/}
+			<span class="zidong" style="color:#060606;font-size:1.2rem;">自动推送消息</span>
+			<span class="shoudong" style="color:#ff4949;font-size:1.2rem;">手动推送消息</span>
 		{/if}
 		</div>
 <script type="text/javascript">

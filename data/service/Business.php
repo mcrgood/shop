@@ -780,10 +780,12 @@ class Business extends BaseService{
 
     //根据不同类型的商家发送不同的预定消息给消费者
     public function sendMsg($cate_name, $id){
-       if($cate_name == 'goods'){
+        if($cate_name == 'goods'){
            $info = $this->getGoodsInfo($id);
+        }elseif($cate_name == 'hotel'){
+           $info = $this->getHotelInfo($id);
         }
-        if($info){     
+        if($info){
             $clapi  = new ChuanglanSmsApi();
             $result = $clapi->sendSMS($info['phone'], $info['message']);
             if(!is_null(json_decode($result))){
@@ -821,10 +823,25 @@ class Business extends BaseService{
 
 
 
-    //获取餐饮预定通知短信模板
+    //获取餐饮预定通知短信模板信息
     public function getGoodsInfo($id){
         $yuding = Db::table('ns_goods_yuding')->alias('g')->field('g.*,m.names,m.address,m.tel')
         ->join('ns_shop_message m','g.shop_id = m.userid','left')->where('g.id',$id)->find();
+        $times = date('m月d日 H:i',strtotime($yuding['time'])); //预定的时间
+        $names = '【'.$yuding['names'].'】'; //商家店铺名
+        $address = $yuding['address']; //商家店铺地址
+        $tel = $yuding['tel']; //商家店铺联系电话
+        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.".地址:".$address.".美食热线:".$tel.".欢迎莅临品鉴，全体员工恭候您的光临！";
+        return $info = [
+            'phone' =>$yuding['iphone'],
+            'message' => $message
+        ];
+    }
+
+    //获取酒店hotel预定通知短信模板信息
+    public function getHotelInfo($id){
+        $yuding = Db::table('ns_hotel_yuding')->alias('g')->field('g.*,m.names,m.address,m.tel')
+        ->join('ns_shop_message m','g.business_id = m.userid','left')->where('g.id',$id)->find();
         $times = date('m月d日 H:i',strtotime($yuding['time'])); //预定的时间
         $names = '【'.$yuding['names'].'】'; //商家店铺名
         $address = $yuding['address']; //商家店铺地址
