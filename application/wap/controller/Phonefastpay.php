@@ -16,6 +16,7 @@
 namespace app\wap\controller;
 use think\Cache;
 use think\Cookie;
+use think\Db;
 use data\service\IpsPhoneFastpaySubmit as IpsPhoneFastpaySubmit;
 use data\service\EasyPayment as EasyPayment;
 use data\service\IpsPayNotify as IpsPayNotify;
@@ -147,9 +148,14 @@ class Phonefastpay extends BaseController
 		        //处理分账
 		        $HandleOrder = new HandleOrder();
 		        $HandleOrder->handle($out_trade_no);
-		        $business_id = Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id');
-		        $alias = 'business_id_'.$business_id;
-		        $HandleOrder->push($alias, '您有新的预定消息！');
+		        $paymentInfo = Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->find();
+		        $alias = 'business_id_'.$paymentInfo['business_id'];
+		        if($paymentInfo['type'] == 5){ //扫码付款
+		        	$type = 'pay';
+		        }elseif($paymentInfo['type'] == 6){ //线下预定
+		        	$type = 'order';
+		        }
+		        $HandleOrder->push($alias, '您有新的预定消息！', $type);
 		       
 		    }elseif($status == "N")
 		    {

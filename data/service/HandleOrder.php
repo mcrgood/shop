@@ -137,7 +137,7 @@ class HandleOrder{
         }
     }
 
-    public function push($alias, $content)
+    public function push($alias, $content, $type)
     {
         $base64 = base64_encode('4ece8060cfa56578b4d5d12c:4dea9e51358dd1efd960e503');
         $header = array("Authorization:Basic $base64", "Content-Type:application/json");
@@ -146,6 +146,7 @@ class HandleOrder{
         $data['audience']['alias'] = [$alias];
         $data['notification']['android']['alert'] = $content;
         $data['message']['msg_content'] = $content;
+        $data['message']['extras'] = ['type'=>$type];
         $param = json_encode($data);
         $res = $this->postCon('https://api.jpush.cn/v3/push', $param, $header);
         return $res;
