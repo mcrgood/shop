@@ -916,8 +916,17 @@ class Business extends BaseService{
         ];
     }
 
+    //添加预定会员到商家的会员列表中
+    public static function add_business_member($uid, $business_id){
+        $where['uid'] = $uid;
+        $where['business_id'] = $business_id;
+        $row = Db::table('ns_business_member')->where($where)->find();
+        if(!$row){
+            $where['create_time'] = time();
+            Db::table('ns_business_member')->insert($where);
+        }
+    }
 
-    
 
 
 

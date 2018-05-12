@@ -1554,6 +1554,7 @@ class Myhome extends Controller
         if($ids == 0){
             $this->error('页面过期，请重新提交',__URL(__URL__ . '/wap/dingwei/index'));
         }
+        Business::add_business_member($this->uid, $ids);  //将预定会员添加到商家会员列表中
         $names = db("ns_shop_message")->where("id",$ids)->value("names"); //查询店铺名称
         $cateid = db("ns_shop_menu")->where("userid",$ids)->column("cateid");//得到关联分类id
         $where['listid'] = ['in',$cateid];

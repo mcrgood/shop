@@ -289,11 +289,13 @@ class Myhome extends BaseController
         return json($res);
     }
 
-
     //测试
     public function test(){
         return view($this->style . 'Myhome/test');
     }
+
+
+
 
    
 
