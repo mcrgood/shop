@@ -39,7 +39,7 @@ class HandleOrder{
                 ->alias('p')
                 ->join('ns_member_recharge m','p.type_alis_id = m.id','left')
                 ->where('p.out_trade_no',$out_trade_no)
-                ->value('uid');
+                ->value('m.uid');
             }elseif($payInfo['type'] == '6'){ //线下预定消费
                 $uid = $payInfo['uid'];
             }

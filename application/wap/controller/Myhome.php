@@ -504,7 +504,7 @@ class Myhome extends Controller
         return view($this->style . 'Myhome/findpasswd');
     }
     //商家账单营收页面
-    public function yingshou(){
+    public function yingshou(){    
         // dump(base64_encode('kww_mall39'));die;
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
