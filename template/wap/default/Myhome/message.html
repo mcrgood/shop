@@ -143,7 +143,7 @@
 						<button class="dingdan" onclick="jumpDetails({$v.id},1)">订单详情</button>
 						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
 						<input type="hidden" value="{$v.iphone}" class="iphone"/>
-							<button class="agree">确定</button>
+							<button class="agree">接受</button>
 						<input type="hidden" value="{$v.id}" class="id"/>
 						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
 							<span class="is_agree">已发送</span>

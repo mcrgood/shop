@@ -505,12 +505,13 @@ class Myhome extends Controller
     }
     //商家账单营收页面
     public function yingshou(){
+        // dump(base64_encode('kww_mall39'));die;
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
         $HandleOrder = new HandleOrder();
         $HandleOrder->transfer_again($business_id); //调用再次分账方法
         $condition['pay_status'] = 1; //pay_status=1 是已付款状态
-        $condition['type'] = 5; //type=5是扫码付款状态
+        $condition['type'] = ['in',[5,6]]; //type=5是扫码付款状态 6是线下预定
         $condition['business_id'] = $business_id;
         $condition['business_money'] = ['>',0];
         $today_start_time = strtotime(date('Y-m-d')); //今天开始的时间戳
