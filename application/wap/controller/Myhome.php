@@ -539,9 +539,8 @@ class Myhome extends Controller
         }
 
         $business = new Business();
-        $cate_name = $business->getCateName($business_id); //通过商家ID获取所属经营分类名称
-        $count = $business->getMsgStatus($cate_name, $business_id); //通过分类名称获取该商家是否有未读的最新预定消息
-        $this->assign('count', $count);
+        $count = $business->getMsgStatus($business_id); //通过分类名称获取该商家是否有未读的最新预定消息
+        $this->assign('count', $count['count']);
         return view($this->style . 'Myhome/yingshou');
     }
     //隐藏页面

@@ -272,6 +272,23 @@ class Myhome extends BaseController
         return json($res);
     }
 
+    //获取商家是否有未读的预定消息
+    public function getMsgCount(){
+        $business_id = isset($_POST['business_id'])? $_POST['business_id'] :'';
+        $signature = isset($_POST['signature'])? $_POST['signature'] :'';
+        $sign = $this->prefix.$business_id;
+        if($sign == base64_decode($signature)){
+            $business = new Business();
+            $res = $business->getMsgStatus($business_id);
+        }else{
+            $res = [
+                'code' => 0,
+                'msg' =>'签名错误，禁止访问！'
+            ];
+        }
+        return json($res);
+    }
+
 
     //测试
     public function test(){

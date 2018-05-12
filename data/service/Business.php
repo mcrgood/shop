@@ -377,7 +377,8 @@ class Business extends BaseService{
         return $cate_name;
     }
     //获取商家是否有未读的预定消息
-    public function getMsgStatus($cate_name, $business_id){
+    public function getMsgStatus($business_id){
+        $cate_name = $this->getCateName($business_id);
         if($cate_name == 'goods'){ //餐饮
             $count = Db::table('ns_goods_yuding')
             ->alias('a')->join('ns_order_payment b','a.sid = b.out_trade_no','left')
@@ -399,7 +400,10 @@ class Business extends BaseService{
             ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
             ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
         }
-        return $count;
+       return $info = [
+           'code'=>1, 
+           'count'=>$count
+        ];
     }
 
     //获取餐饮订单详情
@@ -911,6 +915,7 @@ class Business extends BaseService{
             'message' => $message
         ];
     }
+
 
     
 
