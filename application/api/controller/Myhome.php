@@ -254,6 +254,24 @@ class Myhome extends BaseController
         return json($res);
     }
 
+    //商家自动或手动发消息给预定会员API
+    public function sendMsgSms(){
+        $id = isset($_POST['id'])? $_POST['id'] :'';
+        $cate_name = isset($_POST['cate_name'])? $_POST['cate_name'] :'';
+        $signature = isset($_POST['signature'])? $_POST['signature'] :'';
+        $sign = $this->prefix.$id;
+        if($sign == base64_decode($signature)){
+            $business = new Business();
+            $res = $business->sendMsg($cate_name, $id);
+        }else{
+            $res = [
+                'status' => -3,
+                'message' =>'签名错误，禁止访问！'
+            ];
+        }
+        return json($res);
+    }
+
 
     //测试
     public function test(){

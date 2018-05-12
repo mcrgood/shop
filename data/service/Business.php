@@ -784,6 +784,12 @@ class Business extends BaseService{
            $info = $this->getGoodsInfo($id);
         }elseif($cate_name == 'hotel'){
            $info = $this->getHotelInfo($id);
+        }elseif($cate_name == 'KTV'){
+           $info = $this->getKtvInfo($id);
+        }elseif($cate_name == 'health'){
+           $info = $this->getHealthInfo($id);
+        }elseif($cate_name == 'scenic'){
+           $info = $this->getScenicInfo($id);
         }
         if($info){
             $clapi  = new ChuanglanSmsApi();
@@ -793,6 +799,14 @@ class Business extends BaseService{
                 if(isset($output['code'])  && $output['code']=='0'){
                     if($cate_name == 'goods'){
                         Db::table('ns_goods_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
+                    }elseif($cate_name == 'hotel'){
+                        Db::table('ns_hotel_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
+                    }elseif($cate_name == 'KTV'){
+                        Db::table('ns_ktv_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
+                    }elseif($cate_name == 'health'){
+                        Db::table('ns_health_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
+                    }elseif($cate_name == 'scenic'){
+                        Db::table('ns_scenic_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
                     }
                     return $result = [
                         'status' => 0,
@@ -813,7 +827,7 @@ class Business extends BaseService{
         }else{
             return $result = [
                 'status' => -2,
-                'message' => "对不起，操作失败，请刷新重试！"
+                'message' => "对不起，参数错误，请刷新重试！"
             ];
         }
     }
@@ -842,16 +856,63 @@ class Business extends BaseService{
     public function getHotelInfo($id){
         $yuding = Db::table('ns_hotel_yuding')->alias('g')->field('g.*,m.names,m.address,m.tel')
         ->join('ns_shop_message m','g.business_id = m.userid','left')->where('g.id',$id)->find();
-        $times = date('m月d日 H:i',strtotime($yuding['time'])); //预定的时间
+        $times = $yuding['startDate']; //预定的时间
         $names = '【'.$yuding['names'].'】'; //商家店铺名
         $address = $yuding['address']; //商家店铺地址
         $tel = $yuding['tel']; //商家店铺联系电话
-        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.".地址:".$address.".美食热线:".$tel.".欢迎莅临品鉴，全体员工恭候您的光临！";
+        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.".地址:".$address.".酒店热线:".$tel.".恭候您的光临！";
         return $info = [
-            'phone' =>$yuding['iphone'],
+            'phone' =>$yuding['phone'],
             'message' => $message
         ];
     }
+
+      //获取KTV预定通知短信模板信息
+    public function getKtvInfo($id){
+        $yuding = Db::table('ns_ktv_yuding')->alias('g')->field('g.*,m.names,m.address,m.tel')
+        ->join('ns_shop_message m','g.business_id = m.userid','left')->where('g.id',$id)->find();
+        $times = $yuding['dateTime']; //预定的时间
+        $names = '【'.$yuding['names'].'】'; //商家店铺名
+        $address = $yuding['address']; //商家店铺地址
+        $tel = $yuding['tel']; //商家店铺联系电话
+        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.",".$yuding['room_type']."(".$yuding['business_hours'].")".".地址:".$address.".KTV热线:".$tel.".恭候您的光临！";
+        return $info = [
+            'phone' =>$yuding['phone'],
+            'message' => $message
+        ];
+    }
+
+    //获取养生预定通知短信模板信息
+    public function getHealthInfo($id){
+        $yuding = Db::table('ns_health_yuding')->alias('g')->field('g.*,m.names,m.address,m.tel')
+        ->join('ns_shop_message m','g.business_id = m.userid','left')->where('g.id',$id)->find();
+        $times = $yuding['startDate']; //预定的时间
+        $names = '【'.$yuding['names'].'】'; //商家店铺名
+        $address = $yuding['address']; //商家店铺地址
+        $tel = $yuding['tel']; //商家店铺联系电话
+        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names."--".$yuding['room_type'].".地址:".$address.".养生热线:".$tel.".恭候您的光临！";
+        return $info = [
+            'phone' =>$yuding['phone'],
+            'message' => $message
+        ];
+    }
+
+    //获取景点预定通知短信模板信息
+    public function getScenicInfo($id){
+        $yuding = Db::table('ns_scenic_yuding')->alias('g')->field('g.*,m.names,m.address,m.tel')
+        ->join('ns_shop_message m','g.business_id = m.userid','left')->where('g.id',$id)->find();
+        $times = $yuding['startDate']; //预定的时间
+        $names = '【'.$yuding['names'].'】'; //商家店铺名
+        $address = $yuding['address']; //商家店铺地址
+        $tel = $yuding['tel']; //商家店铺联系电话
+        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names."--".$yuding['scenic_type'].".地址:".$address.".景点热线:".$tel.".恭候您的光临！";
+        return $info = [
+            'phone' =>$yuding['phone'],
+            'message' => $message
+        ];
+    }
+
+    
 
 
 
