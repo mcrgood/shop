@@ -848,6 +848,7 @@ class Myhome extends Controller
                     ];
                 }else{
                     $data['out_trade_no'] = $out_trade_no; //订单号 唯一
+                    $data['uid'] = $ordermessage['uid']; //会员uid
                     $data['type'] = 6; //type=6为线下预定消费状态
                     $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
                     $data['pay_body'] = '线下酒店预定消费'; 
@@ -1003,6 +1004,7 @@ class Myhome extends Controller
                 }else{
                     $data['out_trade_no'] = $out_trade_no; //订单号 唯一
                     $data['type'] = 6; //type=6为线下预定消费状态
+                    $data['uid'] = $ordermessage['uid']; //预定会员的uid
                     $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
                     $data['pay_body'] = '线下养生预定消费'; 
                     $data['pay_detail'] = '线下养生预定消费';
@@ -1700,6 +1702,7 @@ class Myhome extends Controller
             }
             else{
                 $data['out_trade_no'] = $sid; //订单号 唯一
+                $data['uid'] = $ordermessage['uid']; // 预定的会员ID 
                 $data['type'] = 6; //type=6为线下预定消费状态
                 $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
                 $data['pay_body'] = '线下餐饮预定消费'; 

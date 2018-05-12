@@ -75,6 +75,7 @@ class CreateKtvOrderModel extends BaseModel {
                 }else{
                     $data['out_trade_no'] = $out_trade_no; //订单号 唯一
                     $data['type'] = 6; //type=6为线下预定消费状态
+                    $data['uid'] = $ordermessage['uid']; //预定会员的uid
                     $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
                     $data['pay_body'] = '线下KTV预定消费'; 
                     $data['pay_detail'] = '线下KTV预定消费';
