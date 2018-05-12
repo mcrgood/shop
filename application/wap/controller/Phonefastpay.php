@@ -147,6 +147,9 @@ class Phonefastpay extends BaseController
 		        //处理分账
 		        $HandleOrder = new HandleOrder();
 		        $HandleOrder->handle($out_trade_no);
+		        $business_id = Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id');
+		        $alias = 'business_id_'.$business_id;
+		        $HandleOrder->push($alias, '您有新的预定消息！');
 		       
 		    }elseif($status == "N")
 		    {

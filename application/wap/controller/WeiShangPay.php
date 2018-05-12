@@ -18,6 +18,7 @@ use think\Controller;
 use data\service\WxPaySubmit as WxPaySubmit;
 use data\service\WxPayNotify as WxPayNotify;
 use data\service\HandleOrder as HandleOrder;
+use think\Db;
 /**
  * 微商支付
  * 创建人：屈华俊
@@ -138,6 +139,9 @@ class WeiShangPay extends BaseController
 		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
 		    	$HandleOrder = new HandleOrder();
 		        $HandleOrder->handle($out_trade_no);
+		        $business_id = Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->value('business_id');
+		        $alias = 'business_id_'.$business_id;
+		        $HandleOrder->push($alias, '您有新的预定消息！');
 		        $message = "支付成功";
 		        
 		    }elseif($status == "N")

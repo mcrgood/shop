@@ -136,4 +136,35 @@ class HandleOrder{
             }
         }
     }
+
+    public function push($alias, $content)
+    {
+        $base64 = base64_encode('4ece8060cfa56578b4d5d12c:4dea9e51358dd1efd960e503');
+        $header = array("Authorization:Basic $base64", "Content-Type:application/json");
+        $data = array();
+        $data['platform'] = ['android'];
+        $data['audience']['alias'] = [$alias];
+        $data['notification']['android']['alert'] = $content;
+        $data['message']['msg_content'] = $content;
+        $param = json_encode($data);
+        $res = $this->postCon('https://api.jpush.cn/v3/push', $param, $header);
+        return $res;
+    }
+
+    public function postCon($url = '', $data = array(), $header)
+    {
+            if (!$url) return null;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+            $output = curl_exec($ch);
+            curl_close($ch);
+            return $output;
+    }
 }
