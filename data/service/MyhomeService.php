@@ -213,4 +213,52 @@ class MyhomeService extends BaseService{
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         return $result;
     }
+
+    public static function seatAdd($postData){
+        if($postData['id']){
+            $where['seatid'] = ['<>',$postData['id']];
+        }
+        $where['shopid'] =$postData['shopid'];
+        $where['seatname'] =$postData['seatname'];
+        $have = Db::table('ns_shop_seat')->where($where)->find();
+        if($have){
+            return $info = [
+                'status' =>0,
+                'msg' =>'此类型已存在，不能重复！'
+            ];
+        }
+            $data['seatnum'] = $postData['seatnum'];
+            $data['seatname'] = $postData['seatname'];
+            $data['seatimg'] = $postData['seatimg'];
+        if($postData['id']){ //修改
+            $res = Db::table('ns_shop_seat')->where('seatid',$postData['id'])->update($data);
+            if($res){
+                $info = [
+                    'status' =>1,
+                    'msg' =>'修改成功！'
+                ];
+            }else{
+                 $info = [
+                    'status' =>0,
+                    'msg' =>'修改失败！'
+                ];
+            }
+        }else{// 新增
+            $data['shopid'] = $postData['shopid'];
+            $res = Db::table('ns_shop_seat')->insertGetId($data);
+            if($res){
+                $info = [
+                    'status' =>1,
+                    'msg' =>'新增成功！'
+                ];
+            }else{
+                 $info = [
+                    'status' =>0,
+                    'msg' =>'新增失败！'
+                ];
+            }
+        }
+        return $info;
+
+    }
 }

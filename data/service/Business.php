@@ -142,16 +142,43 @@ class Business extends BaseService{
     }
     //旺旺币设置修改
     public function wwbSetModify($business_id, $msg_status, $business_status, $ratio, $gold){
-       $data['msg_status'] = $msg_status;
-       $data['business_status'] = $business_status;
-       $data['ratio'] = $ratio;
-       $data['gold'] = $gold;
-       $res = Db::table('ns_wwb')->where('userid',$business_id)->update($data);
-       if($res){
-            $info = ['code'=>1, 'msg'=> '修改成功！'];
-       }else{
-            $info = ['code'=>0, 'msg'=> '修改失败！'];
-       }
+        $row = Db::table('ns_wwb')->where('userid',$business_id)->find();
+           $data['msg_status'] = $msg_status;
+           $data['business_status'] = $business_status;
+           $data['ratio'] = $ratio;
+           $data['gold'] = $gold;
+        if(!$row){ //先新增
+            $data['userid'] = $business_id;
+            $data['create_time'] = time();
+            $data['first_ratio'] = $ratio;
+            $res = db('ns_wwb')->insertGetId($data);
+            if($res){
+                $info = ['code'=>1, 'msg'=> '新增设置成功！'];
+           }else{
+                $info = ['code'=>0, 'msg'=> '新增设置失败！'];
+           }
+        }else{ //修改
+           if($row['first_ratio'] > $ratio){
+                $info = [
+                    'code' =>0,
+                    'msg' => '您修改的比例不能低于首次设置的比例！'
+                ];
+           }elseif($msg_status == $row['msg_status'] && $business_status == $row['business_status'] && $ratio == $row['ratio'] && $gold == $row['gold']){
+                 $info = [
+                    'status' =>0,
+                    'msg' => '您未做任何修改！'
+                ];
+           }else{
+                $res = Db::table('ns_wwb')->where('userid',$business_id)->update($data);
+               if($res){
+                    $info = ['code'=>1, 'msg'=> '修改成功！'];
+               }else{
+                    $info = ['code'=>0, 'msg'=> '修改失败！'];
+               }
+           } 
+          
+        }
+       
        return $info;
     }
     //商家包厢信息

@@ -28,7 +28,7 @@
 		</dd>
 	</dl>
 	<dl>
-		<dt><span class="color-red">*</span>商品详情图片:</dt>
+		<dt><span class="color-red"></span>商品详情图片:</dt>
 		<button type="button" class="layui-btn" id="test2" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
         </button>
 	</dl>
@@ -45,9 +45,9 @@
 		var seatimg = $("#seatimg").attr('src');
 		var seatname = $("#seatname").val();
 		var seatnum = $("#seatnum").val();
-		var did = $(".hidden").val();
+		var id = $(".hidden").val();
 		var url = "{:url('Myhome/seatadd')}";
-		var data = {"seatimg":seatimg,"seatname":seatname,"seatnum":seatnum,"did":did,"shopid":shopid};
+		var data = {"seatimg":seatimg,"seatname":seatname,"seatnum":seatnum,"id":id,"shopid":shopid};
 		$.post(url,data,function(res){
 			if(res.status==1){
                 layer.msg(res.msg,{time:1000,icon:6});
@@ -55,7 +55,7 @@
                     location.href="{:url('Myhome/seat')}?shopid="+shopid;
                 },1000);
 			}else{
-				layer.msg(res.msg,{time:2000,icon:5});
+				layer.msg(res.msg,{time:1200,icon:5});
 			}
 		},'json')
 	})

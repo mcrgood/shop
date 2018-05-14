@@ -1047,58 +1047,9 @@ class Myhome extends BaseController
 	}
 	public function seatadd(){
 		if(request()->isAjax()){
-			$row = input('param.');
-			if(!$row){
-				$this->error("没有获取到用户信息");
-			}else{
-				$data['seatname'] = $row['seatname'];
-				$data['seatimg'] = str_replace("\\","/",$row['seatimg']);
-				$data['seatnum'] = $row['seatnum'];
-				$data['shopid'] = $row['shopid'];
-				if(!$row['seatname']||!$row['seatnum']){
-					$res = [
-						'status' => 0,
-						'msg' =>'请填写完整信息'
-					];
-				}else{
-					$have = db("ns_shop_seat")->where("seatname",$row['seatname'])->find();
-					if($have){
-						$res = [
-							'status' => 0,
-							'msg' =>'已存在,不能重复添加'
-						];
-					}else{
-						if($row['did']){
-							$editid = db("ns_shop_seat")->where("seatid",$row['did'])->update($data);
-							if($editid){
-								$res = [
-									'status' => 1,
-									'msg' =>'修改成功'
-								];
-							}else{
-								$res = [
-									'status' => 0,
-									'msg' =>'修改失败'
-								];
-							}
-						}else{
-							$id = db("ns_shop_seat")->insertGetId($data);
-							if($id){
-								$res = [
-									'status' => 1,
-									'msg' =>'新增成功'
-								];
-							}else{
-								$res = [
-									'status' => 0,
-									'msg' =>'新增失败'
-								];
-							}
-						}
-					}
-				}
-			}
-			return $res;
+			$postData = input('post.');
+			$res = MyhomeService::seatAdd($postData);
+			return json($res);
 		}else{
 			$seatid = input('param.seatid');
 			if($seatid){
