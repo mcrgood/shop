@@ -16,7 +16,7 @@
 	<dl>
 		<dt><span class="required"></span>店铺类型：</dt>
 		<dd>
-			<p><input class="input-common"  type="text" name="leixing" value="{if $row.leixing eq 1}餐饮{elseif $row.leixing eq 2}酒店{elseif $row.leixing eq 3}养生{elseif $row.leixing eq 4}KTV{elseif $row.leixing eq 5}汽车{else/}其他{/if}" disabled="disabled"></p>
+			<p><input class="input-common"  type="text" name="leixing" value="{$row.leixing|default=''}" disabled="disabled"></p>
 		</dd>
 	</dl>
 	<dl>
