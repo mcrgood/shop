@@ -876,6 +876,7 @@ class Myhome extends BaseController
             	->join('sys_district d','d.district_id = a.area','left')
             	->where('a.userid',$id)
             	->find();
+            $row['leixing'] = Db::table('ns_consumption')->where('con_cateid',$row['leixing'])->value('con_cate_name');	
             $this->assign("row", $row);
 
 		return view($this->style . "Myhome/registerdetail");
@@ -1455,7 +1456,48 @@ class Myhome extends BaseController
 
 	//其他类型后台列表
 	public function other(){
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $business_id = request()->post('business_id', '');
+            $condition['name'] = ['LIKE',"%".$search_text."%"];
+            $condition['business_id'] = $business_id;
+            $member = new MyhomeService();
+            $list = $member->getOtherList($page_index, $page_size, $condition, $order = '');
+            return $list;
+	    }
 		return view($this->style . 'myhome/other');
+	}
+
+	//添加其他类型里面的商品
+	public function addOther(){
+		return view($this->style . 'myhome/addOther');
+	}
+	//后台店铺的其他分类列表
+	public function other_cate(){
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $search_text = request()->post('search_text', '');
+            $business_id = request()->post('business_id', '');
+            $condition['cate_name'] = ['LIKE',"%".$search_text."%"];
+            $condition['business_id'] = $business_id;
+            $member = new MyhomeService();
+            $list = $member->getOtherCateList($page_index, $page_size, $condition, $order = '');
+            return $list;
+	    }
+		return view($this->style . 'myhome/other_cate');
+	}
+
+	//添加其他类型里面的分类
+	public function addOtherCate(){
+		if (request()->isAjax()) {
+           $postData = input('post.');
+           $res = MyhomeService::addOtherCate($postData);
+           return json($res);
+	    }
+		return view($this->style . 'myhome/addOtherCate');
 	}
 }
 

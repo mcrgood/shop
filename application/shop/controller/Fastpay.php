@@ -17,6 +17,7 @@
 namespace app\shop\controller;
 use think\Cache;
 use think\Cookie;
+use think\Db;
 use data\service\IpsOnlinePayRequest as IpsOnlinePayRequest;
 use data\service\IpsOnlinePayVerify as IpsOnlinePayVerify;
 use data\service\IpsOnlinePayNotify as IpsOnlinePayNotify;
@@ -46,7 +47,11 @@ class Fastpay extends BaseController
                 $data['userType'] = $resArray['body']['userType'];
                 $data['customerCode'] = $resArray['body']['customerCode'];
                 $data['userid'] = $resArray['body']['remark'];
-                db('ns_business_open')->insert($data);
+                $haveOpen = Db::table('ns_business_open')->where('userid',$data['userid'])->find();
+                if(!$haveOpen){
+                    Db::table('ns_business_open')->insert($data);
+                }
+
                 $msg = '开户成功';
             }
             $this->assign('msg',$msg);

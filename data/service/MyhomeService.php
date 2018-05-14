@@ -33,6 +33,8 @@ use data\model\NsMenulist as NsMenulist;
 use data\model\NsseatModel as NsseatModel;
 use data\model\NsHotelList as NsHotelList;
 use data\model\NsHealthList as NsHealthList;
+use data\model\NsOtherList as NsOtherList;
+use data\model\NsOtherCateList as NsOtherCateList;
 
 use data\model\NsKtvList as NsKtvList;
 
@@ -213,7 +215,21 @@ class MyhomeService extends BaseService{
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         return $result;
     }
+    //后台其他类型的列表
+    public function getOtherList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*'){
+        $myhome = new NsOtherList();
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        return $result;
+    }
 
+    //后台其他类型的分类列表
+    public function getOtherCateList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*'){
+        $myhome = new NsOtherCateList();
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        return $result;
+    }
+
+    //后台添加餐饮座位
     public static function seatAdd($postData){
         if($postData['id']){
             $where['seatid'] = ['<>',$postData['id']];
@@ -260,5 +276,10 @@ class MyhomeService extends BaseService{
         }
         return $info;
 
+    }
+
+    //添加其他的分类
+    public function addOtherCate($postData){
+       
     }
 }
