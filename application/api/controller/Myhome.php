@@ -154,11 +154,21 @@ class Myhome extends BaseController
                 $orderDetails = $resArr['body']['orderDetails']['orderDetail'];
                 $totalCount = $resArr['body']['totalCount'];
                 if($totalCount > 0){
-                     $res = [
-                        'code' =>1,
-                        'totalCount' => $totalCount,
-                        'orderDetails' => $orderDetails
-                    ];
+                    if($totalCount == 1){
+                        $list[0] = $orderDetails;
+                        $res = [
+                            'code' =>1,
+                            'totalCount' => $totalCount,
+                            'orderDetails' => $list
+                        ];
+                    }else{
+                        $res = [
+                            'code' =>1,
+                            'totalCount' => $totalCount,
+                            'orderDetails' => $orderDetails
+                        ];
+                    }
+                    
                 }else{
                     $res = [
                         'code' =>1,

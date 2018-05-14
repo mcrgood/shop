@@ -504,7 +504,7 @@ class Myhome extends Controller
         return view($this->style . 'Myhome/findpasswd');
     }
     //商家账单营收页面
-    public function yingshou(){    
+    public function yingshou(){
         // dump(base64_encode('kww_mall39'));die;
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
@@ -710,18 +710,16 @@ class Myhome extends Controller
     }
 
 
-
-    
-
     //预定酒店页面
     public function hotel(){
         if(!$this->uid){
             $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
         }
-        $business_id = input('param.userid',0);
+        $business_id = input('param.userid',0); //商家ID
         if($business_id == 0){
             $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
         }
+        Business::add_business_member($this->uid, $business_id);  //将预定会员添加到商家会员列表中
         $where['business_id'] = $business_id;
         $room_list = db('ns_hotel_room')
         ->alias('h')
@@ -889,6 +887,7 @@ class Myhome extends Controller
         if($business_id == 0){
             $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
         }
+        Business::add_business_member($this->uid, $business_id);  //将预定会员添加到商家会员列表中
         $where['business_id'] = $business_id;
         $list = db("ns_health_room")->alias("a")->join('ns_shop_message m','a.business_id=m.userid','left')->where($where)->field("a.*,m.address")->select();
         foreach ($list as $k => $v) {
@@ -1782,6 +1781,7 @@ class Myhome extends Controller
         if($business_id == 0){
             $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
         }
+        Business::add_business_member($this->uid, $business_id);  //将预定会员添加到商家会员列表中
         for($i = 0; $i < 7; $i++){ //获取未来一周的日期和星期几
             $dateList[$i]['dates'] = date('m月d日', strtotime('+'.$i.' day'));
             $dateList[$i]['dateTime'] = date('Y-m-d', strtotime('+'.$i.' day'));
@@ -1900,7 +1900,11 @@ class Myhome extends Controller
         if(!$this->uid){
             $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
         }
-        $userid = input("param.userid");
+        $userid = input("param.userid",0);
+        if($userid == 0){
+            $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
+        }
+        Business::add_business_member($this->uid, $userid);  //将预定会员添加到商家会员列表中
         $list = Db::table("ns_scenicspot_room")->alias('a')->join("ns_shop_message m","a.business_id=m.userid",'left')->field("a.*,m.names")->where("business_id",$userid)->select();
         foreach ($list as $k => $v) {
             $listimg[$k] = $v['scenic_img'];

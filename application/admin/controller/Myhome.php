@@ -1452,5 +1452,10 @@ class Myhome extends BaseController
 			return json($info);
 		}
 	}
+
+	//其他类型后台列表
+	public function other(){
+		return view($this->style . 'myhome/other');
+	}
 }
 
