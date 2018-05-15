@@ -121,6 +121,8 @@ class Business extends BaseService{
             $list = $this->getHealthMsg($business_id, $search_input, $type, $page);//获取该商家养生的预定消息
         }elseif($cate_name == 'scenic'){
             $list = $this->getScenicMsg($business_id, $search_input, $type, $page);//获取该商家养生的预定消息
+        }elseif($cate_name == 'other'){
+            $list = $this->getOtherMsg($business_id, $search_input, $type, $page);//获取该商家养生的预定消息
         }
 
         if($list){
@@ -358,12 +360,11 @@ class Business extends BaseService{
         return $list;  
     }
 
-    
-
-    public function getHealthMsg($business_id, $search_input = '', $type = '', $page =1){
+    //获取其他商家预定消息通知
+    public function getOtherMsg($business_id, $search_input = '', $type = '', $page = 1){
         $map['m.userid'] = $business_id;
         $map['p.pay_status'] = 1;
-        db("ns_health_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
+        Db::table("ns_other_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
         if($search_input){
             $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
         }
@@ -372,7 +373,44 @@ class Business extends BaseService{
             $endTime = strtotime(date('Y-m-d'))+86400;
             $map['a.create_time'] = ['between',[$startTime,$endTime]];
         }
-        $list = db('ns_health_yuding')
+        $list = Db::table('ns_other_yuding')
+        ->field('a.goods_name,a.times, a.id,a.uid,a.name,a.phone,a.is_msg_send,a.create_time, m.names as shop_name,w.msg_status')
+        ->alias('a')
+        ->join('ns_shop_message m','a.business_id=m.userid','left')
+        ->join('ns_wwb w','w.userid = m.userid','left')
+        ->join('ns_order_payment p','p.out_trade_no = a.out_trade_no','left')
+        ->order('a.create_time desc')
+        ->where($map)
+        ->limit(($page-1)*20,20)
+        ->select();
+        if($list){
+            foreach($list as $k => $v){
+                if(date('Y-m-d',$v['create_time']) == date('Y-m-d')){
+                    $list[$k]['create_time'] = '今天'.date('H:i',$v['create_time']);
+                }else{
+                    $list[$k]['create_time'] = date('Y-m-d',$v['create_time']);
+                }
+                $list[$k]['times'] = date('Y-m-d H:i',strtotime($v['times']));
+            }
+        }
+        return $list;  
+    }
+
+    
+
+    public function getHealthMsg($business_id, $search_input = '', $type = '', $page =1){
+        $map['m.userid'] = $business_id;
+        $map['p.pay_status'] = 1;
+        Db::table("ns_health_yuding")->alias('g')->join('ns_shop_message m','m.userid=g.business_id','left')->join('ns_order_payment p','p.out_trade_no = g.out_trade_no','left')->where($map)->update(["status"=>1]); //把消息状态修改成已读
+        if($search_input){
+            $map['a.name|a.phone'] = ['like',"%".$search_input."%"];
+        }
+        if($type == 'new'){
+            $startTime = strtotime(date('Y-m-d'))-86400*15;
+            $endTime = strtotime(date('Y-m-d'))+86400;
+            $map['a.create_time'] = ['between',[$startTime,$endTime]];
+        }
+        $list = Db::table('ns_health_yuding')
         ->field('a.id, a.startDate, a.uid,a.name,a.phone, a.create_time,a.is_msg_send,a.room_type,m.names as shop_name,w.msg_status')
         ->alias('a')
         ->join('ns_shop_message m','a.business_id=m.userid','left')
@@ -396,7 +434,7 @@ class Business extends BaseService{
 
         //获取该商家所属的经营类型名称
     public function getCateName($business_id){
-        $cate_name = db('ns_shop_message')
+        $cate_name = Db::table('ns_shop_message')
         ->alias('a')
         ->join('ns_consumption b','a.leixing = b.con_cateid','left')
         ->where('a.userid',$business_id)
@@ -426,6 +464,10 @@ class Business extends BaseService{
             $count = Db::table('ns_scenic_yuding')
             ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
             ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
+        }elseif($cate_name == 'other'){
+            $count = Db::table('ns_other_yuding')
+            ->alias('a')->join('ns_order_payment b','a.out_trade_no = b.out_trade_no','left')
+            ->where(['a.business_id'=>$business_id, 'a.status'=>0, 'b.pay_status'=>1])->count();
         }
        return $info = [
            'code'=>1, 
@@ -435,7 +477,7 @@ class Business extends BaseService{
 
     //获取餐饮订单详情
     public function getGoodsDetails($id){
-        $row = db('ns_goods_yuding')
+        $row = Db::table('ns_goods_yuding')
         ->alias('a')
         ->field('a.name,a.iphone,a.message,a.id,b.pay_type,b.pay_money,a.goodsname,a.goodsnum,a.goodsprice,a.sid,b.pay_time,a.num')
         ->join('ns_order_payment b','b.out_trade_no = a.sid','left')
@@ -611,6 +653,44 @@ class Business extends BaseService{
             $info = ['code' => 1, 'data' =>[]];
         }
        
+        return $info;
+    }
+
+        //获取其他订单详情
+    public function getOtherDetails($id){
+        $row = db('ns_other_yuding')
+        ->alias('a')
+        ->field('a.id,b.pay_type,a.remark, b.pay_money, b.pay_time, a.name, a.phone, a.out_trade_no, a.goods_name, a.goods_price, a.goods_num')
+        ->join('ns_order_payment b','b.out_trade_no = a.out_trade_no','left')
+        ->where('a.id',$id)->find();
+        if($row){
+             switch ($row['pay_type']) {
+                case 1:
+                   $row['pay_type'] = '快捷支付';
+                    break;
+                case 5:
+                    $row['pay_type'] = '微信支付';
+                    break;
+            }
+            $row['goods_name'] = explode('|',$row['goods_name']);
+            $row['goods_num'] = explode('|',$row['goods_num']);
+            $row['goods_price'] = explode('|',$row['goods_price']);
+            foreach($row['goods_price'] as $k =>$v){
+                $row['list'][$k] = array_column($row,$k);
+            }
+            foreach($row['list'] as $k =>$v){
+                $row['list'][$k]['goods_name'] = $v[0];
+                $row['list'][$k]['subTotal'] = $v[1];
+                $row['list'][$k]['goods_num'] = $v[2];
+                $row['list'][$k]['goods_price'] = $v[1]/$v[2];
+                unset($row['list'][$k][0], $row['list'][$k][1], $row['list'][$k][2]);
+            }
+            $row['pay_time'] = date('Y-m-d H:i',$row['pay_time']);
+            unset($row['goods_name'], $row['goods_num'], $row['goods_price']);
+            $info = ['code' => 1, 'data' =>$row];
+        }else{
+            $info = ['code' => 1, 'data' =>[]];
+        }
         return $info;
     }
 
@@ -821,6 +901,8 @@ class Business extends BaseService{
            $info = $this->getHealthInfo($id);
         }elseif($cate_name == 'scenic'){
            $info = $this->getScenicInfo($id);
+        }elseif($cate_name == 'other'){
+           $info = $this->getOtherInfo($id);
         }
         if($info){
             $clapi  = new ChuanglanSmsApi();
@@ -838,6 +920,8 @@ class Business extends BaseService{
                         Db::table('ns_health_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
                     }elseif($cate_name == 'scenic'){
                         Db::table('ns_scenic_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
+                    }elseif($cate_name == 'other'){
+                        Db::table('ns_other_yuding')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
                     }
                     return $result = [
                         'status' => 0,
@@ -943,6 +1027,21 @@ class Business extends BaseService{
         ];
     }
 
+    //获取其他预定通知短信模板信息
+    public function getOtherInfo($id){
+        $yuding = Db::table('ns_other_yuding')->alias('g')->field('g.*,m.names,m.address,m.tel')
+        ->join('ns_shop_message m','g.business_id = m.userid','left')->where('g.id',$id)->find();
+        $times = $yuding['times']; //预定的时间
+        $names = '【'.$yuding['names'].'】'; //商家店铺名
+        $address = $yuding['address']; //商家店铺地址
+        $tel = $yuding['tel']; //商家店铺联系电话
+        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.".地址:".$address.".商铺热线:".$tel.".";
+        return $info = [
+            'phone' =>$yuding['phone'],
+            'message' => $message
+        ];
+    }
+
     //添加预定会员到商家的会员列表中
     public static function add_business_member($uid, $business_id){
         $where['uid'] = $uid;
@@ -952,6 +1051,99 @@ class Business extends BaseService{
             $where['create_time'] = time();
             Db::table('ns_business_member')->insert($where);
         }
+    }
+
+     //添加预定会员到商家的会员列表中
+    public static function createOtherOrder($postData){
+       $regs = "/^1[3456789]{1}\d{9}$/";
+       if(!$postData['name_arr'] || !$postData['price_arr'] || !$postData['nums_arr']){
+            $info = [
+                'status' => 0,
+                'msg' => '请选择您需要的商品！'
+            ];
+       }elseif(!$postData['name'] || !$postData['phone'] || !$postData['times']){
+            $info = [
+                'status' => 2,
+                'msg' => '请填写完整预定信息！'
+            ];
+       }elseif(!preg_match($regs, $postData['phone'])){
+            $info = [
+                'status' => 2,
+                'msg' => '请填写正确的手机号！'
+            ];
+       }else{
+            $data['out_trade_no'] = time().rand(100000,999999);
+            $data['create_time'] = time();
+            $data['name'] =$postData['name'];
+            $data['phone'] =$postData['phone'];
+            $data['uid'] =$postData['uid'];
+            $data['times'] =$postData['times'];
+            $data['business_id'] = $postData['business_id'];
+            $data['remark'] = $postData['remark'];
+            $data['goods_name'] = implode('|', $postData['name_arr']);
+            $data['goods_price'] = implode('|', $postData['price_arr']);
+            $data['goods_num'] = implode('|', $postData['nums_arr']);
+            $res = Db::table('ns_other_yuding')->insert($data);
+            if($res){
+                Db::table('sys_user')->where('uid',$postData['uid'])->update(['realname'=>$postData['name']]);
+                $info = [
+                    'status' => 1,
+                    'msg' => '提交订单成功！',
+                    'out_trade_no' => $data['out_trade_no']
+                ];
+            }else{
+                $info = [
+                    'status' => 0,
+                    'msg' => '提交订单失败！'
+                ];
+            }
+       }
+       return $info;
+    }
+
+    public static function otherOrderPay($postData){
+        $totalPrice = $postData['totalPrice'];//总价
+        $out_trade_no = $postData['out_trade_no'];//订单号
+        $have = db("ns_order_payment")->where("out_trade_no",$out_trade_no)->find();
+        $ordermessage = db("ns_other_yuding")->where("out_trade_no",$out_trade_no)->find(); //根据订单号查询订单详情
+        if(!$out_trade_no){
+            $info = ['status' => 0,'msg' => '订单信息有误，请重新提交！'];
+        }elseif($have && $have['pay_status'] == 0){
+            $info = [
+                'status' => 1,
+                'msg' => '此订单已存在，请直接支付！',
+                'out_trade_no' => $out_trade_no,
+                'business_id' => $ordermessage['business_id']
+            ];
+        }elseif($have && $have['pay_status'] == 1){
+            $info = [
+                'status' => 2,
+                'msg' => '此订单已付款完成了！'
+            ];
+        }
+        else{
+            $data['out_trade_no'] = $out_trade_no; //订单号 唯一
+            $data['uid'] = $ordermessage['uid']; // 预定的会员ID 
+            $data['type'] = 6; //type=6为线下预定消费状态
+            $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
+            $data['pay_body'] = '线下其他预定消费'; 
+            $data['pay_detail'] = '线下其他预定消费';
+            $data['create_time'] = time();  //创建时间
+            $data['business_id'] = $ordermessage['business_id']; //商家ID
+            $data['pay_money'] = $totalPrice; // 订单总金额
+            $res = db('ns_order_payment')->insert($data);
+            if($res !== false){
+                $info = [
+                    'status' => 1,
+                    'msg' => '即将跳转付款页面！',
+                    'out_trade_no' => $out_trade_no,
+                    'business_id' => $ordermessage['business_id']
+                ];
+            }else{
+                $info = ['status' => 0,'msg' => '订单信息有误，请重新提交！'];
+            }
+        }
+        return $info;
     }
 
 

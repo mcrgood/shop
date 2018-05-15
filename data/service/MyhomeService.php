@@ -219,6 +219,9 @@ class MyhomeService extends BaseService{
     public function getOtherList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*'){
         $myhome = new NsOtherList();
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        foreach ($result['data'] as $k => $v) {
+            $result['data'][$k]['cate_name'] = Db::table('ns_other_cate')->where('cate_id', $v['cate_id'])->value('cate_name');
+        }
         return $result;
     }
 
@@ -279,7 +282,150 @@ class MyhomeService extends BaseService{
     }
 
     //添加其他的分类
-    public function addOtherCate($postData){
-       
+    public static function addOtherCate($postData){
+       if($postData['cate_id']){
+          $where['cate_id'] = ['<>',$postData['cate_id']];
+       }
+       $where['cate_name'] = $postData['cate_name'];
+       $where['business_id'] = $postData['business_id'];
+       $have = Db::table('ns_other_cate')->where($where)->find();
+       if($have){
+            return $info = [
+                'status' =>0,
+                'msg' =>'此分类名称已存在！'
+            ];
+       }
+       $data['cate_name'] = $postData['cate_name'];
+       $data['business_id'] = $postData['business_id'];
+       if($postData['cate_id']){ //修改
+            $res = Db::table('ns_other_cate')->where('cate_id',$postData['cate_id'])->update($data);
+            if($res){
+                $info = [
+                    'status' =>1,
+                    'msg' =>'修改成功！'
+                ];
+            }else{
+                 $info = [
+                    'status' =>0,
+                    'msg' =>'修改失败！'
+                ];
+            }
+       }else{ //新增
+            $res = Db::table('ns_other_cate')->insert($data);
+             if($res){
+                $info = [
+                    'status' =>1,
+                    'msg' =>'新增成功！'
+                ];
+            }else{
+                 $info = [
+                    'status' =>0,
+                    'msg' =>'新增失败！'
+                ];
+            }
+       }
+       return $info;
+
     }
+
+    public static function delOtherCate($cate_id){
+        $res = Db::table('ns_other_cate')->delete($cate_id);
+        if($res){
+            $info = [
+                    'status' =>1,
+                    'msg' =>'删除成功！'
+                ];
+        }else{
+            $info = [
+                'status' =>0,
+                'msg' =>'删除失败！'
+            ];
+        }
+        return $info;
+    }
+
+    public static function addOtherName($postData){
+       if($postData['id']){
+          $where['id'] = ['<>',$postData['id']];
+       }
+       $where['name'] = $postData['name'];
+       $where['business_id'] = $postData['business_id'];
+       $have = Db::table('ns_other_room')->where($where)->find();
+       if($have){
+            return $info = [
+                'status' =>0,
+                'msg' =>'此商品名称已存在！'
+            ];
+       }
+       $data['name'] = $postData['name'];
+       $data['business_id'] = $postData['business_id'];
+       $data['price'] = $postData['price'];
+       $data['img'] = $postData['img'];
+       $data['cate_id'] = $postData['cate_id'];
+       $data['create_time'] = time();
+       if($postData['id']){ //修改
+            $res = Db::table('ns_other_room')->where('id',$postData['id'])->update($data);
+            if($res){
+                $info = [
+                    'status' =>1,
+                    'msg' =>'修改成功！'
+                ];
+            }else{
+                 $info = [
+                    'status' =>0,
+                    'msg' =>'修改失败！'
+                ];
+            }
+       }else{ //新增
+            $res = Db::table('ns_other_room')->insert($data);
+             if($res){
+                $info = [
+                    'status' =>1,
+                    'msg' =>'新增成功！'
+                ];
+            }else{
+                 $info = [
+                    'status' =>0,
+                    'msg' =>'新增失败！'
+                ];
+            }
+       }
+       return $info;
+    }
+
+    public static function otherStop($id){
+        $status = db('ns_other_room')->where('id',$id)->value('status');
+        if($status == 0){ //
+            $res = db('ns_other_room')->where('id',$id)->update(['status' => 1]); //修改为已住满
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' => '状态更变成功！',
+                    'room_status' => '已定满',
+                    'color' => 'red'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }else{
+            $res = db('ns_other_room')->where('id',$id)->update(['status' => 0]);//修改为可预定
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' => '状态更变成功！',
+                    'room_status' => '可预定',
+                    'color' =>'green'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }
+        return $info;
+    }   
 }

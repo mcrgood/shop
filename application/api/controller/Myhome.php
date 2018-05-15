@@ -117,7 +117,7 @@ class Myhome extends BaseController
         $signature = isset($_POST['signature'])? $_POST['signature'] :''; //签名
         $sign = $this->prefix.$id;
         if($sign == base64_decode($signature)){
-             $business = new Business();
+            $business = new Business();
             if($cate_name == 'goods'){
                 $res = $business->getGoodsDetails($id);
             }elseif($cate_name == 'hotel'){
@@ -128,6 +128,8 @@ class Myhome extends BaseController
                 $res = $business->getHealthDetails($id);
             }elseif($cate_name == 'scenic'){
                 $res = $business->getScenicDetails($id);
+            }elseif($cate_name == 'other'){
+                $res = $business->getOtherDetails($id);
             }
         }else{
              $res = [

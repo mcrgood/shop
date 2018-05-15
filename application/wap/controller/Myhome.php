@@ -655,6 +655,8 @@ class Myhome extends Controller
                 $list = $business->getHealthMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
             }elseif($cate_name == 'scenic'){
                  $list = $business->getScenicMsg($this->business_id, $search_input);//获取景点预定消息
+            }elseif($cate_name == 'other'){
+                 $list = $business->getOtherMsg($this->business_id, $search_input);//获取景点预定消息
             }
 
             if($list){
@@ -675,6 +677,8 @@ class Myhome extends Controller
             $list = $business->getHealthMsg($this->business_id, '', 'new');//获养生的预定消息
         }elseif($cate_name == 'scenic'){
             $list = $business->getScenicMsg($this->business_id, '', 'new');//获取景点预定消息
+        }elseif($cate_name == 'other'){
+            $list = $business->getOtherMsg($this->business_id, '', 'new');//获取其他预定消息
         }
         $this->assign('list',$list);  
         $this->assign('cate_name',$cate_name);  
@@ -706,6 +710,10 @@ class Myhome extends Controller
             $row = $buss->getScenicDetails($id);
             $this->assign('row',$row['data']);
             return view($this->style . 'Myhome/dingdan_scenic');
+        }elseif($type == 6){
+            $row = $buss->getOtherDetails($id);
+            $this->assign('row',$row['data']);
+            return view($this->style . 'Myhome/dingdan_other');
         }
     }
 
@@ -902,6 +910,60 @@ class Myhome extends Controller
         $this->assign('business_id',$business_id);
         return view($this->style . 'Myhome/health');
     }
+
+    //其他页面
+    public function other(){
+        if( request()->isAjax() ){
+            $postData = input('post.');
+            $res = Business::createOtherOrder($postData);
+            return json($res);
+        }
+        if(!$this->uid){
+            $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
+        }
+        $business_id = input('param.userid',0);
+        if($business_id == 0){
+            $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
+        }
+        $row = Db::table('sys_user')->where('uid',$this->uid)->find();
+        $cate_list = Db::table('ns_other_cate')->where('business_id',$business_id)->select();
+        $this->assign('row',$row);
+        $this->assign('cate_list',$cate_list);
+        return view($this->style . 'Myhome/other');
+    }
+
+    //其他预定订单页面
+    public function other_order(){
+        $out_trade_no = input('param.out_trade_no',0);
+        if($out_trade_no == 0){
+            $this->error('参数错误，请重试！',__URL(__URL__ . '/wap/dingwei/index'));
+        }
+        $row = Db::table('ns_other_yuding')->alias('a')->field('a.*,b.names as shop_name')->join('ns_shop_message b','b.userid=a.business_id','left')
+        ->where('out_trade_no',$out_trade_no)->find();
+        $row['create_time'] = date('Y-m-d H:i',$row['create_time']);
+        $row['goods_name'] = explode('|',$row['goods_name']);
+        $row['goods_num'] = explode('|',$row['goods_num']);
+        $row['goods_price'] = explode('|',$row['goods_price']);
+        foreach($row['goods_price'] as $k => $v){
+            $row['list'][$k] = array_column($row,$k);
+        }
+        foreach($row['list'] as $k => $v){
+            $row['list'][$k]['price'] = $v[1]/$v[2];
+        }
+        unset($row['goods_name'],$row['goods_num'], $row['goods_price']);
+        $this->assign('row',$row);
+        return view($this->style . 'Myhome/other_order');
+    }
+
+    //其他类型订单付款处理
+    public function otherOrderPay(){
+        if( request()->isAjax() ){
+            $postData = input('post.');
+            $res = Business::otherOrderPay($postData);
+            return json($res);
+        }
+    }
+    
 
     //预定养生订单
     public function health_order(){
@@ -1572,11 +1634,25 @@ class Myhome extends Controller
         if(request()->isAjax()){
             $id = input("post.cateid");
             $userid = input("post.userid");
-            $userids = db("ns_shop_menu")->where("userid",$userid)->column("userid");//关联菜单表了
+            $userids = Db::table("ns_shop_menu")->where("userid",$userid)->column("userid");//关联菜单表了
             $where['userid'] = ['in',$userids];
             $where['cateid'] = $id;
             $where['status'] = 1;
-            $list = db("ns_shop_menu")->where($where)->select();
+            $list = Db::table("ns_shop_menu")->where($where)->select();
+            if($list){
+                $info = ['status'=>1,'list'=>$list];
+            }else{
+                $info = ['status'=>0,'list'=>'当前分类下无商品'];
+            }
+            return $info;
+        }
+    }
+    //其他类型获取商品信息
+    public function getOtherData(){
+        if(request()->isAjax()){
+            $cateid = input("post.cateid");
+            $userid = input("post.userid");
+            $list = Db::table("ns_other_room")->where(['business_id'=>$userid, 'cate_id'=>$cateid, 'status' =>0])->select();
             if($list){
                 $info = ['status'=>1,'list'=>$list];
             }else{

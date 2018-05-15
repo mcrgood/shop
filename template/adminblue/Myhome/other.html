@@ -1,0 +1,153 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+<script src="__STATIC__/layui/layui.all.js"></script>
+<style>
+.brand_img{
+	width: 168px;
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+}
+.brand_img img{
+	max-width: 100%;
+	max-height: 100%;
+}
+.img{
+	width: 118px;
+	height: 60px;
+}
+</style>
+{/block}
+{block name="main"}
+<div class="options-btn">
+	<button class="btn-common btn-small" onclick="addRoom()" id="addRoom">添加商品</button>
+	<!-- <button class="btn-common btn-small" onclick="addimg()" id="addimg">选座图库</button>  -->
+</div>
+<table class="mytable">
+	<tr>
+		<th width="20%">
+		<form action="" method="get">
+			<input type="text" name="keyword" id = 'search_text' placeholder="类型" class="input-common"/>
+			<input type="button" onclick="searchData()" value="搜索" class="btn-common"/>
+		</form>
+		</th>
+	</tr>
+</table>
+<table class="table-class">
+	<thead>
+		<tr>
+			<th>商品名称</th>
+			<th>单价</th>
+			<th>图片</th>
+			<th>所属分类</th>
+			<th>状态</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+{/block}
+
+{block name="script"}
+	<script type="text/javascript">
+
+	function LoadingInfo(page_index) {
+	var business_id = "{$Request.param.business_id}";
+	var search_text = $("#search_text").val();
+	$.ajax({
+		type : "post",
+		url : "{:__URL('ADMIN_MAIN/myhome/other')}",
+		data : {
+			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text,"business_id":business_id
+		},
+		success : function(data) {
+			console.log(data)
+			var html = '';
+			if (data["data"].length > 0) {
+				for (var i = 0; i < data["data"].length; i++) {
+					html += '<tr align="center">';
+					html += '<td>'+ data["data"][i]["name"] +'</td>'
+					html += '<td>'+ data["data"][i]["price"] +'</td>';
+					if(!data["data"][i]["img"]){
+						html += '<td>暂时未添加图片</td>';
+					}else{
+						html += '<td> <img class="img" src="'+data["data"][i]["img"]+'"> </td>';
+					}
+					html += '<td>'+ data["data"][i]["cate_name"] +'</td>';
+					if(data["data"][i]["status"] == 0){
+						html += '<td><button onclick="roomStop('+data["data"][i]["id"]+',this)"><span style="color:green">可预定</span></button></td>'
+					}else{
+						html += '<td><button onclick="roomStop('+data["data"][i]["id"]+',this)"><span style="color:red">已定满</span></button></td>'
+					}
+					html += '<td>';
+					html += '<a href="{:url("myhome/addOther")}?business_id='+business_id+'&id='+data["data"][i]["id"]+' ">编辑</a>';
+					html += '<a onclick="goodsDel('+data["data"][i]["room_id"]+')"><span style="color:green">删除</span></a>';
+					html += '</td>';
+					html += '</tr>';
+				}
+			} else {
+				html += '<tr align="center"><td colspan="9">暂无符合条件的数据记录</td></tr>';
+			}
+			$(".table-class tbody").html(html);
+			initPageData(data["page_count"],data['data'].length,data['total_count']);
+			$("#pageNumber").html(pagenumShow(jumpNumber,$("#page_count").val(),{$pageshow}));
+		}
+	});
+}
+	// 搜索
+	function searchData(){
+		LoadingInfo(1);
+	}
+
+	function addRoom(){
+		var business_id = "{$Request.param.business_id}";
+		location.href = __URL("ADMIN_MAIN/myhome/addOther?business_id="+business_id);
+	}
+
+	//是否启用或者停用
+	function roomStop(id,obj){
+		var data ={"id":id};
+		var url = "{:url('Myhome/otherStop')}";
+		$.post(url,data,function(res){
+			if(res.code==1){
+				layer.msg(res.msg,{icon:6,time:1000});
+				setTimeout(function(){
+                   $(obj).text(res.room_status);
+                   $(obj).css("color",res.color);
+                },150);
+			}else if(res.code==3){
+				layer.msg(res.msg,{icon:5});
+				setTimeout(function(){
+                   $(obj).text(res.room_status);
+                   $(obj).css("color",res.color);
+                },150);
+			}else{
+				layer.msg(res.msg,{icon:5,time:1000});
+			}
+		},'json')
+	}
+	//删除
+	function goodsDel(room_id){
+		layer.confirm('确认要删除吗？',{
+			btn: ['确定', '取消'],
+            title: "客旺旺提醒您",
+		},function(){
+			var data = {"room_id":room_id};
+			var url = "{:url('Myhome/delRoom')}";
+			$.post(url,data,function(res){
+				if(res.status==1){
+					layer.msg(res.msg,{icon:6,time:1000});
+					setTimeout(function(){
+						LoadingInfo(1);
+                	},150);
+				}else{
+					layer.msg(res.msg,{icon:5,time:1000});
+				}
+			},'json')
+		})
+	}
+</script>
+{/block}
+
+

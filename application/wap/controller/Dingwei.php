@@ -114,7 +114,7 @@ class Dingwei extends BaseController{
     public function catdetail(){
         ob_clean();
 		$id = input('param.id');
-        $info = db('ns_shop_message')
+        $info = Db::table('ns_shop_message')
         ->alias('a')
         ->field('a.*,b.alias_name')
         ->join('ns_consumption b','a.leixing = b.con_cateid','left')
@@ -122,27 +122,31 @@ class Dingwei extends BaseController{
         ->find();
         
         if($info['alias_name'] == 'hotel'){ //酒店
-            $room_list = db("ns_hotel_room")->where("business_id",$id)->select();
+            $room_list = Db::table("ns_hotel_room")->where("business_id",$id)->select();
             $status = $room_list ? '1': '0';
             $type = 1; //酒店=1
         }elseif($info['alias_name'] == 'goods'){ //餐饮
-            $cateids = db("ns_shop_menu")->where("userid",$id)->column("cateid");
+            $cateids = Db::table("ns_shop_menu")->where("userid",$id)->column("cateid");
             $status = $cateids ? '1': '0';
             $type = 2; //餐饮=2
         }elseif($info['alias_name'] == 'health'){ //养生
-            $health = db("ns_health_room")->where("business_id",$id)->select();
+            $health = Db::table("ns_health_room")->where("business_id",$id)->select();
             $status = $health ? '1': '0';
             $type = 3; //养生
         }elseif($info['alias_name'] == 'KTV'){ //KTV
-            $ktv = db("ns_ktv_room")->where("business_id",$id)->select();
+            $ktv = Db::table("ns_ktv_room")->where("business_id",$id)->select();
             $status = $ktv ? '1': '0';
             $type = 5; //KTV=5
         }elseif($info['alias_name'] == 'scenic'){ //景点
-            $health = db("ns_scenicspot_room")->where("business_id",$id)->select();
+            $health = Db::table("ns_scenicspot_room")->where("business_id",$id)->select();
             $status = $health ? '1': '0';
             $type = 4; //景点=4
+        }elseif($info['alias_name'] == 'other'){  //其他
+            $health = Db::table("ns_other_room")->where("business_id",$id)->select();
+            $status = $health ? '1': '0';
+            $type = 6; //其他=4
         }
-		$row = db("ns_shop_message")
+		$row = Db::table("ns_shop_message")
         ->alias('s')
         ->join('ns_wwb w','s.userid = w.userid','LEFT')
         ->where('s.userid',$id)

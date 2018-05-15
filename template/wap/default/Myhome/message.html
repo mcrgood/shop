@@ -224,6 +224,24 @@
 						{/if}
 					</li>
 	             {/volist}
+			{elseif $cate_name eq other /}
+				{volist name="list" id="v"}
+					<li>
+						<div class="inform"><h4>预定通知</h4><span>{$v.create_time}</span></div>
+						<div class="inform_content"><p>{$v.shop_name}&nbsp;预定商品&nbsp;<b style="color:red;">{$v.goods_name}</b><br />预定时间：<b style="color:red;">{$v.times}</b></p></div>
+						<div class="inform_content2"><span>姓名:{$v.name}</span><span style="text-align:right;padding-right:5%;float:right;">联系:{$v.phone}</span></div>
+						<button class="dingdan" onclick="jumpDetails({$v.id},6)">订单详情</button>
+						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
+						<input type="hidden" value="{$v.phone}" class="iphone"/>
+							<button class="agree">确定</button>
+						<input type="hidden" value="{$v.id}" class="id"/>
+						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
+							<span class="is_agree">已发送</span>
+						{elseif $v.msg_status eq 2 AND $v.is_msg_send eq 1 /}
+							<span class="is_agree">已发送</span>
+						{/if}
+					</li>
+	             {/volist}
 			{/if}
                 
 			</ul>
@@ -252,7 +270,6 @@
         	var url = "{:url('Myhome/message')}";
         	var data = {search_input:search_input};
         	$.post(url,data,function(res){
-        		console.log(res);
         		var html = '';
         		if(cate_name == 'goods'){
 	        		if(res.status ==1){
@@ -300,6 +317,16 @@
 	        				html +='<li>';
 	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
 	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定景点&nbsp;<span style="color:red;">'+res["list"][i]["scenic_type"]+'</span><br />使用时间:'+res["list"][i]["startDate"]+'</p></div>';
+	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
+	        				html +='</li>';
+	        			}
+	        		}
+        		}else if(cate_name == 'other'){
+        			if(res.status ==1){
+	        			for(var i=0; i<res.list.length;i++){
+	        				html +='<li>';
+	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
+	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定商品&nbsp;<span style="color:red;">'+res["list"][i]["goods_name"]+'</span><br />预定时间:'+res["list"][i]["times"]+'</p></div>';
 	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
 	        				html +='</li>';
 	        			}

@@ -1,0 +1,55 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+<script src="ADMIN_JS/art_dialog.source.js"></script>
+<script src="ADMIN_JS/iframe_tools.source.js"></script>
+<script src="ADMIN_JS/material_managedialog.js"></script>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__STATIC__/js/ajax_file_upload.js" type="text/javascript"></script>
+<script src="__STATIC__/js/file_upload.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="ADMIN_CSS/defau.css">
+<link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+<style type="text/css">
+.images{margin-left: 188px;width: 413px;height: 211px;}
+.error {padding-left: 5px !important;}
+</style>
+{/block}
+{block name="main"}
+<div class="set-style">
+	<dl>
+		<dt><span class="color-red">*</span>分类名称:</dt>
+		<dd>
+			<input id="cate_name" type="text" placeholder="请填写分类名称" class="input-common" value="{$row.cate_name|default=''}" />
+		</dd>
+	</dl>
+
+	<input type="hidden" class="hidden" value="{$row.cate_id|default=''}">
+	<dl>
+		<dt></dt>
+		<dd><button class="btn-common btn-big">{if $row.room_id eq true}修&nbsp;&nbsp;改{else/}新&nbsp;&nbsp;增{/if}</button></dd>
+	</dl>
+</div>
+<script>
+	$(".btn-big").click(function(){
+		var business_id = "{$Request.param.business_id}";//商家id
+		var cate_name = $("#cate_name").val();
+		var cate_id = $(".hidden").val();
+		var url = "{:url('Myhome/addOtherCate')}";
+		var data = {
+			"business_id":business_id,
+			"cate_name":cate_name,
+			"cate_id":cate_id
+		};
+		$.post(url,data,function(res){
+			if(res.status==1){
+                layer.msg(res.msg,{time:1000,icon:6});
+                setTimeout(function(){
+                    location.href="{:url('Myhome/other_cate')}?business_id="+business_id;
+                },1000);
+			}else{
+				layer.msg(res.msg,{time:2000,icon:5});
+			}
+		},'json')
+	})
+
+</script>
+{/block}

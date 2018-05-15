@@ -20,8 +20,8 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
 <!--列表切换的选项卡-->
 <div class="tab-header">
     <ul>
-        <li class="first-li active">点菜</li>
-        <li class="second-li">包间</li>
+        <li class="first-li active">商品</li>
+        <li class="second-li">信息</li>
         <li class="third-li">评价</li>
     </ul>
 </div>
@@ -29,8 +29,8 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
   <div class="main">
     <div class="left-menu"  id="left">
         <ul>
-            {volist name="list" id="v"}
-                <li value="{$v.listid}" class="lefts"><span>{$v.catename}</span></li>
+            {volist name="cate_list" id="v"}
+                <li value="{$v.cate_id}" class="lefts"><span>{$v.cate_name}</span></li>
             {/volist}
         </ul>
     </div>
@@ -122,22 +122,23 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
     function getList(cateid,userid){
         $.ajax({
             type:"POST",
-            url:"{:url('Myhome/yudingcate')}",
+            url:"{:url('Myhome/getOtherData')}",
             data:{"cateid":cateid,"userid":userid},
             success:function(data){
+                console.log(data)
                 var html = '';
                 if(data.status==1){
                     for(var i = 0; i < data["list"].length; i++){
                         html += '<li>';
-                        html += '<div class="menu-img"><img src="'+data["list"][i]['goodsimg']+'" width="55" height="55"></div>';
+                        html += '<div class="menu-img"><img src="'+data["list"][i]['img']+'" width="55" height="55"></div>';
                         html += '<div class="menu-txt">';
-                        html += '<p class="goodsnamess" style="font-size: 1.2rem;" data-icon="00">'+data["list"][i]['goodsname']+'</p>';
-                        html += '<p style="line-height:4.2rem" class="list2"><b>￥</b><b>'+data["list"][i]['goodsprice']+'</b></p>';
+                        html += '<p class="goodsnamess" style="font-size: 1.2rem;" data-icon="00">'+data["list"][i]['name']+'</p>';
+                        html += '<p style="line-height:4.2rem" class="list2"><b>￥</b><b>'+data["list"][i]['price']+'</b></p>';
                         html += '<div class="btn">';
                         html += '<button class="minus"><strong></strong></button>';
                         html += '<i class="nums">0</i>';
                         html += '<button class="add"><strong></strong></button>';
-                        html += '<i class="price">'+data["list"][i]['goodsprice']+'</i>';
+                        html += '<i class="price">'+data["list"][i]['price']+'</i>';
                         html += '</div>';
                         html += '</div>';
                         html += '</li>';
@@ -150,16 +151,13 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         })
     }
 </script>
-<!-- ajax页面 -->
-
-    <div class="m-box second-content" style="height:94%;"><!--包间-->
+    <div class="m-box second-content" style="height:94%;"><!--预定信息-->
         <div class="bigest">
             <div class="seller"><span>{$names}</span></div>
             <form id="form" class="common">
-                <span>预定姓名:  <input type="text" name="username" id="user" placeholder="请输入姓名" value="{$row.realname}" /></span>
-                <span>预定人数:  <input type="number" name="renshu" id="num" value="" placeholder="请输入预定人数"/></span>
-                <span>预定电话:  <input type="tel" name="dianhua" id="tel" placeholder="请输入手机号" value="{$row.user_name}" /></span>
-            <div class="time">
+                <span>预定姓名:  <input type="text" name="username" id="user" placeholder="请输入姓名" value="{$row.realname|default=''}" /></span>
+                <span>预定电话:  <input type="tel" name="dianhua" id="tel" placeholder="请输入手机号" value="{$row.user_name|default=''}" /></span>
+             <div class="time">
                 <span>预定时间: <input type="test1" id="test5" placeholder="请选择预定时间" /></span>           
             </div>
         <script src="__YUDING__/js/laydate.js"></script>
@@ -173,35 +171,17 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
         })
         </script>   
         <textarea rows="3" cols="50" placeholder="预定备注，可不填" style="outline:none;margin-top:10px;font-size:15px;border:1px solid #cccccc;margin-left:10%;width:80%;" id="message"></textarea>
-        <div class="make">
+       <!--  <div class="make">
             <span>定制包间</span>
             <div id="order_1" onclick="showtext()">可定制 ></div>
-        </div>
-        <div id="hide">
-            <select name="pageselect" id="sele" >
-            <option value="">请选择</option>
-                {volist name="seat_list" id="v"}
-                    <option value="{$v.seatid}" style="font-size:15px;height:30px;text-align:center">{$v.seatname}</option>
-                {/volist}
-            </select>
-        </div>
+        </div> -->
+       
     <script type="text/javascript">
         function showtext(){    
             var mychar = document.getElementById("hide").style.display ="block";   
         };  
     </script>
-    <div class="tuijian">
-        <span>推荐</span>
-        <div class="tj_pic">
-            <ul>
-                {volist name="seat_list" id="v"}
-                {if $v.seatimg eq true}
-                    <li><img width="100%" height="126.56" src="{$v.seatimg}"/></li>
-                {/if}
-                {/volist}
-            </ul>
-        </div>
-    </div>
+   
    <!--  <div class="last">
         <input type="button" value="返回主页" class="first-li" />
     </div> -->
@@ -216,13 +196,11 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
     //ajax提交结算信息
     $("#btnselect").click(function(){
         var uid = "{$row.uid}";
-        var userid = "{$Request.param.userid}";
-        var user = $("#user").val();//预订人姓名
-        var num = $("#num").val();//预定人数
-        var tel = $("#tel").val();//预定电话
-        var message = $("#message").val();//预定要求
-        var test5 = $("#test5").val();//预定时间
-        var xuanzuo = $("#sele").val();//选座
+        var business_id = "{$Request.param.userid}";
+        var name = $("#user").val();//预订人姓名
+        var times = $("#test5").val();//预订时间
+        var phone = $("#tel").val();//预定电话
+        var remark = $("#message").val();//预定要求
         var name_arr = [];
         var price_arr = [];
         var nums_arr = [];
@@ -233,21 +211,30 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
             name_arr[i] =name;
             price_arr[i] =price;
             nums_arr[i] =nums;
-           
         })
-        var data = {"name_arr":name_arr,"price_arr":price_arr,"nums_arr":nums_arr,"userid":userid,"user":user,"num":num,"tel":tel,"test5":test5,"message":message,"uid":uid,"xuanzuo":xuanzuo};
-        var url = "{:url('Myhome/order')}";
+        var data = {
+            "name_arr":name_arr,
+            "price_arr":price_arr,
+            "nums_arr":nums_arr,
+            "uid":uid,
+            "business_id":business_id,
+            "name":name,
+            "phone":phone,
+            "remark":remark,
+            "times":times
+        };
+        var url = "{:url('Myhome/other')}";
         $.post(url,data,function(res){
             if(res.status==1){
-                window.location.href = "{:__URL('APP_MAIN/myhome/order')}?sid="+res.sid;
+                window.location.href = "{:__URL('APP_MAIN/myhome/other_order')}?out_trade_no="+res.out_trade_no;
             }else if(res.status==2){
-                layer.msg(res.msg, {time: 2000});
+                layer.msg(res.msg, {time: 1200});
                 setTimeout(function(){
                     $('.second-li').trigger('click');
-                },2000)
+                },600)
             }
             else{
-                layer.msg(res.msg, {time: 2000});
+                layer.msg(res.msg, {time: 1200});
             }
         },'json')
     }); 

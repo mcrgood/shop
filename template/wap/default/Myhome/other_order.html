@@ -284,37 +284,27 @@ ul{list-style: none}
 	<div class="content_1">
 		<div class="first">
 			<h4>{$row.name}</h4>
-			<span>{$row.iphone}</span>
+			<span>{$row.phone}</span>
 		</div>
 		<div class="second">
-			<span>预定时间：{$row.time}</span>
+			<span>预定时间：{$row.times}</span>
 		</div>
 	</div>
 	<div class="content_2">
 		<div class="content2_1">
-			<span class="area">【{$row.names}】</span>
+			<span class="area">【{$row.shop_name}】</span>
 			<div class="food">
 				<ul id="list">
-				{volist name="list" id="v"}
+				{volist name="$row['list']" id="v"}
 					<li>
-						<img src="{$v.goodsimg}" width="60px" height="60px">
 						<div class="food_menu">
-							<h4>{$v.0}</h4><label>x<em>{$v.1}</em></label>
+							<h4>{$v.0}</h4><label>x<em>{$v.2}</em></label>
 						</div>
 						<div class="food_money">
-						<h5>￥<span>{$v.danjia}<span></h5>
+						<h5>￥<span>{$v.price}<span></h5>
 						</div>
 					</li>
 				{/volist}
-					<li>
-						<!-- <img src="{$v.goodsimg}" width="60px" height="60px"> -->
-						<div class="food_menu">
-							<h4>用餐餐具费</h4><label>x<em>{$row.num}</em>&nbsp;位</label>
-						</div>
-						<div class="food_money">
-						<h5>￥<span>2<span></h5>
-						</div>
-					</li>
 				</ul>
 			</div>
 			<!-- <div class="youhui" id="yhj">
@@ -364,10 +354,10 @@ ul{list-style: none}
         })
         //订单提交ajax
         $("#btnselect").click(function(){
-        	var sid = "{$Request.param.sid}";
+        	var out_trade_no = "{$Request.param.out_trade_no}";
         	var totalPrice = $('#totalpriceshow').text();
-        	var url = "{:url('Myhome/orderPay')}";
-        	var data = {"sid":sid,totalPrice:totalPrice};
+        	var url = "{:url('Myhome/otherOrderPay')}";
+        	var data = {"out_trade_no":out_trade_no,totalPrice:totalPrice};
         	$.post(url,data,function(res){
         		if(res.status == 1){
         			layer.msg(res.msg,{time:1200});
@@ -377,10 +367,10 @@ ul{list-style: none}
         		}else if(res.status == 2){
         			layer.msg(res.msg,{time:1200});
         			setTimeout(function(){
-        				window.location.href = "{:__URL('APP_MAIN/dingwei/index')}";
+        				window.location.href = "{:__URL('APP_MAIN/indexx/indexx')}";
         			},1200)
         		}else{
-        			layer.msg(res.msg,{time:3000});
+        			layer.msg(res.msg,{time:2000});
         		}
         	},'json')
         })

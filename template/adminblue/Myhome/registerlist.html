@@ -89,12 +89,12 @@
 						html += '<a href="{:url("myhome/health")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">养生系统</span></a>';
 					}else if(data["data"][i]["leixing"] == 'KTV'){
 						html += '<a href="{:url("myhome/ktv")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">ktv包厢</span></a>';
-						html += '<a href="{:url("myhome/ktv_hours")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">ktv时间段</span></a>';
+						html += '<a href="{:url("myhome/ktv_hours")}?business_id='+data["data"][i]["userid"]+' "><span style="color:#666666">ktv时间段</span></a>';
 					}else if(data["data"][i]["leixing"] == '景点'){
 						html += '<a href="{:url("myhome/scenicSpot")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">景点系统</span></a>';
 					}else if(data["data"][i]["leixing"] == '其他'){
-						html += '<a href="{:url("myhome/other")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">'+data["data"][i]["business_scope"]+'系统</span></a>';
-						html += '<a href="{:url("myhome/other_cate")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">分类系统</span></a>';
+						html += '<a href="{:url("myhome/other")}?business_id='+data["data"][i]["userid"]+' "><span style="color:purple">商品系统</span></a>';
+						html += '<a href="{:url("myhome/other_cate")}?business_id='+data["data"][i]["userid"]+' "><span style="color:green">分类系统</span></a>';
 					}
 					html += '</td>';
 					html += '</tr>';

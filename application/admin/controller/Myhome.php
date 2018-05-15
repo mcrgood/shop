@@ -1472,6 +1472,17 @@ class Myhome extends BaseController
 
 	//添加其他类型里面的商品
 	public function addOther(){
+		if(request()->isAjax()){
+			$postData = input('post.');
+			$res = MyhomeService::addOtherName($postData);
+            return json($res);
+		}
+		$business_id = input('param.business_id'); //商家ID
+		$id = input('param.id'); //商品主键ID
+		$list = Db::table('ns_other_cate')->where('business_id',$business_id)->select();
+		$row = Db::table('ns_other_room')->where('id',$id)->find();
+		$this->assign('row',$row);
+		$this->assign('list',$list);
 		return view($this->style . 'myhome/addOther');
 	}
 	//后台店铺的其他分类列表
@@ -1497,7 +1508,28 @@ class Myhome extends BaseController
            $res = MyhomeService::addOtherCate($postData);
            return json($res);
 	    }
+	    $cate_id = input('param.cate_id',0);
+	    if($cate_id){
+	    	$row = Db::table('ns_other_cate')->find($cate_id);
+	    	$this->assign('row',$row);
+	    }
 		return view($this->style . 'myhome/addOtherCate');
+	}
+	//删除其他分类
+	public function delOtherCate(){
+		if( request()->isAjax() ){
+			$cate_id = input('post.cate_id');
+			$res = MyhomeService::delOtherCate($cate_id);
+            return json($res);
+		}
+	}
+	//其他类型里面的商品开关停用
+	public function otherStop(){
+		if( request()->isAjax() ){
+			$id = input('post.id');
+			$res = MyhomeService::otherStop($id);
+            return json($res);
+		}
 	}
 }
 
