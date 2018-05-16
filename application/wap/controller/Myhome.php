@@ -587,6 +587,9 @@ class Myhome extends Controller
         }elseif($alias_name == 'scenic'){
             $shop_list = Db::table('ns_scenicspot_room')->where('business_id',$userid)->select();
             $shop_type = $shop_list ? '1': '0' ;
+        }elseif($alias_name == 'other'){
+            $shop_list = Db::table('ns_other_room')->where('business_id',$userid)->select();
+            $shop_type = $shop_list ? '1': '0' ;
         }
         $this->assign("consumption",$consumption);
         $this->assign("shop_type",$shop_type);
@@ -1822,6 +1825,9 @@ class Myhome extends Controller
         }elseif($cate_name == 'scenic'){
             $list = Db::table("ns_scenicspot_room")->where("business_id",$this->business_id)->select();
             $type_name = '景点';
+        }elseif($cate_name == 'other'){
+            $list = Db::table("ns_other_room")->where("business_id",$this->business_id)->select();
+            $type_name = '其他';
         }
         $this->assign("list",$list);
         $this->assign("cate_name",$cate_name);
@@ -1948,6 +1954,15 @@ class Myhome extends Controller
          if(request()->isAjax()){
             $scenic_id = input('post.scenic_id');
             $res = Business::changeScenic($scenic_id);
+            return json($res);
+        }
+    }
+
+     //商家手动开关改变其他类型的预定状态
+    public function changeOtherStatus(){
+         if(request()->isAjax()){
+            $id = input('post.id');
+            $res = Business::changeOther($id);
             return json($res);
         }
     }

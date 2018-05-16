@@ -196,6 +196,8 @@ class Business extends BaseService{
             $list = Db::table("ns_health_room")->field('health_id,room_type,room_status')->where("business_id",$business_id)->select();
         }elseif($cate_name == 'scenic'){
             $list = Db::table("ns_scenicspot_room")->field('scenic_id, scenic_type, scenic_status')->where("business_id",$business_id)->select();
+        }elseif($cate_name == 'other'){
+            $list = Db::table("ns_other_room")->field('id, name, status')->where("business_id",$business_id)->select();
         }
 
         if($list){
@@ -800,6 +802,43 @@ class Business extends BaseService{
         return $info;
     }
 
+    //改变其他预定状态
+    public static function changeOther($id){
+        $status = Db::table('ns_other_room')->where('id',$id)->value('status');
+        if($status == 0){
+            $res = Db::table('ns_other_room')->where('id',$id)->update(['status'=>1]);
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' =>'状态更变成功！',
+                    'status' =>'已定满',
+                    'color' =>'red'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }else{
+            $res = Db::table('ns_other_room')->where('id',$id)->update(['status'=>0]);
+            if($res){
+                $info = [
+                    'code' =>1,
+                    'msg' =>'状态更变成功！',
+                    'status' =>'可预定',
+                    'color' =>'#5FB878'
+                ];
+            }else{
+                $info = [
+                    'code' =>0,
+                    'msg' =>'修改失败，请刷新重试！'
+                ];
+            }
+        }
+        return $info;
+    }
+
     //改变养生预定状态
     public static function changeHealth($health_id){
         $room_status = Db::table('ns_health_room')->where('health_id',$health_id)->value('room_status');
@@ -885,6 +924,8 @@ class Business extends BaseService{
             $res = $this->changeHealth($id);
         }elseif($cate_name == 'scenic'){
             $res = $this->changeScenic($id);
+        }elseif($cate_name == 'other'){
+            $res = $this->changeOther($id);
         }
         return $res;
     }
@@ -1145,6 +1186,8 @@ class Business extends BaseService{
         }
         return $info;
     }
+
+
 
 
 

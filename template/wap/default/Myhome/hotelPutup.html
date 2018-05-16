@@ -147,6 +147,19 @@ body{
                 </div> 
             </li>
          {/volist}
+      {elseif $cate_name eq other/}
+        {volist name="list" id="v"}
+           <li class="lis">
+              <span class="jiudian">{$v.name}</span>
+                <div class="wrap">
+                  {if $v.status eq 0}
+                      <button class="btn" value="{$v.id}" style="background:#5FB878;"onclick="changeOther(this)">可预定</button>
+                  {else if}
+                      <button class="btn" value="{$v.id}" style="background:red;" onclick="changeOther(this)">已定满</button>
+                  {/if}  
+                </div> 
+            </li>
+         {/volist}
       {/if}
   		
   		</ul>
@@ -236,6 +249,23 @@ body{
             if(res.code == 1){
               layer.msg(res.msg, {time: 1200});
               $(obj).text(res.scenic_status);
+              $(obj).css('background',res.color);
+            }else{
+              layer.msg(res.msg, {time: 1200});
+            }
+        },'json')
+      }
+
+      function changeOther(obj){
+        var id = $(obj).val();
+         var data = {
+            "id":id
+         };
+        var url = "{:url('Myhome/changeOtherStatus')}";
+         $.post(url,data,function(res){
+            if(res.code == 1){
+              layer.msg(res.msg, {time: 1200});
+              $(obj).text(res.status);
               $(obj).css('background',res.color);
             }else{
               layer.msg(res.msg, {time: 1200});

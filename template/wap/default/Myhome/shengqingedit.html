@@ -741,7 +741,8 @@
 
                 var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                 var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-
+                $("#jingdu").val(longitude);
+                $("#weidu").val(latitude);
                 jingdu = longitude;
                 weidu = latitude;
                 // layer.msg(jingdu);
@@ -749,7 +750,7 @@
                 var map = new BMap.Map("allmap");
                 // map.enableScrollWheelZoom(true);
                 // map.disableDragging();
-                var point = new BMap.Point(jingdu,weidu);
+                var point = new BMap.Point(jingdu+0.012112,weidu+0.001513);
                 map.centerAndZoom(point,18);
                 var geoc = new BMap.Geocoder();
                 var marker = new BMap.Marker(point);// 创建标注
