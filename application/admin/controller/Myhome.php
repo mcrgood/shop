@@ -1467,7 +1467,7 @@ class Myhome extends BaseController
             $list = $member->getOtherList($page_index, $page_size, $condition, $order = '');
             return $list;
 	    }
-		return view($this->style . 'myhome/other');
+		return view($this->style . 'Myhome/other');
 	}
 
 	//添加其他类型里面的商品
@@ -1483,7 +1483,7 @@ class Myhome extends BaseController
 		$row = Db::table('ns_other_room')->where('id',$id)->find();
 		$this->assign('row',$row);
 		$this->assign('list',$list);
-		return view($this->style . 'myhome/addOther');
+		return view($this->style . 'Myhome/addOther');
 	}
 	//后台店铺的其他分类列表
 	public function other_cate(){
@@ -1498,7 +1498,7 @@ class Myhome extends BaseController
             $list = $member->getOtherCateList($page_index, $page_size, $condition, $order = '');
             return $list;
 	    }
-		return view($this->style . 'myhome/other_cate');
+		return view($this->style . 'Myhome/other_cate');
 	}
 
 	//添加其他类型里面的分类
@@ -1513,7 +1513,7 @@ class Myhome extends BaseController
 	    	$row = Db::table('ns_other_cate')->find($cate_id);
 	    	$this->assign('row',$row);
 	    }
-		return view($this->style . 'myhome/addOtherCate');
+		return view($this->style . 'Myhome/addOtherCate');
 	}
 	//删除其他分类
 	public function delOtherCate(){
