@@ -41,8 +41,8 @@ class Dingwei extends BaseController{
         $jingdu = input('param.jingdu');
         $weidu = input('param.weidu');
         $type = input('param.type',0);  //点击定位以后type会有值
-        $jingdu = $jingdu+'0.012112';
-        $weidu = $weidu+'0.001513';
+        $jingdu = $jingdu+'0.011112';
+        $weidu = $weidu+'0.00187';
         $leixing_id = input('param.leixing_id'); //一级分类ID
         $con_cateid = input('param.con_cateid',0); //二级分类ID
         $page = input('param.page');   //第几页

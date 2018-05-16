@@ -743,8 +743,8 @@
                 var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
                 $("#jingdu").val(longitude);
                 $("#weidu").val(latitude);
-                var jd = parseFloat(longitude+0.012112);
-                var wd = parseFloat(latitude+0.001513);
+                var jd = parseFloat(longitude+0.011112);
+                var wd = parseFloat(latitude+0.00187);
                 var map = new BMap.Map("allmap");
                 // map.enableScrollWheelZoom(true);
                 // map.disableDragging();
@@ -778,7 +778,6 @@
 
             },
             cancel: function (res) {
-
                 var map = new BMap.Map("allmap");
                 // map.enableScrollWheelZoom(true);
                 // map.disableDragging();
