@@ -750,7 +750,7 @@
                 var map = new BMap.Map("allmap");
                 // map.enableScrollWheelZoom(true);
                 // map.disableDragging();
-                var point = new BMap.Point(longitude,latitude);
+                var point = new BMap.Point(longitude+0.012112,latitude+0.001513);
                 map.centerAndZoom(point,18);
                 var geoc = new BMap.Geocoder();
                 var marker = new BMap.Marker(point);// 创建标注

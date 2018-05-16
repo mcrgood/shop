@@ -115,7 +115,7 @@
 	.first-content.active, .second-content.active {
 		display: block;
 	}
-	.agree{width:21%;margin-left:40%;  background-color: #488de3;color: #ffffff;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
+	.agree{width:30%;margin-left:30%;  background-color: #488de3;color: #ffffff;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
 	.is_agree{width:33%; margin-left:40%; color: red;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
 	.dingdan{width:30%;margin-left:3%;outline:none;  background-color: #f73e3e;color: #ffffff;font-size: 0.7rem;border:none;border-radius: 15px;font-weight: bold;margin-top:0.2rem;}
 </style>
@@ -143,7 +143,7 @@
 						<button class="dingdan" onclick="jumpDetails({$v.id},1)">订单详情</button>
 						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
 						<input type="hidden" value="{$v.iphone}" class="iphone"/>
-							<button class="agree">接受</button>
+							<button class="agree">接受订单</button>
 						<input type="hidden" value="{$v.id}" class="id"/>
 						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
 							<span class="is_agree">已发送</span>
@@ -161,7 +161,7 @@
 						<button class="dingdan" onclick="jumpDetails({$v.id},2)">订单详情</button>
 						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
 						<input type="hidden" value="{$v.phone}" class="iphone"/>
-							<button class="agree">确定</button>
+							<button class="agree">接受订单</button>
 						<input type="hidden" value="{$v.id}" class="id"/>
 						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
 							<span class="is_agree">已发送</span>
@@ -179,7 +179,7 @@
 						<button class="dingdan" onclick="jumpDetails({$v.id},3)">订单详情</button>
 						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
 						<input type="hidden" value="{$v.phone}" class="iphone"/>
-							<button class="agree">确定</button>
+							<button class="agree">接受订单</button>
 						<input type="hidden" value="{$v.id}" class="id"/>
 						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
 							<span class="is_agree">已发送</span>
@@ -197,7 +197,7 @@
 						<button class="dingdan" onclick="jumpDetails({$v.id},4)">订单详情</button>
 						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
 						<input type="hidden" value="{$v.phone}" class="iphone"/>
-							<button class="agree">确定</button>
+							<button class="agree">接受订单</button>
 						<input type="hidden" value="{$v.id}" class="id"/>
 						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
 							<span class="is_agree">已发送</span>
@@ -215,7 +215,7 @@
 						<button class="dingdan" onclick="jumpDetails({$v.id},5)">订单详情</button>
 						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
 						<input type="hidden" value="{$v.phone}" class="iphone"/>
-							<button class="agree">确定</button>
+							<button class="agree">接受订单</button>
 						<input type="hidden" value="{$v.id}" class="id"/>
 						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
 							<span class="is_agree">已发送</span>
@@ -233,7 +233,7 @@
 						<button class="dingdan" onclick="jumpDetails({$v.id},6)">订单详情</button>
 						{if $v.msg_status eq 2 AND $v.is_msg_send eq 2}
 						<input type="hidden" value="{$v.phone}" class="iphone"/>
-							<button class="agree">确定</button>
+							<button class="agree">接受订单</button>
 						<input type="hidden" value="{$v.id}" class="id"/>
 						{elseif $v.msg_status eq 1 AND $v.is_msg_send eq 1 /}
 							<span class="is_agree">已发送</span>
