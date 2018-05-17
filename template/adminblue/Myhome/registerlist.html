@@ -22,7 +22,7 @@
 	</th>
 		<th width="20%">
 		<form action="{:url('myhome/registerlist')}" method="get">
-			<input type="text" name="keyword" id = 'search_text' placeholder="账号 / 店铺名称 / 城市" class="input-common"/>
+			<input type="text" name="keyword" id = 'search_text' placeholder="账号 / 店铺名称 / 区、县" class="input-common"/>
 			<input type="button" onclick="searchData()" value="搜索" class="btn-common"/>
 		</form>
 		</th>
@@ -36,7 +36,7 @@
 			<th>店铺类型</th>
 			<th>经营范围</th>
 			<th>店铺名称</th>
-			<th>店铺地址</th>
+			<th>所属区/县</th>
 			<th>店铺电话</th>
 			<th>审核状态</th>
 			<th>操作</th>
@@ -69,7 +69,7 @@
 					html += '<td>'+data["data"][i]["leixing"]+'</td>';
 					html += '<td>'+data["data"][i]["business_scope"]+'</td>';
 					html += '<td>'+ data["data"][i]["names"] +'</td>';
-					html += '<td>'+ data["data"][i]["address"] +'</td>';
+					html += '<td>'+ data["data"][i]["district_name"] +'</td>';
 					html += '<td>'+ data["data"][i]["tel"] +'</td>';
 					if(data["data"][i]["state"]==0 || data["data"][i]["state"]==null){
 						html += '<td style="color:red">正在审核</td>';

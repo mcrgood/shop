@@ -77,6 +77,7 @@ class CreateKtvOrderModel extends BaseModel {
                     $data['type'] = 6; //type=6为线下预定消费状态
                     $data['uid'] = $ordermessage['uid']; //预定会员的uid
                     $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
+                    $data['phone'] = $phone; //预定人手机
                     $data['pay_body'] = '线下KTV预定消费'; 
                     $data['pay_detail'] = '线下KTV预定消费';
                     $data['create_time'] = time();  //创建时间

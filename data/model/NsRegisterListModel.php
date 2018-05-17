@@ -45,7 +45,8 @@ class NsRegisterListModel extends BaseModel {
         //设置查询视图
         $viewObj = $this->alias('a')
         ->join('ns_goods_login s','s.id = a.userid','left')
-        ->field('a.*,s.iphone');
+        ->join('sys_district d','d.district_id = a.area','left')
+        ->field('a.*,s.iphone, d.district_name');
         $list = $this->viewPageQuery($viewObj, $page_index, $page_size, $condition, $order);
         return $list;
     }
@@ -59,7 +60,8 @@ class NsRegisterListModel extends BaseModel {
     {
         $viewObj = $this->alias('a')
         ->join('ns_goods_login s','s.id = a.userid','left')
-        ->field('a.*,s.iphone');
+        ->join('sys_district d','d.district_id = a.area','left')
+        ->field('a.*,s.iphone, d.district_name');
         $count = $this->viewCount($viewObj,$condition);
         return $count;
     }

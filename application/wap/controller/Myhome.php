@@ -860,6 +860,7 @@ class Myhome extends Controller
                     $data['uid'] = $ordermessage['uid']; //会员uid
                     $data['type'] = 6; //type=6为线下预定消费状态
                     $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
+                    $data['phone'] = $phone; //预定人手机
                     $data['pay_body'] = '线下酒店预定消费'; 
                     $data['pay_detail'] = '线下酒店预定消费';
                     $data['create_time'] = time();  //创建时间
@@ -1070,6 +1071,7 @@ class Myhome extends Controller
                     $data['type'] = 6; //type=6为线下预定消费状态
                     $data['uid'] = $ordermessage['uid']; //预定会员的uid
                     $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
+                    $data['phone'] = $phone; //预定人手机
                     $data['pay_body'] = '线下养生预定消费'; 
                     $data['pay_detail'] = '线下养生预定消费';
                     $data['create_time'] = time();  //创建时间
@@ -1454,59 +1456,7 @@ class Myhome extends Controller
     }
 
 
-    //自动发送预定消息
-    public function send_yuding_msg_auto(){
-        if(request()->isAjax()){
-        $iphone = input('post.iphone'); //预定用户的手机号
-        $id = input('post.id'); //预定的信息ID
-        $yuding = db('ns_goods_yuding')
-        ->alias('g')
-        ->field('g.*,m.names,m.address,m.tel,w.msg_status')
-        ->join('ns_shop_message m','g.shop_id = m.userid','left')
-        ->join('ns_wwb w','w.userid = m.userid','left')
-        ->where('g.id',$id)->find();
-        
-        $times = date('m月d日 H:i',strtotime($yuding['time'])); //预定的时间
-        $names = '【'.$yuding['names'].'】'; //商家店铺名
-        $address = $yuding['address']; //商家店铺地址
-        $tel = $yuding['tel']; //商家店铺联系电话
-        $message = "【花儿盛开】尊敬的贵宾您好！".$times."为您预定在".$names.".地址:".$address.".美食热线:".$tel.".欢迎莅临品鉴，全体员工恭候您的光临！";
-            if($iphone && $yuding['msg_status'] == 1){     //msg_status=1   为自动发送短信
-                $clapi  = new ChuanglanSmsApi();
-                $result = $clapi->sendSMS($iphone, $message);
-                if(!is_null(json_decode($result))){
-                    $output=json_decode($result,true);
-                    if(isset($output['code'])  && $output['code']=='0'){
-                        db('ns_goods_reserve')->where('id',$id)->update(['is_msg_send'=>1,'msg_time' => time()]);
-                        return $result = [
-                            'status' => 0,
-                            'message' => "恭喜您，操作成功！"
-                        ];
-                    }else{
-                        return $result = [
-                            'status' => $output['code'],
-                            'message' => $output["errorMsg"]
-                        ];
-                    }
-                }else{
-                    return $result = [
-                        'status' => - 1,
-                        'message' => "对不起，操作失败，请刷新重试！"
-                    ];
-                }
-            }elseif($iphone && $msg_status == 2){
-                return $result = [
-                    'status' => 0,
-                    'message' => "恭喜您，操作成功！"
-                ];
-            }else{
-                return $result = [
-                    'status' => -2,
-                    'message' => "对不起，操作失败，请刷新重试！"
-                ];
-            }
-        }
-    }
+
 
     //商家点击确定后发送预定消息
     public function send_yuding_msg_manual(){
@@ -1520,53 +1470,6 @@ class Myhome extends Controller
         }
     }
 
-
-
-
-    /*
-     * 预订
-     */
-    // 以前
-    public function book()
-    {
-
-        if (request()->isAjax()) {
-            $name = request()->post('username', '');
-            $iphone = request()->post('phone', '');
-            $num = request()->post('num', '');
-            $time = request()->post('sj', '');
-            $message = request()->post('message', '');
-            $add_time = time();
-            $shop_id = request()->post('userid', 0);
-            if (!$shop_id)
-                return $result = ['error' => 3, 'message' => '页面过期，请重新提交'];
-            $where['iphone'] = $iphone;
-            $where['time'] = $time;
-            $result = db("ns_goods_reserve")->where($where)->find();
-
-            if($result){
-                return $result = ['error' => 2, 'message' => "你已提交"];
-            }
-            $data['name'] = $name;
-            $data['iphone'] = $iphone;
-            $data['num'] = $num;
-            $data['time'] = $time;
-            $data['message'] = $message;
-            $data['add_time'] = $add_time;
-            $data['shop_id'] = $shop_id;
-            $data['is_msg_send'] = 2;
-            $id = db('ns_goods_reserve')->order('id desc')->insertGetId($data);
-            if ($id)
-                return $result = ['error' => 0, 'message' => "提交成功",'iphone' => $iphone,'id' => $id];
-            else
-
-                return $result = ['error' => 1, 'message' => "提交失败"];
-
-        }
-        $userid = request()->get('userid', 0);
-        $this->assign('userid', $userid);
-        return view($this->style . 'Myhome/book');
-    }
 
 
     //现在
@@ -1788,6 +1691,7 @@ class Myhome extends Controller
                 $data['pay_detail'] = '线下餐饮预定消费';
                 $data['create_time'] = time();  //创建时间
                 $data['business_id'] = $ordermessage['shop_id']; //商家ID
+                $data['phone'] = $ordermessage['iphone']; //预定人手机
                 $data['pay_money'] = $totalPrice; // 订单总金额
                 $res = db('ns_order_payment')->insert($data);
                 if($res !== false){

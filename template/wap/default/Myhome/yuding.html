@@ -241,10 +241,10 @@ input[type=button], input[type=submit], input[type=file], button { cursor: point
             if(res.status==1){
                 window.location.href = "{:__URL('APP_MAIN/myhome/order')}?sid="+res.sid;
             }else if(res.status==2){
-                layer.msg(res.msg, {time: 2000});
+                layer.msg(res.msg, {time: 1200});
                 setTimeout(function(){
                     $('.second-li').trigger('click');
-                },2000)
+                },600)
             }
             else{
                 layer.msg(res.msg, {time: 2000});

@@ -1167,6 +1167,7 @@ class Business extends BaseService{
             $data['uid'] = $ordermessage['uid']; // 预定的会员ID 
             $data['type'] = 6; //type=6为线下预定消费状态
             $data['type_alis_id'] = $ordermessage['id']; //订单关联ID
+            $data['phone'] = $ordermessage['phone']; //预定人手机
             $data['pay_body'] = '线下其他预定消费'; 
             $data['pay_detail'] = '线下其他预定消费';
             $data['create_time'] = time();  //创建时间

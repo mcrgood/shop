@@ -230,7 +230,7 @@ class Myhome extends BaseController
             $page_index = request()->post("page_index", 1);
             $page_size = request()->post('page_size', PAGESIZE);
             $search_text = request()->post('search_text', '');
-            $condition['iphone|address|names'] = ['LIKE',"%".$search_text."%"];
+            $condition['iphone|d.district_name|names'] = ['LIKE',"%".$search_text."%"];
             $condition['shop_status'] = 1;
             $member = new MyhomeService();
             $list = $member->getRegisters($page_index, $page_size, $condition, $order = 'a.id asc');
@@ -1478,9 +1478,12 @@ class Myhome extends BaseController
 			$res = MyhomeService::addOtherName($postData);
             return json($res);
 		}
-		$business_id = input('param.business_id'); //商家ID
-		$id = input('param.id'); //商品主键ID
+		$business_id = input('param.business_id',0); //商家ID
+		$id = input('param.id',0); //商品主键ID
 		$list = Db::table('ns_other_cate')->where('business_id',$business_id)->select();
+		if(!$list){
+			$this->error('请先添加商品分类！',__URL(__URL__ . "admin/myhome/other_cate?business_id=".$business_id.""));
+		}
 		$row = Db::table('ns_other_room')->where('id',$id)->find();
 		$this->assign('row',$row);
 		$this->assign('list',$list);

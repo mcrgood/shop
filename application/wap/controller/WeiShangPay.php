@@ -146,7 +146,8 @@ class WeiShangPay extends BaseController
 		        }elseif($paymentInfo['type'] == 6){ //线下预定
 		        	$type = 'order';
 		        }
-		        $HandleOrder->push($alias, '您有新的预定消息！', $type);
+		        $HandleOrder->push($alias, '您有新的预定消息！', $type); //推送消息到APP语音
+
 		        $message = "支付成功";
 		        
 		    }elseif($status == "N")
