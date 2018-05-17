@@ -139,6 +139,7 @@ class WeiShangPay extends BaseController
 		        $data['pay_type'] = 5; //pay_type=5为微信支付
 		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
 		    	$HandleOrder = new HandleOrder();
+		    	$Business = new Business();
 		        $HandleOrder->handle($out_trade_no);
 		        $paymentInfo = Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->find();
 		        $alias = 'business_id_'.$paymentInfo['business_id'];
