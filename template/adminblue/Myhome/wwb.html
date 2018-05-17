@@ -75,6 +75,11 @@
 								{volist name="arr" id="v"}
 								<option value="{$v}">{$v}</option>
 								{/volist}
+							</select><br/>
+					营业状态：		
+							<select class="business_status">
+								<option value="1">营业中</option>
+								<option value="2">休息中</option>
 							</select>
 					
 				</div>
@@ -109,7 +114,11 @@
 					html += '<td>'+data["data"][i]["tel"]+'</td>';
 					html += '<td>'+ data["data"][i]["ratio"] +'%</td>';
 					html += '<td>'+ data["data"][i]["gold"] +'</td>';
-					html += '<td>'+ data["data"][i]["business_status"] +'</td>';
+					if(data["data"][i]["business_status"] == 1){
+						html += '<td style="color:#0ab90a">营业中</td>';	
+					}else{
+						html += '<td style="color:red">休息中</td>';	
+					}
 					html += '<td>'+ data["data"][i]["first_ratio"] +'%</td>';
 					if(data["data"][i]["msg_status"]==1){
 						html += '<td >自动推送</td>';
@@ -118,7 +127,7 @@
 					}
 					html += '<td>'+ data["data"][i]["create_time"] +'</td>';
 					html += '<td>';
-					html += '<a onclick="editWwb('+ data["data"][i]["userid"] +','+ data["data"][i]["tel"] +','+data["data"][i]["ratio"]+','+ data["data"][i]["gold"] +','+ data["data"][i]["first_ratio"] +')">修改比例</a>';
+					html += '<a onclick="editWwb('+ data["data"][i]["userid"] +','+ data["data"][i]["tel"] +','+data["data"][i]["ratio"]+','+ data["data"][i]["gold"] +','+ data["data"][i]["first_ratio"] +','+ data["data"][i]["business_status"] +')">修改比例</a>';
 					html += '</td>';
 					html += '</tr>';
 				}
@@ -136,16 +145,22 @@
 		LoadingInfo(1);
 	}
 	//修改比例
-	function editWwb(userid,tel,ratio,gold,first_ratio){
+	function editWwb(userid,tel,ratio,gold,first_ratio, business_status){
 		$("#editWwb").modal("show");
 		$(".tel").val(tel);
 		$(".gold").val(gold);
 		$('#userid').val(userid);
 		$(".first_ratio").val(first_ratio);
 		$('#ratio').find('option').each(function(i,v){
-				if($(v).val()==ratio){
-					$(v).attr('selected',true);
-				}
+			if($(v).val()==ratio){
+				$(v).attr('selected',true);
+			}
+		})
+
+		$('.business_status').find('option').each(function(i,v){
+			if($(v).val()==business_status){
+				$(v).attr('selected',true);
+			}
 		})
 	}
 	//选择下拉框改变旺币的值
@@ -161,10 +176,12 @@
 		var ratio = $("#ratio").val();
 		var gold = $(".gold").val();
 		var first_ratio = $(".first_ratio").val();
+		var business_status = $(".business_status").val();
 		var data = {
 			userid:userid,
 			ratio:ratio,
 			gold:gold,
+			business_status:business_status,
 			first_ratio:first_ratio
 		};
 		var url = "{:url('Myhome/wwbEdit')}";

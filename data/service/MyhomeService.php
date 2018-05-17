@@ -121,11 +121,7 @@ class MyhomeService extends BaseService{
         $myhome = new NsWwbListModel();
         $result = $myhome->getWwb($page_index, $page_size, $condition, $order);
         foreach ($result['data'] as $k => $v) {
-            if($result['data'][$k]['business_status'] == 1){
-                $v['business_status'] = '营业中';
-            }else{
-                $v['business_status'] = '休息中';
-            }
+           
             $result['data'][$k]['create_time'] = date('Y-m-d H:i',$v['create_time']);
         }
         return $result;

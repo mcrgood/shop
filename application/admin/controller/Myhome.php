@@ -198,9 +198,10 @@ class Myhome extends BaseController
            $dd['ratio'] = $data['ratio']; //商家比例
            $dd['gold'] = $data['gold'];  //补旺币
            $dd['first_ratio'] = $data['first_ratio']; //首次设置比例
+           $dd['business_status'] = $data['business_status']; //营业状态
            $dd['create_time'] = time();
            $row = db('ns_wwb')->where('userid',$data['userid'])->find();
-		   if($row['ratio']==$data['ratio'] && $row['first_ratio']==$data['first_ratio']){
+		   if($row['ratio']==$data['ratio'] && $row['first_ratio']==$data['first_ratio'] &&$row['business_status']==$data['business_status']){
 	       		$info = [
                     'status' =>0,
                     'msg' => '您未做任何修改！'
