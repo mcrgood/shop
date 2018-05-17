@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <!-- <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;"> -->
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
     <title>客旺旺合作商家</title>
     <style>
         *{
@@ -13,14 +13,14 @@
         }
         #main{
             width:100%;
-            height:550px;
+            height:13.5rem;
             margin: 0 auto;
             position: relative;
 
         }
         #main .scollimg{
             width: 100%;
-            height: 420px;
+            height: 74%;
             position: relative;
         }
         #main .scollimg img{
@@ -28,7 +28,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 420px;
+            height: 100%;
         }
         #main .btn{
             width: 100%;
@@ -75,43 +75,41 @@
         #main .item{
             position: absolute;
             bottom: 10%;
-            left: 45%;
-            width: 120px;
+            left: 44%;
         }
         #main .item span{
-            width: 22px;
-            height: 22px;
+            width: 10px;
+            height: 10px;
             background: #ccc;
             display: inline-block;
             border-radius: 50%;
-            margin-right: 5px;
         }
         #main .item span:hover{
             cursor: pointer;
         }
         .contents{width: 100%;margin: 0 auto;}
-        .service{width: 100%;height: 160px;margin-top: 40px;}
-        .service p{font-size: 55px;color:#4d4d4d;padding-left: 20px;}
+        .service{width: 100%;/*height: 160px;*/margin-top: 4%;}
+        .service p{font-size:21px;color:#4d4d4d;padding-left: 7px;}
         .service_left{width: 100%;float:left;}
         .map{width: 100%;height:120px;margin: 0 auto;border-bottom: 1px solid #cccccc;}
-        .map p{color:#4d4d4d;font-size: 55px;letter-spacing: 2px;line-height: 120px;padding-left: 20px;}
+        /*.map p{color:#4d4d4d;font-size: 55px;letter-spacing: 2px;line-height: 120px;padding-left: 20px;}*/
         .map_left{width: 80%;float:left;}
         .map_right{width: 20%;float:left;}
         .map_right img{margin-left: 80px;margin-top: 30px;width: 55px;height: 55px;}
-        .yytime{float:left;width: 100%;height:120px;margin: 0 auto;border-bottom: 1px solid #cccccc;}
-        .yytime p{font-size: 55px; padding-top: 27px;}
-        .time{width: 75%;height: 120px;position: relative;}
-        .time h2{font-size: 40px;color:#1a1a1a;line-height: 120px;display: inline-block;float: left;}
-        .time img{width: 60px;height: 60px;display: inline-block;float: left;margin: 30px;}
-        .time span{font-size: 3.3rem;color: red;display: inline-block;position: absolute;top:21%;left:50%;}
-        .comment{float:left;width: 100%;height:120px;margin: 0 auto;border-bottom: 1px solid #cccccc; }
-        .comment p{font-size: 55px; padding-top: 27px;}
-        .comment_1{width: 60%;height: 120px;}
-        .comment_1 h2{font-size: 40px;color:#1a1a1a;line-height: 120px;display: inline-block;float: left;}
-        .comment_1 img{width: 60px;height: 60px;display: inline-block;float: left;margin: 30px;}
-        .comment_1 span{font-size: 40px;color: #808080;display: inline-block;float: left;line-height: 120px;margin-left: 20px;}
+        .yytime{float:left;width: 100%;margin: 0 auto;border-bottom: 1px solid #cccccc;}
+        .yytime p{font-size: 22px; padding-top: 4.5%;}
+        .time{width: 75%;position: relative;}
+        .time h2{font-size: 40px;color:#1a1a1a;display: inline-block;float: left;}
+        .time img{width: 23px;height: 23px;display: inline-block;float: left;margin: 13px;}
+        .time span{font-size: 1.3rem;color: red;display: inline-block;position: absolute;top:33%;left:52%;}
+        .comment{float:left;width: 100%;margin: 0 auto;border-bottom: 1px solid #cccccc; }
+        .comment p{font-size: 22px; padding-top: 5.5%;}
+        .comment_1{width: 60%;}
+        .comment_1 h2{font-size: 40px;color:#1a1a1a;display: inline-block;float: left;}
+        .comment_1 img{width: 23px;height: 23px;display: inline-block;float: left;margin: 13px;}
+        .comment_1 span{font-size: 40px;color: #808080;display: inline-block;float: left;margin-left: 20px;}
         .order{width: 100%;margin: 0 auto;text-align: center;/*position: relative;*/}
-        .order button{width: 40%;height:80px;margin: 0 auto;background-color: #ff6363;color: #ffffff;font-size: 50px;border:none;border-radius: 20px;font-weight: bold;margin-top: 40px;}
+        .order button{width: 40%;height:30px;margin: 0 auto;background-color: #ff6363;color: #ffffff;font-size: 20px;border:none;border-radius: 8px;font-weight: bold;margin-top: 40px;}
     </style>
 </head>
 <body>
@@ -136,20 +134,20 @@
     <div class="service">
         <div class="service_left">
         <p style="border-bottom: 1px solid #cccccc;">店名：{$row.names}</p><br />
-        <p style="border-bottom: 1px solid #cccccc;">电话：{$row.tel}<a href="tel:{$row.tel}" style="display:inline-block;float:right;"><img src="__INDEX__/images/3_03.gif" width="60px" height="60px"style="padding-right: 60px;"/></a></p><br />
+        <p style="border-bottom: 1px solid #cccccc;">电话：{$row.tel}<a href="tel:{$row.tel}" style="display:inline-block;float:right;"><img src="__INDEX__/images/3_03.gif" width="23px" height="23px"style="padding-right:23px;"/></a></p><br />
         <p style="border-bottom: 1px solid #cccccc;">评分：
-        <span style="margin-left:20px;">
-            <img src="__INDEX__/images/3_07.gif"/>
-            <img src="__INDEX__/images/3_07.gif"/>
-            <img src="__INDEX__/images/3_07.gif"/>
-            <img src="__INDEX__/images/3_07.gif"/>
-            <img src="__INDEX__/images/3_07.gif"/>
+        <span style="margin-left:4px;">
+            <img width="12" height="12" src="__INDEX__/images/3_07.gif"/>
+            <img width="12" height="12" src="__INDEX__/images/3_07.gif"/>
+            <img width="12" height="12" src="__INDEX__/images/3_07.gif"/>
+            <img width="12" height="12" src="__INDEX__/images/3_07.gif"/>
+            <img width="12" height="12" src="__INDEX__/images/3_07.gif"/>
         </span>
-        <span style="color:#ff6363;margin-left:10px;font-weight:bold;">5.0分</span></p><br/>
+        <span style="color:#ff6363;margin-left:1%;font-weight:bold;">5.0分</span></p><br/>
         <p style=" border-bottom: 1px solid #cccccc;" >地址：
         <span id="address">{$row.address}</span>
         <a target="_blank" class="map1" >
-            <img  width="60px" height="60px" style="padding-right:60px;float: right" src="__INDEX__/images/3_10.gif" />
+            <img  width="25px" height="25px" style="padding-right:23px;float: right" src="__INDEX__/images/3_10.gif" />
         </a>
         </p>
         </div>

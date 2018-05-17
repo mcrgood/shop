@@ -156,10 +156,11 @@ class Dingwei extends BaseController{
         $this->assign('status',$status); //状态为是否可以去预定
         $this->assign('type',$type); //所属经营类型
         //轮播图查询
-		return view($this->style . 'Dingwei/catdetail');
-	}
+        return view($this->style . 'Dingwei/catdetail');
+    }
+
 	 //百度地图
-         public function baidumap(){
+     public function baidumap(){
 		 if(request()->isAjax()){
 			 $address = input('post.address');
 			 // dump($address);die;
@@ -177,7 +178,7 @@ class Dingwei extends BaseController{
 			 $this->assign('data',$data);
 			 return view($this->style . 'Dingwei/baidumap');
 		 }
-         }
+     }
 	public function show(){
 		$id = request()->param('shop_id');
 		$shopInfo = db('shop')->find($id);
