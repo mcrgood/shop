@@ -169,8 +169,4 @@ class HandleOrder{
             return $output;
     }
 
-    // //会员付款成功后自动发送预定消息
-    // public function send_yuding_msg_auto($out_trade_no){
-        
-    // }
 }

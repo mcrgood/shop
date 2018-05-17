@@ -930,7 +930,7 @@ class Business extends BaseService{
         return $res;
     }
 
-    //根据不同类型的商家发送不同的预定消息给消费者
+    //根据不同类型的商家发送不同的预定消息给消费者  （包括手动发消息和自动发消息）
     public function sendMsg($cate_name, $id){
         if($cate_name == 'goods'){
            $info = $this->getGoodsInfo($id);
@@ -1189,7 +1189,12 @@ class Business extends BaseService{
     }
 
 
-
+    //会员付款成功后自动发送预定消息
+    public function send_yuding_msg_auto($out_trade_no){
+        $row = Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->find();
+        $cate_name = $this->getCateName($row['business_id']);
+        $res = $this->sendMsg($cate_name, $row['type_alis_id']);
+    }
 
 
 

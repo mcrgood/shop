@@ -21,7 +21,7 @@ use data\service\IpsPhoneFastpaySubmit as IpsPhoneFastpaySubmit;
 use data\service\EasyPayment as EasyPayment;
 use data\service\IpsPayNotify as IpsPayNotify;
 use data\service\HandleOrder as HandleOrder;
-
+use data\service\Business as Business;
 
 
 /**
@@ -147,6 +147,7 @@ class Phonefastpay extends BaseController
 		        db('ns_order_payment')->where('out_trade_no',$out_trade_no)->update($data); //修改支付状态和支付时间
 		        //处理分账
 		        $HandleOrder = new HandleOrder();
+		        $Business = new Business();
 		        $HandleOrder->handle($out_trade_no);
 		        $paymentInfo = Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->find();
 		        $alias = 'business_id_'.$paymentInfo['business_id'];
@@ -156,7 +157,10 @@ class Phonefastpay extends BaseController
 		        	$type = 'order';
 		        }
 		        $HandleOrder->push($alias, '您有新的预定消息！', $type);
-		       
+		        $msg_status = Db::table('ns_wwb')->where('userid',$paymentInfo['business_id'])->value('msg_status');
+		        if($msg_status == 1){
+		       		$Business->send_yuding_msg_auto($out_trade_no); //自动推送消息
+		        }
 		    }elseif($status == "N")
 		    {
 		        $message = "交易失败";

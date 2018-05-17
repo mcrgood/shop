@@ -18,6 +18,7 @@ use think\Controller;
 use data\service\WxPaySubmit as WxPaySubmit;
 use data\service\WxPayNotify as WxPayNotify;
 use data\service\HandleOrder as HandleOrder;
+use data\service\Business as Business;
 use think\Db;
 /**
  * 微商支付
@@ -147,7 +148,10 @@ class WeiShangPay extends BaseController
 		        	$type = 'order';
 		        }
 		        $HandleOrder->push($alias, '您有新的预定消息！', $type); //推送消息到APP语音
-
+		        $msg_status = Db::table('ns_wwb')->where('userid',$paymentInfo['business_id'])->value('msg_status');
+		        if($msg_status == 1){
+		       		$Business->send_yuding_msg_auto($out_trade_no); //自动推送消息
+		        }
 		        $message = "支付成功";
 		        
 		    }elseif($status == "N")
