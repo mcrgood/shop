@@ -112,6 +112,9 @@
                          $('.merchant-ul').append(html);
                          // 每次数据插入，必须重置
                          me.resetload();
+                         if(page ==1 && data.state == 0){
+                               $('.dropload-noData').text('暂无数据');
+                          }
                      },100);
                  },
                  error: function(xhr, type){
@@ -183,6 +186,9 @@
 //                         $('.merchant-ul').append(html);
 //                         // 每次数据插入，必须重置
 //                         me.resetload();
+//                          if(page ==1 && data.state == 0){
+//                             $('.dropload-noData').text('暂无数据');
+//                          }
 //                     },100);
 //                 },
 //                 error: function(xhr, type){
@@ -198,18 +204,7 @@
  //上面为本地测试加载数据↑
  
 </script>
-<script type="text/javascript ">
 
-    // $(document).ready(function(){
-    //     var cat = "{$Request.param.cat}";
-    //     $('.supermarket-main').find('li').each(function(i,v){
-    //         if($(v).attr('data-cat')==cat){
-    //             $(v).css({'display':'none'});
-    //         };
-    //     })
-    // });
-
-</script>
 <style type="text/css">
 .container_big{
     height: 100%;

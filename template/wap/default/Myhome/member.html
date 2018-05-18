@@ -90,6 +90,7 @@
 		};
      	$.post(url,data,function(res){
 			var html = '';
+			var dataAppend = '';
      		if(res.data.length > 0){
      			for(var i=0;i<res.data.length;i++){
 					html +='<li>';
@@ -108,10 +109,11 @@
 				}
                  // 如果没有数据
              }else{
-                 // 锁定
+             	 // 锁定
                  me.lock();
-                 // 无数据
-                 me.noData();
+         		// 无数据
+            	me.noData();
+      
              }
              setTimeout(function(){
                  // 插入数据到页面，放到最后面
@@ -119,6 +121,9 @@
 				 $('.count').text(res.count);
                  // 每次数据插入，必须重置
                  me.resetload();
+                 if(page ==1 && res.data.length <=0){
+                 	$('.dropload-noData').text('暂无数据');
+                 }
              },100);
 		},'json')
               
