@@ -103,6 +103,7 @@ class Business extends BaseService{
             $info = [
                 'code' =>1,
                 'data' =>[],
+                'status' =>0,
                 'count' =>$count
             ];
         }
