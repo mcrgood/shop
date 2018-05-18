@@ -675,6 +675,7 @@ background-position: 56px 3px;
     font-size: 0.8rem;
     border: none;
     height: 30px;
+    border-radius: 5px;
 }
 .confirm{
   width: 100%;
@@ -692,4 +693,5 @@ background-position: 56px 3px;
   outline: none;
   border:none;
   border-radius: 8px;
+  font-weight: bold;
 }

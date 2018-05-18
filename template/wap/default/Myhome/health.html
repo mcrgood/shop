@@ -24,6 +24,17 @@
   .order_time span{
     margin-left: -25px;
   }
+  .fix-box-btn input{
+      width: 30%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    background: #fe622f;
+    outline: none;
+    border:none;
+    border-radius: 8px;
+  }
 </style>
 <body>
 <div class="content-top">
@@ -96,10 +107,11 @@
 <div class="fulled">  
   <div class="fix-box">  
     <p class="close">关闭</p><br/>
-    <span>请输入预定的人数:</span> 
+    <span class="inputs">请输入预定的人数:</span> 
     <div class="qita"><input type="text" value="1" placeholder="预定人数"/></div>
     <div class="fix-box-btn">
-    	<input type="button" value="确定" />
+      <input type="button" value="确定" class="confirm-btn"/>
+    	<input type="button" value="取消预定" class="cancel-btn" style="background: #32cad2"/>
     </div>
   </div>  
 </div> 
@@ -150,7 +162,7 @@
       room_id =  $(this).attr('data-id');
   })
   //点击添加数量确定按钮
-  $(".fix-box-btn>input").click(function(){
+  $(".fix-box-btn .confirm-btn").click(function(){
     var total_room_num = 0;
     var room_num = $(".qita>input").val();
     if(room_num){
@@ -175,8 +187,33 @@
             $('.select_item input').css({"background-color":"#cccccc"});
             $('.select_item input').attr('disabled',true);
           }
+          $('.qita input').val(1);
           $(".fulled").hide();
   })
+
+       //点击取消预定按钮，取消当前点击房间的预定
+     $('.fix-box-btn .cancel-btn').click(function(){
+          var total_room_num = 0;
+          $('.shadow').each(function(i,v){
+              if($(v).attr('data-id')==room_id){
+                $(v).val('预订');
+                $(v).attr('status','');
+              }
+               if($(v).attr('status') != ''){
+                    total_room_num += ($(v).attr('status')-0);
+                }
+            })
+          $('.select_item span b').text(Number(total_room_num));
+          if($('.select_item span b').text() != 0){
+            $('.select_item input').css({"background-color":"#fe622f"});
+            $('.select_item input').attr('disabled',false);
+          }else{
+            $('.select_item input').css({"background-color":"#cccccc"});
+            $('.select_item input').attr('disabled',true);
+          }
+        $('.qita input').val(1);
+        $(".fulled").hide();
+     })
 
     $(window).load(function() {
           $('#full_feature').swipeslider();

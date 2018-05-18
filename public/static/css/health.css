@@ -199,7 +199,7 @@ input[type=button], input[type=submit], input[type=file],button { cursor: pointe
   border: none;
   font-size: 1.2rem;
   margin: 38% 10% 0 10%;
-  border-radius: 3px;
+  border-radius: 10px;
 }
 .special_room{
   width: 100%;
@@ -362,7 +362,7 @@ background-position: 56px 3px;
   height: 20px;
   margin: auto;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 1.5rem;
 }
 .fix-box-btn input{
   width: 20%;
@@ -372,6 +372,7 @@ background-position: 56px 3px;
   border-radius: 5px;
   background: #12aef5;
   color: #fff;
+  font-weight: bold;
 }
 .qita{
   width: 100%;
@@ -383,14 +384,19 @@ background-position: 56px 3px;
   display: -webkit-box;
 }
 .qita input{
-  outline: none;
+    outline: none;
     padding-left: 8px;
     font-size: 0.8rem;
-    height: 24px;
-    line-height: 24px;
-    border: 1px solid pink;
+    height: 30px;
+    line-height: 30px;
+    border:none;
     border-radius: 5px;
+    margin-top: 1rem;
 }
+.fulled .inputs{
+  font-size: 0.9rem;
+}
+
 /*轮播*/
 .container,#full_feature{
   width: 100%;

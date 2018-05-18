@@ -154,7 +154,8 @@
     </div> 
     <div class="qita">数量:<input type="number" value="1"  placeholder="请输入数量"/></div>    
     <div class="confirm">
-      <button>确定</button>
+      <button class="confirm-btn">确定</button>
+      <button class="cancel-btn" style="background: #32cad2">取消预定</button>
     </div>
   </div>  
 </div> 
@@ -226,7 +227,7 @@
         room_id =  $(this).attr('data-id');
     })
     //点击添加数量确定按钮
-     $('.confirm>button').click(function(){
+     $('.confirm .confirm-btn').click(function(){
           var total_room_num = 0;
           var room_num = $("input[type='number']").val(); //预定数量
           if(room_num != '' && room_num != 0){
@@ -253,8 +254,34 @@
             $('.footer_btn input').css({"background-color":"#cccccc"});
             $('.footer_btn input').attr('disabled',true);
           }
+          $('.qita input').val(1);
           $(".fulled").hide();
       })  
+     //点击取消预定按钮，取消当前点击房间的预定
+     $('.confirm .cancel-btn').click(function(){
+          var total_room_num = 0;
+          $('.reserve').each(function(i,v){
+              if($(v).attr('data-id')==room_id){
+                $(v).val('预订');
+                $(v).attr('status','');
+              }
+               if($(v).attr('status') != ''){
+                    total_room_num += ($(v).attr('status')-0);
+                }
+            })
+          $('.footer_money b').text(Number(total_room_num));
+         if($('.footer_money b').text() != 0){
+            $('.footer_btn input').css({"background-color":"#fe622f"});
+            $('.footer_btn input').attr('disabled',false);
+          }else{
+            $('.footer_btn input').css({"background-color":"#cccccc"});
+            $('.footer_btn input').attr('disabled',true);
+          }
+        $('.qita input').val(1);
+        $(".fulled").hide();
+     })
+
+
     $(".close").on("click", function(event) {  
         if ($(event.target).is(".close") || $(event.target).is(".fix-box")) {  
             //alert(123)  
