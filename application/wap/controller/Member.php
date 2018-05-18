@@ -29,6 +29,7 @@ use data\service\UnifyPay;
 use data\service\WebSite;
 use data\service\Weixin;
 use think\Request;
+use think\Db;
 use think;
 use think\Session;
 use data\extend\org\wechat\Jssdk;
@@ -112,7 +113,7 @@ class Member extends BaseController
     public function memberIndex()
     {
         $user_name = session('user_name'); //获取登录会员的用户名（手机号）
-
+        $fansNum = Db::table('sys_user')->where('referee_phone',$user_name)->count();
         $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode'); //通过手机号查询出该会员是否有推广码
         if(!$user_qrcode && $user_name){ //没有推广码的话创建一张
             $url = __URL(__URL__ .'/wap/login/register?referee_phone=' . $user_name);
@@ -251,7 +252,7 @@ class Member extends BaseController
         $this->assign('member_img', $member_img);
         $this->assign('menu_arr', $menu_arr);
         $this->assign("title_before", "会员中心");
-        
+        $this->assign('fansNum', $fansNum); // 我的粉丝数量
         return view($this->style . 'Member/memberIndexB2C');
     }
 

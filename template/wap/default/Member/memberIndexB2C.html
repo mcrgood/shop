@@ -97,6 +97,10 @@
 	right: -10px;
 	top: -6px;
 }
+.fansNum{
+	float:right;
+	margin-right: 5px;
+}
 </style>
   {/block}
 {block name="main" }
@@ -206,7 +210,14 @@
 				<span class='jiantou'></span>
 			</a>
 		</li>
-		{/volist} 
+		{/volist}
+		<li>
+			<a>
+				<i class=" module-icon fans" ></i>
+				<span >我的粉丝</span>
+				<span class='fansNum'>{$fansNum}人</span>
+			</a>
+		</li> 
 	</ul>
 {/volist}
 </div>

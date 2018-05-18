@@ -1266,6 +1266,7 @@ class Login extends Controller
     //变化客旺旺当前粉丝数量
     public function changeFans(){
         $num = input('post.num');
+        $num = $num+2;
         Db::table('ns_fans')->where('id',1)->update(['num'=>$num]);
     }
 

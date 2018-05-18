@@ -23,5 +23,5 @@
         $.post(url,data,function(res){
 
         },'json')
-    },30000);
+    },15000);
 })
