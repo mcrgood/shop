@@ -100,17 +100,6 @@
 	background-size: 100% 100%;
 }
 
-.module-icon.fans {
-	background: url(../images/fans.png) no-repeat;
-	width: 22px;
-	height: 22px;
-	float: left;
-	margin-top: 9px;
-	margin-right: 10px;
-	display: inline-block;
-	background-size: 100% 100%;
-}
-
 .module-icon.myCollection {
 	background: url(../images/my_collection.png) no-repeat;
 	width: 22px;
