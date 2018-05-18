@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="__INDEX__/dropload/dist/dropload.css">
 <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
 <script src="__INDEX__/js/swiper.min.js"></script>
+<script src="__PUBLIC__/static/layui/layui.all.js"></script>
 <!-- UC强制全屏 -->
     <meta name="full-screen" content="yes">
     <!-- QQ强制全屏 -->
@@ -106,6 +107,7 @@
                      }
                      // 为了测试，延迟1秒加载
                      setTimeout(function(){
+                          layer.closeAll('loading');
                          // 插入数据到页面，放到最后面
                          $('.merchant-ul').append(html);
                          // 每次数据插入，必须重置
@@ -176,6 +178,7 @@
 //                     }
 //                     // 为了测试，延迟1秒加载
 //                     setTimeout(function(){
+//                          layer.closeAll('loading');
 //                         // 插入数据到页面，放到最后面
 //                         $('.merchant-ul').append(html);
 //                         // 每次数据插入，必须重置
@@ -273,10 +276,15 @@
 
 </body>
 <script>
-        function dingwei(){
-            location.href = dingwei_url+"?cat="+leixing_id+"&con_cateid="+con_cateid+"&type=dingwei";
-        }
+    function dingwei(){
+        location.href = dingwei_url+"?cat="+leixing_id+"&con_cateid="+con_cateid+"&type=dingwei";
+    }
     $(function(){
+    var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+    $("#layui-layer1").css({
+        "top":"40%",
+        "left":"47%"
+    });
             $('.con_cateid').click(function(){
             val = $(this).attr('value');
             $('.con_cateid').removeClass('backcolor');

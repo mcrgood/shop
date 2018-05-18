@@ -34,7 +34,7 @@
 </head>
 <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
 <script src="__INDEX__/dropload/dist/dropload.min.js"></script>
-<!-- <script src="__PUBLIC__/static/layui/layui.all.js"></script> -->
+
 <body>
 <div class="big">
 	<div class="header">
@@ -58,8 +58,6 @@
 	var business_id = "{$business_id}";
     var page = 0;
 	$(function(){
-	// var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
-	// $('#layui-layer1').css({"top":"20%","left":"43%"});
 	  drop();
 	})
 	
@@ -116,7 +114,6 @@
                  me.noData();
              }
              setTimeout(function(){
-             	// layer.closeAll('loading');
                  // 插入数据到页面，放到最后面
                  $('#content_news_list').append(html);
 				 $('.count').text(res.count);
