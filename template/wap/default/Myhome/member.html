@@ -6,7 +6,8 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="format-detection" content="telephone=no">
-	<title>会员列表</title>
+	<link rel="stylesheet" href="__INDEX__/dropload/dist/dropload.css">
+	<title>会员列表测试页面</title>
 	<style>
 		*{margin: 0;padding: 0;}
 		.big{width: 100%;height: auto;margin: 0 auto;}
@@ -32,6 +33,8 @@
 	</style>
 </head>
 <script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+<script src="__INDEX__/dropload/dist/dropload.min.js"></script>
+<!-- <script src="__PUBLIC__/static/layui/layui.all.js"></script> -->
 <body>
 <div class="big">
 	<div class="header">
@@ -52,42 +55,78 @@
 		</ul>
 	</div>
 	<script type="text/javascript">
-		$(function(){
-			getList()
-		})
-		var business_id = "{$business_id}";
-		function findMember(){  //搜索
-			var search_text = $('.search_input').val();
-			getList(search_text)
-		}
+	var business_id = "{$business_id}";
+    var page = 0;
+	$(function(){
+	// var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+	// $('#layui-layer1').css({"top":"20%","left":"43%"});
+	  drop();
+	})
+	
+	//搜索
+	function findMember(){
+		var search_text = $('.search_input').val();
+		page = 0;
+		drop(search_text)
+	}
 
-		function getList(search_text){
-			var url = "{:__URL('APP_MAIN/myhome/member')}";
-			var data = {business_id:business_id,search_text:search_text};
-			$.post(url,data,function(res){
-				console.log(res);
-				var html = '';
-				if(res.status == 1){
-					for(var i=0;i<res.list.length;i++){
-						html +='<li>';
-						html +='<div id="contents">';
-						if(res["list"][i]["user_headimg"] != ''){
-							html +='<img src="'+res["list"][i]["user_headimg"]+'"/>';
-						}else{
-							html +='<img src="__INDEX__/images/tx_03.png"/>';
-						}
-						html +='<div class="users_2">';
-						html +='<h4>'+res["list"][i]["nick_name"]+'</h4>';
-						html +='<span>'+res["list"][i]["user_name"]+'</span>';
-						html +='</div>';
-						html +='</div>';
-						html +='</li>';
+	function drop(search_text){
+		$('#content_news_list').empty();
+		$('.dropload-down').remove();
+		$('.users_1').dropload({
+         scrollArea : window,
+	         loadDownFn : function(me){
+	             page++;    //第一次page=1
+	           	 getList(search_text,page,me);	
+
+	         }
+	     });
+	}
+	//获取数据	
+     function getList(search_text,pages,me){
+     	var url = "{:__URL('APP_MAIN/myhome/member')}";
+		var data = {
+			business_id:business_id,
+			search_text:search_text,
+			pages:pages
+		};
+     	$.post(url,data,function(res){
+			var html = '';
+     		if(res.data.length > 0){
+     			for(var i=0;i<res.data.length;i++){
+					html +='<li>';
+					html +='<div id="contents">';
+					if(res["data"][i]["user_headimg"] != ''){
+						html +='<img src="'+res["data"][i]["user_headimg"]+'"/>';
+					}else{
+						html +='<img src="__INDEX__/images/tx_03.png"/>';
 					}
+					html +='<div class="users_2">';
+					html +='<h4>'+res["data"][i]["nick_name"]+'</h4>';
+					html +='<span>'+res["data"][i]["user_name"]+'</span>';
+					html +='</div>';
+					html +='</div>';
+					html +='</li>';
 				}
-					$('#content_news_list').empty().append(html);
-					$('.count').text(res.count);
-			},'json')
-		}
+                 // 如果没有数据
+             }else{
+                 // 锁定
+                 me.lock();
+                 // 无数据
+                 me.noData();
+             }
+             setTimeout(function(){
+             	// layer.closeAll('loading');
+                 // 插入数据到页面，放到最后面
+                 $('#content_news_list').append(html);
+				 $('.count').text(res.count);
+                 // 每次数据插入，必须重置
+                 me.resetload();
+             },100);
+		},'json')
+              
+     }
+
 	</script>
 </div>
 </body>

@@ -605,42 +605,60 @@ class Myhome extends Controller
         $this->check_login();
         return view($this->style . 'Myhome/sous');
     }
+
+    // public function member(){
+    //     $this->check_login();
+    //     if(request()->isAjax()){
+    //         $search_text = input('post.search_text', '');
+    //         $business_id = input('post.business_id', '');
+    //         $where['b.business_id'] = $business_id;
+    //         if($search_text){
+    //             $where['u.nick_name|u.user_name'] = ['like', "%".$search_text."%"];
+    //         }
+    //         $list = db('ns_business_member')->alias('b')
+    //         ->join('sys_user u','u.uid = b.uid','left')
+    //         ->field('u.user_name,u.nick_name,u.user_headimg')
+    //         ->where($where)->select(); //查出该店铺下的所有会员
+    //         $count = db('ns_business_member')->alias('b')
+    //         ->join('sys_user u','u.uid = b.uid','left')
+    //         ->field('u.user_name,u.nick_name,u.user_headimg')
+    //         ->where($where)->count(); // 查出所有会员总数量
+    //         if($list){
+    //             $info = [
+    //                 'status' =>1,
+    //                 'list' =>$list,
+    //                 'count' =>$count
+    //             ];
+    //         }else{
+    //             $info = [
+    //                 'status' =>0,
+    //                 'list' =>'',
+    //                 'count' =>$count
+    //             ];
+    //         }
+    //         return $info;
+    //     }
+        
+    //     $this->assign('business_id',$this->business_id);
+    //     return view($this->style . 'Myhome/member');
+    // }
+    
+    //商家会员列表
     public function member(){
-        $this->check_login();
         if(request()->isAjax()){
             $search_text = input('post.search_text', '');
             $business_id = input('post.business_id', '');
-            $where['b.business_id'] = $business_id;
-            if($search_text){
-                $where['u.nick_name|u.user_name'] = ['like', "%".$search_text."%"];
-            }
-            $list = db('ns_business_member')->alias('b')
-            ->join('sys_user u','u.uid = b.uid','left')
-            ->field('u.user_name,u.nick_name,u.user_headimg')
-            ->where($where)->select(); //查出该店铺下的所有会员
-            $count = db('ns_business_member')->alias('b')
-            ->join('sys_user u','u.uid = b.uid','left')
-            ->field('u.user_name,u.nick_name,u.user_headimg')
-            ->where($where)->count(); // 查出所有会员总数量
-            if($list){
-                $info = [
-                    'status' =>1,
-                    'list' =>$list,
-                    'count' =>$count
-                ];
-            }else{
-                $info = [
-                    'status' =>0,
-                    'list' =>'',
-                    'count' =>$count
-                ];
-            }
-            return $info;
+            $pages = input('post.pages', '');
+            $business = new Business();
+            $res = $business->member($business_id, $pages, $search_text);
+            return json($res);
         }
         
         $this->assign('business_id',$this->business_id);
         return view($this->style . 'Myhome/member');
     }
+
+
     //商家消息页面
     public function message(){
         $this->check_login();
