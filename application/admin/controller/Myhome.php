@@ -231,7 +231,7 @@ class Myhome extends BaseController
             $page_size = request()->post('page_size', PAGESIZE);
             $search_text = request()->post('search_text', '');
             $condition['iphone|d.district_name|names'] = ['LIKE',"%".$search_text."%"];
-            $condition['shop_status'] = 1;
+            //$condition['shop_status'] = 1;
             $member = new MyhomeService();
             $list = $member->getRegisters($page_index, $page_size, $condition, $order = 'a.id asc');
             return $list;
