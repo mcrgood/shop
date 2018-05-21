@@ -470,6 +470,7 @@ class Myhome extends Controller
                     $info['is_member'] = 1;     // 1 是前台会员，必须添加，否则无法正常登录
                     $result = db('sys_user')->insertGetId($info);
                     if($result){
+                        $this->addMember($result, $mobile); //新增插入ns_member表
                         $aa['uid'] = $result;
                         $aa['point'] = 10;
                         $rr = db('ns_member_account')->insert($aa);
@@ -1869,6 +1870,14 @@ class Myhome extends Controller
             $res = Business::changeSeat($seatid);
             return $res;
         }
+    }
+
+    public function addMember($uid, $phone){
+        $data['uid'] = $uid;
+        $data['member_name'] = $phone;
+        $data['reg_time'] = time();
+        $data['member_level'] = Db::table('ns_member_level')->where('level_name','普通会员')->value('level_id');
+        Db::table('ns_member')->insert($data);
     }
 
     //景点系统 张行飞 2018-4-28

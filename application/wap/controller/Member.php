@@ -169,15 +169,9 @@ class Member extends BaseController
         $uid = $this->uid;  //用户uid
         $point = db('ns_member_account')->where('uid',$uid)->value('point');  //查询该用户积分(旺旺币)
         if($point >=1000){
-            db('ns_member_account')->where('uid',$uid)->update(['is_vip'=>1]);  //旺旺币大于1000自动变成VIP会员
+            $level_id = Db::table('ns_member_level')->where('level_name','vip')->value('level_id');
+            Db::table('ns_member')->where('uid',$uid)->update(['member_level'=>$level_id]);  //旺旺币大于1000自动变成VIP会员
         }
-        $is_vip = db('ns_member_account')->where('uid',$uid)->value('is_vip');
-        if($is_vip==1){
-            $is_vip = 'VIP会员';
-        }else{
-            $is_vip = '普通会员';
-        }
-        $this->assign('is_vip',$is_vip);
         $member_info = $member->getMemberDetail($this->instance_id);
         // 头像
         if (! empty($member_info['user_info']['user_headimg'])) {
@@ -246,7 +240,6 @@ class Member extends BaseController
         $condition['buyer_id'] = $this->uid;
         $refundOrder = $order->getOrderNumByOrderStatu($condition);
         $this->assign("refundOrder", $refundOrder);
-        
         $this->assign('member_info', $member_info);
         $this->assign('index_adv', $index_adv["adv_list"][0]);
         $this->assign('member_img', $member_img);
