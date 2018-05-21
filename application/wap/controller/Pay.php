@@ -22,6 +22,7 @@ use data\service\Order;
 use data\service\UnifyPay;
 use data\service\WebSite;
 use think\Controller;
+use think\Db;
 use think\Log;
 \think\Loader::addNamespace('data', 'data/');
 
@@ -102,6 +103,14 @@ class Pay extends Controller
         }
         $this->assign('business_id',$business_id);
         $this->assign('type',$type);
+        if(!$this->uid){
+            $infos = Db::table('sys_user')->where('user_name',cookie('user_name'))->find();
+            $nick_name = $infos['nick_name'];
+            $this->uid = $infos['uid'];
+        }else{
+            $nick_name = $member_info["user_info"]['nick_name'];
+        }
+        $this->assign('nick_name',$nick_name);
         $out_trade_no = request()->get('out_trade_no', '');
         if (empty($out_trade_no)) {
             $this->error("没有获取到支付信息");

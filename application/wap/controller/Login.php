@@ -209,10 +209,8 @@ class Login extends Controller
                 if(!session('user_name')){
                     session('user_name',$user_name);
                 }
-                if(!cookie('user_name') || !cookie('password') ||cookie('user_name') != session('user_name')){
-                    cookie('user_name',$user_name,3600*24*30);
-                    cookie('password',$password,3600*24*30);
-                }
+                cookie('user_name',$user_name,3600*24*30);
+                cookie('cookie_password',$password,3600*24*30);
                     
                 if (! empty($_SESSION['login_pre_url'])) {
                     $retval = [

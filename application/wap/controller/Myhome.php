@@ -506,6 +506,8 @@ class Myhome extends Controller
     }
     //商家账单营收页面
     public function yingshou(){
+        // dump($this->uid);
+        // dump($_COOKIE);die;
         // dump(base64_encode('kww_mall39'));die;
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
@@ -706,14 +708,15 @@ class Myhome extends Controller
 
     //预定酒店页面
     public function hotel(){
-        if(!$this->uid){
+        if(!cookie('user_name')){
             $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
         }
         $business_id = input('param.userid',0); //商家ID
         if($business_id == 0){
             $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
         }
-        Business::add_business_member($this->uid, $business_id);  //将预定会员添加到商家会员列表中
+        $uid = Db::table('sys_user')->where('user_name',cookie('user_name'))->value('uid');
+        Business::add_business_member($uid, $business_id);  //将预定会员添加到商家会员列表中
         $where['business_id'] = $business_id;
         $room_list = db('ns_hotel_room')
         ->alias('h')
@@ -727,7 +730,7 @@ class Myhome extends Controller
         }
         $this->assign('address',$room_list[0]['address']);
         $this->assign('room_list',$room_list);
-        $this->assign('uid',$this->uid);
+        $this->assign('uid',$uid);
         $this->assign('business_id',$business_id);
         $this->assign('img_list',$img_list);
         return view($this->style . 'Myhome/hotel');
@@ -875,14 +878,15 @@ class Myhome extends Controller
     //养生页面
     public function health(){
         //查询所有信息
-        if(!$this->uid){
+        if(!cookie('user_name')){
             $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
         }
         $business_id = input('param.userid',0);
         if($business_id == 0){
             $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
         }
-        Business::add_business_member($this->uid, $business_id);  //将预定会员添加到商家会员列表中
+        $uid = Db::table('sys_user')->where('user_name',cookie('user_name'))->value('uid');
+        Business::add_business_member($uid, $business_id);  //将预定会员添加到商家会员列表中
         $where['business_id'] = $business_id;
         $list = db("ns_health_room")->alias("a")->join('ns_shop_message m','a.business_id=m.userid','left')->where($where)->field("a.*,m.address")->select();
         foreach ($list as $k => $v) {
@@ -893,7 +897,7 @@ class Myhome extends Controller
         $this->assign("img_list",$img_list);
         $this->assign("address",$list[1]["address"]);
         $this->assign("list",$list);
-        $this->assign('uid',$this->uid);
+        $this->assign('uid',$uid);
         $this->assign('business_id',$business_id);
         return view($this->style . 'Myhome/health');
     }
@@ -1492,9 +1496,8 @@ class Myhome extends Controller
 
         }
         //判断是否登录
-        if($this->uid){
-            $uid = $this->uid;
-            $row = db("sys_user")->where("uid",$uid)->find();
+        if(cookie('user_name')){
+            $row = Db::table('sys_user')->where('user_name',cookie('user_name'))->find();
             $this->assign('row',$row);
         }else{
             $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));  
@@ -1504,7 +1507,7 @@ class Myhome extends Controller
         if($ids == 0){
             $this->error('页面过期，请重新提交',__URL(__URL__ . '/wap/dingwei/index'));
         }
-        Business::add_business_member($this->uid, $ids);  //将预定会员添加到商家会员列表中
+        Business::add_business_member($row['uid'], $ids);  //将预定会员添加到商家会员列表中
         $names = db("ns_shop_message")->where("id",$ids)->value("names"); //查询店铺名称
         $cateid = db("ns_shop_menu")->where("userid",$ids)->column("cateid");//得到关联分类id
         $where['listid'] = ['in',$cateid];

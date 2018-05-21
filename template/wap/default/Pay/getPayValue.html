@@ -80,7 +80,7 @@
 		<input type="hidden" id="out_trade_no" value="{$pay_value.out_trade_no}">
 
 	</div>
-	<div style="padding: 10px 0px;">{:lang('payer')}<span style="float:right;">{$member_info["user_info"]['nick_name']}</span></div>
+	<div style="padding: 10px 0px;">{:lang('payer')}<span style="float:right;">{$nick_name}</span></div>
 </div>
 {include file="wap/default/controlCopyRight"}
 
@@ -88,7 +88,6 @@
 	<button class="alipay" type="button" onclick="calculate()">{:lang('confirm_payment')}￥{$pay_value.pay_money}</button>
 </section>
 <script>
-
 var __IMG__ = '__TEMP__/{$style}/public/images';
 function calculate() {
 	var pay_type = $("#pay_type").val();
