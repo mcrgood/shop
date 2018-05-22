@@ -6,8 +6,10 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="__INDEX__/dropload/dist/dropload.css">
 	<title>预定信息</title>
 	<script src="__INDEX__/js/jquery-1.7.1.min.js"></script>
+	<script src="__INDEX__/dropload/dist/dropload.min.js"></script>
 </head>
 <style type="text/css">
 	*{margin: 0;padding: 0;}
@@ -252,88 +254,153 @@
 		<div class="first_content_1">
 			<div class="search_1"><input type="submit" value="" class="search_btn"/><input class="search_input" type="text" placeholder="姓名 \ 电话" />
 			</div>
-			<ul id="content_news_list">
+			<div class="userList">
+				<ul id="content_news_list">
                 
-			</ul>
+				</ul>
+			</div>
+			
 		</div>
 	</div>
 	<script type="text/javascript">
-		var cate_name = "{$cate_name}";
-        $(function(){
-        	getList();
-            $("input[type=submit]").click(function () {
-            	var search_input = $('.search_input').val();
-            	getList(search_input);
-            })
-        })
-        function getList(search_input){
+    var page = 0;
+	var cate_name = "{$cate_name}";
+	$('.second-li').click(function(){
+		setTimeout(function(){
+			drop()
+		},100)
+	})
+	
+	//搜索
+    $("input[type=submit]").click(function () {
+    	var search_text = $('.search_input').val();
+    	page = 0;
+		$('#content_news_list').empty();
+		drop(search_text)
+    })
+
+	function drop(search_text){
+		$('.dropload-down').remove();
+		$('.userList').dropload({
+          scrollArea : window,
+          loadDownFn : function(me){
+             page++;    //第一次page=1
+           	 getList(search_text,page,me);	
+
+          }
+	    });
+	}
+        //获取数据	
+        function getList(search_text,pages,me){
         	var url = "{:url('Myhome/message')}";
-        	var data = {search_input:search_input};
+        	var data = {
+        		search_text:search_text,
+        		pages:pages
+        	};
         	$.post(url,data,function(res){
+        		console.log(res)
         		var html = '';
         		if(cate_name == 'goods'){
 	        		if(res.status ==1){
-	        			for(var i=0; i<res.list.length;i++){
+	        			for(var i=0; i<res.data.length;i++){
 	        				html +='<li>';
-	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["add_time"]+'</span></div>';
-	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定人数&nbsp;<span style="color:red;">'+res["list"][i]["num"]+'人</span><br />预定时间:'+res["list"][i]["time"]+'</p></div>';
-	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["iphone"]+'</span></div>';
+	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["data"][i]["add_time"]+'</span></div>';
+	        				html +='<div class="inform_content"><p>'+res["data"][i]["shop_name"]+'&nbsp;预定人数&nbsp;<span style="color:red;">'+res["data"][i]["num"]+'人</span><br />预定时间:'+res["data"][i]["time"]+'</p></div>';
+	        				html +='<div class="inform_content2"><span>姓名:'+res["data"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["data"][i]["iphone"]+'</span></div>';
 	        				html +='</li>';
 	        			}
-	        		}
+	        		}else{
+	        			 // 锁定
+		                 me.lock();
+		         		// 无数据
+		            	me.noData();
+			        }
         		}else if(cate_name == 'hotel'){
         			if(res.status ==1){
-	        			for(var i=0; i<res.list.length;i++){
+	        			for(var i=0; i<res.data.length;i++){
 	        				html +='<li>';
-	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
-	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定房间共&nbsp;<span style="color:red;">'+res["list"][i]["total_num"]+'</span>间<br />预定时间:'+res["list"][i]["startDate"]+'</p></div>';
-	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
+	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["data"][i]["create_time"]+'</span></div>';
+	        				html +='<div class="inform_content"><p>'+res["data"][i]["shop_name"]+'&nbsp;预定房间共&nbsp;<span style="color:red;">'+res["data"][i]["total_num"]+'</span>间<br />预定时间:'+res["data"][i]["startDate"]+'</p></div>';
+	        				html +='<div class="inform_content2"><span>姓名:'+res["data"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["data"][i]["phone"]+'</span></div>';
 	        				html +='</li>';
 	        			}
+	        		}else{
+	        			 // 锁定
+		                 me.lock();
+		         		// 无数据
+		            	me.noData();
 	        		}
         		}else if(cate_name == 'KTV'){
         			if(res.status ==1){
-	        			for(var i=0; i<res.list.length;i++){
+	        			for(var i=0; i<res.data.length;i++){
 	        				html +='<li>';
-	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
-	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定包厢&nbsp;<span style="color:red;">'+res["list"][i]["room_type"]+'</span><br />包厢时间:'+res["list"][i]["dateTime"]+'&nbsp;'+res["list"][i]["business_hours"]+'</p></div>';
-	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
+	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["data"][i]["create_time"]+'</span></div>';
+	        				html +='<div class="inform_content"><p>'+res["data"][i]["shop_name"]+'&nbsp;预定包厢&nbsp;<span style="color:red;">'+res["data"][i]["room_type"]+'</span><br />包厢时间:'+res["data"][i]["dateTime"]+'&nbsp;'+res["data"][i]["business_hours"]+'</p></div>';
+	        				html +='<div class="inform_content2"><span>姓名:'+res["data"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["data"][i]["phone"]+'</span></div>';
 	        				html +='</li>';
 	        			}
+	        		}else{
+	        			 // 锁定
+		                 me.lock();
+		         		// 无数据
+		            	me.noData();
 	        		}
         		}else if(cate_name == 'health'){
         			if(res.status ==1){
-	        			for(var i=0; i<res.list.length;i++){
+	        			for(var i=0; i<res.data.length;i++){
 	        				html +='<li>';
-	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
-	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定服务&nbsp;<span style="color:red;">'+res["list"][i]["room_type"]+'</span><br />到店时间:'+res["list"][i]["startDate"]+'</p></div>';
-	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
+	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["data"][i]["create_time"]+'</span></div>';
+	        				html +='<div class="inform_content"><p>'+res["data"][i]["shop_name"]+'&nbsp;预定服务&nbsp;<span style="color:red;">'+res["data"][i]["room_type"]+'</span><br />到店时间:'+res["data"][i]["startDate"]+'</p></div>';
+	        				html +='<div class="inform_content2"><span>姓名:'+res["data"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["data"][i]["phone"]+'</span></div>';
 	        				html +='</li>';
 	        			}
+	        		}else{
+	        			 // 锁定
+		                 me.lock();
+		         		// 无数据
+		            	me.noData();
 	        		}
         		}else if(cate_name == 'scenic'){
         			if(res.status ==1){
-	        			for(var i=0; i<res.list.length;i++){
+	        			for(var i=0; i<res.data.length;i++){
 	        				html +='<li>';
-	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
-	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定景点&nbsp;<span style="color:red;">'+res["list"][i]["scenic_type"]+'</span><br />使用时间:'+res["list"][i]["startDate"]+'</p></div>';
-	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
+	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["data"][i]["create_time"]+'</span></div>';
+	        				html +='<div class="inform_content"><p>'+res["data"][i]["shop_name"]+'&nbsp;预定景点&nbsp;<span style="color:red;">'+res["data"][i]["scenic_type"]+'</span><br />使用时间:'+res["data"][i]["startDate"]+'</p></div>';
+	        				html +='<div class="inform_content2"><span>姓名:'+res["data"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["data"][i]["phone"]+'</span></div>';
 	        				html +='</li>';
 	        			}
+	        		}else{
+	        			 // 锁定
+		                 me.lock();
+		         		// 无数据
+		            	me.noData();
 	        		}
         		}else if(cate_name == 'other'){
         			if(res.status ==1){
-	        			for(var i=0; i<res.list.length;i++){
+	        			for(var i=0; i<res.data.length;i++){
 	        				html +='<li>';
-	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["list"][i]["create_time"]+'</span></div>';
-	        				html +='<div class="inform_content"><p>'+res["list"][i]["shop_name"]+'&nbsp;预定商品&nbsp;<span style="color:red;">'+res["list"][i]["goods_name"]+'</span><br />预定时间:'+res["list"][i]["times"]+'</p></div>';
-	        				html +='<div class="inform_content2"><span>姓名:'+res["list"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["list"][i]["phone"]+'</span></div>';
+	        				html +='<div class="inform"><h4>预定通知</h4><span>'+res["data"][i]["create_time"]+'</span></div>';
+	        				html +='<div class="inform_content"><p>'+res["data"][i]["shop_name"]+'&nbsp;预定商品&nbsp;<span style="color:red;">'+res["data"][i]["goods_name"]+'</span><br />预定时间:'+res["data"][i]["times"]+'</p></div>';
+	        				html +='<div class="inform_content2"><span>姓名:'+res["data"][i]["name"]+'</span><span style="text-align:right;padding-right:5%;float:right;">联系:'+res["data"][i]["phone"]+'</span></div>';
 	        				html +='</li>';
 	        			}
+	        		}else{
+	        			 // 锁定
+		                 me.lock();
+		         		// 无数据
+		            	me.noData();
 	        		}
         		}
         		
-        		$('#content_news_list').empty().append(html);
+        	setTimeout(function(){
+                 // 插入数据到页面，放到最后面
+                 $('#content_news_list').append(html);
+                 // 每次数据插入，必须重置
+                 me.resetload();
+                 if(page ==1 && res.status == 0){
+                 	$('.dropload-noData').text('暂无数据');
+                 }
+             },100);
         	},'json')
         }
 	</script>

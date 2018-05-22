@@ -629,28 +629,11 @@ class Myhome extends Controller
         $this->check_login();
         $business = new Business();
         if(request()->isAjax()){ //历史消息搜索
-            $search_input = input('post.search_input', '');
-            $cate_name = $business->getCateName($this->business_id);
-            if($cate_name == 'goods'){
-                $list = $business->getGoodsMsg($this->business_id, $search_input); //获取该商家餐饮店的预定消息
-            }elseif($cate_name == 'hotel'){
-                $list = $business->getHotelMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
-            }elseif($cate_name == 'KTV'){
-                $list = $business->getKtvMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
-            }elseif($cate_name == 'health'){
-                $list = $business->getHealthMsg($this->business_id, $search_input);//获取该商家酒店的预定消息
-            }elseif($cate_name == 'scenic'){
-                 $list = $business->getScenicMsg($this->business_id, $search_input);//获取景点预定消息
-            }elseif($cate_name == 'other'){
-                 $list = $business->getOtherMsg($this->business_id, $search_input);//获取景点预定消息
-            }
-
-            if($list){
-                $info = ['status'=>1,'list'=>$list];
-            }else{
-                $info = ['status'=>0,'list'=>''];
-            }
-            return $info;
+            $search_text = input('post.search_text', '');
+            $pages = input('post.pages', 1);
+            $type = '';
+            $list = $business->message($this->business_id, $type, $pages, $search_text); //获取该商家餐饮店的预定消息
+            return $list;
         }
         $cate_name = $business->getCateName($this->business_id);
         if($cate_name == 'goods'){

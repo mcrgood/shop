@@ -127,9 +127,9 @@ class Business extends BaseService{
         }
 
         if($list){
-            $info = ['code'=>1,'cate_name'=>$cate_name, 'data'=>$list];
+            $info = ['code'=>1,'cate_name'=>$cate_name, 'data'=>$list, 'status' =>1];
         }else{
-            $info = ['code'=>1,'cate_name'=>$cate_name, 'data'=>[]];
+            $info = ['code'=>1,'cate_name'=>$cate_name, 'data'=>[], 'status' =>0];
         }
         return $info;
     }

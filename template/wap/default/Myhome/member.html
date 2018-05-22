@@ -7,7 +7,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" href="__INDEX__/dropload/dist/dropload.css">
-	<title>会员列表测试页面</title>
+	<title>会员列表</title>
 	<style>
 		*{margin: 0;padding: 0;}
 		.big{width: 100%;height: auto;margin: 0 auto;}
@@ -89,7 +89,6 @@
 			pages:pages
 		};
      	$.post(url,data,function(res){
-     		console.log(res)
 			var html = '';
      		if(res.data.length > 0){
      			for(var i=0;i<res.data.length;i++){
