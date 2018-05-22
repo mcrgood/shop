@@ -178,11 +178,11 @@ class EasyPayment
     }
 
     //4.8 订单查询接口
-    public function queryOrdersList($customerCode, $ordersType, $startTime, $endTime){
+    public function queryOrdersList($customerCode, $ordersType, $startTime, $endTime, $pageSize = 100){
         
          $reqIp = request()->ip();   //获取客户端IP
          $reqDate = date("Y-m-d H:i:s",time());
-         $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>".$customerCode."</customerCode><ordersType>".$ordersType."</ordersType><merBillNo></merBillNo><ipsBillNo></ipsBillNo><startTime>".$startTime."</startTime><endTime>".$endTime."</endTime><currrentPage></currrentPage><pageSize></pageSize></body>";
+         $body="<body><merAcctNo>".$this->merAcctNo."</merAcctNo><customerCode>".$customerCode."</customerCode><ordersType>".$ordersType."</ordersType><merBillNo></merBillNo><ipsBillNo></ipsBillNo><startTime>".$startTime."</startTime><endTime>".$endTime."</endTime><currrentPage></currrentPage><pageSize>".$pageSize."</pageSize></body>";
          $head ="<head><version>v1.0.1</version><reqIp>".$reqIp."</reqIp><reqDate>".$reqDate."</reqDate><signature>".MD5($body.$this->MerCret)."</signature></head>";
          $queryOrderReqXml="<?xml version='1.0' encoding='utf-8'?><queryOrderReqXml>".$head.$body."</queryOrderReqXml>";
          Log::DEBUG("订单查询接口明文:" . $queryOrderReqXml);  //未加密的日志
