@@ -671,7 +671,7 @@ class Member extends BaseController
         $withdraw_list = $member->getMemberBalanceWithdraw(1, 0, $condition);
         foreach ($withdraw_list['data'] as $k => $v) {
             if ($v['status'] == 1) {
-                $withdraw_list['data'][$k]['status'] = '已同意';
+                $withdraw_list['data'][$k]['status'] = '已完成';
             } else 
                 if ($v['status'] == 0) {
                     $withdraw_list['data'][$k]['status'] = '已申请';
