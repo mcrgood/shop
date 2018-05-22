@@ -43,7 +43,11 @@ class HandleOrder{
             }elseif($payInfo['type'] == '6'){ //线下预定消费
                 $uid = $payInfo['uid'];
             }
-            $referee_money = $pay_money*0.25*0.3*$ratio*0.01; //计算出给推荐人的佣金
+            if($ratio == 3){ //如果商家设置的比例是3
+                $referee_money = $pay_money*0.0075; //计算出给推荐人的佣金
+            }else{
+                $referee_money = $pay_money*0.25*0.3*$ratio*0.01; //计算出给推荐人的佣金
+            }
             $referee_money = sprintf("%.2f",$referee_money); // 佣金只保留小数点后2位
             if($sendGold){ //赠送旺旺币给买单消费的会员账号下   
                 $res = Db::table('ns_member_account')->where('uid',$uid)->setInc('point',$sendGold);

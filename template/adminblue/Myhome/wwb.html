@@ -167,7 +167,11 @@
 	$('#ratio').change(function(){
 		var bbb = $("#ratio").val();
 		var num = Number(bbb);
-		var nn = (num*2.5);
+		if(num == 3){
+			var nn = 0;
+		}else{
+			var nn = (num*2.5);
+		}
 		$('.gold').empty().val(nn);
 	})
 	//保存所选比例值-完成修改

@@ -160,8 +160,12 @@ function changeValue(){
 		var value = obj.options[index].value; // 选中值
     	var n1 = Number(value);
     	var newdiv = document.getElementById("num_right"); 
+    	if(n1 ==3){
+    		newdiv.innerHTML = 0;
+    	}else{
 			newdiv.innerHTML = n1*2.5;
-  };
+    	}
+};
     window.onload=function(){
         var lis=document.getElementById("zt").getElementsByTagName("span");
         for(var i=0;i<lis.length;i++){

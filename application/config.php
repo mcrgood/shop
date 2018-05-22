@@ -350,7 +350,7 @@ return [
         'picture_page_size' => 15
     ],
     //商家比例数组
-    "business_arr" =>[10,15,20,25,30,35,40],
+    "business_arr" =>[3,10,15,20,25,30,35,40],
     //网银支付接入配置数据
     'order_pay_data' =>[
         'Version' =>'v1.0.0',  
