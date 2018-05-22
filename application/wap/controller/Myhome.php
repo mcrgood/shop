@@ -506,8 +506,6 @@ class Myhome extends Controller
     }
     //商家账单营收页面
     public function yingshou(){
-        // dump($this->uid);
-        // dump($_COOKIE);die;
         // dump(base64_encode('kww_mall39'));die;
         $this->check_login();
         $business_id = $this->business_id; //商家登录的ID
@@ -885,7 +883,11 @@ class Myhome extends Controller
         if($business_id == 0){
             $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
         }
-        $uid = Db::table('sys_user')->where('user_name',cookie('user_name'))->value('uid');
+        if(!$this->uid){
+            $uid = Db::table('sys_user')->where('user_name',cookie('user_name'))->value('uid');
+        }else{
+            $uid = $this->uid;
+        }
         Business::add_business_member($uid, $business_id);  //将预定会员添加到商家会员列表中
         $where['business_id'] = $business_id;
         $list = db("ns_health_room")->alias("a")->join('ns_shop_message m','a.business_id=m.userid','left')->where($where)->field("a.*,m.address")->select();
@@ -909,14 +911,20 @@ class Myhome extends Controller
             $res = Business::createOtherOrder($postData);
             return json($res);
         }
-        if(!$this->uid){
+        if(!cookie('user_name')){
             $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
         }
         $business_id = input('param.userid',0);
         if($business_id == 0){
             $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
         }
-        $row = Db::table('sys_user')->where('uid',$this->uid)->find();
+        $row = Db::table('sys_user')->where('user_name',cookie('user_name'))->find();
+        if(!$this->uid){
+            $uid = $row['uid'];
+        }else{
+            $uid = $this->uid;
+        }
+        Business::add_business_member($uid, $business_id);  //将预定会员添加到商家会员列表中
         $cate_list = Db::table('ns_other_cate')->where('business_id',$business_id)->select();
         $this->assign('row',$row);
         $this->assign('cate_list',$cate_list);
@@ -1746,14 +1754,19 @@ class Myhome extends Controller
                 'list' => $list
             ];
         }
-        if(!$this->uid){
+        if(!cookie('user_name')){
             $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
         }
         $business_id = input('param.userid',0);
         if($business_id == 0){
             $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
         }
-        Business::add_business_member($this->uid, $business_id);  //将预定会员添加到商家会员列表中
+        if(!$this->uid){
+            $uid = Db::table('sys_user')->where('user_name',cookie('user_name'))->value('uid');
+        }else{
+            $uid = $this->uid;
+        }
+        Business::add_business_member($uid, $business_id);  //将预定会员添加到商家会员列表中
         for($i = 0; $i < 7; $i++){ //获取未来一周的日期和星期几
             $dateList[$i]['dates'] = date('m月d日', strtotime('+'.$i.' day'));
             $dateList[$i]['dateTime'] = date('Y-m-d', strtotime('+'.$i.' day'));
@@ -1765,7 +1778,7 @@ class Myhome extends Controller
         }
         $this->assign('business_id',$business_id);
         $this->assign('dateList',$dateList);
-        $this->assign('uid',$this->uid);
+        $this->assign('uid',$uid);
         return view($this->style . 'Myhome/ktv');
     }
     //Ajax请求获取KTV的营业时间段和价格
@@ -1885,15 +1898,19 @@ class Myhome extends Controller
 
     //景点系统 张行飞 2018-4-28
     public function scenicspot(){
-        $uid = $this->uid;
-        if(!$this->uid){
+        if(!cookie('user_name')){
             $this->error('请先登录会员！',__URL(__URL__ . '/wap/login/index'));
         }
         $userid = input("param.userid",0);
         if($userid == 0){
             $this->error('页面信息错误，请刷新重试！',__URL(__URL__ . '/wap/dingwei/index'));
         }
-        Business::add_business_member($this->uid, $userid);  //将预定会员添加到商家会员列表中
+        if(!$this->uid){
+            $uid = Db::table('sys_user')->where('user_name',cookie('user_name'))->value('uid');
+        }else{
+            $uid = $this->uid;
+        }
+        Business::add_business_member($uid, $userid);  //将预定会员添加到商家会员列表中
         $list = Db::table("ns_scenicspot_room")->alias('a')->join("ns_shop_message m","a.business_id=m.userid",'left')->field("a.*,m.names")->where("business_id",$userid)->select();
         foreach ($list as $k => $v) {
             $listimg[$k] = $v['scenic_img'];
