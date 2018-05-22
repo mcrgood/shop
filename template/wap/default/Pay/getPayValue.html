@@ -80,7 +80,11 @@
 		<input type="hidden" id="out_trade_no" value="{$pay_value.out_trade_no}">
 
 	</div>
+	{if $nick_name eq true}
 	<div style="padding: 10px 0px;">{:lang('payer')}<span style="float:right;">{$nick_name}</span></div>
+	{else/}
+	<div style="padding: 10px 0px;">{:lang('payer')}<span style="float:right;">{$member_info["user_info"]["nick_name"]}</span></div>
+	{/if}
 </div>
 {include file="wap/default/controlCopyRight"}
 

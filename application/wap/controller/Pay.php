@@ -85,6 +85,7 @@ class Pay extends Controller
      */
     public function getPayValue()
     {
+
         // business_id 存在的话为线下扫码跳转支付
         $business_id = input('param.business_id', 0);
         $type = input('param.type', '');
@@ -103,12 +104,11 @@ class Pay extends Controller
         }
         $this->assign('business_id',$business_id);
         $this->assign('type',$type);
-        if(!$this->uid){
-            $infos = Db::table('sys_user')->where('user_name',cookie('user_name'))->find();
-            $nick_name = $infos['nick_name'];
-            $this->uid = $infos['uid'];
+        $infos = Db::table('sys_user')->where('user_name',cookie('user_name'))->find();
+        if(!$infos){
+            $nick_name = '';
         }else{
-            $nick_name = $member_info["user_info"]['nick_name'];
+            $nick_name = $infos['nick_name'];
         }
         $this->assign('nick_name',$nick_name);
         $out_trade_no = request()->get('out_trade_no', '');
@@ -120,9 +120,15 @@ class Pay extends Controller
         $pay_config = $pay->getPayConfig();
         $this->assign("pay_config", $pay_config);
         $pay_value = $pay->getPayInfo($out_trade_no);
-        // dump($pay_value['out_trade_no']);die;
         if (empty($pay_value)) {
             $this->error("订单主体信息已发生变动!", __URL(__URL__ . "/member/index"));
+        }
+        // dump($pay_value);die;
+        if($pay_value['type'] == 5){  //扫码付款
+            $uid = Db::table('ns_member_recharge')->where('id',$pay_value['type_alis_id'])->value('uid');
+            if(!$uid){
+               Db::table('ns_member_recharge')->where('id',$pay_value['type_alis_id'])->update(['uid'=>$infos['uid']]);
+            }
         }
         
         if ($pay_value['pay_status'] == 1 && $pay_value['pay_money'] != 0) {

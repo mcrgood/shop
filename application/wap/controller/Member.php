@@ -28,6 +28,7 @@ use data\service\Shop;
 use data\service\UnifyPay;
 use data\service\WebSite;
 use data\service\Weixin;
+use data\service\Business;
 use think\Request;
 use think\Db;
 use think;
@@ -53,7 +54,6 @@ class Member extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->checkLogin();
         // 是否开启验证码
         $web_config = new Config();
         $this->login_verify_code = $web_config->getLoginVerifyCodeConfig($this->instance_id);
@@ -93,7 +93,6 @@ class Member extends BaseController
     public function index()
     {
 
-      
         switch (NS_VERSION) {
             case 'NS_VER_B2C':
                 $retval = $this->memberIndex(); // 单店B2C版
@@ -112,6 +111,8 @@ class Member extends BaseController
      */
     public function memberIndex()
     {
+        $this->checkLogin();
+
         $user_name = session('user_name'); //获取登录会员的用户名（手机号）
         $fansNum = Db::table('sys_user')->where('referee_phone',$user_name)->count();
         $user_qrcode = db('sys_user')->where('user_name',$user_name)->value('user_qrcode'); //通过手机号查询出该会员是否有推广码
@@ -123,7 +124,7 @@ class Member extends BaseController
         }
         
         $userRow = db('sys_user')->where('user_name',$user_name)->find(); //查出登录会员的基本信息栏
-         //获取会员的微信头像和昵称
+        //获取会员的微信头像和昵称
         if(!$userRow['nick_name'] || !$userRow['user_headimg']){
             $jssdk = new Jssdk("wx8dba4dd3803abc58","db2e68f328a08215e85028de361ebd04");
             $package = $jssdk->getSignPackage();
@@ -256,6 +257,8 @@ class Member extends BaseController
      */
     public function memberIndexFx()
     {
+        $this->checkLogin();
+
         $member = new MemberService();
         $nfx_promoter = new NfxPromoter();
         $nfx_shop_config = new NfxShopConfig();
@@ -383,6 +386,8 @@ class Member extends BaseController
      */
     public function memberAddress()
     {
+        $this->checkLogin();
+
         $member = new MemberService();
         $addresslist = $member->getMemberExpressAddressList();
         $this->assign("list", $addresslist);
@@ -404,6 +409,8 @@ class Member extends BaseController
      */
     public function addMemberAddress()
     {
+        $this->checkLogin();
+
         if (request()->isAjax()) {
             $member = new MemberService();
             $consigner = request()->post('consigner', '');
@@ -439,6 +446,8 @@ class Member extends BaseController
      */
     public function updateMemberAddress()
     {
+        $this->checkLogin();
+
         $member = new MemberService();
         if (request()->isAjax()) {
             $id = request()->post('id', '');
@@ -518,6 +527,8 @@ class Member extends BaseController
      */
     public function integral()
     {
+        $this->checkLogin();
+
         $market_isset = false;
         $shop_isset = false;
         $market_list = '';
@@ -553,6 +564,8 @@ class Member extends BaseController
      */
     public function integralWater()
     {
+        $this->checkLogin();
+
         $shop_id = $this->instance_id;
         $condition['nmar.shop_id'] = $shop_id;
         $condition['nmar.uid'] = $this->uid;
@@ -579,6 +592,8 @@ class Member extends BaseController
      */
     public function balance()
     {
+        $this->checkLogin();
+
         $market_isset = false;
         $shop_isset = false;
         $market_list = '';
@@ -612,6 +627,9 @@ class Member extends BaseController
      */
     public function balanceWater()
     {
+        $this->checkLogin();
+
+
         // $start_time = isset($_POST['start_time']) ? $_POST['start_time'] : '2016-01-01';
         // $end_time = isset($_POST['end_time']) ? $_POST['end_time'] : '2099-01-01';
         // $page_index = isset($_GET['page']) ? $_GET['page'] : '1';
@@ -641,6 +659,8 @@ class Member extends BaseController
      */
     public function balanceWithdraw()
     {
+        $this->checkLogin();
+
         // 该店铺下的余额提现记录
         $member = new MemberService();
         $uid = $this->uid;
@@ -676,6 +696,8 @@ class Member extends BaseController
      */
     public function memberCoupon()
     {
+        $this->checkLogin();
+
         if (request()->isAjax()) {
             $member = new MemberService();
             $type = request()->post('type', '');
@@ -696,6 +718,8 @@ class Member extends BaseController
      */
     public function personalData()
     {
+        $this->checkLogin();
+
         $shop_id = request()->get('shop_id', 0);
         $_SESSION['bund_pre_url'] = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         $uid = $this->user->getSessionUid();
@@ -813,6 +837,8 @@ class Member extends BaseController
      */
     public function integralExchangeBalance()
     {
+        $this->checkLogin();
+
         // 获取兑换比例
         $account = new MemberAccount();
         $accounts = $account->getConvertRate($this->shop_id);
@@ -847,6 +873,8 @@ class Member extends BaseController
      */
     public function accountList()
     {
+        $this->checkLogin();
+
         $flag = request()->get('flag', '0'); // 标识，1：从会员中心的提现账号进来，0：从申请提现进来
         if ($flag != 0) {
             $_SESSION['account_flag'] = $flag;
@@ -870,6 +898,8 @@ class Member extends BaseController
      */
     public function addAccount()
     {
+        $this->checkLogin();
+
         if (request()->isAjax()) {
             $member = new MemberService();
             $uid = $this->uid;
@@ -890,6 +920,8 @@ class Member extends BaseController
      */
     public function updateAccount()
     {
+        $this->checkLogin();
+
         $member = new MemberService();
         if (request()->isAjax()) {
             $uid = $this->uid;
@@ -948,6 +980,8 @@ class Member extends BaseController
      */
     public function getWchatQrcode()
     {
+        $this->checkLogin();
+
         // 获取微信配置
         // $config = new Config();
         // $auth_info = $config->getInstanceWchatConfig($this->instance_id);
@@ -983,6 +1017,8 @@ class Member extends BaseController
      */
     public function getShopQrcode()
     {
+        $this->checkLogin();
+
         $weisite = new WebSite();
         $weisite_info = $weisite->getWebSiteInfo();
         $info["logo"] = $weisite_info["logo"];
@@ -1001,6 +1037,8 @@ class Member extends BaseController
      */
     public function updateUserQrcodeTemplate()
     {
+        $this->checkLogin();
+
         $uid = $this->user->getSessionUid();
         $instance_id = $this->instance_id;
         // 获取微信配置
@@ -1225,9 +1263,21 @@ class Member extends BaseController
      */
     public function recharge()
     {
-        // business_id 存在的话为线下扫码跳转支付
-        $uid = $this->uid;
         $business_id = input('param.business_id',0);
+        if($business_id == 0 && !$this->uid){
+            $this->checkLogin();
+        }elseif(!$this->uid && $business_id != 0){
+            if(cookie('user_name')){
+                $this->uid = Db::table('sys_user')->where('user_name',cookie('user_name'))->value('uid');
+                $uid = $this->uid;
+            }else{
+                $this->checkLogin();
+            }
+        }else{
+            $uid = $this->uid;
+        }
+           
+        // business_id 存在的话为线下扫码跳转支付
         if($business_id){
             $names = db('ns_shop_message')->where('userid',$business_id)->value('names');    
             $this->assign("names", $names); //查出商家的店铺名称
@@ -1268,6 +1318,8 @@ class Member extends BaseController
      */
     public function userShopCommission()
     {
+        $this->checkLogin();
+
         return view($this->style . "Member/userShopCommission");
     }
 
@@ -1276,6 +1328,8 @@ class Member extends BaseController
      */
     public function toWithdraw()
     {
+        $this->checkLogin();
+
         if (request()->isAjax()) {
             // 提现
             $uid = $this->uid;
@@ -1427,6 +1481,8 @@ class Member extends BaseController
      */
     public function modifyFace()
     {
+        $this->checkLogin();
+
         $member = new MemberService();
         if (Request()->isAjax()) {
             $user_headimg = request()->post('user_headimg', '');
@@ -1445,6 +1501,8 @@ class Member extends BaseController
      */
     public function myCollection()
     {
+        $this->checkLogin();
+
         if (request()->isAjax()) {
             $member = new MemberService();
             $page = request()->post('page', '1');
@@ -1553,6 +1611,8 @@ class Member extends BaseController
         //@unlink($tmpfile);
         return true;
     }
+
+
 
 
 }
