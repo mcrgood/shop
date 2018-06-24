@@ -34,7 +34,8 @@ class Phonefastpay extends BaseController
 	
 	//手机端快捷支付API
 	public function IpsPayApi(){
-		$out_trade_no = input('param.out_trade_no');
+		$out_trade_no = input('param.out_trade_no'); //订单号
+		$coupon_money = input('param.coupon_money'); //优惠券金额
 		if(!$out_trade_no){
 			$this->error('参数错误，请重试！',__url(__URL__ . "/index"));
 		}
@@ -54,9 +55,9 @@ class Phonefastpay extends BaseController
 			//商品名称
 			$inGoodsName = $recharge['pay_body'];
 			//订单金额
-			$inAmount = $recharge['pay_money'];	
+			$inAmount = $recharge['pay_money']-$coupon_money;
+			Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['real_pay_money' =>$inAmount]);	
 		}	
-		
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
 		$inMerBillNo = 'Mer'.date('YmdHis') . rand(100000,999999);
 		//支付方式 01#借记卡 02#信用卡 03#IPS账户支付
@@ -171,7 +172,7 @@ class Phonefastpay extends BaseController
 		    $message = "验证失败";
 		}
 		
-		return view($this->style . 'Pay/payCallback');
+		return view($this->style . "Pay/pay_get_coupon");
 	}
 
 

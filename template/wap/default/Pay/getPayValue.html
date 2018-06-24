@@ -86,19 +86,30 @@
 	<div style="padding: 10px 0px;">{:lang('payer')}<span style="float:right;">{$member_info["user_info"]["nick_name"]}</span></div>
 	{/if}
 </div>
+	{if $business_id neq 0 && $coupon_money neq 0}
+	<h2 style="margin-top: 5%;color:gray;text-align: center;">优惠券：&nbsp;&nbsp;<span class="coupon" style="font-size: 1.8rem;color:#ff6600">{$coupon_money}</span>&nbsp;元</h2>
+	{/if}
 {include file="wap/default/controlCopyRight"}
-
 <section class="s-btn" style="position: fixed; left: 0; right: 0; bottom: 0; height: 50px; padding: 0; z-index: 5;">
-	<button class="alipay" type="button" onclick="calculate()">{:lang('confirm_payment')}￥{$pay_value.pay_money}</button>
+	<button class="alipay" type="button" onclick="calculate()">{:lang('confirm_payment')}￥<span class="real_pay">{$pay_value.pay_money}</span></button>
 </section>
 <script>
 var __IMG__ = '__TEMP__/{$style}/public/images';
+	var coupon = $('.coupon').text();
+	var real_pay = $('.real_pay').text();
+	if(coupon != 0 && coupon != '' && coupon != null){
+		var real_money = Number(real_pay-coupon);
+		$('.real_pay').text(real_money);
+		var coupon_money = coupon;
+	}else{
+		var coupon_money = 0;
+	}
 function calculate() {
 	var pay_type = $("#pay_type").val();
 	var out_trade_no = $("#out_trade_no").val();
 	if (pay_type == 0) {
 		//快捷支付
-		window.location.href = __URL("APP_MAIN/Phonefastpay/IpsPayApi?out_trade_no=" + out_trade_no);
+		window.location.href = __URL("APP_MAIN/Phonefastpay/IpsPayApi?out_trade_no=" + out_trade_no+"&coupon_money="+coupon_money);
 	} else if (pay_type == 1) {
 		//余额支付
 		var pwd = $('#password').val();

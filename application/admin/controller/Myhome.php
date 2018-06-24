@@ -619,19 +619,37 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/addRoom");
 	}
 
-	//商家分类列表
-	// public function goods_index(){
-	// 	if (request()->isAjax()) {
-	//             $page_index = request()->post("page_index", 1);
-	//             $page_size = request()->post('page_size', PAGESIZE);
-	//             $search_text = request()->post('search_text', '');
-	//             $condition['catename'] = ['LIKE',"%".$search_text."%"];
-	//             $member = new MyhomeService();
-	//             $list = $member->getGoodsList($page_index, $page_size, $order = '');
-	//             return $list;
-	//     }
-	// 	return view($this->style . "Myhome/index");
-	// }
+	//设定（优惠券）红包金额随机范围
+	public function set_coupon(){
+		if(request()->isAjax()){
+			$postData = input('post.');
+			if(empty($postData['small']) || empty($postData['big'])){
+				$info = [
+					'code' =>0,
+					'msg' =>'请填写完整信息!'
+				];
+			}elseif($postData['big'] <= $postData['small']){
+				$info = [
+					'code' =>0,
+					'msg' =>'填写金额有误!'
+				];
+			}
+			else{
+				$res = Db::table('ns_coupon_scope')->where('id',1)->update($postData);
+				if($res){
+					$info = ['code' =>1,'msg' =>'修改成功!'];
+				}elseif($res == 0){
+					$info = ['code' =>0,'msg' =>'您未做任何修改！'];
+				}else{
+					$info = ['code' =>0,'msg' =>'修改失败!'];
+				}
+			}
+			return json($info);
+		}
+		$row = Db::table('ns_coupon_scope')->where('id',1)->find();
+		$this->assign('row',$row);
+		return view($this->style . "Myhome/set_coupon");
+	}
 
 	//商家商品分类修改添加
 	public function cateadd(){
@@ -895,22 +913,22 @@ class Myhome extends BaseController
 			$data = db('ns_shop_message')->where('id',$id)->update($info);
 			if($data){
 				//审核通过后给推荐人发放40个旺旺币奖励(只奖励一次)
-				$userid = db('ns_shop_message')->where('id',$id)->value('userid'); 
-				$iphone = db('ns_goods_login')->where('id',$userid)->value('iphone');
-				$thisRow = db('sys_user')->where('user_tel',$iphone)->find();
-				if($thisRow['referee_phone'] && $thisRow['is_get_referee'] == 0){
-					$aa = db('ns_member_account')
-                    ->alias('m')
-                    ->join('sys_user u','u.uid = m.uid','left')
-                    ->where('u.user_tel',$thisRow['referee_phone'])
-                    ->setInc('point',40);
-                    $bb = db('sys_user')->where('user_tel',$iphone)->update(['is_get_referee'=>1]);
-                    if($aa && $bb){
-                    	$uid = db('sys_user')->where('user_tel',$thisRow['referee_phone'])->value('uid');
-                    	$HandleOrder = new HandleOrder();
-                    	$HandleOrder->bill_detail_record($uid, 40, '商家入驻审核通过返佣', 11, $id);
-                    }
-				}
+				//$userid = db('ns_shop_message')->where('id',$id)->value('userid'); 
+				//$iphone = db('ns_goods_login')->where('id',$userid)->value('iphone');
+				//$thisRow = db('sys_user')->where('user_tel',$iphone)->find();
+				// if($thisRow['referee_phone'] && $thisRow['is_get_referee'] == 0){
+				// 	$aa = db('ns_member_account')
+    //                 ->alias('m')
+    //                 ->join('sys_user u','u.uid = m.uid','left')
+    //                 ->where('u.user_tel',$thisRow['referee_phone'])
+    //                 ->setInc('point',40);
+    //                 $bb = db('sys_user')->where('user_tel',$iphone)->update(['is_get_referee'=>1]);
+    //                 if($aa && $bb){
+    //                 	$uid = db('sys_user')->where('user_tel',$thisRow['referee_phone'])->value('uid');
+    //                 	$HandleOrder = new HandleOrder();
+    //                 	$HandleOrder->bill_detail_record($uid, 40, '商家入驻审核通过返佣', 11, $id);
+    //                 }
+				// }
 					
 				$res = [
 					'status' => 1,

@@ -1,0 +1,59 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+<script src="ADMIN_JS/art_dialog.source.js"></script>
+<script src="ADMIN_JS/iframe_tools.source.js"></script>
+<script src="ADMIN_JS/material_managedialog.js"></script>
+<script src="__STATIC__/layui/layui.all.js"></script>
+<script src="__STATIC__/js/ajax_file_upload.js" type="text/javascript"></script>
+<script src="__STATIC__/js/file_upload.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="ADMIN_CSS/defau.css">
+<link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+<style type="text/css">
+.image1111{margin-left: 188px;width: 413px;height: 211px;}
+.error {padding-left: 5px !important;}
+</style>
+{/block}
+{block name="main"}
+<div class="set-style">
+	<dl>
+		<dt><span class="color-red"></span>最小金额:</dt>
+		<dd>
+			<input type="number" class="input-common" name='small' value="{$row.small}"  />
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="color-red"></span>最大金额:</dt>
+		<dd>
+			<input type="number" class="input-common" name='big' value="{$row.big}" />
+		</dd>
+	</dl>
+
+	<dl>
+		<dt></dt>
+		<dd><button class="btn-common btn-big">修&nbsp;&nbsp;改</button></dd>
+	</dl>
+</div>
+<script>
+$('.btn-big').click(function(){
+	var small = $("input[name='small']").val();
+	var big = $("input[name='big']").val();
+	var url = "{:url('Myhome/set_coupon')}";
+	var data = {
+		small:small,
+		big:big
+	};
+	$.post(url,data,function(res){
+		if(res.code==1){
+			layer.msg(res.msg,{time:1500,icon:6});
+			setTimeout(function(){
+				window.location.reload();
+			},800)
+		}else{
+			layer.msg(res.msg,{time:1500,icon:5});
+		}
+	},'json')
+})
+
+
+</script>
+{/block}

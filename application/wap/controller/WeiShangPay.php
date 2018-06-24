@@ -165,7 +165,7 @@ class WeiShangPay extends BaseController
 		} else {
 		    $message = "支付失败";
 		}
-		return view($this->style . 'WeiShangPay/return_url');
+		return view($this->style . "Pay/pay_get_coupon");
 	}
 
 	//服务器S2S通知页面路径

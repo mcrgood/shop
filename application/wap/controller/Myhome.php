@@ -709,11 +709,15 @@ class Myhome extends Controller
                 $img_list[$k] =$v['room_img'];
             }
         }
+        $today = date('Y-m-d');  //今天日期
+        $tomo = date('Y-m-d',time()+86400); // 明天日期
         $this->assign('address',$room_list[0]['address']);
         $this->assign('room_list',$room_list);
         $this->assign('uid',$uid);
         $this->assign('business_id',$business_id);
         $this->assign('img_list',$img_list);
+        $this->assign('today',$today);
+        $this->assign('tomo',$tomo);
         return view($this->style . 'Myhome/hotel');
     }
 

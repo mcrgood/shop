@@ -36,6 +36,7 @@ class Pay extends Controller
 {
 
     public $style;
+    public $online_info;
 
     public $shop_config;
 
@@ -69,6 +70,7 @@ class Pay extends Controller
         // 获取会员昵称
         $member = new MemberService();
         $member_info = $member->getMemberDetail();
+        $this->online_info = $member_info;
         $unpaid_goback = isset($_SESSION['unpaid_goback']) ? $_SESSION['unpaid_goback'] : '';
         $this->assign("unpaid_goback", $unpaid_goback); // 返回到订单
         $this->assign('member_info', $member_info);
@@ -120,6 +122,15 @@ class Pay extends Controller
         $pay_config = $pay->getPayConfig();
         $this->assign("pay_config", $pay_config);
         $pay_value = $pay->getPayInfo($out_trade_no);
+        if($pay_value['uid'] != 0){
+            $coupon_info = Db::table('ns_coupon')->where('uid',$pay_value['uid'])->find();
+            if($coupon_info){
+                $coupon_money = $coupon_info['money'];
+            }else{
+                $coupon_money = 0;
+            }
+        }
+        $this->assign('coupon_money',$coupon_money);
         if (empty($pay_value)) {
             $this->error("订单主体信息已发生变动!", __URL(__URL__ . "/member/index"));
         }
@@ -338,6 +349,54 @@ class Pay extends Controller
             }
         }
     }
+
+     /**
+        * 移动端付款后获得优惠券（红包）
+     */
+     public function pay_get_coupon(){
+        //获取登录会员的信息
+        if($this->online_info){
+            $uid = $this->online_info['uid'];
+        }else{
+            $uid = 62;
+        }
+        $res = Db::table('ns_coupon_scope')->find();
+        $rand = rand($res['small']*100,$res['big']*100)/100;
+        $rand  = sprintf("%.2f",$rand);
+        $id = $this->add_coupon($uid, $rand);
+        $this->assign('rand',$rand);
+        $this->assign('id',$id);
+        return view($this->style . "Pay/pay_get_coupon");
+     }
+
+     /**
+       * 添加优惠券到会员 
+     */
+     public function add_coupon($uid, $rand){
+
+        $data['coupon_type_id'] = 1;  //优惠券类型id
+        $data['shop_id'] = 0;
+        $data['fetch_time'] = time(); //领取优惠券时间
+        $data['uid'] = $uid;  //会员ID
+        $data['money'] = $rand;  //获取优惠券金额（红包）
+        $data['state'] = 1; //优惠券状态 0未领用 1已领用（未使用） 2已使用 3已过期
+        $data['start_time'] = strtotime(date('Y-m-d',time()+86400)); //有效期开始时间
+        $data['end_time'] = strtotime(date('Y-m-d',time()+86400*4))-1;; //有效期结束时间
+        $data['coupon_code'] = time(); //优惠券编码
+        $start_time = strtotime(date('Y-m-d'));     //今天0点的时间戳
+        $end_time = strtotime(date('Y-m-d'))+86400;   // 明天0点的时间戳
+        $where['uid'] = $uid;
+        $where['fetch_time'] = ['between',[$start_time,$end_time]];
+        $res = Db::table('ns_coupon')->where($where)->find();
+        if($res){
+            $id = 0;
+        }else{
+            $id = Db::table('ns_coupon')->insertGetId($data);
+        }
+        return $id;
+
+     }
+
 
     /**
      * 支付宝支付异步回调
