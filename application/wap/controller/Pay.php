@@ -124,13 +124,16 @@ class Pay extends Controller
         $pay_value = $pay->getPayInfo($out_trade_no);
         if($pay_value['uid'] != 0){
             $coupon_info = Db::table('ns_coupon')->where('uid',$pay_value['uid'])->find();
-            if($coupon_info){
-                $coupon_money = $coupon_info['money'];
-            }else{
-                $coupon_money = 0;
+            if(!$coupon_info){
+                $coupon_info = 0;
             }
+        }else{
+            $coupon_info = 0;
         }
-        $this->assign('coupon_money',$coupon_money);
+        if($pay_value['pay_money'] <= $coupon_info['money']){
+            $coupon_info = 0;
+        }
+        $this->assign('coupon_info',$coupon_info);
         if (empty($pay_value)) {
             $this->error("订单主体信息已发生变动!", __URL(__URL__ . "/member/index"));
         }

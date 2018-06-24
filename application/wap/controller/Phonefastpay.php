@@ -35,7 +35,12 @@ class Phonefastpay extends BaseController
 	//手机端快捷支付API
 	public function IpsPayApi(){
 		$out_trade_no = input('param.out_trade_no'); //订单号
-		$coupon_money = input('param.coupon_money'); //优惠券金额
+		$coupon_id = input('param.coupon_id'); //优惠券金额
+		if($coupon_id != 0){
+			$coupon_money = Db::table('ns_coupon')->where('coupon_id',$coupon_id)->value('money');
+		}else{
+			$coupon_money = 0;
+		}
 		if(!$out_trade_no){
 			$this->error('参数错误，请重试！',__url(__URL__ . "/index"));
 		}
@@ -56,7 +61,7 @@ class Phonefastpay extends BaseController
 			$inGoodsName = $recharge['pay_body'];
 			//订单金额
 			$inAmount = $recharge['pay_money']-$coupon_money;
-			Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['real_pay_money' =>$inAmount]);	
+			Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['real_pay_money' =>$inAmount, 'coupon_id' =>$coupon_id]);	
 		}	
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
 		$inMerBillNo = 'Mer'.date('YmdHis') . rand(100000,999999);
@@ -151,6 +156,9 @@ class Phonefastpay extends BaseController
 		        $Business = new Business();
 		        $HandleOrder->handle($out_trade_no);
 		        $paymentInfo = Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->find();
+		        if($paymentInfo['coupon_id'] !=0){
+		        	Db::table('ns_coupon')->where('coupon_id',$paymentInfo['coupon_id'])->update(['state' => 2]);
+		        }
 		        $alias = 'business_id_'.$paymentInfo['business_id'];
 		        if($paymentInfo['type'] == 5){ //扫码付款
 		        	$type = 'pay';
