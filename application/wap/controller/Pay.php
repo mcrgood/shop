@@ -133,9 +133,12 @@ class Pay extends Controller
         }else{
             if($business_id && $pay_value['type'] == 5){
                 $uuid = Db::table('ns_member_recharge')->where('id',$pay_value['type_alis_id'])->value('uid');
+                if($uuid){
+                    Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['uid' => $uuid]);
+                }
                 $where_a['uid'] = $uuid;
                 $where_a['state'] = 1;
-                $coupon_info = Db::table('ns_coupon')->where($wheres)->find();
+                $coupon_info = Db::table('ns_coupon')->where($where_a)->find();
                 if(!$coupon_info){
                     $coupon_info = 0;
                 }
