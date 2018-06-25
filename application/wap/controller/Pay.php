@@ -117,11 +117,12 @@ class Pay extends Controller
         if (empty($out_trade_no)) {
             $this->error("没有获取到支付信息");
         }
-        
+
         $pay = new UnifyPay();
         $pay_config = $pay->getPayConfig();
         $this->assign("pay_config", $pay_config);
         $pay_value = $pay->getPayInfo($out_trade_no);
+
         if($pay_value['uid'] != 0){
             $wheres['uid'] = $pay_value['uid'];
             $wheres['state'] = 1;
@@ -130,7 +131,17 @@ class Pay extends Controller
                 $coupon_info = 0;
             }
         }else{
-            $coupon_info = 0;
+            if($business_id && $pay_value['type'] == 5){
+                $uuid = Db::table('ns_member_recharge')->where('id',$pay_value['type_alis_id'])->value('uid');
+                $where_a['uid'] = $uuid;
+                $where_a['state'] = 1;
+                $coupon_info = Db::table('ns_coupon')->where($wheres)->find();
+                if(!$coupon_info){
+                    $coupon_info = 0;
+                }
+            }else{
+                $coupon_info = 0;
+            }
         }
         if($pay_value['pay_money'] <= $coupon_info['money']){
             $coupon_info = 0;
