@@ -54,10 +54,10 @@ article button{
 		<p style="color:#FF3C3C;">{:lang('order_number')}{$order_no}</p>
 		{/notempty} -->
 	<button onclick="enterOrderList()">{:lang('access_member_center')}</button>
-	{neq name="id" value="0"}
+	{if $id neq 0}
 	<h2>恭喜你获得红包&nbsp;<span style="color:red;font-size: 2rem;">{$rand}</span>&nbsp;元</h2>
 	<h2>已放入您的优惠券中</h2>
-	{/neq}
+	{/if}
 {/if}
 </article>
 <script>

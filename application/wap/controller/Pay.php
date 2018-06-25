@@ -123,7 +123,9 @@ class Pay extends Controller
         $this->assign("pay_config", $pay_config);
         $pay_value = $pay->getPayInfo($out_trade_no);
         if($pay_value['uid'] != 0){
-            $coupon_info = Db::table('ns_coupon')->where('uid',$pay_value['uid'])->find();
+            $wheres['uid'] = $pay_value['uid'];
+            $wheres['state'] = 1;
+            $coupon_info = Db::table('ns_coupon')->where($wheres)->find();
             if(!$coupon_info){
                 $coupon_info = 0;
             }
@@ -361,14 +363,19 @@ class Pay extends Controller
         if($this->online_info){
             $uid = $this->online_info['uid'];
         }else{
-            $uid = 62;
+            $uid = 0;
         }
-        $res = Db::table('ns_coupon_scope')->find();
-        $rand = rand($res['small']*100,$res['big']*100)/100;
-        $rand  = sprintf("%.2f",$rand);
-        $id = $this->add_coupon($uid, $rand);
-        $this->assign('rand',$rand);
+        if($uid != 0){
+            $res = Db::table('ns_coupon_scope')->where('id',1)->find();
+            $num = rand($res['small']*100,$res['big']*100)/100;
+            $rand  = sprintf("%.2f",$num);
+            $id = $this->add_coupon($uid, $rand);
+        }else{
+            $id = 0;
+            $rand = 0;
+        }
         $this->assign('id',$id);
+        $this->assign('rand',$rand);
         return view($this->style . "Pay/pay_get_coupon");
      }
 
