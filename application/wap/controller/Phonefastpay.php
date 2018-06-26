@@ -128,6 +128,7 @@ class Phonefastpay extends BaseController
 		$html_text = $ipspaySubmit->buildRequestForm($parameter);
 		echo $html_text;
 	}
+
 	//支付结果成功返回的商户URL:
 	public function return_url(){
 		$user_name = session('user_name');
@@ -170,6 +171,19 @@ class Phonefastpay extends BaseController
 		        if($msg_status == 1){
 		       		$Business->send_yuding_msg_auto($out_trade_no); //自动推送消息
 		        }
+
+		        if($paymentInfo['uid']!= 0){
+		            $res = Db::table('ns_coupon_scope')->find();
+		            $num = rand($res['small']*100,$res['big']*100)/100;
+		            $rand  = sprintf("%.2f",$num);
+		            $id = $Business->add_coupon($paymentInfo['uid'], $rand);
+		        }else{
+		            $id = 0;
+		            $rand = 0;
+		        }
+		        $this->assign('id',$id);
+		        $this->assign('rand',$rand);
+
 		    }elseif($status == "N")
 		    {
 		        $message = "交易失败";

@@ -1197,6 +1197,30 @@ class Business extends BaseService{
         $res = $this->sendMsg($cate_name, $row['type_alis_id']);
     }
 
+    //付款后获取随机红包（优惠券）
+    public function add_coupon($uid, $rand){
+        $data['coupon_type_id'] = 1;  //优惠券类型id
+        $data['shop_id'] = 0;
+        $data['fetch_time'] = time(); //领取优惠券时间
+        $data['uid'] = $uid;  //会员ID
+        $data['money'] = $rand;  //获取优惠券金额（红包）
+        $data['state'] = 1; //优惠券状态 0未领用 1已领用（未使用） 2已使用 3已过期
+        $data['start_time'] = strtotime(date('Y-m-d',time()+86400)); //有效期开始时间
+        $data['end_time'] = strtotime(date('Y-m-d',time()+86400*4))-1;; //有效期结束时间
+        $data['coupon_code'] = time(); //优惠券编码
+        $start_time = strtotime(date('Y-m-d'));     //今天0点的时间戳
+        $end_time = strtotime(date('Y-m-d'))+86400;   // 明天0点的时间戳
+        $where['uid'] = $uid;
+        $where['fetch_time'] = ['between',[$start_time,$end_time]];
+        $res = Db::table('ns_coupon')->where($where)->find();
+        if($res){
+            $id = 0;
+        }else{
+            $id = Db::table('ns_coupon')->insertGetId($data);
+        }
+        return $id;
+     }
+
 
 
 
