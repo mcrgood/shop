@@ -129,6 +129,7 @@
     </div>
     {if $v.room_status eq 0}
     <div class="order_button">
+      <span>剩<b>{$v.room_num}</b>间</span>
       <input type="button" value="预定" class="reserve" status="" data-id="{$v.room_id}"/>
       <input type="hidden" class="hidden" value="" />
     </div>
@@ -295,12 +296,12 @@
         }  
   
     }) 
-     $('input').iCheck({
-    checkboxClass: 'icheckbox_square-orange',
-    radioClass: 'iradio_square-orange',
-    increaseArea: '20%' // optional
-  });
-})  
+  $('input').iCheck({
+      checkboxClass: 'icheckbox_square-orange',
+      radioClass: 'iradio_square-orange',
+      increaseArea: '20%' // optional
+    });
+  })  
 
 
 

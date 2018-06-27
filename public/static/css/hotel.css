@@ -347,6 +347,17 @@ input[type=button], input[type=submit], input[type=file],button {
   float: right;
   height: 130px;
 }
+.order_button span{
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 20%;
+  
+}
+.order_button b{
+  color:#ff6600;
+}
 .order_button input{
   width: 80%;
   height: 40px;
@@ -355,7 +366,7 @@ input[type=button], input[type=submit], input[type=file],button {
   outline: none;
   border: none;
   font-size: 1.2rem;
-  margin: 38% 10% 0 10%;
+  margin: 0% 10% 0 10%;
   border-radius: 10px;
   text-align: center;
 }

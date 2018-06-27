@@ -877,38 +877,18 @@ class Business extends BaseService{
         return $info;
     }
     //
-    public static function changeHotel($room_id){
-        $room_status = db('ns_hotel_room')->where('room_id',$room_id)->value('room_status');
-        if($room_status == 0){ //
-            $res = db('ns_hotel_room')->where('room_id',$room_id)->update(['room_status' => 1]); //修改为已住满
-            if($res){
-                $info = [
-                    'code' =>1,
-                    'msg' => '状态更变成功！',
-                    'room_status' => '已住满',
-                    'color' => 'red'
-                ];
-            }else{
-                $info = [
-                    'code' =>0,
-                    'msg' =>'修改失败，请刷新重试！'
-                ];
-            }
+    public static function changeHotel($postData){
+        $res = Db::table('ns_hotel_room')->where('room_id',$postData['room_id'])->update(['room_num' =>$postData['room_num']]);
+        if($res !== false){
+            $info = [
+                'code' =>1,
+                'msg' => '修改成功！'
+            ];
         }else{
-            $res = db('ns_hotel_room')->where('room_id',$room_id)->update(['room_status' => 0]);//修改为可预定
-            if($res){
-                $info = [
-                    'code' =>1,
-                    'msg' => '状态更变成功！',
-                    'room_status' => '可预定',
-                    'color' =>'#5FB878'
-                ];
-            }else{
-                $info = [
-                    'code' =>0,
-                    'msg' =>'修改失败，请刷新重试！'
-                ];
-            }
+            $info = [
+                'code' =>0,
+                'msg' => '修改失败！'
+            ];
         }
         return $info;
     }

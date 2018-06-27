@@ -60,7 +60,7 @@ body{
 }
 /*复选框*/
 .wrap{  
-    width:18%;  
+    width:22%;  
     height: 30px; 
     float: right;
     margin-top: 3%;
@@ -75,6 +75,65 @@ body{
   color: #fff;
   border-radius: 10px;
   border:none;
+}
+.fulled {  
+    width:100%;  
+    height:100%;  
+    position:fixed;  
+    top:0;  
+    left:0;  
+    background:rgba(216,210, 210,0.9);  
+    display:none;  
+} 
+.fulled .fix-box {  
+    position:relative;  
+    margin: 53% 10%;  
+    width:80%;  
+    height:200px;    
+    border:2px solid pink;  
+    background: #fbe5e5;
+}  
+.fulled .fix-box .close {  
+    position:absolute;  
+    right:10px;  
+    top:0;  
+    color:#cc6648;  
+    cursor:pointer;  
+} 
+.qita{
+  width: 100%;
+  height: 40px;
+  -webkit-box-pack:center; /*水平方向:start 左 end 右*/
+
+  -webkit-box-align:center;/*垂直方向:start 左 end 右*/
+
+  display: -webkit-box;
+}
+.qita input{
+    outline: none;
+    padding-left: 8px;
+    font-size: 0.8rem;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+}
+.confirm{
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  margin-top: 1rem;
+}
+.confirm button{
+  width: 30%;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  background: #fe622f;
+  outline: none;
+  border:none;
+  border-radius: 8px;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -100,11 +159,7 @@ body{
          <li class="lis">
             <span class="jiudian">{$v.room_type}</span>
             <div class="wrap">
-            {if $v.room_status eq 0}
-                <button class="btn" value="{$v.room_id}" style="background:#5FB878;"onclick="stop(this)">可预定</button>
-            {else if}
-                <button class="btn" value="{$v.room_id}" style="background:red;" onclick="stop(this)">已住满</button>
-            {/if}  
+                <button class="btn" value="{$v.room_id}" style="background:#5FB878;" onclick="stop(this)">剩余{$v.room_num}间</button>
             </div> 
           </li>
         {/volist}
@@ -165,7 +220,18 @@ body{
   		</ul>
   	</div>
   </div>
+
+  <div class="fulled">  
+  <div class="fix-box">  
+    <p class="close">关闭</p><br/>
+    <div class="qita">剩余房间数:<input type="number" value=""  placeholder="请输入数量"/></div>    
+    <div class="confirm">
+      <button class="confirm-btn">确定</button>
+    </div>
+  </div>  
+</div> 
   <script type="text/javascript">
+      var room_id;
       function or(obj){ //餐饮更变状态
         if($(obj).text()=="未使用"){
           $(obj).text("使用中");
@@ -187,22 +253,39 @@ body{
           }
         },"json")
       }
-
+      var flag = false;
       function stop(obj){ //酒店更变状态
-        var room_id = $(obj).val();
-        var data = {
-          "room_id":room_id
-        };
-        var url = "{:url('Myhome/changeRoomStatus')}";
-        $.post(url,data,function(res){
-            if(res.code == 1){
-              layer.msg(res.msg, {time: 1200});
-              $(obj).text(res.room_status);
-              $(obj).css('background',res.color);
-            }else{
-              layer.msg(res.msg, {time: 1200});
-            }
-        },'json')
+        event.preventDefault();  
+        $(".fulled").fadeIn();
+        var id = $(obj).val();
+        room_id = id;
+        $('.confirm-btn').on('click',function(){
+          var room_num = $("input[type='number']").val();
+          if(!room_num){
+              layer.msg('请输入数量！', {time: 1000});
+              return;
+          }
+          if(flag){
+            layer.msg('页面信息有误，请重新提交！', {time: 1200});
+              setTimeout(function(){
+                window.location.reload();
+              },800)
+              return;
+          }
+          flag = true;
+           var data = {room_id:room_id,room_num:room_num};
+           var url = "{:url('Myhome/changeRoomStatus')}";
+          $.post(url,data,function(res){
+              if(res.code == 1){
+                layer.msg(res.msg, {time: 1000});
+                setTimeout(function(){
+                    window.location.reload();
+                },600)
+              }else{
+                layer.msg(res.msg, {time: 1200});
+              }
+          },'json')
+        })
       }
 
       function changeKtv(obj){ //KTV更变包厢状态
@@ -272,6 +355,13 @@ body{
             }
         },'json')
       }
+      $(".close").on("click", function(event) {  
+        if ($(event.target).is(".close") || $(event.target).is(".fix-box")) {  
+            //alert(123)  
+            event.preventDefault();  
+            $(".fulled").hide();  
+        }  
+    }) 
   </script>
 </body>
 </html>

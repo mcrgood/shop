@@ -1825,8 +1825,8 @@ class Myhome extends Controller
     //商家手动开关改变酒店房间预定的状态
     public function changeRoomStatus(){
         if(request()->isAjax()){
-            $room_id = input('post.room_id');
-            $res = Business::changeHotel($room_id);
+            $data = input('post.');
+            $res = Business::changeHotel($data);
             return json($res);
         }
     }
