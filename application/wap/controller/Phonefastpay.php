@@ -64,7 +64,8 @@ class Phonefastpay extends BaseController
 			Db::table('ns_order_payment')->where('out_trade_no',$out_trade_no)->update(['real_pay_money' =>$inAmount, 'coupon_id' =>$coupon_id]);	
 		}	
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
-		$inMerBillNo = 'Mer'.date('YmdHis') . rand(100000,999999);
+		// $inMerBillNo = 'Mer'.date('YmdHis') . rand(100000,999999);
+		$MerBillNo = $out_trade_no;
 		//支付方式 01#借记卡 02#信用卡 03#IPS账户支付
 		$GatewayType = '01';
 		//商戶名
@@ -75,7 +76,7 @@ class Phonefastpay extends BaseController
 		//支付结果失败返回的商户URL
 		$inFailUrl = '';
 		//商户数据包
-		$inAttach = $out_trade_no;
+		$inAttach = '';
 		//交易返回接口加密方式
 		$selRetEncodeType = 17;
 		//订单有效期
@@ -102,7 +103,7 @@ class Phonefastpay extends BaseController
 		    "Lang"	=> $ipspay_config['Lang'],
 		    "OrderEncodeType"=>$ipspay_config['OrderEncodeType'],
 		    "RetType"=>$ipspay_config['RetType'],
-		    "MerBillNo"	=> $inMerBillNo,
+		    "MerBillNo"	=> $MerBillNo,
 		    "MerName"	=> $inMerName,
 		    "MsgId"	=> $ipspay_config['MsgId'],
 		    "GatewayType" => $GatewayType,
@@ -147,7 +148,7 @@ class Phonefastpay extends BaseController
 		    $status = $xmlRes['GateWayRsp']['body']['Status'];
 		    if ($status == "Y") {
 		    	//查询到付款的订单号
-		        $out_trade_no = $xmlRes['GateWayRsp']['body']['Attach'];
+		        $out_trade_no = $xmlRes['GateWayRsp']['body']['MerBillNo'];
 		        $data['pay_status'] = 1; //pay_status=1为已付款
 		        $data['pay_time'] = time();
 		        $data['pay_type'] = 1; //pay_type=1为快捷支付
@@ -181,8 +182,6 @@ class Phonefastpay extends BaseController
 		            $id = 0;
 		            $rand = 0;
 		        }
-		        $this->assign('id',$id);
-		        $this->assign('rand',$rand);
 
 		    }elseif($status == "N")
 		    {
@@ -194,7 +193,9 @@ class Phonefastpay extends BaseController
 		    $message = "验证失败";
 		}
 		
-		return view($this->style . "Pay/pay_get_coupon");
+        $this->assign('id',$id);
+        $this->assign('rand',$rand);
+		return view($this->style . "Pay/fast_get_coupon");
 	}
 
 

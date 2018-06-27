@@ -28,11 +28,18 @@
 		</dd>
 	</dl>
 	<dl>
+		<dt><span class="color-red">*</span>房间数量:</dt>
+		<dd>
+			<input id="room_num" type="number" placeholder="请填写房间数量" class="input-common" value="{$row.room_num|default=''}"/>
+		</dd>
+	</dl>
+	<dl>
 		<dt><span class="color-red">*</span>房间描述:</dt>
 		<dd>
 			<input id="remark" type="text" placeholder="请填写房间描述" class="input-common" value="{$row.remark|default=''}"/>
 		</dd>
 	</dl>
+	
 	<dl>
 		<dt><span class="color-red"></span>房间图片:</dt>
 		<button type="button" class="layui-btn" id="test2" style="margin-left: 10px;margin-bottom: 30px;"><i class="layui-icon">&#xe67c;</i>上传图片
@@ -51,10 +58,19 @@
 		var room_img = $("#room_img").attr('src');
 		var room_type = $("#room_type").val();
 		var room_price = $("#room_price").val();
+		var room_num = $("#room_num").val();
 		var remark = $("#remark").val();
 		var room_id = $(".hidden").val();
 		var url = "{:url('Myhome/addRoom')}";
-		var data = {"room_img":room_img,"room_type":room_type,"remark":remark,"room_id":room_id,"room_price":room_price,business_id:business_id};
+		var data = {
+			"room_img":room_img,
+			"room_type":room_type,
+			"remark":remark,
+			"room_id":room_id,
+			"room_price":room_price,
+			business_id:business_id,
+			room_num:room_num
+		};
 		$.post(url,data,function(res){
 			if(res.status==1){
                 layer.msg(res.msg,{time:1000,icon:6});

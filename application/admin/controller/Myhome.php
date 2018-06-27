@@ -557,10 +557,11 @@ class Myhome extends BaseController
 				$data['room_img'] = $row['room_img'];
 				$data['room_type'] = $row['room_type'];
 				$data['remark'] = $row['remark'];
+				$data['room_num'] = $row['room_num'];
 				$data['room_price'] = $row['room_price'];
 				$data['business_id'] = $row['business_id'];
 				$data['create_time'] = time();
-				if(!$row['room_type']||!$row['room_price'] || !$row['remark']){
+				if(!$row['room_type']||!$row['room_price'] || !$row['remark'] || !$row['room_num']){
 					$res = [
 						'status' => 0,
 						'msg' =>'请填写完整信息'

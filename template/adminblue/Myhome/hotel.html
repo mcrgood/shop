@@ -38,6 +38,7 @@
 		<tr>
 			<th>类型</th>
 			<th>单价</th>
+			<th>数量</th>
 			<th>图片</th>
 			<th>描述</th>
 			<th>状态</th>
@@ -69,6 +70,7 @@
 					html += '<tr align="center">';
 					html += '<td>'+ data["data"][i]["room_type"] +'</td>'
 					html += '<td>'+ data["data"][i]["room_price"] +'</td>';
+					html += '<td>'+ data["data"][i]["room_num"] +'</td>';
 					if(!data["data"][i]["room_img"]){
 						html += '<td>暂时未添加图片</td>';
 					}else{
