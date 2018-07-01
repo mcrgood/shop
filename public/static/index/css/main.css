@@ -179,7 +179,9 @@
 .notice-ul img{
     margin:auto;
     width: 60%;
+    height: 60%;
     display: block;
+
 }
 .notice-ul .gg_details{
     color:red;

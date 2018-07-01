@@ -159,7 +159,7 @@ class Upload extends Controller
             if (! strstr(UPLOAD_VIDEO, $this->reset_file_path)) {
                 @unlink($_FILES['file_upload']);
                 $image_size = @getimagesize($ok["path"]); // 获取图片尺寸
-                if ($image_size) {
+                if (1) {
                     
                     $width = $image_size[0];
                     $height = $image_size[1];
