@@ -29,9 +29,9 @@
 
 <div class="top">
 
-<a href="{:url('indexx/indexx')}" class="top-a1"></a>
+<a href="{:url('myhome/gonggao')}" class="top-a1"></a>
 
-公告
+公告详情
 
 </div>
 
@@ -41,21 +41,12 @@
 
 
 
-<ul class="notice-ul">
-
-	{volist name="list" id="v"}
+<ul class="gg-ul">
 
 	<li>
-    <a href="{:url('myhome/gg_details',['id' =>$v['topic_id']])}">
-      <h3 class="gg_title">{$v.title}</h3>
-      <img src="{$v.image}" alt="" width="200" height="200" />
-      <p class="gg_details">点击查看详情>></p>
-    </a>
+      <h2 class="gg_title">{$row.title}</h2>
+      <p class="gg_details">{$row.content}</p>
   </li>
-
-	{/volist}
-
-
 
 </ul>
 
@@ -67,7 +58,7 @@
     }
 </script>
 
-<div class="foot">
+<!-- <div class="foot">
 
   <a href="{:url('indexx/indexx')}" {if condition="($Request.controller eq 'Index') or ($Request.controller eq 'Dingwei')"}class="foot_a on"{else}class="foot_a "{/if}>首页</a>
 
@@ -75,7 +66,7 @@
 
     <a href="{:url('myhome/login')}" {if condition="(($Request.controller eq 'Myhome') and ($Request.action eq 'index')) or ($Request.action eq 'shenqing') or ($Request.action eq 'mycoupon') or ($Request.action eq 'jianyan') or ($Request.action eq 'shezhi')"}class="foot_a2 on"{else}class="foot_a2 "{/if}>商家登录</a>
 
-</div>
+</div> -->
 
 
 

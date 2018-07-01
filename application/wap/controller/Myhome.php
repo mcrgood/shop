@@ -2053,43 +2053,29 @@ class Myhome extends Controller
             $redirect = __URL(__URL__ . "/wap/login");
             $this->redirect($redirect); // 用户未登录
         }
-        $now_time = time();
-        $now_time = date('Y-m-d H:i:s',$now_time);
-        $now_time = strtotime($now_time);
-        $where = [
-            'shop_id'=>0,
-            'uid'=>['eq',$this->uid],
-            'end_time'=>[
-                'egt',$now_time
-            ],
-            'state'=>1
-        ];
-        $couponCus = db('ns_coupon')->field('coupon_type_id')->where($where)->select();
-        $my_nums = [];
-        if (!empty($couponCus)) {
-            foreach ($couponCus as $k => $v) {
-
-                $my_nums[] = $v['coupon_type_id'];
-
-            }
-            $my_nums = implode(',', $my_nums);
-        }
-        $where = [
-            'shop_id'=>0,
-            'is_show' =>0,
-            'end_time'=>[
-                'egt',$now_time
-            ]
-        ];
-        if (!is_array($my_nums) && $my_nums!='') {
-            $where['coupon_type_id']=['NOT IN',$my_nums];
-        }
-        $list = db('ns_coupon_type')->where($where)->select();
-        $this->assign('gonggaores',$list);
-
+        $list = Db::table('nc_cms_topic')->where('status',1)->select();
+        $this->assign('list',$list);
         return view($this->style . 'Myhome/gonggao');
 
     }
+
+      /**
+
+     * [gg_details 公告详情]
+
+     */
+
+    public function gg_details(){
+        $id = input('param.id',0);
+        if(!$id){
+            $redirect = __URL(__URL__ . "/wap/myhome/gonggao");
+            $this->redirect($redirect); // 用户未登录
+        }
+        $row = Db::table('nc_cms_topic')->where('topic_id',$id)->find();
+        $this->assign('row',$row);
+        return view($this->style . 'Myhome/gg_details');
+    }
+
 
     /**
 

@@ -151,12 +151,41 @@
 
 .notice-wu{ width:100%; height:1.51rem; background:#fe473c; font-size:.57rem; line-height:1.51rem; text-align:center; color:#fff;}
 
-.notice-ul{ width:11.64rem; overflow:hidden; margin:.57rem auto 0;}
+.notice-ul{ width:11.64rem; overflow:hidden; margin:.57rem auto 2rem;}
 
-.notice-ul li{ width:100%; height:2.51rem; background:#fff url(../images/notice.png) no-repeat .42rem center; padding-left:2.25rem; border-radius:.19rem; margin-bottom:.38rem; overflow:hidden; position:relative; background-size:1.51rem auto}
-
+.notice-ul li{ width:100%;background:#fff url(../images/notice.png) no-repeat .42rem center; padding-left:2.25rem; border-radius:.19rem; margin-bottom:.38rem; overflow:hidden; position:relative; background-size:1.51rem auto}
+.gg-ul li{width:100%; border-radius:.19rem; margin-bottom:.38rem; overflow:hidden; position:relative;}
+.gg-ul h2{
+    font-size: 1rem;
+    text-align: center;
+}
+.gg-ul p{
+    font-size: 0.52rem;
+    text-indent: 2em;
+    line-height: 0.7rem;
+    letter-spacing:2px;
+    margin-top: 0.6rem;
+} 
 .notice-ul li span{ display:block; font-size:.42rem; color:#202020; line-height:1.32rem;}
 
+.notice-ul .gg_title{
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    font-size: 0.6rem;
+    height: 1rem;
+    line-height: 1rem;
+}
+.notice-ul img{
+    margin:auto;
+    width: 60%;
+    display: block;
+}
+.notice-ul .gg_details{
+    color:red;
+    text-align: right;
+    font-size: 0.4rem;
+}
 .notice-ul li a{ display:block; font-size:.38rem; line-height:.49rem; color:#646464}
 
 .notice-ul-span{ position:absolute; right:.42rem; color:#b4b4b4 !important; font-size:.38rem !important; line-height:.4rem !important; top:.57rem}
