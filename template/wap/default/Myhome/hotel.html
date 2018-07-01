@@ -127,10 +127,10 @@
       <span>{$v.remark}</span>
       <span>￥{$v.room_price}</span>
     </div>
-    {if $v.room_status eq 0}
+    {if $v.room_num neq 0}
     <div class="order_button">
       <span>剩<b>{$v.room_num}</b>间</span>
-      <input type="button" value="预定" class="reserve" status="" data-id="{$v.room_id}"/>
+      <input type="button" value="预定" class="reserve" data-num="{$v.room_num}" status="" data-id="{$v.room_id}"/>
       <input type="hidden" class="hidden" value="" />
     </div>
     {else/}
@@ -234,8 +234,14 @@
           if(room_num != '' && room_num != 0){
               $('.reserve').each(function(i,v){
                 if($(v).attr('data-id')==room_id){
-                  $(v).val('已预订'+room_num);
-                  $(v).attr('status',room_num);
+                  var have_num = $(v).attr('data-num');
+                  if(parseInt(room_num) > parseInt(have_num)){
+                     $(v).val('已预订'+have_num);
+                     $(v).attr('status',have_num);
+                  }else{
+                    $(v).val('已预订'+room_num);
+                    $(v).attr('status',room_num);
+                  }
                 }
           
                 if($(v).attr('status') != ''){

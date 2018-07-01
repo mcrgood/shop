@@ -18,41 +18,89 @@
 	<dl>
 		<dt><span class="color-red"></span>最小金额:</dt>
 		<dd>
-			<input type="number" class="input-common" name='small' value="{$row.small}"  />
+			<input type="number" class="input-common" name='small' value="{$row.small|default=''}"  />
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="color-red"></span>最大金额:</dt>
 		<dd>
-			<input type="number" class="input-common" name='big' value="{$row.big}" />
+			<input type="number" class="input-common" name='big' value="{$row.big|default=''}" />
 		</dd>
 	</dl>
+	<dl>
+		<dt><span class="color-red"></span>红包总金额:</dt>
+		<dd>
+			<input type="number" class="input-common" name='total' value="{$row.total|default=''}" />
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required" style="color:red;"></span>&nbsp;&nbsp;省份:</dt>
+		<dd>
+			<select name='' id="province" onchange="findCity(this.value)">
+				<option value="0">请选择</option>
+				{volist name="$province" id="v"}
+				<option value="{$v.province_id}">{$v.province_name}</option>
+				{/volist}
+			</select>
 
+		</dd>
+	</dl>
+	<dl>
+		<dt><span class="required" style="color:red;"></span>&nbsp;&nbsp;城市:</dt>
+		<dd>
+			<select name='' id="city">
+				<option value="0">请选择</option>
+			</select>
+
+		</dd>
+	</dl>
 	<dl>
 		<dt></dt>
-		<dd><button class="btn-common btn-big">修&nbsp;&nbsp;改</button></dd>
+		<dd><button class="btn-common btn-big">新&nbsp;&nbsp;增</button></dd>
 	</dl>
 </div>
 <script>
 $('.btn-big').click(function(){
 	var small = $("input[name='small']").val();
 	var big = $("input[name='big']").val();
+	var total = $("input[name='total']").val();  //红包总金额
+	var province = $('#province').val();  //省
+	var city = $('#city').val();  //市
 	var url = "{:url('Myhome/set_coupon')}";
 	var data = {
 		small:small,
-		big:big
+		big:big,
+		total:total,
+		province:province,
+		city:city
 	};
 	$.post(url,data,function(res){
 		if(res.code==1){
 			layer.msg(res.msg,{time:1500,icon:6});
 			setTimeout(function(){
-				window.location.reload();
+				window.location.href="{:url('Myhome/coupon_list')}";
 			},800)
 		}else{
 			layer.msg(res.msg,{time:1500,icon:5});
 		}
 	},'json')
 })
+
+function findCity(id){
+	var url = "{:url('Myhome/find_city')}";
+	var data = {
+		id:id
+	};
+	$.post(url,data,function(res){
+		var html = '';
+		if(res.code==1){
+			for(var i=0; i<res.list.length; i++){
+				html +='<option value="'+res["list"][i]["city_id"]+'">'+res["list"][i]["city_name"]+'</option>';
+			}
+			$('#city').empty().append(html);
+		}
+	},'json')
+}
 
 
 </script>

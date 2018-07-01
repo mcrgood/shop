@@ -11,6 +11,7 @@ use data\service\MyhomeService as MyhomeService;
 use data\model\AddKtvRoomModel as AddKtvRoomModel;
 use data\model\AddKtvHoursModel as AddKtvHoursModel;
 use data\model\NsRegisterListModel as NsRegisterListModel;
+use data\model\SetCouponModel as SetCouponModel;
 use think\Upload;//文件上传
 header("Content-Type: text/html; charset=UTF-8"); //编码
 
@@ -620,36 +621,70 @@ class Myhome extends BaseController
 		return view($this->style . "Myhome/addRoom");
 	}
 
+	//发放红包列表
+	public function coupon_list(){
+		if (request()->isAjax()) {
+            $page_index = request()->post("page_index", 1);
+            $page_size = request()->post('page_size', PAGESIZE);
+            $member = new MyhomeService();
+            $list = $member->getCouponList($page_index, $page_size, '', '');
+            return $list;
+	    }
+		return view($this->style . "Myhome/coupon_list");
+	}
+	//删除红包列表
+	public function delCoupon(){
+		if (request()->isAjax()) {
+           $id = input('post.id');
+           $res = Db::table('ns_coupon_scope')->where('id',$id)->delete();
+           if($res){
+           		$info = [
+					'status' => 1,
+					'msg' =>'删除成功！'
+				];
+           }else{
+           		$info = [
+					'status' => 0,
+					'msg' =>'删除失败！'
+				];
+           }
+           return json($info);
+	    }
+	}
+
+
 	//设定（优惠券）红包金额随机范围
 	public function set_coupon(){
 		if(request()->isAjax()){
 			$postData = input('post.');
-			if(empty($postData['small']) || empty($postData['big'])){
-				$info = [
-					'code' =>0,
-					'msg' =>'请填写完整信息!'
-				];
-			}elseif($postData['big'] <= $postData['small']){
-				$info = [
-					'code' =>0,
-					'msg' =>'填写金额有误!'
-				];
-			}
-			else{
-				$res = Db::table('ns_coupon_scope')->where('id',1)->update($postData);
-				if($res){
-					$info = ['code' =>1,'msg' =>'修改成功!'];
-				}elseif($res == 0){
-					$info = ['code' =>0,'msg' =>'您未做任何修改！'];
-				}else{
-					$info = ['code' =>0,'msg' =>'修改失败!'];
-				}
-			}
-			return json($info);
+			$coupon = new SetCouponModel();
+			$res = $coupon->add($postData);
+			return json($res);
 		}
-		$row = Db::table('ns_coupon_scope')->where('id',1)->find();
+		$province = Db::table('sys_province')->select();    //查出省份
+		$id = input('param.id',0);
+		$row = Db::table('ns_coupon_scope')->where('id',$id)->find();
 		$this->assign('row',$row);
+		$this->assign('province',$province);
 		return view($this->style . "Myhome/set_coupon");
+	}
+
+	//通过省份ID查询所属下级城市
+	public function find_city(){
+		$province_id = input('post.id');
+		$city = Db::table('sys_city')->where('province_id',$province_id)->select();
+		if($city){
+			$info = [
+				'code' =>1,
+				'list' =>$city
+			];
+		}else{
+			$info = [
+				'code' =>0,
+				'list' =>''
+			];
+		}
+		return json($info);
 	}
 
 	//商家商品分类修改添加

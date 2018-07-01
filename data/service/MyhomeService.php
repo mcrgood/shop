@@ -35,6 +35,7 @@ use data\model\NsHotelList as NsHotelList;
 use data\model\NsHealthList as NsHealthList;
 use data\model\NsOtherList as NsOtherList;
 use data\model\NsOtherCateList as NsOtherCateList;
+use data\model\NsCouponList as NsCouponList;
 
 use data\model\NsKtvList as NsKtvList;
 
@@ -423,5 +424,15 @@ class MyhomeService extends BaseService{
             }
         }
         return $info;
+    }
+
+    //发放红包列表
+    public function getCouponList($page_index = 1, $page_size = 0, $condition = '', $order = '', $field = '*'){
+        $myhome = new NsCouponList();
+        $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
+        foreach ($result['data'] as $k => $v) {
+            $result['data'][$k]['city'] = Db::table('sys_city')->where('city_id', $v['city'])->value('city_name');
+        }
+        return $result;
     }   
 }
