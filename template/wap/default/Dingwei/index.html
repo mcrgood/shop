@@ -66,7 +66,7 @@
                  latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                  longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180
                  
-     // // 页数
+     // 页数
      var page = 0;
      // 每页展示个数
      var size = 15;
@@ -90,7 +90,7 @@
                              html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'">';
                              html +='<img src="'+data["message"][i]["thumb"]+'"/>';
                              html +='</a>';
-                             html +='<span style="float:right;">消费返旺币<br/>&nbsp;&nbsp;&nbsp;<b style="font-size:0.62rem;color:red;">'+data["message"][i]["gold"]+'%</b></span>';
+                             html +='<span style="float:right;">消费返旺分<br/>&nbsp;&nbsp;&nbsp;<b style="font-size:0.62rem;color:red;">'+data["message"][i]["gold"]+'%</b></span>';
                              html += '店名：' +data["message"][i]["names"]+  '<br/>';
                              html += '距离：'+data["message"][i]["distance"]+' km <br />';
                              html += '地址：' +data["message"][i]["address"]+ '<br />';
@@ -164,7 +164,7 @@
 //                             html +='<a href="{:url("Dingwei/catdetail")}?id='+data["message"][i]["userid"]+'">';
 //                             html +='<img src="'+data["message"][i]["thumb"]+'"/>';
 //                             html +='</a>';
-//                             html +='<span style="float:right;">消费返旺币<br/>&nbsp;&nbsp;&nbsp;<b style="font-size:0.62rem;color:red;">'+data["message"][i]["gold"]+'%</b></span>';
+//                             html +='<span style="float:right;">消费返旺分<br/>&nbsp;&nbsp;&nbsp;<b style="font-size:0.62rem;color:red;">'+data["message"][i]["gold"]+'%</b></span>';
 //                             html += '店名：' +data["message"][i]["names"]+  '<br/>';
 //                             html += '距离：'+data["message"][i]["distance"]+' km <br />';
 //                             html += '地址：' +data["message"][i]["address"]+ '<br />';
