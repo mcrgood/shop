@@ -32,12 +32,19 @@ class WeiShangPay extends BaseController
 	//微信支付API
 	public function wx_pay_api(){
 		$out_trade_no = input('param.out_trade_no',0); //获取地址栏订单号
+		$coupon_id = input('param.coupon_id'); //优惠券金额
+		if($coupon_id != 0){
+			$coupon_money = Db::table('ns_coupon')->where('coupon_id',$coupon_id)->value('money');
+		}else{
+			$coupon_money = 0;
+		}
+
 		if($out_trade_no == 0){
 			$this->error('订单参数错误，请重新提交！');
 		}
 		
 		$row = db('ns_order_payment')->where('out_trade_no',$out_trade_no)->find(); //获取付款方式
-		$pay_money = $row['pay_money'];
+		$pay_money = $row['pay_money']-$coupon_money;
 		if($row['type'] == 1){ //线上商城订单
 			$goodsName = db('ns_order_payment')->alias('p')
 			->join('ns_order_goods g','g.order_id = p.type_alis_id','left')
