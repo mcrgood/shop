@@ -153,6 +153,20 @@ class WeiShangPay extends BaseController
 		        if($msg_status == 1){
 		       		$Business->send_yuding_msg_auto($out_trade_no); //自动推送消息
 		        }
+		        //修改使用的优惠券状态
+		        if($paymentInfo['coupon_id'] !=0){
+		        	Db::table('ns_coupon')->where('coupon_id',$paymentInfo['coupon_id'])->update(['state' => 2]);
+		        }
+
+		        if($paymentInfo['uid']!= 0 && $paymentInfo['business_id']!= 0){
+		        	//处理红包领取
+		        	$info = $Business->get_bonus($paymentInfo['uid'], $paymentInfo['business_id']);
+		        }else{
+		            $info = [
+                       'id'=>0,
+                       'money' => 0
+                    ];  
+		        }
 		        $message = "支付成功";
 		        
 		    }elseif($status == "N")
@@ -165,6 +179,8 @@ class WeiShangPay extends BaseController
 		} else {
 		    $message = "支付失败";
 		}
+
+		$this->assign('info',$info);
 		return view($this->style . "Pay/wx_get_coupon");
 	}
 

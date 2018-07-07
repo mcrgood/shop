@@ -15,6 +15,7 @@
 namespace data\model;
 
 use data\model\BaseModel as BaseModel;
+use data\service\Business as Business;
 use think\Db;
 /**
  * 
@@ -24,7 +25,7 @@ use think\Db;
 class SetCouponModel extends BaseModel {
 
     public function add($postData){
-        if(empty($postData['small']) || empty($postData['big']) ||empty($postData['total']) ||empty($postData['province']) ||empty($postData['city'])){
+        if(empty($postData['small']) || empty($postData['total_num']) ||empty($postData['big']) ||empty($postData['total']) ||empty($postData['province']) ||empty($postData['city'])){
             $info = [
                 'code' =>0,
                 'msg' =>'请填写完整信息!'
@@ -34,14 +35,35 @@ class SetCouponModel extends BaseModel {
                 'code' =>0,
                 'msg' =>'最大金额必须大于最小金额!'
             ];
-        }else{
-            $postData['balance'] = $postData['total'];
+        }elseif($postData['total']/$postData['total_num'] >=$postData['big']){
+             $info = [
+                'code' =>0,
+                'msg' =>'最大金额必须大于红包平均金额！'
+            ];
+        }
+        else{
             $res = Db::table('ns_coupon_scope')->insertGetId($postData);
             if($res){
-                $info = [
-                    'code' =>1,
-                    'msg' =>'添加成功！'
-                ];
+                $result = array();
+                $business = new Business();
+                $rand_bonus = randBonus($postData['total'], $postData['total_num'], $postData['small'], $postData['big']);
+                if(is_array($rand_bonus) && !empty($rand_bonus)){
+                    foreach($rand_bonus as $k =>$v){
+                        $result[] = $business->add_coupon($v, $postData['city'], $res);
+                    }
+                }
+
+                if(count($result) == count($rand_bonus) && !empty($result)){
+                     $info = [
+                        'code' =>1,
+                        'msg' =>'添加成功！'
+                    ];
+                }else{
+                     $info = [
+                        'code' =>0,
+                        'msg' =>'添加失败！'
+                    ];
+                }
             }else{
                 $info = [
                     'code' =>0,

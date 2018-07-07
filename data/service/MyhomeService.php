@@ -432,6 +432,7 @@ class MyhomeService extends BaseService{
         $result = $myhome->getMyhomeList($page_index, $page_size, $condition, $order);
         foreach ($result['data'] as $k => $v) {
             $result['data'][$k]['city'] = Db::table('sys_city')->where('city_id', $v['city'])->value('city_name');
+            $result['data'][$k]['overplus'] = Db::table('ns_coupon')->where(['uid'=>0,'scope_id'=>$v['id']])->count();
         }
         return $result;
     }   

@@ -4336,4 +4336,48 @@ function getTimeWeek($time, $i = 0) {
 } 
 
 
+/** 
+* 在max和min之间得到一个随机红包数
+* 
+*/    
+function xRandom($bonus_min,$bonus_max){
+    $rand_num = rand($bonus_min*100, $bonus_max*100)/100;
+    $rand_num = sprintf("%.2f",$rand_num);
+    return $rand_num;
+}
+
+/**
+    // $bonus_type 红包类型 1=拼手气红包 0=普通红包
+    //注：红包最大数必须大于平均数量
+ */
+//$bonus_total //红包总金额
+//$bonus_count // $bonus_count 红包个数
+//$bonus_min // $bonus_min 红包最小数
+//$bonus_max // $bonus_max 红包最大数
+
+function randBonus($bonus_total, $bonus_count,  $bonus_min, $bonus_max, $bonus_type=1){
+       $bonus_items  = array(); // 将要瓜分的结果   
+       $bonus_balance = $bonus_total; // 每次分完之后的余额   
+       $bonus_avg = number_format($bonus_total/$bonus_count, 2); // 平均每个红包多少钱 
+       $i = 0;   
+       while($i<$bonus_count-1){
+             $rand = $bonus_type?xRandom($bonus_min,$bonus_max):$bonus_avg; // 根据红包类型计算当前红包的金额
+             $bonus_items[] = $rand;       
+             $bonus_balance -= $rand;
+             $i++;  
+       }
+       $j=0;
+       while($j < 1){
+            if($bonus_balance > $bonus_max || $bonus_balance < $bonus_min){  //最后的余数大于max或者小于min就重新调用函数，直到符合条件
+                $bonus_items = randBonus($bonus_total, $bonus_count,  $bonus_min, $bonus_max);
+            }else{
+                $bonus_items[] = sprintf("%.2f",$bonus_balance);
+            }
+            $j++;
+       }
+
+       return $bonus_items; 
+ } 
+
+
 

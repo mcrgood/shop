@@ -18,13 +18,13 @@
 	<dl>
 		<dt><span class="color-red"></span>最小金额:</dt>
 		<dd>
-			<input type="number" class="input-common" name='small' value="{$row.small|default=''}"  />
+			<input type="text" class="input-common" name='small' value="{$row.small|default=''}"  />
 		</dd>
 	</dl>
 	<dl>
 		<dt><span class="color-red"></span>最大金额:</dt>
 		<dd>
-			<input type="number" class="input-common" name='big' value="{$row.big|default=''}" />
+			<input type="text" class="input-common" name='big' value="{$row.big|default=''}" />
 		</dd>
 	</dl>
 	<dl>
@@ -33,6 +33,14 @@
 			<input type="number" class="input-common" name='total' value="{$row.total|default=''}" />
 		</dd>
 	</dl>
+
+	<dl>
+		<dt><span class="color-red"></span>红包数量:</dt>
+		<dd>
+			<input type="number" class="input-common" name='total_num' value="{$row.total_num|default=''}" />
+		</dd>
+	</dl>
+
 	<dl>
 		<dt><span class="required" style="color:red;"></span>&nbsp;&nbsp;省份:</dt>
 		<dd>
@@ -56,7 +64,11 @@
 	</dl>
 	<dl>
 		<dt></dt>
-		<dd><button class="btn-common btn-big">新&nbsp;&nbsp;增</button></dd>
+		<dd>
+			<b style="color:red;margin-left: 15px;font-size: 15px;">注：赠送红包添加成功后不可修改删除，请确认填写信息后再添加！</b><br/>
+			<b style="color:red;margin-left: 15px;font-size: 15px;">注：红包数量越多，生成时间越长，请耐心等待！</b><br/>
+			<button class="btn-common btn-big">新&nbsp;&nbsp;增</button>
+		</dd>
 	</dl>
 </div>
 <script>
@@ -64,6 +76,7 @@ $('.btn-big').click(function(){
 	var small = $("input[name='small']").val();
 	var big = $("input[name='big']").val();
 	var total = $("input[name='total']").val();  //红包总金额
+	var total_num = $("input[name='total_num']").val();  //红包总个数
 	var province = $('#province').val();  //省
 	var city = $('#city').val();  //市
 	var url = "{:url('Myhome/set_coupon')}";
@@ -72,6 +85,7 @@ $('.btn-big').click(function(){
 		big:big,
 		total:total,
 		province:province,
+		total_num:total_num,
 		city:city
 	};
 	$.post(url,data,function(res){

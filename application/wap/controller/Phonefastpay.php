@@ -173,14 +173,14 @@ class Phonefastpay extends BaseController
 		       		$Business->send_yuding_msg_auto($out_trade_no); //自动推送消息
 		        }
 
-		        if($paymentInfo['uid']!= 0){
-		            $res = Db::table('ns_coupon_scope')->find();
-		            $num = rand($res['small']*100,$res['big']*100)/100;
-		            $rand  = sprintf("%.2f",$num);
-		            $id = $Business->add_coupon($paymentInfo['uid'], $rand);
+		        if($paymentInfo['uid']!= 0 && $paymentInfo['business_id']!= 0){
+		        	//处理红包领取
+		        	$info = $Business->get_bonus($paymentInfo['uid'], $paymentInfo['business_id']);
 		        }else{
-		            $id = 0;
-		            $rand = 0;
+		            $info = [
+                       'id'=>0,
+                       'money' => 0
+                    ];  
 		        }
 
 		    }elseif($status == "N")
@@ -193,8 +193,7 @@ class Phonefastpay extends BaseController
 		    $message = "验证失败";
 		}
 		
-        $this->assign('id',$id);
-        $this->assign('rand',$rand);
+        $this->assign('info',$info);
 		return view($this->style . "Pay/fast_get_coupon");
 	}
 

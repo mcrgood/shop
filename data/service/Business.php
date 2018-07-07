@@ -1177,28 +1177,58 @@ class Business extends BaseService{
         $res = $this->sendMsg($cate_name, $row['type_alis_id']);
     }
 
-    //付款后获取随机红包（优惠券）
-    public function add_coupon($uid, $rand){
+    //生成红包
+    public function add_coupon($money, $city_id = 0, $scope_id){
         $data['coupon_type_id'] = 1;  //优惠券类型id
         $data['shop_id'] = 0;
-        $data['fetch_time'] = time(); //领取优惠券时间
-        $data['uid'] = $uid;  //会员ID
-        $data['money'] = $rand;  //获取优惠券金额（红包）
-        $data['state'] = 1; //优惠券状态 0未领用 1已领用（未使用） 2已使用 3已过期
-        $data['start_time'] = strtotime(date('Y-m-d',time()+86400)); //有效期开始时间
-        $data['end_time'] = strtotime(date('Y-m-d',time()+86400*4))-1;; //有效期结束时间
-        $data['coupon_code'] = time(); //优惠券编码
-        $start_time = strtotime(date('Y-m-d'));     //今天0点的时间戳
-        $end_time = strtotime(date('Y-m-d'))+86400;   // 明天0点的时间戳
-        $where['uid'] = $uid;
-        $where['fetch_time'] = ['between',[$start_time,$end_time]];
-        $res = Db::table('ns_coupon')->where($where)->find();
-        if($res){
-            $id = 0;
-        }else{
-            $id = Db::table('ns_coupon')->insertGetId($data);
-        }
+        $data['coupon_code'] = time().rand(111,999); //优惠券编码
+        $data['money'] = $money;  //获取优惠券金额（红包）
+        $data['state'] = 0; //优惠券状态 0未领用 1已领用（未使用） 2已使用 3已过期
+        $data['city_id'] = $city_id; //红包发放的城市
+        $data['scope_id'] = $scope_id; //关联ns_coupon_scope表主键
+        $data['start_time'] = time(); //关联ns_coupon_scope表主键
+        $data['end_time'] = time()+86400*365; //关联ns_coupon_scope表主键
+        $id = Db::table('ns_coupon')->insertGetId($data);
         return $id;
+     }
+
+     //会员付款后领取红包
+     public function get_bonus($uid, $business_id){
+        $start_time = strtotime(date('Y-m-d'));
+        $end_time = strtotime(date('Y-m-d'))+86400;
+        $where['fetch_time'] = ['between',[$start_time,$end_time]];
+        $where['uid'] = $uid;
+        $row = Db::table('ns_coupon')->where($where)->find();
+        if($row){    //今天已经领取过，不可以再领取
+             $info = [
+                'id'=>0,
+                'money' => 0
+             ];     
+        }else{       //今天还没领取过红包
+             $city_id = Db::table('ns_shop_message')->where('userid',$business_id)->value('shi');
+             $have_coupon = Db::table('ns_coupon')->where(['city_id'=>$city_id,'uid'=>0])->order('coupon_id asc')->find();     
+             if($have_coupon){
+                $udata['uid'] = $uid;
+                $udata['state'] = 1;
+                $udata['start_time'] = strtotime(date('Y-m-d'));
+                $udata['fetch_time'] = time();
+                $udata['end_time'] = strtotime(date('Y-m-d'))+86400*4-1;
+                $res = Db::table('ns_coupon')->where('coupon_id',$have_coupon['coupon_id'])->update($udata);
+                if($res){
+                     $info = [
+                        'id'=>1,
+                        'money' => $have_coupon['money']
+                     ];     
+                }else{
+                    $info = [
+                        'id'=>0,
+                        'money' => 0
+                     ];     
+                }
+             }
+        }
+        return $info;
+
      }
 
 

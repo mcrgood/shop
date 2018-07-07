@@ -39,9 +39,9 @@
 			<th>最小金额</th>
 			<th>最大金额</th>
 			<th>总金额</th>
-			<th>剩余金额</th>
+			<th>红包总数量</th>
+			<th>剩余红包数量</th>
 			<th>红包发放城市</th>
-			<th>操作</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -68,11 +68,9 @@
 					html += '<td>'+ data["data"][i]["small"] +'</td>'
 					html += '<td>'+ data["data"][i]["big"] +'</td>';
 					html += '<td>'+ data["data"][i]["total"] +'</td>';
-					html += '<td>'+ data["data"][i]["balance"] +'</td>';
+					html += '<td>'+ data["data"][i]["total_num"] +'</td>';
+					html += '<td>'+ data["data"][i]["overplus"] +'</td>';
 					html += '<td>'+ data["data"][i]["city"] +'</td>';
-					html += '<td>';
-					html += '<a onclick="goodsDel('+data["data"][i]["id"]+')"><span style="color:green">删除</span></a>';
-					html += '</td>';
 					html += '</tr>';
 				}
 			} else {
@@ -92,52 +90,9 @@
 	function addRoom(){
 		location.href = __URL("ADMIN_MAIN/myhome/set_coupon");
 	}
-	// function addimg(){
-	// 	var id = "{$Request.param.shopid}";
-	// 	location.href = __URL("ADMIN_MAIN/myhome/seatadd?shopid="+id);
-	// }
-	//是否启用或者停用
-	// function roomStop(room_id,obj){
-	// 	var data ={"room_id":room_id};
-	// 	var url = "{:url('Myhome/roomStop')}";
-	// 	$.post(url,data,function(res){
-	// 		if(res.status==1){
-	// 			layer.msg(res.msg,{icon:6});
-	// 			setTimeout(function(){
-	//                   $(obj).text(res.text);
-	//                   $(obj).css("color",res.cssa);
-	//                },150);
-	// 		}else if(res.status==3){
-	// 			layer.msg(res.msg,{icon:5});
-	// 			setTimeout(function(){
-	//                   $(obj).text(res.text);
-	//                   $(obj).css("color",res.cssa);
-	//                },150);
-	// 		}else{
-	// 			layer.msg(res.msg,{icon:5});
-	// 		}
-	// 	},'json')
-	// }
-	//删除
-	function goodsDel(id){
-		layer.confirm('确认要删除吗？',{
-			btn: ['确定', '取消'],
-            title: "客旺旺提醒您",
-		},function(){
-			var data = {"id":id};
-			var url = "{:url('Myhome/delCoupon')}";
-			$.post(url,data,function(res){
-				if(res.status==1){
-					layer.msg(res.msg,{icon:6,time:1000});
-					setTimeout(function(){
-						LoadingInfo(1);
-                	},150);
-				}else{
-					layer.msg(res.msg,{icon:5,time:1000});
-				}
-			},'json')
-		})
-	}
+
+
+
 </script>
 {/block}
 
