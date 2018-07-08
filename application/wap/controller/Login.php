@@ -604,6 +604,10 @@ class Login extends Controller
                 if($referee_phone && $mobile){
                     //假如填写了推荐人手机号，就插入推荐人手机号到数据表中。
                     db('sys_user')->where('user_tel',$mobile)->update(['referee_phone'=>$referee_phone]);
+                    //会员推荐朋友注册成功送5个旺旺分
+                    $ref_uid = db('sys_user')->where('referee_phone',$referee_phone)->value('uid');
+                    db('ns_member_account')->where('uid',$ref_uid)->setInc('point',5);
+                    
                 }
                     $uid = db('sys_user')->where('user_tel',$mobile)->value('uid');
                     $infos['uid'] = $uid;
@@ -623,7 +627,7 @@ class Login extends Controller
             
             return AjaxReturn($retval);
         } else {
-             $fans = Db::table('ns_fans')->find();
+            $fans = Db::table('ns_fans')->find();
             $this->assign('num',$fans['num']);
             $referee_phone = input('param.referee_phone', ''); // 判断地址栏是否有推荐人手机号（扫码客旺旺会员推荐码时会有）
             $this->assign("referee_phone", $referee_phone);

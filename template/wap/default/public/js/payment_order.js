@@ -653,16 +653,17 @@ function submitOrder(){
 			num += have;
 		})
 		if(num != 0){
-			var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
-			var cards = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;
+			var card_reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+			// var card = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+			// var cards = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;
 			var str = $('#idcard').val();
 
 			if(!str){
 				alert("身份证号码必填");
 				return false;
 			}
-			if(!cards.exec(str)&&!card.exec(str)){
-				alert("身份证号码不对");
+			if( !card_reg.test(str) ){
+				alert("身份证长度或格式不对");
 				return false;
 			}
 			var checked = $('#check').is(':checked');
