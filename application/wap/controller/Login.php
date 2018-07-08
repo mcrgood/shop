@@ -598,6 +598,7 @@ class Login extends Controller
                     }
             }
             if ($retval > 0) {
+                    $HandleOrder = new HandleOrder();
                     session('user_name',$mobile);
                     cookie('user_name',$mobile,3600*24*30);
                     cookie('password',$password,3600*24*30);
@@ -606,7 +607,10 @@ class Login extends Controller
                     db('sys_user')->where('user_tel',$mobile)->update(['referee_phone'=>$referee_phone]);
                     //会员推荐朋友注册成功送5个旺旺分
                     $ref_uid = db('sys_user')->where('referee_phone',$referee_phone)->value('uid');
-                    db('ns_member_account')->where('uid',$ref_uid)->setInc('point',5);
+                    $results = db('ns_member_account')->where('uid',$ref_uid)->setInc('point',5);
+                    if($results){
+                        $HandleOrder->bill_detail_record($ref_uid, 5, '推荐赠送积分', 12);
+                    }
                     
                 }
                     $uid = db('sys_user')->where('user_tel',$mobile)->value('uid');
@@ -614,7 +618,6 @@ class Login extends Controller
                     $infos['point'] = 10;
                     $res = db('ns_member_account')->insert($infos);
                     if($res){
-                        $HandleOrder = new HandleOrder();
                         $HandleOrder->bill_detail_record($uid, 10, '注册赠送积分', 12);
                     }
 
