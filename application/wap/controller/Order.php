@@ -69,7 +69,6 @@ class Order extends BaseController
      */
     public function paymentOrder()
     {
-            $user_name = session("user_name");
             if(request()->isAjax()){
                 $newidcard = input("post.str");
                 $data['idcard'] = $newidcard;
@@ -176,9 +175,14 @@ class Order extends BaseController
                 }
             }
         }
+        if($count_point_exchange >= 100){
+            $charges = 0;
+        }else{
+            $charges = 6;
+        }
         $this->assign("count_point_exchange", $count_point_exchange); // 总积分
         $this->assign("itemlist", $list);
-        
+        $this->assign("charges", $charges);
         $shop_id = $this->instance_id;
         $shop_config = $Config->getShopConfig($shop_id);
         $order_invoice_content = explode(",", $shop_config['order_invoice_content']);

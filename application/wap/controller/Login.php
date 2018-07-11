@@ -607,9 +607,9 @@ class Login extends Controller
                     db('sys_user')->where('user_tel',$mobile)->update(['referee_phone'=>$referee_phone]);
                     //会员推荐朋友注册成功送5个旺旺分
                     $ref_uid = db('sys_user')->where('referee_phone',$referee_phone)->value('uid');
-                    $results = db('ns_member_account')->where('uid',$ref_uid)->setInc('point',5);
+                    $results = db('ns_member_account')->where('uid',$ref_uid)->setInc('point',10);
                     if($results){
-                        $HandleOrder->bill_detail_record($ref_uid, 5, '推荐赠送积分', 12);
+                        $HandleOrder->bill_detail_record($ref_uid, 10, '推荐赠送积分', 12);
                     }
                     
                 }
