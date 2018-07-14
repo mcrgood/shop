@@ -79,7 +79,8 @@ function LoadingInfo(page_index) {
 					if(data['data'][i]['is_admin'] == 1){
 						html += '<td style="color:#B5B3B3;">管理员用户不可进行操作</td>';
 					}else{
-						html += '<td><a href="'+__URL('ADMIN_MAIN/auth/edituser?uid=' + data["data"][i]["uid"])+'">修改</a>&nbsp;&nbsp; ';
+						html += '<td><a href="'+__URL('ADMIN_MAIN/auth/daili?uid=' + data["data"][i]["uid"])+'">代理设置</a>&nbsp;&nbsp; ';
+						html += '<a href="'+__URL('ADMIN_MAIN/auth/edituser?uid=' + data["data"][i]["uid"])+'">修改</a>&nbsp;&nbsp; ';
 						html += data["data"][i]["user_status"] == 0 ? '<a href="javascript:void(0);" onclick="unlock('+data["data"][i]["uid"]+', 1)">解锁</a>&nbsp;&nbsp; ' : '<a href="javascript:void(0);" onclick="lock('+data["data"][i]["uid"]+', 0)">锁定</a>&nbsp;&nbsp; ';
 						html += '<a href="javascript:void(0);" onclick="resetPassword(' + data["data"][i]["uid"] + ')">重置密码</a>';
 						html += '&nbsp;&nbsp;<a href="javascript:;" onclick="delectAdminUser(' + data["data"][i]["uid"] + ')">删除</a></td>';

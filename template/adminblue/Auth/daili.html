@@ -1,0 +1,145 @@
+{extend name="adminblue/base" /}
+{block name="resources"/}
+{/block}
+{block name="main"}
+<div class="set-style">
+	<input type="hidden" id="uid" value="{$uid}" />
+
+	<dl>
+		<dt><span class="required">*</span>省份:</dt>
+		<dd>
+
+			<p>
+				<select class="select-common" id="province_id" onchange="findCity(this.value)">
+					<option value="-1">请选择省份</option>
+					{volist name="$province" id="v"}
+						<option value="{$v.province_id}">{$v.province_name}</option>
+					{/volist}
+				</select>
+			</p>
+
+		</dd>
+	</dl>
+
+	<dl>
+		<dt><span class="required">*</span>城市:</dt>
+		<dd>
+			<p>
+				<select class="select-common" id="city_id" onchange="findDistrict(this.value)">
+
+				</select>
+			</p>
+		</dd>
+	</dl>
+
+	<dl>
+		<dt><span class="required">*</span>区/县:</dt>
+		<dd>
+			<p>
+				<select class="select-common" id="district_id">
+				</select>
+			</p>
+		</dd>
+	</dl>
+
+	<dl>
+		<dt><span class="required">*</span>所代理的区域:</dt>
+		<dd>
+			{if $district['district_name'] eq false}
+			<p id="daili">暂未设置</p>
+			{else/}
+			<p id="daili">{$city_name|default=''}-{$district["district_name"]|default=''}</p>
+			{/if}
+		</dd>
+	</dl>
+
+	<dl>
+		<dt></dt>
+		<dd><button class="btn-common btn-big" onclick="editUserAjax();">提交</button></dd>
+	</dl>
+</div>
+<script>
+
+
+var flag = false;//是否重复提交
+/**
+*用户修改
+*/	
+function editUserAjax() {
+	var uid = $("#uid").val();
+	var district_id = $("#district_id").val();
+		if(flag){
+			return;
+		}
+		flag = true;
+		$.ajax({
+			type : "post",
+			url : "{:__URL('ADMIN_MAIN/auth/daili')}",
+			data : {
+				'uid' : uid,
+				'district_id' : district_id
+			},
+			success : function(data) {
+				if (data['code'] > 0) {
+					$("#dialog").dialog({
+						buttons : {
+							"确定,#51A351" : function() {
+								$(this).dialog('close');
+							}
+						},
+						contentText : data["msg"],
+						time : 2,
+						timeHref : "{:__URL('ADMIN_MAIN/auth/userlist')}",
+					});
+				} else {
+					$("#dialog").dialog({
+						buttons : {
+							"确定,#e57373" : function() {
+								$(this).dialog('close');
+								flag = false;
+							}
+						},
+						contentText : data["msg"]
+					});
+				}
+			}
+		});
+}
+//省找城市
+function findCity(id){
+	var url = "{:url('Auth/find_city')}";
+	var data = {
+		id:id
+	};
+	$.post(url,data,function(res){
+		console.log(res)
+		var html = '';
+		if(res.code==1){
+			html +='<option value="0">请选择城市</option>';
+			for(var i=0; i<res.list.length; i++){
+				html +='<option value="'+res["list"][i]["city_id"]+'">'+res["list"][i]["city_name"]+'</option>';
+			}
+			$('#city_id').empty().append(html);
+			$('#district_id').empty();
+		}
+	},'json')
+}
+//城市找区/县
+function findDistrict(id){
+	var url = "{:url('Auth/find_district')}";
+	var data = {
+		id:id
+	};
+	$.post(url,data,function(res){
+		var html = '';
+		if(res.code==1){
+			html +='<option value="0">请选择区/县</option>';
+			for(var i=0; i<res.list.length; i++){
+				html +='<option value="'+res["list"][i]["district_id"]+'">'+res["list"][i]["district_name"]+'</option>';
+			}
+			$('#district_id').empty().append(html);
+		}
+	},'json')
+}
+</script>
+{/block}

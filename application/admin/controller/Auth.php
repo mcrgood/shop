@@ -19,6 +19,7 @@ namespace app\admin\controller;
  * 用户权限控制器
  */
 use data\service\AuthGroup as AuthGroup;
+use think\Db;
 
 class Auth extends BaseController
 {
@@ -365,4 +366,90 @@ class Auth extends BaseController
             return AjaxReturn($res);
         }
     }
+
+    //设置代理页面
+    public function daili(){
+        if(request()->isAjax()){
+            $postData = input('post.');
+            if(!$postData['district_id']){
+                $info = [
+                    'code' => 0,
+                    'msg' =>'请选择区域!' 
+                ];
+            }else{
+                 $res = $this->daili_edit($postData);
+                 if($res){
+                     $info = [
+                        'code' => 1,
+                        'msg' =>'设置成功!' 
+                    ];
+                 }else{
+                     $info = [
+                        'code' => 0,
+                        'msg' =>'设置失败!' 
+                    ];
+                 }
+                 return json($info);
+            }
+        }
+        $uid = input('param.uid');
+        $province = Db::table('sys_province')->select();
+        $district = Db::table('sys_user')
+        ->alias('a')
+        ->where('a.uid',$uid)
+        ->join('sys_district b','a.daili_id=b.district_id','left')
+        ->find();
+        $city_name = Db::table('sys_city')->where('city_id',$district['city_id'])->value('city_name');
+        $this->assign('uid',$uid);
+        $this->assign('province',$province);
+        $this->assign('district',$district);
+        $this->assign('city_name',$city_name);
+        return view($this->style . 'Auth/daili');
+    }
+
+    //设置代理负责区域
+    public function daili_edit($postData){
+        $data['daili_id'] = $postData['district_id'];
+        $res = Db::table('sys_user')->where('uid',$postData['uid'])->update($data);
+        return $res;
+    }
+
+    //通过省份ID查询所属下级城市
+    public function find_city(){
+        $province_id = input('post.id');
+        $city = Db::table('sys_city')->where('province_id',$province_id)->select();
+        if($city){
+            $info = [
+                'code' =>1,
+                'list' =>$city
+            ];
+        }else{
+            $info = [
+                'code' =>0,
+                'list' =>''
+            ];
+        }
+        return json($info);
+    }
+
+    //通过城市ID找所属下级区/县
+    public function find_district(){
+        $city_id = input('post.id');
+        $district = Db::table('sys_district')->where('city_id',$city_id)->select();
+        if($district){
+            $info = [
+                'code' =>1,
+                'list' =>$district
+            ];
+        }else{
+            $info = [
+                'code' =>0,
+                'list' =>''
+            ];
+        }
+        return json($info);
+    }
+
+    
+
 }

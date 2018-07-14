@@ -78,7 +78,13 @@ class Dingwei extends BaseController{
                 $list[$k]['distance'] = $this->get_distance(array($weidu, $jingdu), array($v['weidu'], $v['jingdu']));
             }
             array_multisort(array_column($list, 'distance'), SORT_ASC, SORT_NUMERIC, $list);
-            return ["message" => $list, "state" => 1,'pages' => $pages];
+            $newList = array();
+            foreach($list as $k =>$v){
+                if($v['distance'] <=30){
+                   $newList[] = $list[$k];
+                }
+            }
+            return ["message" => $newList, "state" => 1,'pages' => $pages];
 
         }else{
             return ["message" => "没有数据", "state" => 0];

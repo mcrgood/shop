@@ -28,6 +28,7 @@
 		</th>
 	</tr>
 </table>
+<input type="hidden" value="{$daili_id}" id="daili_id">
 <table class="table-class">
 	<thead>
 		<tr>
@@ -52,11 +53,15 @@
 
 	function LoadingInfo(page_index) {
 	var search_text = $("#search_text").val();
+	var daili_id = $("#daili_id").val();
 	$.ajax({
 		type : "post",
 		url : "{:__URL('ADMIN_MAIN/myhome/registerlist')}",
 		data : {
-			"page_index" : page_index, "page_size" : $("#showNumber").val(), "search_text":search_text
+			"page_index" : page_index, 
+			"page_size" : $("#showNumber").val(), 
+			"search_text":search_text,
+			"daili_id":daili_id
 		},
 		success : function(data) {
 			console.log(data)

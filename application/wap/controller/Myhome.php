@@ -384,13 +384,11 @@ class Myhome extends Controller
                         'status' =>0,
                         'msg' => '您修改的比例不能低于首次设置的比例！'
                     ];
-                }elseif($row['business_status']==$data['business_status'] && $row['ratio']==$data['ratio']&& $row['gold']==$data['gold'] &&$row['msg_status']==$data['msg_status']){
-                    $info = [
-                        'status' =>0,
-                        'msg' => '您未做任何修改！'
-                    ];
                 }else{
                     $res = db('ns_wwb')->where('userid',$userid)->update($dd);
+                    if($data['bus_time']){
+                        $aa = db('ns_shop_message')->where('userid',$userid)->update(['business_hours'=>$data['bus_time']]);
+                    }
                     if($res){
                         $info = [
                             'status' =>1,
@@ -413,6 +411,9 @@ class Myhome extends Controller
                 $dd['first_ratio'] = $data['ratio'];
                 $dd['msg_status'] = $data['msg_status'];
                 $res = db('ns_wwb')->insertGetId($dd);
+                if($data['bus_time']){
+                    $aa = db('ns_shop_message')->where('userid',$userid)->update(['business_hours'=>$data['bus_time']]);
+                }
                 if($res){
                      $info = [
                         'status' =>1,
@@ -429,8 +430,12 @@ class Myhome extends Controller
         }else{
             $arr = config('business_arr');
             $row = db('ns_wwb')->where('userid',$userid)->find();
+            $business_hours = db('ns_shop_message')->where('userid',$userid)->value('business_hours');
             if($row){
                 $this->assign('row',$row);
+            }
+            if($business_hours){
+                $this->assign('business_hours',$business_hours);
             }
             $this->assign('arr',$arr);
             return view($this->style . 'Myhome/wwb');

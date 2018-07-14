@@ -8,7 +8,7 @@
 <meta name="format-detection" content="telephone=no">
 <script type="text/javascript" src="__PUBLIC__/static/js/jquery-1.8.1.min.js"></script>
 <script src="__PUBLIC__/static/layui/layui.all.js"></script>
-<title>设置旺旺币</title>
+<title>设置旺旺分</title>
 <style>
 *{margin: 0;padding: 0;}
 input[type=button], input[type=submit], input[type=file], button { cursor: pointer; -webkit-appearance: none; } 
@@ -105,6 +105,16 @@ font-size: 16px;
 #dialog p.close a {   
 	color:#131212;   
 	text-decoration:none;   
+}
+.bus_time{
+    width: 42%;
+    height: 3rem;
+    float: right;
+    margin-top: 1%;
+    border:none;
+    font-size: 1.2rem;
+    text-align: right;
+    outline: none;
 } 
 </style>
 </head>
@@ -112,7 +122,7 @@ font-size: 16px;
 <div class="big">
 	<div class="top">
 		<a onclick="javascript:window.history.go(-1)" class="left_1"><</a>
-		<div class="middle">设置旺旺币</div>
+		<div class="middle">设置旺旺分</div>
 		<!-- <a href="" class="shezhi">设置说明</a> -->
 	</div>
 	<form id="form1">
@@ -128,12 +138,16 @@ font-size: 16px;
 			</div>
 		</div>
 		<div class="guke">
-			<span>平台补顾客旺币</span>
+			<span>平台补顾客旺分</span>
 			<div class="num_right" id="num_right">{$row.gold|default=25.0}</div>
 		</div>
 		<div class="guke">
-			<span>旺旺币获取条件</span>
+			<span>旺旺分获取条件</span>
 			<div class="num_right2">0元</div>
+		</div>
+		<div class="guke">
+			<span>营业时间</span>
+			<input class="bus_time" type="text" placeholder="例 00:00-21:00" value="{$business_hours}"/>
 		</div>
 		<div class="zhuantai" id="zt">
 		{if $row.business_status eq 2}
@@ -251,6 +265,7 @@ $("#fullbg,#dialog").hide();
 
         $(document).ready(function () {
             $("#login").click(function () {
+            	var bus_time = $('.bus_time').val();
             if($("#my_input").attr("checked")){
             	if($('.yinye').css('color')=="rgb(255, 73, 73)"){
             		var business_status = 1;
@@ -272,6 +287,7 @@ $("#fullbg,#dialog").hide();
 	                	business_status:business_status,
 	                	ratio:ratio,
 	                	gold:gold,
+	                	bus_time:bus_time,
 	                	msg_status:msg_status
 
 	                },

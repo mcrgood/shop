@@ -231,12 +231,18 @@ class Myhome extends BaseController
             $page_index = request()->post("page_index", 1);
             $page_size = request()->post('page_size', PAGESIZE);
             $search_text = request()->post('search_text', '');
+            $daili_id = request()->post('daili_id');
             $condition['iphone|d.district_name|names'] = ['LIKE',"%".$search_text."%"];
             $condition['shop_status'] = 1;
+            if($daili_id){
+            	$condition['area'] = $daili_id;
+            }
             $member = new MyhomeService();
             $list = $member->getRegisters($page_index, $page_size, $condition, $order = 'a.id asc');
             return $list;
 	    }
+	    $daili_id = Db::table('sys_user')->where('uid',$this->uid)->value('daili_id');
+	    $this->assign('daili_id',$daili_id);
 		return view($this->style . "Myhome/registerlist");
 	}
 	//商家酒店系统列表
